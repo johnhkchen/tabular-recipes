@@ -1,2 +1,146 @@
 # tabular-recipes
-reipes in table form
+
+Recipes as one table each: ingredients down the left, what you do with them across.
+The shape comes from Cooking for Engineers; the source files are
+[cooklang](https://cooklang.org).
+
+```sh
+npm install
+npm run dev        # or: just dev
+npm run verify     # parse + tests + build, the one command that must pass
+```
+
+## The idea
+
+A table like this is a **merge tree** drawn sideways. Leaves are ingredients, one per
+row. Every other cell is an operation spanning exactly the ingredients that feed into
+it. Cooklang gives us the steps but not the tree — so the tree is written explicitly,
+using cooklang's intermediate-preparation references.
+
+```cooklang
+Melt @unsalted butter{4%oz}(115 g).
+
+Mix @&(~1)melted butter{} with @sugar{1%cup}(200 g), @vanilla extract{1/4%tsp}(2.5 mL).
+```
+
+`@&(~1)melted butter{}` means "the thing made one step back." The parser resolves it to
+a step index, which is the edge in the tree. Nothing is inferred or guessed.
+
+## Writing a recipe
+
+Drop a `.cook` file in `recipes/<category>/`. The folder names the category unless the
+file overrides it. Four metadata lines are required:
+
+```cooklang
+>> title: Espresso Brownies
+>> category: Bars & Brownies
+>> tags: chocolate, coffee, dessert, oven
+>> servings: 9
+```
+
+`tags` and the ingredient names are what the search box on the front page looks through,
+so tag by what someone would actually reach for: main ingredient, meal, method.
+
+Then the rules, which are short:
+
+1. **Every step after the first must say what it consumes** — `@&(~1)batter{}` for the
+   previous step, `@&(3)dough{}` for step 3. A step that consumes nothing starts a new
+   branch, and every branch has to merge before the end.
+2. **A step with no ingredients becomes a full-width row.** `Preheat the #oven{} to
+   350°F.` sits above the table if it comes before the first real step, below it if after.
+   **Keep those at the top**: `~1` counts every step, prep steps included, so a prep step
+   wedged between two operations makes the next `@&(~1)` point at something that makes
+   nothing.
+3. **Notes carry the second unit.** `@sugar{1%cup}(200 g)` renders as
+   `1 cup (200 g) sugar`. Cooklang cannot convert cups to grams — that needs the
+   ingredient's density — so write both when you want both.
+4. **Write fractions as fractions.** `{1/4%tsp}` stays `1/4 tsp`; `{0.25%tsp}` renders
+   as `0.25 tsp`.
+5. **Cell labels are derived, and overridable.** The label is the step with its
+   ingredients stripped out: `Fold in @flour{}, @cocoa{} to @&(~1)batter{}` → `fold in`.
+   Temperatures, times and cookware stay. To set one by hand, add
+   `>> step.7: bake 350°F (170°C) 30 to 40 min` (N is 1-based over the steps as written).
+
+Row order is not the order you wrote the ingredients: children sort deepest-first, which
+is what makes the staircase descend to the right and puts the long chain of operations
+along the top.
+
+**Size.** Aim for 5 to 16 ingredient rows and 3 to 6 operations. Rows are cheap — they make
+the table taller, not wider — but every operation adds a column, and columns are what force
+the table to scroll sideways on a phone. If a dish genuinely needs more than six operations,
+it is probably two recipes.
+
+Things a table cannot show, and which the build will refuse rather than draw wrong:
+
+- **Splitting** a preparation into two later steps (it is a tree, not a graph).
+- **Two endings** — every branch must flow into one final step.
+
+To find out what is wrong with a file without building the site:
+
+```sh
+just check recipes/breads/focaccia.cook    # or: npm run check
+```
+
+It prints `ok` with the table's shape, or `FAIL` with the reason. It writes nothing, so any
+number of them can run at once.
+
+Add `--labels` to see the staircase of operation cells a file actually produced, which is the
+only way to tell a cook's verb from a mangled sentence fragment:
+
+```
+$ node scripts/check-recipes.mjs --labels recipes/soups/new-england-clam-chowder.cook
+  ok   recipes/soups/new-england-clam-chowder.cook  12 rows x 7 cols
+       render in a Dutch oven
+         sweat 8 min
+           stir in flour 2 min
+             simmer 15 min
+               warm through, no boil
+                 season
+```
+
+## How it fits together
+
+| Path | Job |
+| --- | --- |
+| `recipes/<category>/*.cook` | The source of truth. Hand-written. Basenames are URLs, so they are unique across the whole collection. |
+| `src/data/categories.json` | The one-line label under each shelf heading. |
+| `scripts/normalise.mjs` | The only place the WASM parser is touched. |
+| `scripts/parse-recipes.mjs` | Walks `recipes/`, emits `src/generated/recipes.json`. |
+| `scripts/check-recipes.mjs` | Says what is wrong with one file, or all of them. |
+| `src/lib/tree.ts` | Steps → merge tree. Assigns each cell its column and rows. |
+| `src/lib/layout.ts` | Tree → table cells, with the blank regions merged. |
+| `src/lib/layout.test.ts` | Pins the brownie table to the reference image, and checks every table tiles with no holes. |
+| `src/components/RecipeTable.astro` | The table, plus tap-to-cross-off. |
+| `src/pages/index.astro` | The shelves, and the search-and-filter box over them. Filtering is a DOM walk over `data-` attributes; the query lives in the URL, so a filtered view is shareable. |
+| `src/styles/b28-clay.css` | Vendored from the shared kit — `just sync-kit` to update. |
+
+`src/generated/` is not committed; `npm run recipes` rebuilds it.
+
+## Publishing
+
+The site is static, and `.github/workflows/deploy.yml` publishes it to GitHub Pages on every
+push to `main`. Turn it on once, in **Settings → Pages → Source → GitHub Actions**. After
+that it lands at `https://johnhkchen.github.io/tabular-recipes/`.
+
+The job runs `npm run verify` before it publishes, so a recipe that would not draw a table
+fails the deploy instead of reaching a reader.
+
+Two details worth knowing if you change hosting:
+
+- **The base path.** Because it is a project page, every internal link needs the
+  `/tabular-recipes/` prefix. Links go through `url()` in `src/lib/url.ts` rather than being
+  written by hand, and the prefix comes from `SITE_BASE` in the workflow. `npm run dev` uses
+  the same prefix, so local URLs look like `localhost:4321/tabular-recipes/`.
+- **Moving to a custom domain**, say `recipes.b28.dev`: put the domain in `public/CNAME`, set
+  `SITE_URL` to `https://recipes.b28.dev` and `SITE_BASE` to `/` in the workflow. Nothing
+  else changes.
+
+`public/.nojekyll` has to stay — without it GitHub ignores Astro's `_astro/` directory and
+the site loads with no CSS.
+
+## Not yet
+
+- **Importing.** Turning a prose recipe into a `.cook` file is still by hand.
+- **Scaling.** Cooklang can scale quantities; the table does not offer the switch yet.
+- **Phones.** The table scrolls sideways below about 34rem. It works, but it is not yet
+  designed for a small screen.
