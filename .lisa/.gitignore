@@ -1,0 +1,6 @@
+signals/
+attempts/
+claude/
+codex/
+run-events.jsonl
+run-baseline.json

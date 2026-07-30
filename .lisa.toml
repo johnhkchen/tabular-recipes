@@ -1,0 +1,47 @@
+# Lisa project configuration
+# Tracks the Lisa version used to set up this project.
+version = "0.4.4"
+
+[dirs]
+# Chooses where Lisa reads ticket files.
+tickets = "docs/active/tickets"
+# Chooses where Lisa reads story files.
+stories = "docs/active/stories"
+# Chooses where Lisa keeps work records.
+work = "docs/active/work"
+
+[runtime]
+# Chooses how Lisa starts Zellij.
+# zellij = "managed"
+
+[agent]
+# Chooses which coding agent Lisa drives. Omit it to detect agents on PATH; claude is the default when both are installed.
+# client = "claude"
+
+[guards]
+# Controls how finished work is sealed. auto picks the strongest your project supports.
+# completion = "auto"
+
+[triage]
+# Lets Lisa inspect work that needs you before asking for help.
+# enabled = true
+# Limits how long Lisa can inspect work that needs you.
+# timeout_secs = 120
+
+[scheduling]
+# Limits how many coding agents can work at once.
+max_threads = 2
+# Lets Lisa move reviewed work forward without waiting for approval.
+# auto_advance = false
+# Limits how long Lisa waits for review to finish.
+# review_timeout_secs = 600
+# Limits how long one coding-agent session can run.
+# session_timeout_secs = 3600
+# Sets aside time for an agent to wrap up before its session ends.
+# wind_down_secs = 300
+# Limits how long Lisa waits for an agent to accept assigned work.
+# assignment_ack_timeout_secs = 30
+# Limits how long each kind of work can run.
+# phase_timeouts = {}
+# Limits how many agents of each kind can work at once.
+# provider_caps = {}
