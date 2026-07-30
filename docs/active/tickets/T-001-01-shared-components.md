@@ -3,9 +3,9 @@ id: T-001-01
 story: S-001
 title: shared-components
 type: task
-status: open
+status: done
 priority: high
-phase: ready
+phase: done
 depends_on: []
 ---
 
