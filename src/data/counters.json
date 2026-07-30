@@ -5,91 +5,878 @@
       "name": "Bakery",
       "slug": "bakery",
       "blurb": "Loaves on the rack, sweet things in the case.",
-      "categories": ["Breads", "Cakes & Loaves", "Cookies", "Bars & Brownies"]
+      "categories": [
+        "Breads",
+        "Cakes & Loaves",
+        "Cookies",
+        "Bars & Brownies"
+      ],
+      "sections": [
+        {
+          "title": "The bread rack",
+          "items": [
+            "baguette",
+            "ciabatta",
+            "sourdough-boule",
+            "no-knead-bread",
+            "white-sandwich-bread",
+            "whole-wheat-sandwich-bread",
+            "japanese-milk-bread",
+            "dinner-rolls",
+            "deli-rye-bread",
+            "bagels",
+            "challah",
+            "brioche",
+            "soft-pretzels",
+            "focaccia",
+            "pita-bread",
+            "english-muffins"
+          ]
+        },
+        {
+          "title": "Sweet buns and morning things",
+          "items": [
+            "cinnamon-rolls",
+            "hot-cross-buns",
+            "chocolate-babka",
+            "pan-de-muerto",
+            "hotteok"
+          ]
+        },
+        {
+          "title": "Cakes, whole or by the slice",
+          "items": [
+            "angel-food-cake",
+            "carrot-cake",
+            "castella",
+            "chiffon-cake",
+            "flourless-chocolate-cake",
+            "french-apple-cake",
+            "gingerbread-cake",
+            "honey-cake",
+            "lemon-poppy-seed-loaf",
+            "marble-cake",
+            "olive-oil-cake",
+            "pineapple-upside-down-cake",
+            "pound-cake",
+            "pumpkin-bread",
+            "banana-bread",
+            "zucchini-bread",
+            "sour-cream-coffee-cake",
+            "texas-sheet-cake",
+            "tres-leches-cake",
+            "victoria-sponge"
+          ]
+        },
+        {
+          "title": "Cookies by the piece",
+          "items": [
+            "alfajores",
+            "almond-biscotti",
+            "anzac-biscuits",
+            "chocolate-chip-cookies",
+            "chocolate-crinkle-cookies",
+            "coconut-macaroons",
+            "florentines",
+            "gingerbread-cookies",
+            "madeleines",
+            "molasses-crinkles",
+            "oatmeal-raisin-cookies",
+            "peanut-butter-cookies",
+            "pizzelle",
+            "russian-tea-cakes",
+            "sable-cookies",
+            "shortbread-cookies",
+            "snickerdoodles",
+            "speculaas",
+            "sugar-cookies",
+            "thumbprint-cookies"
+          ]
+        },
+        {
+          "title": "Bars and squares",
+          "items": [
+            "blondies",
+            "british-flapjacks",
+            "brown-butter-brownies",
+            "cheesecake-swirl-brownies",
+            "chewy-granola-bars",
+            "chocolate-chip-cookie-bars",
+            "date-squares",
+            "english-toffee-bars",
+            "espresso-brownies",
+            "frosted-pumpkin-bars",
+            "fudgy-cocoa-brownies",
+            "hermit-bars",
+            "lemon-bars",
+            "magic-cookie-bars",
+            "millionaires-shortbread",
+            "nanaimo-bars",
+            "peanut-butter-swirl-brownies",
+            "pecan-pie-bars",
+            "raspberry-oat-bars",
+            "rice-krispie-treats",
+            "smores-bars"
+          ]
+        },
+        {
+          "title": "The cold case",
+          "items": [
+            "new-york-cheesecake",
+            "creme-brulee",
+            "chocolate-pots-de-creme",
+            "cherry-clafoutis",
+            "pastry-cream",
+            "creme-anglaise",
+            "lemon-curd"
+          ]
+        },
+        {
+          "title": "Odds that landed here",
+          "items": [
+            "caldo-verde",
+            "zaatar"
+          ]
+        }
+      ]
     },
     {
       "name": "Panadería",
       "slug": "panaderia",
       "blurb": "Take a tray and tongs, fill it, pay at the register.",
-      "categories": ["Cakes & Loaves"]
+      "categories": [
+        "Cakes & Loaves"
+      ],
+      "sections": [
+        {
+          "title": "Pan Dulce",
+          "items": [
+            "cinnamon-rolls",
+            "pan-de-muerto",
+            "russian-tea-cakes"
+          ]
+        },
+        {
+          "title": "Cakes and flan, from the same counter",
+          "items": [
+            "tres-leches-cake",
+            "pound-cake",
+            "flan"
+          ]
+        },
+        {
+          "title": "The tortillería side",
+          "items": [
+            "corn-tortillas"
+          ]
+        },
+        {
+          "title": "Also here",
+          "items": [
+            "alfajores"
+          ]
+        }
+      ]
     },
     {
       "name": "Taquería",
       "slug": "taqueria",
       "blurb": "Pick a filling, then pick what it goes in.",
-      "categories": []
+      "categories": [],
+      "sections": [
+        {
+          "title": "Fillings",
+          "items": [
+            "carnitas",
+            "birria-de-res"
+          ]
+        },
+        {
+          "title": "What it goes in",
+          "items": [
+            "corn-tortillas",
+            "flour-tortillas",
+            "arepas-de-queso"
+          ]
+        },
+        {
+          "title": "Arroz y frijoles",
+          "items": [
+            "mexican-red-rice",
+            "refried-beans",
+            "cuban-black-beans",
+            "black-bean-soup"
+          ]
+        },
+        {
+          "title": "Salsas and the table",
+          "items": [
+            "salsa-roja",
+            "guacamole",
+            "red-enchilada-sauce",
+            "mole-poblano"
+          ]
+        },
+        {
+          "title": "The spice shelf",
+          "items": [
+            "chili-powder",
+            "taco-seasoning",
+            "mojo-marinade"
+          ]
+        },
+        {
+          "title": "Dessert",
+          "items": [
+            "flan"
+          ]
+        }
+      ]
     },
     {
       "name": "Dim Sum Counter",
       "slug": "dim-sum-counter",
       "blurb": "Steamer baskets by the piece, buns by the bag.",
-      "categories": []
+      "categories": [],
+      "sections": [
+        {
+          "title": "Out of the fryer",
+          "items": [
+            "scallion-pancakes"
+          ]
+        },
+        {
+          "title": "Rice and noodle",
+          "items": [
+            "egg-fried-rice",
+            "congee"
+          ]
+        },
+        {
+          "title": "Roast meats in the glass",
+          "items": [
+            "red-braised-pork-belly"
+          ]
+        },
+        {
+          "title": "The bakery case at the till",
+          "items": [
+            "chiffon-cake"
+          ]
+        },
+        {
+          "title": "Sweets",
+          "items": [
+            "mango-pudding"
+          ]
+        },
+        {
+          "title": "The shelf",
+          "items": [
+            "chinese-five-spice-powder"
+          ]
+        }
+      ]
     },
     {
       "name": "Takeout Counter",
       "slug": "takeout-counter",
       "blurb": "Order by number, eat it out of the carton.",
-      "categories": []
+      "categories": [],
+      "sections": [
+        {
+          "title": "Appetizer / Side Orders",
+          "items": [
+            "scallion-pancakes"
+          ]
+        },
+        {
+          "title": "Fried Rice",
+          "items": [
+            "egg-fried-rice"
+          ]
+        },
+        {
+          "title": "The sauce shelf",
+          "items": [
+            "sweet-and-sour-sauce",
+            "teriyaki-sauce"
+          ]
+        },
+        {
+          "title": "Spice",
+          "items": [
+            "chinese-five-spice-powder"
+          ]
+        }
+      ]
     },
     {
       "name": "Phở & Bánh Mì",
       "slug": "pho-and-banh-mi",
       "blurb": "A bowl of soup, a sandwich, and iced coffee.",
-      "categories": []
+      "categories": [],
+      "sections": [
+        {
+          "title": "Appetisers / plates (A)",
+          "items": [
+            "banh-xeo"
+          ]
+        }
+      ]
     },
     {
       "name": "Ramen Shop",
       "slug": "ramen-shop",
       "blurb": "Choose the broth first; everything else follows.",
-      "categories": []
+      "categories": [],
+      "sections": [
+        {
+          "title": "The small fried and griddled plates",
+          "items": [
+            "okonomiyaki",
+            "haemul-pajeon"
+          ]
+        },
+        {
+          "title": "Rice and donburi",
+          "items": [
+            "japanese-beef-curry"
+          ]
+        },
+        {
+          "title": "Soup",
+          "items": [
+            "miso-soup"
+          ]
+        },
+        {
+          "title": "Custard",
+          "items": [
+            "chawanmushi"
+          ]
+        },
+        {
+          "title": "The shelf",
+          "items": [
+            "goma-dare",
+            "miso-ginger-dressing",
+            "teriyaki-sauce",
+            "shichimi-togarashi",
+            "bulgogi-marinade"
+          ]
+        }
+      ]
     },
     {
       "name": "Curry House",
       "slug": "curry-house",
       "blurb": "One sauce list, run across every meat.",
-      "categories": ["Spice Blends & Marinades", "Stews & Braises"]
+      "categories": [
+        "Spice Blends & Marinades",
+        "Stews & Braises"
+      ],
+      "sections": [
+        {
+          "title": "Tandoori",
+          "items": [
+            "tandoori-marinade"
+          ]
+        },
+        {
+          "title": "The sauce list",
+          "items": [
+            "chicken-tikka-masala",
+            "chana-masala"
+          ]
+        },
+        {
+          "title": "Dal and vegetarian",
+          "items": [
+            "dal-tadka",
+            "kitchari"
+          ]
+        },
+        {
+          "title": "Rice",
+          "items": [
+            "lemon-rice"
+          ]
+        },
+        {
+          "title": "Breads",
+          "items": [
+            "naan",
+            "chapati",
+            "paratha",
+            "dosa"
+          ]
+        },
+        {
+          "title": "Sweets",
+          "items": [
+            "kheer"
+          ]
+        },
+        {
+          "title": "The spice shelf",
+          "items": [
+            "garam-masala",
+            "madras-curry-powder",
+            "berbere"
+          ]
+        },
+        {
+          "title": "Shelved here from the Ethiopian board",
+          "items": [
+            "doro-wat"
+          ]
+        }
+      ]
     },
     {
       "name": "Thai Kitchen",
       "slug": "thai-kitchen",
       "blurb": "Curries by colour, noodles by the plate.",
-      "categories": []
+      "categories": [],
+      "sections": [
+        {
+          "title": "Soups",
+          "items": [
+            "tom-kha-gai"
+          ]
+        },
+        {
+          "title": "Curries by colour",
+          "items": [
+            "thai-green-curry"
+          ]
+        },
+        {
+          "title": "Rice",
+          "items": [
+            "coconut-rice"
+          ]
+        },
+        {
+          "title": "The shelf",
+          "items": [
+            "thai-red-curry-paste"
+          ]
+        },
+        {
+          "title": "Shelved here from a neighbouring board",
+          "items": [
+            "beef-rendang"
+          ]
+        }
+      ]
     },
     {
       "name": "Shawarma Counter",
       "slug": "shawarma-counter",
       "blurb": "Shaved off the spit, over rice or in bread.",
-      "categories": ["Dressings & Dips"]
+      "categories": [
+        "Dressings & Dips"
+      ],
+      "sections": [
+        {
+          "title": "Cold mezze",
+          "items": [
+            "hummus",
+            "baba-ganoush",
+            "muhammara",
+            "tabbouleh"
+          ]
+        },
+        {
+          "title": "Sauces",
+          "items": [
+            "tahini-sauce",
+            "toum",
+            "tzatziki",
+            "harissa"
+          ]
+        },
+        {
+          "title": "Rice and grains",
+          "items": [
+            "rice-pilaf",
+            "mujaddara",
+            "gigantes-plaki"
+          ]
+        },
+        {
+          "title": "Soups",
+          "items": [
+            "red-lentil-soup",
+            "harira",
+            "avgolemono"
+          ]
+        },
+        {
+          "title": "Bread",
+          "items": [
+            "pita-bread",
+            "injera"
+          ]
+        },
+        {
+          "title": "The spice shelf",
+          "items": [
+            "zaatar",
+            "dukkah",
+            "ras-el-hanout",
+            "chermoula"
+          ]
+        },
+        {
+          "title": "Hot",
+          "items": [
+            "lamb-tagine"
+          ]
+        },
+        {
+          "title": "Shelved here from the Ethiopian board",
+          "items": [
+            "injera"
+          ]
+        }
+      ]
     },
     {
       "name": "Pizzeria",
       "slug": "pizzeria",
       "blurb": "Slices out front, whole pies to order, heroes at the back.",
-      "categories": ["Sauces & Gravies"]
+      "categories": [
+        "Sauces & Gravies"
+      ],
+      "sections": [
+        {
+          "title": "Whole pies",
+          "items": [
+            "pizza-dough",
+            "marinara-sauce"
+          ]
+        },
+        {
+          "title": "The sauce shelf",
+          "items": [
+            "marinara-sauce",
+            "arrabbiata-sauce",
+            "puttanesca-sauce",
+            "vodka-sauce",
+            "alfredo-sauce",
+            "bolognese",
+            "bechamel",
+            "beurre-blanc",
+            "basil-pesto"
+          ]
+        },
+        {
+          "title": "Primi",
+          "items": [
+            "mushroom-risotto",
+            "risotto-alla-milanese",
+            "polenta"
+          ]
+        },
+        {
+          "title": "Secondi",
+          "items": [
+            "osso-buco"
+          ]
+        },
+        {
+          "title": "Soup",
+          "items": [
+            "minestrone"
+          ]
+        },
+        {
+          "title": "Bread and flat things",
+          "items": [
+            "focaccia",
+            "socca"
+          ]
+        },
+        {
+          "title": "Salad dressings, for a salad that is not here",
+          "items": [
+            "caesar-dressing",
+            "ranch-dressing",
+            "blue-cheese-dressing"
+          ]
+        },
+        {
+          "title": "Sweets",
+          "items": [
+            "panna-cotta",
+            "zabaglione"
+          ]
+        }
+      ]
     },
     {
       "name": "Deli",
       "slug": "deli",
       "blurb": "Sliced, spread, and sold by the tub.",
-      "categories": ["Dressings & Dips"]
+      "categories": [
+        "Dressings & Dips"
+      ],
+      "sections": [
+        {
+          "title": "The bread rack",
+          "items": [
+            "bagels",
+            "baguette",
+            "challah",
+            "chocolate-babka",
+            "ciabatta",
+            "deli-rye-bread",
+            "white-sandwich-bread",
+            "whole-wheat-sandwich-bread"
+          ]
+        },
+        {
+          "title": "Spreads and dressings sold by the tub",
+          "items": [
+            "hummus",
+            "baba-ganoush",
+            "guacamole",
+            "romesco",
+            "basil-pesto",
+            "chimichurri",
+            "aioli",
+            "mayonnaise",
+            "basic-vinaigrette",
+            "caesar-dressing",
+            "green-goddess-dressing",
+            "honey-mustard-dressing"
+          ]
+        },
+        {
+          "title": "Soups",
+          "items": [
+            "borscht",
+            "butternut-squash-soup",
+            "caldo-verde",
+            "chicken-noodle-soup",
+            "minestrone",
+            "potato-leek-soup",
+            "split-pea-soup"
+          ]
+        },
+        {
+          "title": "The hot case",
+          "items": [
+            "hungarian-goulash"
+          ]
+        },
+        {
+          "title": "The sweet end",
+          "items": [
+            "new-york-cheesecake",
+            "honey-cake",
+            "marble-cake",
+            "sour-cream-coffee-cake",
+            "chocolate-chip-cookies",
+            "oatmeal-raisin-cookies",
+            "rice-pudding"
+          ]
+        },
+        {
+          "title": "Also here",
+          "items": [
+            "blini",
+            "cranberry-sauce",
+            "mojo-marinade"
+          ]
+        }
+      ]
     },
     {
       "name": "Diner",
       "slug": "diner",
       "blurb": "Breakfast all day, and a bowl of soup.",
-      "categories": ["Flatbreads & Pancakes", "Soups", "Custards & Puddings"]
+      "categories": [
+        "Flatbreads & Pancakes",
+        "Soups",
+        "Custards & Puddings"
+      ],
+      "sections": [
+        {
+          "title": "The griddle",
+          "items": [
+            "buttermilk-pancakes",
+            "buttermilk-waffles",
+            "crepes",
+            "dutch-baby",
+            "english-muffins"
+          ]
+        },
+        {
+          "title": "Gravies and sauces",
+          "items": [
+            "sausage-gravy",
+            "turkey-pan-gravy",
+            "cheddar-cheese-sauce",
+            "hollandaise",
+            "homemade-ketchup"
+          ]
+        },
+        {
+          "title": "Soup of the day",
+          "items": [
+            "chicken-noodle-soup",
+            "new-england-clam-chowder",
+            "corn-chowder",
+            "cream-of-mushroom-soup",
+            "french-onion-soup",
+            "tomato-soup",
+            "potato-leek-soup",
+            "split-pea-soup",
+            "butternut-squash-soup",
+            "black-bean-soup",
+            "avgolemono"
+          ]
+        },
+        {
+          "title": "Blue plates",
+          "items": [
+            "pot-roast",
+            "beef-stew",
+            "irish-stew",
+            "hungarian-goulash",
+            "chili-con-carne"
+          ]
+        },
+        {
+          "title": "Sides",
+          "items": [
+            "cheese-grits",
+            "rice-pilaf"
+          ]
+        },
+        {
+          "title": "Dressings, by the cup on the side",
+          "items": [
+            "ranch-dressing",
+            "blue-cheese-dressing",
+            "honey-mustard-dressing",
+            "green-goddess-dressing"
+          ]
+        },
+        {
+          "title": "The dessert case",
+          "items": [
+            "rice-pudding",
+            "butterscotch-pudding",
+            "chocolate-pudding",
+            "tapioca-pudding",
+            "bread-pudding",
+            "french-vanilla-ice-cream",
+            "banana-bread",
+            "carrot-cake",
+            "gingerbread-cake",
+            "pineapple-upside-down-cake",
+            "fudgy-cocoa-brownies"
+          ]
+        }
+      ]
     },
     {
       "name": "Smokehouse",
       "slug": "smokehouse",
       "blurb": "Smoked all night, chopped to order, sauce on the table.",
-      "categories": []
+      "categories": [],
+      "sections": [
+        {
+          "title": "Sauce on the table",
+          "items": [
+            "barbecue-sauce"
+          ]
+        },
+        {
+          "title": "Rubs and brines",
+          "items": [
+            "memphis-dry-rub",
+            "jerk-marinade",
+            "turkey-brine"
+          ]
+        },
+        {
+          "title": "Sides",
+          "items": [
+            "boston-baked-beans"
+          ]
+        }
+      ]
     },
     {
       "name": "Meat and Three",
       "slug": "meat-and-three",
       "blurb": "One meat, three sides, cornbread whether you ask or not.",
-      "categories": ["Rice, Beans & Grains", "Stews & Braises"]
+      "categories": [
+        "Rice, Beans & Grains",
+        "Stews & Braises"
+      ],
+      "sections": [
+        {
+          "title": "The meat list, rotating",
+          "items": [
+            "pot-roast",
+            "beef-stew",
+            "braised-short-ribs",
+            "beef-bourguignon",
+            "coq-au-vin",
+            "chicken-adobo"
+          ]
+        },
+        {
+          "title": "The vegetable list",
+          "items": [
+            "cheese-grits",
+            "boston-baked-beans",
+            "hoppin-john",
+            "dirty-rice",
+            "jambalaya",
+            "jollof-rice"
+          ]
+        },
+        {
+          "title": "Gravies",
+          "items": [
+            "turkey-pan-gravy",
+            "sausage-gravy",
+            "cheddar-cheese-sauce",
+            "cranberry-sauce"
+          ]
+        },
+        {
+          "title": "Dessert",
+          "items": [
+            "bread-pudding",
+            "pecan-pie-bars",
+            "texas-sheet-cake",
+            "haupia"
+          ]
+        },
+        {
+          "title": "The shelf",
+          "items": [
+            "cajun-seasoning",
+            "jerk-marinade",
+            "turkey-brine"
+          ]
+        },
+        {
+          "title": "Shelved here from elsewhere",
+          "items": [
+            "beef-bourguignon"
+          ]
+        }
+      ]
     }
   ]
 }

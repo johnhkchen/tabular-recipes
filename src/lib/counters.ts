@@ -12,6 +12,12 @@ export interface Counter {
   blurb: string;
   /** Fallback only: categories whose recipes land here when a file names no counter. */
   categories: string[];
+  /**
+   * The sections this counter's menu actually prints, in the order it prints them — Salsas
+   * and Fillings, not "Sauces & Gravies". Extracted from the gap notes by
+   * scripts/menu-sections.mjs; a counter without them falls back to grouping by category.
+   */
+  sections?: { title: string; items: string[] }[];
 }
 
 export const counters: Counter[] = (countersFile as { counters: Counter[] }).counters;
@@ -57,11 +63,33 @@ export interface Menu {
 }
 
 /**
- * The menu for one counter: its recipes, grouped by category and ordered so the biggest
- * section leads, the way a menu puts what the place is known for at the top.
+ * The menu for one counter.
+ *
+ * Where the counter names its own sections, those are used in the order given, because a
+ * menu's order is part of what it says. Where it does not, we fall back to grouping by
+ * category with the biggest group first — which reads like a directory, not a menu, and is
+ * only ever a stopgap.
  */
 export function menuFor(counter: Counter, all: RawRecipe[]): Menu {
   const mine = all.filter((r) => r.counters.includes(counter.name));
+  const bySlug = new Map(mine.map((r) => [r.slug, r]));
+
+  if (counter.sections?.length) {
+    const sections = counter.sections
+      .map(({ title, items }) => ({
+        title,
+        items: items.map((slug) => bySlug.get(slug)).filter(Boolean) as RawRecipe[],
+      }))
+      .filter((section) => section.items.length > 0);
+
+    // Anything the sections forgot still has to appear, or the menu quietly loses a dish.
+    const placed = new Set(sections.flatMap((s) => s.items.map((r) => r.slug)));
+    const rest = mine.filter((r) => !placed.has(r.slug));
+    if (rest.length) sections.push({ title: 'Also', items: rest });
+
+    return { counter, sections, count: mine.length };
+  }
+
   const byCategory = new Map<string, RawRecipe[]>();
   for (const recipe of mine) {
     byCategory.set(recipe.category, [...(byCategory.get(recipe.category) ?? []), recipe]);
