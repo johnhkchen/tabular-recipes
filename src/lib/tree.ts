@@ -10,9 +10,12 @@ import { cleanLabel } from './label.ts';
 
 export interface RawIngredient {
   name: string;
+  /** For reading: "1 1/2 cups". */
   quantity: string;
   note: string | null;
   display: string;
+  /** For arithmetic: the same amount as a number, so two recipes can be added together. */
+  amount: { value: number | null; unit: string | null };
 }
 
 export interface RawTimer {

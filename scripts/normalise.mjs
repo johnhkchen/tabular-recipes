@@ -161,6 +161,15 @@ export function normalise(source, { slug, path: relPath, folder }) {
           quantity,
           note: ing.note ?? null,
           display: [quantity, ing.note ? `(${ing.note})` : '', ing.name].filter(Boolean).join(' '),
+          /*
+           * The same amount as a number, so a shopping list can add two recipes together.
+           * `quantity` above is for reading; this is for arithmetic. A range gives its top
+           * end, because the point of the number is knowing how much to buy.
+           */
+          amount: {
+            value: numericOf(ing.quantity?.value),
+            unit: ing.quantity?.unit ?? null,
+          },
         });
       }
 
