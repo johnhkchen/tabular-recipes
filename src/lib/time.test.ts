@@ -35,10 +35,27 @@ describe('formatDuration', () => {
 });
 
 describe('attentionOf', () => {
-  it('takes the timer name as the author saying it outright', () => {
+  it('takes a recognised timer name as the author saying it outright', () => {
     expect(attentionOf('rise')).toEqual({ attention: 'unattended', source: 'name' });
     expect(attentionOf('chill')).toEqual({ attention: 'unattended', source: 'name' });
     expect(attentionOf('whisk')).toEqual({ attention: 'hands-on', source: 'name' });
+  });
+
+  it('never lets a name it does not know beat the operation it sits in', () => {
+    // `~blind bake{20%min}` used to resolve hands-on purely because "blindbake" was not in
+    // the vocabulary — so naming a timer well made the answer worse than leaving it blank.
+    expect(attentionOf('blind bake', 'bake the shell 20 min')).toEqual({
+      attention: 'unattended',
+      source: 'name',
+    });
+    expect(attentionOf('sit tight', 'chill 2 hr')).toEqual({
+      attention: 'unattended',
+      source: 'label',
+    });
+    expect(attentionOf('nonsense', 'stir constantly')).toEqual({
+      attention: 'hands-on',
+      source: 'default',
+    });
   });
 
   it('falls back to the operation, so a braise is not three hours of your attention', () => {

@@ -120,6 +120,13 @@
           ]
         },
         {
+          "title": "Doughs and shells",
+          "items": [
+            "all-butter-pie-crust",
+            "sweet-tart-shell"
+          ]
+        },
+        {
           "title": "The cold case",
           "items": [
             "new-york-cheesecake",
@@ -173,7 +180,8 @@
         {
           "title": "Also here",
           "items": [
-            "alfajores"
+            "alfajores",
+            "sweet-tart-shell"
           ]
         }
       ]
@@ -255,13 +263,15 @@
         {
           "title": "Roast meats in the glass",
           "items": [
-            "red-braised-pork-belly"
+            "red-braised-pork-belly",
+            "char-siu"
           ]
         },
         {
           "title": "The bakery case at the till",
           "items": [
-            "chiffon-cake"
+            "chiffon-cake",
+            "sweet-tart-shell"
           ]
         },
         {
@@ -297,6 +307,12 @@
           ]
         },
         {
+          "title": "Pork",
+          "items": [
+            "char-siu"
+          ]
+        },
+        {
           "title": "The sauce shelf",
           "items": [
             "sweet-and-sour-sauce",
@@ -317,6 +333,14 @@
       "blurb": "A bowl of soup, a sandwich, and iced coffee.",
       "categories": [],
       "sections": [
+        {
+          "title": "Bánh mì (S)",
+          "items": [
+            "pork-liver-pate",
+            "do-chua",
+            "char-siu"
+          ]
+        },
         {
           "title": "Appetisers / plates (A)",
           "items": [
@@ -652,7 +676,14 @@
             "basic-vinaigrette",
             "caesar-dressing",
             "green-goddess-dressing",
-            "honey-mustard-dressing"
+            "honey-mustard-dressing",
+            "pork-liver-pate"
+          ]
+        },
+        {
+          "title": "The barrel",
+          "items": [
+            "sour-dill-pickles"
           ]
         },
         {
@@ -755,7 +786,8 @@
           "title": "Sides",
           "items": [
             "cheese-grits",
-            "rice-pilaf"
+            "rice-pilaf",
+            "skillet-cornbread"
           ]
         },
         {
@@ -780,7 +812,8 @@
             "carrot-cake",
             "gingerbread-cake",
             "pineapple-upside-down-cake",
-            "fudgy-cocoa-brownies"
+            "fudgy-cocoa-brownies",
+            "all-butter-pie-crust"
           ]
         }
       ]
@@ -809,6 +842,13 @@
           "title": "Sides",
           "items": [
             "boston-baked-beans"
+          ]
+        },
+        {
+          "title": "Bread",
+          "items": [
+            "skillet-cornbread",
+            "hot-water-cornbread"
           ]
         }
       ]
@@ -845,6 +885,13 @@
           ]
         },
         {
+          "title": "Cornbread",
+          "items": [
+            "skillet-cornbread",
+            "hot-water-cornbread"
+          ]
+        },
+        {
           "title": "Gravies",
           "items": [
             "turkey-pan-gravy",
@@ -859,7 +906,8 @@
             "bread-pudding",
             "pecan-pie-bars",
             "texas-sheet-cake",
-            "haupia"
+            "haupia",
+            "all-butter-pie-crust"
           ]
         },
         {

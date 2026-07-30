@@ -38,15 +38,20 @@ export function formatDuration(minutes: number): string {
   return parts.join(' ');
 }
 
-/*
- * Waits you can walk away from, by timer name. Everything else is time at the counter.
- * The name is the author's declaration, so this list only has to know the vocabulary.
- */
+/* Waits you can walk away from. */
 const UNATTENDED = new Set([
   'rise', 'prove', 'proof', 'ferment', 'rest', 'chill', 'cool', 'freeze', 'set',
   'marinate', 'brine', 'soak', 'steep', 'bake', 'roast', 'braise', 'simmer', 'steam',
   'boil', 'slowcook', 'infuse', 'dry', 'cure', 'age', 'refrigerate', 'overnight',
-  'leave', 'stand', 'sit',
+  'leave', 'stand', 'sit', 'blindbake', 'parbake', 'prebake', 'autolyse', 'retard',
+  'thaw', 'defrost', 'macerate', 'wilt', 'drain', 'press', 'smoke', 'stew', 'poach',
+]);
+
+/* Time you have to be there for, so an author can say so outright rather than by omission. */
+const HANDS_ON = new Set([
+  'whisk', 'stir', 'knead', 'beat', 'mix', 'fold', 'toss', 'whip', 'roll', 'shape',
+  'saute', 'fry', 'deepfry', 'stirfry', 'sear', 'brown', 'temper', 'toast', 'grill',
+  'flip', 'baste', 'skim', 'churn',
 ]);
 
 export type Attention = 'hands-on' | 'unattended';
@@ -57,20 +62,23 @@ const normalise = (word: string) => word.trim().toLowerCase().replace(/[\s-]/g, 
 /**
  * Where the answer came from matters, so the page can be honest about how sure it is.
  *
- * A named timer is the author saying it outright. Failing that we read the operation the
- * timer sits in — "braise 3 hr" is plainly not three hours of your attention, and calling
- * it hands-on would make the timeline lie in the direction that matters most. Failing both,
- * we assume you are standing there, because promising a cook they can leave when they
- * cannot is the worse error.
+ * A recognised timer name is the author saying it outright. An UNRECOGNISED one is not a
+ * claim about anything, so it falls through to the same reading an unnamed timer gets —
+ * otherwise naming a timer more descriptively makes the answer worse than leaving it blank,
+ * which is how `~blind bake{20%min}` came to be classified as twenty minutes of standing at
+ * the oven. Failing the name we read the operation the timer sits in, since "braise 3 hr" is
+ * plainly not three hours of attention. Failing both we assume you are standing there,
+ * because promising a cook they can leave when they cannot is the worse error.
  */
 export function attentionOf(
   timerName: string | null,
   operationLabel = '',
 ): { attention: Attention; source: AttentionSource } {
-  if (timerName && UNATTENDED.has(normalise(timerName))) {
-    return { attention: 'unattended', source: 'name' };
+  if (timerName) {
+    const name = normalise(timerName);
+    if (UNATTENDED.has(name)) return { attention: 'unattended', source: 'name' };
+    if (HANDS_ON.has(name)) return { attention: 'hands-on', source: 'name' };
   }
-  if (timerName) return { attention: 'hands-on', source: 'name' };
 
   const words = operationLabel.toLowerCase().match(/[a-z]+/g) ?? [];
   if (words.some((word) => UNATTENDED.has(word))) {
