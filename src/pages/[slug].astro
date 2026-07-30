@@ -3,6 +3,9 @@ import fs from 'node:fs';
 import path from 'node:path';
 import Base from '../layouts/Base.astro';
 import RecipeTable from '../components/RecipeTable.astro';
+import CookModes from '../components/CookModes.astro';
+import Timeline from '../components/Timeline.astro';
+import AddToPlan from '../components/AddToPlan.astro';
 import recipes from '../generated/recipes.json';
 import { counterByName } from '../lib/counters.ts';
 import { buildTree, type RawRecipe } from '../lib/tree.ts';
@@ -13,17 +16,23 @@ const all = recipes as unknown as RawRecipe[];
 const titles = new Map(all.map((r) => [r.slug, r.title]));
 
 export function getStaticPaths() {
-  return (recipes as unknown as RawRecipe[]).map((recipe) => ({
-    params: { slug: recipe.slug },
-    props: {
-      recipe,
-      grid: layout(buildTree(recipe)),
-      source: fs.readFileSync(path.resolve(recipe.path), 'utf8'),
-    },
-  }));
+  return (recipes as unknown as RawRecipe[]).map((recipe) => {
+    // Built once here and handed to all three views, so the table, the panes and the clock
+    // are demonstrably reading the same tree.
+    const tree = buildTree(recipe);
+    return {
+      params: { slug: recipe.slug },
+      props: {
+        recipe,
+        tree,
+        grid: layout(tree),
+        source: fs.readFileSync(path.resolve(recipe.path), 'utf8'),
+      },
+    };
+  });
 }
 
-const { recipe, grid, source } = Astro.props;
+const { recipe, tree, grid, source } = Astro.props;
 
 // The counter you would most likely have bought it from leads the trail back.
 const home = counterByName.get(recipe.counters[0]);
@@ -83,7 +92,17 @@ const facts = [
     )
   }
 
-  <RecipeTable grid={grid} />
+  <AddToPlan slug={recipe.slug} />
+
+  <CookModes recipe={recipe} tree={tree}>
+    <RecipeTable grid={grid} />
+  </CookModes>
+
+  {/*
+    Under the panes rather than inside the table pane: the clock is a fact about the recipe,
+    not one of the three ways of reading it, so it stays on screen whichever pane is showing.
+  */}
+  <Timeline recipe={recipe} tree={tree} />
 
   {
     recipe.cookware.length > 0 && (

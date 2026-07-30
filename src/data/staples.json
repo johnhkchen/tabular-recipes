@@ -1,0 +1,52 @@
+{
+  "note": "The pantry. A shopping list built from these recipes should lift these out and set them aside, because you almost certainly already have them.",
+  "where the line is": [
+    "A staple is bought once and spent by the spoonful: a tin, a bottle or a jar that outlives the recipe that sent you for it. Salt, pepper, oil, vinegar, baking soda, the ground spices.",
+    "Everything a recipe wants by the cup or the pound is shopping, however ordinary it is. Flour, butter, sugar, eggs, milk and rice are shopping. Salt is not.",
+    "Fresh is shopping, even when the dried version is a staple. Ground ginger is in here; fresh ginger is not. Dried thyme is in here; a sprig of thyme is not.",
+    "Universal, not cuisine-specific. Soy sauce and vinegar are in most kitchens; fish sauce, mirin, sesame oil and garam masala are things you buy for a cuisine, so they stay on the list.",
+    "One caveat a shopping list should honour anyway: a recipe that deep-fries wants a quart of oil, which is shopping no matter what this file says. If an amount is large, show it."
+  ],
+  "matching": "Patterns are matched with matchesStaple() in src/lib/units.ts: a pattern hits when its words appear as consecutive whole words in the ingredient name. That is why \"salt\" does not claim \"unsalted butter\", and why \"olive oil\" does claim \"extra-virgin olive oil\". Plain substring matching gets both of those wrong. \"except\" is the short list of things a pattern would otherwise swallow — salt pork is pork. Read an entry as: matchesStaple(name, s.patterns) && !matchesStaple(name, s.except ?? []).",
+  "staples": [
+    { "name": "salt", "patterns": ["salt"], "except": ["salt pork", "salt cod"] },
+    { "name": "black pepper", "patterns": ["black pepper", "black peppercorns", "white pepper"] },
+    {
+      "name": "water",
+      "patterns": ["water"],
+      "except": ["rose water", "orange blossom water", "coconut water", "tamarind water"]
+    },
+    { "name": "olive oil", "patterns": ["olive oil"] },
+    { "name": "vegetable oil", "patterns": ["vegetable oil", "neutral oil", "canola oil"] },
+    { "name": "baking powder", "patterns": ["baking powder"] },
+    { "name": "baking soda", "patterns": ["baking soda"] },
+    { "name": "cornstarch", "patterns": ["cornstarch", "corn starch"] },
+    { "name": "vanilla extract", "patterns": ["vanilla extract"] },
+    { "name": "almond extract", "patterns": ["almond extract"] },
+    { "name": "cream of tartar", "patterns": ["cream of tartar"] },
+    { "name": "bay leaf", "patterns": ["bay leaf", "bay leaves"] },
+    { "name": "cinnamon", "patterns": ["cinnamon"] },
+    { "name": "cumin", "patterns": ["cumin"] },
+    {
+      "name": "coriander",
+      "patterns": ["coriander"],
+      "except": ["coriander root", "coriander leaves", "fresh coriander"]
+    },
+    { "name": "ground ginger", "patterns": ["ground ginger"] },
+    { "name": "turmeric", "patterns": ["turmeric"] },
+    { "name": "paprika", "patterns": ["paprika"] },
+    { "name": "cayenne", "patterns": ["cayenne"] },
+    { "name": "red pepper flakes", "patterns": ["red pepper flakes", "crushed red pepper"] },
+    { "name": "dried oregano", "patterns": ["dried oregano", "dried mexican oregano"] },
+    { "name": "dried thyme", "patterns": ["dried thyme"] },
+    { "name": "cloves", "patterns": ["ground cloves", "whole cloves"] },
+    { "name": "nutmeg", "patterns": ["nutmeg"] },
+    { "name": "allspice", "patterns": ["allspice"] },
+    { "name": "garlic powder", "patterns": ["garlic powder"] },
+    { "name": "onion powder", "patterns": ["onion powder"] },
+    { "name": "vinegar", "patterns": ["vinegar"] },
+    { "name": "soy sauce", "patterns": ["soy sauce"] },
+    { "name": "mustard", "patterns": ["dijon mustard", "dry mustard", "mustard seed", "mustard seeds"] },
+    { "name": "honey", "patterns": ["honey"] }
+  ]
+}

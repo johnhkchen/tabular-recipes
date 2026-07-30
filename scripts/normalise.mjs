@@ -5,7 +5,7 @@
  */
 import { Parser } from '@cooklang/cooklang';
 import { splitList } from '../src/lib/meta.ts';
-import { attentionOf, minutesOf } from '../src/lib/time.ts';
+import { minutesOf, readTimers } from '../src/lib/time.ts';
 
 /* ---- quantity formatting -------------------------------------------------- */
 
@@ -118,10 +118,14 @@ export function normalise(source, { slug, path: relPath, folder }) {
       const refs = [];
       const timers = [];
       /*
-       * The operation this timer belongs to, so an unnamed "3 hr" in a braise is not
+       * The operation these timers belong to, so an unnamed "3 hr" in a braise is not
        * mistaken for three hours of standing there. Read the override when there is one:
        * the raw text of a step whose label was overridden is usually mangled, which is
        * exactly why it was overridden.
+       *
+       * Read once the step is whole, not timer by timer as they come: a step with two of
+       * them — "knead 8 min, then rise 2 hours" — is two operations in one sentence, and
+       * each timer may only answer for its own half. See readTimers().
        */
       const rawLabel = stripIngredients(items, recipe);
       const labelOverride = metadata[`step.${index + 1}`] ?? null;
@@ -136,12 +140,10 @@ export function normalise(source, { slug, path: relPath, folder }) {
         if (item.type === 'timer') {
           const timer = recipe.timers?.[item.index];
           if (timer) {
-            const name = timer.name ?? null;
             timers.push({
-              name,
+              name: timer.name ?? null,
               text: fmtQuantity(timer.quantity),
               minutes: minutesOf(numericOf(timer.quantity?.value), timer.quantity?.unit ?? null),
-              ...attentionOf(name, operationLabel),
             });
           }
           continue;
@@ -171,6 +173,10 @@ export function normalise(source, { slug, path: relPath, folder }) {
             unit: ing.quantity?.unit ?? null,
           },
         });
+      }
+
+      for (const [i, reading] of readTimers(timers, operationLabel).entries()) {
+        Object.assign(timers[i], reading);
       }
 
       steps.push({

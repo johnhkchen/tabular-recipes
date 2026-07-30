@@ -40,13 +40,21 @@ const { counter } = menu;
           <ul>
             {section.items.map((recipe) => (
               <li>
-                <a href={url(`${recipe.slug}/`)}>
+                <a href={url(`${recipe.slug}/`)} data-slug={recipe.slug}>
                   <span class="item-name">
                     {recipe.title}
                     {recipe.kit && <span class="kit">{recipe.kit}</span>}
                   </span>
                   <span class="item-of">{principalIngredients(recipe).join(', ')}</span>
                   {recipe.aka.length > 0 && <span class="item-aka">{recipe.aka.join(' · ')}</span>}
+                  {/*
+                    A menu, not a shop: no buttons here. The only thing an item says about the
+                    list is whether it is already on it, in words, and only when it is — and
+                    that mark is put here by the browser, because only the browser knows. It is
+                    not rendered hidden: `.item-onlist` sets `display: block`, and an author
+                    `display` beats the browser's own `[hidden] { display: none }`, so a hidden
+                    one would show on every item on every menu with no script running.
+                  */}
                 </a>
               </li>
             ))}
@@ -56,3 +64,33 @@ const { counter } = menu;
     }
   </div>
 </Base>
+
+<script>
+  /*
+   * Which of these you have already put on the list. It is a mark, not a control — pressing
+   * the item still opens the table, and the only place a recipe goes on the list is its own
+   * page, under the title. Nothing is drawn until the plan says so, so a menu read by someone
+   * with an empty list looks exactly as it always did.
+   */
+  import { isInPlan, onPlanChange } from '../../lib/plan.ts';
+
+  const items = [...document.querySelectorAll<HTMLAnchorElement>('.menu-section a[data-slug]')];
+  if (items.length > 0) {
+    const paint = () => {
+      for (const item of items) {
+        const mark = item.querySelector<HTMLElement>('.item-onlist');
+        if (!isInPlan(item.dataset.slug!)) {
+          mark?.remove();
+          continue;
+        }
+        if (mark) continue;
+        const note = document.createElement('span');
+        note.className = 'item-onlist';
+        note.textContent = 'on your list';
+        item.append(note);
+      }
+    };
+    onPlanChange(paint);
+    paint();
+  }
+</script>

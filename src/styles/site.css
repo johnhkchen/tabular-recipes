@@ -43,6 +43,44 @@ main {
   white-space: nowrap;
 }
 
+/*
+ * The one piece of furniture on every page: where the list is, and how much is on it.
+ * Deliberately not a bar — no rule, no fill, no wordmark — because the front page opens on
+ * its own heading and a navigation strip would talk over it.
+ */
+.site-bar {
+  display: flex;
+  justify-content: flex-end;
+  max-width: 54rem;
+  margin: 0 auto 0.6rem;
+  font-size: 0.82rem;
+}
+.site-bar a {
+  padding: 0.15rem 0.1rem;
+  color: var(--clay-ink-soft);
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: var(--clay-radius-sm);
+}
+.site-bar a:hover {
+  color: var(--clay-primary);
+  text-decoration: underline;
+}
+/* Already here: said in weight and underline, not colour alone. */
+.site-bar a[aria-current='page'] {
+  color: var(--clay-ink);
+  text-decoration: underline;
+  text-underline-offset: 0.25em;
+}
+.site-bar a:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--clay-primary) 45%, transparent);
+  outline-offset: 3px;
+}
+.site-bar .n {
+  color: var(--clay-primary);
+  font-variant-numeric: tabular-nums;
+}
+
 /* ---- page furniture ------------------------------------------------------- */
 
 .masthead {
@@ -301,6 +339,38 @@ kbd {
   line-height: 1.45;
 }
 .item-aka { font-style: italic; }
+
+/*
+ * Set by the browser on items already on your list. It is a note in the margin, not a
+ * control: the same small-caps voice the menu section headings use, so it reads as part of
+ * the typography rather than a badge stuck on top of it. The tick is never the only signal —
+ * the words say it too.
+ */
+.item-onlist {
+  display: block;
+  margin-top: 0.15rem;
+  font-family: var(--clay-font-body);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--clay-primary);
+}
+.item-onlist::before {
+  content: '✓\00a0';
+}
+/*
+ * An author `display` beats the user agent's `[hidden] { display: none }` no matter the
+ * specificity, so every rule here that sets display needs its own guard or the hidden
+ * attribute silently does nothing. That trap put "✓ ON YOUR LIST" under all 93 Bakery items
+ * for anyone without JavaScript.
+ */
+.item-onlist[hidden],
+.shelf[hidden],
+.counters[hidden],
+.menu[hidden] {
+  display: none;
+}
 .kit {
   margin-left: 0.45em;
   padding: 0.1em 0.5em;
@@ -528,6 +598,21 @@ kbd {
 }
 .reset { font-size: 0.82rem; padding: 0.4em 0.95em; }
 
+/* ---- the three views, and the clock under them --------------------------- */
+
+/*
+ * CookModes and Timeline both ship their own scoped styles; what belongs here is only the
+ * rhythm BETWEEN them, which neither can see from inside itself.
+ *
+ * With the segmented control working, one pane is showing and the clock has to sit right
+ * under it — 2.5rem of air would read as a separate page. Without the control (no script)
+ * all three panes stack one after another and want that air back, which is exactly what
+ * data-enhanced distinguishes.
+ */
+.cookmodes[data-enhanced] .pane {
+  margin-bottom: 0.75rem;
+}
+
 /* ---- the source --------------------------------------------------------- */
 
 .source {
@@ -551,7 +636,15 @@ kbd {
 
 @media print {
   body { padding: 0; }
-  .back, .table-foot, .source, .skip { display: none; }
+  .back, .table-foot, .source, .skip, .site-bar { display: none; }
+  /*
+   * Paper cannot switch panes, so the switch goes; whichever pane is open is what prints.
+   * The [data-enhanced] is not decoration — Astro's scoped `.modebar[data-astro-cid-…]` is
+   * two classes' worth of specificity and is injected after this file, so a plain
+   * `.cookmodes .modebar` loses to it.
+   */
+  .cookmodes[data-enhanced] .modebar { display: none; }
+  .cookmodes[data-enhanced] .pane { margin-bottom: 0; }
   .table-well { padding: 0; box-shadow: none; background: #fff; }
   .table-scroll { background: #fff; border-color: #222; }
   .table-well { --frame: #222; --line: #777; }

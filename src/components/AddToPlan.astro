@@ -1,0 +1,143 @@
+---
+/*
+ * The one button that turns a recipe into shopping.
+ *
+ * It is a toggle, not a form: press it and the recipe is on the list, press it again and it
+ * is off. That is what aria-pressed is for, so the state is one thing a screen reader reads
+ * rather than a label that changes under it. The word changes too — never the colour alone.
+ *
+ * Everything it knows comes from src/lib/plan.ts, so a second copy of this button anywhere
+ * on the page updates itself when this one is pressed.
+ */
+import { url } from '../lib/url.ts';
+
+interface Props {
+  /** The recipe this adds. */
+  slug: string;
+}
+
+const { slug } = Astro.props;
+---
+
+{/*
+  Hidden until the script that makes it work has run. A list kept in the browser cannot exist
+  without a browser that runs scripts, so with none the honest thing is to offer nothing here
+  rather than a button that swallows the press — "Your list" in the top corner still goes
+  where it says, and still says what it finds when it gets there.
+*/}
+<p class="add-to-plan" data-add-to-plan hidden>
+  <button class="clay-button toggle" type="button" data-slug={slug}>
+    <span class="mark" aria-hidden="true">+</span>
+    <span class="word">Add to the list</span>
+  </button>
+  {/* The running count lives once, in the bar at the top of every page — not twice here. */}
+  <a class="to-list" href={url('list/')}>See the list</a>
+</p>
+
+<style>
+  .add-to-plan {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.35rem 1rem;
+    margin: 0 0 1.5rem;
+  }
+  /*
+   * An author `display` outranks the browser's own `[hidden] { display: none }`, whatever the
+   * specificity, so a flex row with `hidden` on it shows anyway. Say it here or the button
+   * appears — dead — on every page whose script never arrives.
+   */
+  .add-to-plan[hidden] {
+    display: none;
+  }
+
+  .toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    font-size: 0.95rem;
+    padding: 0.55em 1.2em;
+  }
+
+  .mark {
+    font-size: 1.1em;
+    line-height: 1;
+    /* Both marks are about this wide, so the word does not shuffle when it changes. */
+    min-width: 0.85em;
+    text-align: center;
+  }
+
+  /* On the list: the button reads as pressed, because it is. */
+  .toggle[aria-pressed='true'] {
+    background: var(--clay-surface-raised);
+    color: var(--clay-ink);
+    box-shadow: var(--clay-shadow-pressed);
+    transform: translateY(1px);
+  }
+  .toggle[aria-pressed='true']:hover {
+    background: var(--clay-well);
+    transform: translateY(1px);
+  }
+  .toggle[aria-pressed='true'] .mark {
+    color: var(--clay-primary);
+  }
+
+  .to-list {
+    color: var(--clay-primary);
+    font-weight: 600;
+    font-size: 0.88rem;
+    text-decoration: none;
+  }
+  .to-list:hover {
+    text-decoration: underline;
+  }
+  .to-list:focus-visible {
+    outline: 3px solid color-mix(in srgb, var(--clay-primary) 45%, transparent);
+    outline-offset: 3px;
+    border-radius: var(--clay-radius-sm);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .toggle[aria-pressed='true'],
+    .toggle[aria-pressed='true']:hover {
+      transform: none;
+    }
+  }
+
+  @media print {
+    .add-to-plan {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  import { isInPlan, onPlanChange, togglePlan } from '../lib/plan.ts';
+
+  document.querySelectorAll<HTMLElement>('[data-add-to-plan]').forEach((wrap) => {
+    const button = wrap.querySelector<HTMLButtonElement>('.toggle');
+    const mark = wrap.querySelector<HTMLElement>('.mark');
+    const word = wrap.querySelector<HTMLElement>('.word');
+    if (!button || !mark || !word) return;
+
+    const slug = button.dataset.slug!;
+
+    // Only now is there anything for a press to do.
+    wrap.hidden = false;
+
+    const paint = () => {
+      const on = isInPlan(slug);
+      button.setAttribute('aria-pressed', String(on));
+      mark.textContent = on ? '✓' : '+';
+      word.textContent = on ? 'On the list' : 'Add to the list';
+    };
+
+    button.addEventListener('click', () => {
+      togglePlan(slug);
+    });
+
+    // Repaint on every change, including one made by another button or another tab.
+    onPlanChange(paint);
+    paint();
+  });
+</script>

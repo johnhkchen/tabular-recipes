@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { attentionOf, formatDuration, minutesOf } from './time.ts';
+import { attentionOf, formatDuration, minutesOf, readTimers } from './time.ts';
 import { slugify, splitList } from './meta.ts';
 
 describe('minutesOf', () => {
@@ -54,7 +54,7 @@ describe('attentionOf', () => {
     });
     expect(attentionOf('nonsense', 'stir constantly')).toEqual({
       attention: 'hands-on',
-      source: 'default',
+      source: 'label',
     });
   });
 
@@ -71,8 +71,75 @@ describe('attentionOf', () => {
 
   it('assumes you are standing there when nothing says otherwise', () => {
     // Promising a cook they can walk away when they cannot is the worse error.
-    expect(attentionOf(null, 'mix')).toEqual({ attention: 'hands-on', source: 'default' });
+    expect(attentionOf(null, 'warm through')).toEqual({ attention: 'hands-on', source: 'default' });
     expect(attentionOf(null, '')).toEqual({ attention: 'hands-on', source: 'default' });
+  });
+
+  it('reads a hands-on verb off the step instead of calling it an assumption', () => {
+    // "mix" is the step saying so. Filing that under "we assumed" both understates what the
+    // recipe said and wears out the hedge the page prints beside the ones we really guessed.
+    expect(attentionOf(null, 'mix')).toEqual({ attention: 'hands-on', source: 'label' });
+    expect(attentionOf(null, 'knead 8 min')).toEqual({ attention: 'hands-on', source: 'label' });
+  });
+
+  it('will not take a word for a verb it plainly is not', () => {
+    // A dry skillet is a pan, not a wait; the iron is what your hands are on.
+    expect(attentionOf(null, 'toast in a dry skillet 3 min')).toEqual({
+      attention: 'hands-on',
+      source: 'label',
+    });
+    expect(attentionOf(null, 'press in the hot iron for 45 sec')).toEqual({
+      attention: 'hands-on',
+      source: 'default',
+    });
+    expect(attentionOf(null, 'boil 1 min a side')).toEqual({
+      attention: 'hands-on',
+      source: 'default',
+    });
+    // Named on purpose, it is still the wait the author meant.
+    expect(attentionOf('dry', 'in the dehydrator')).toEqual({
+      attention: 'unattended',
+      source: 'name',
+    });
+  });
+});
+
+describe('readTimers', () => {
+  const texts = (step: string, ...timers: string[]) =>
+    readTimers(timers.map((text) => ({ name: null, text })), step);
+
+  it('gives each timer only the words that are its own', () => {
+    // The bug this exists for: the rise handed its answer to the knead, and the page told a
+    // cook that ten minutes of kneading was ten minutes they could walk away from.
+    expect(texts('add flour and salt, knead 10 min, rise 1 hour', '10 min', '1 hour')).toEqual([
+      { attention: 'hands-on', source: 'label' },
+      { attention: 'unattended', source: 'label' },
+    ]);
+  });
+
+  it('lets a second timer lean on the step when its own words say nothing', () => {
+    // "+ 15 min" is the same bake carrying on, not fifteen minutes at the oven door.
+    expect(
+      texts('bake in a Dutch oven 450°F, 30 min covered + 15 min open', '30 min', '15 min'),
+    ).toEqual([
+      { attention: 'unattended', source: 'label' },
+      { attention: 'unattended', source: 'label' },
+    ]);
+  });
+
+  it('narrows nothing when the timers are not in the label to be found', () => {
+    // A `>> step.N:` line can rewrite a step in words of its own; half a slice is worse than
+    // none, so the whole step answers for every timer in it.
+    expect(texts('rest overnight', '8 hr')).toEqual([
+      { attention: 'unattended', source: 'label' },
+    ]);
+  });
+
+  it('stops the words after a timer speaking for it', () => {
+    // "fry crisp 25 min, drain" was twenty-five minutes of frying read as a drain.
+    expect(texts('fry crisp 25 min, drain', '25 min')).toEqual([
+      { attention: 'hands-on', source: 'label' },
+    ]);
   });
 });
 

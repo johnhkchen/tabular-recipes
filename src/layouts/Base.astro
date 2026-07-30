@@ -1,6 +1,7 @@
 ---
 import '../styles/b28-clay.css';
 import '../styles/site.css';
+import { url } from '../lib/url.ts';
 
 interface Props {
   title: string;
@@ -8,6 +9,16 @@ interface Props {
 }
 
 const { title, blurb } = Astro.props;
+
+/*
+ * One link on every page, and only one: where the list is. The front page's calm is worth
+ * more than a navigation bar, so there is no wordmark, no rule, no background — just a quiet
+ * line of text in the top corner. The count is filled in by the browser, because the plan
+ * lives in the browser; with no script it still reads "Your list" and still goes there.
+ */
+const listHref = url('list/');
+const here = Astro.url.pathname.replace(/\/+$/, '');
+const onListPage = here === listHref.replace(/\/+$/, '');
 ---
 
 <!doctype html>
@@ -26,8 +37,37 @@ const { title, blurb } = Astro.props;
   </head>
   <body>
     <a class="skip" href="#main">Skip to the recipe</a>
+
+    <nav class="site-bar" aria-label="Your list">
+      <a href={listHref} aria-current={onListPage ? 'page' : undefined}>
+        Your list<span class="n" data-plan-count hidden></span>
+      </a>
+    </nav>
+
     <main id="main">
       <slot />
     </main>
+
+    <script>
+      /*
+       * The count beside "Your list". It listens the same way every other plan-aware thing
+       * does, so pressing "Add to the list" further down the page moves this number too, and
+       * so does a change made in another tab.
+       */
+      import { onPlanChange, planSize } from '../lib/plan.ts';
+
+      const counts = [...document.querySelectorAll<HTMLElement>('[data-plan-count]')];
+      if (counts.length > 0) {
+        const paint = () => {
+          const size = planSize();
+          for (const count of counts) {
+            count.hidden = size === 0;
+            count.textContent = size === 0 ? '' : ` (${size})`;
+          }
+        };
+        onPlanChange(paint);
+        paint();
+      }
+    </script>
   </body>
 </html>

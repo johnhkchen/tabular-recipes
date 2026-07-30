@@ -1,0 +1,1193 @@
+---
+/*
+ * Three ways to look at one recipe: the table, the prep, the cooking.
+ *
+ * The table is the picture of the tree. Prep is that same tree read as a list of things to
+ * lay out — every ingredient sitting under the operation that will eat it, so a cook can see
+ * that these four go in together. Cook is the same tree read as a clock: the operations in
+ * the order the schedule says you can do them, big enough to read at arm's length.
+ *
+ * All three are rendered here, server-side, and the control merely shows one and hides the
+ * others. Nothing is fetched, so switching is instant — and with no JavaScript at all the
+ * panes are simply all visible, one after another, which is honest rather than empty.
+ *
+ * Used as a wrapper, with the table as its only child:
+ *
+ *     <CookModes recipe={recipe}>
+ *       <RecipeTable grid={grid} />
+ *     </CookModes>
+ *
+ * Not one number on this page is ours. Durations come from the recipe's own timers via
+ * buildSchedule(); amounts are the amounts as written. Where the recipe says nothing, these
+ * panes say that it says nothing.
+ */
+import { buildTree, type RawRecipe, type RecipeTree } from '../lib/tree.ts';
+import { buildSchedule, type Task } from '../lib/schedule.ts';
+import { iconForAttention, iconForOperation, iconSvg, matchOperation } from '../lib/icons.ts';
+import { formatDuration } from '../lib/time.ts';
+import { canonicalUnit, formatTotal, type Amount } from '../lib/units.ts';
+
+interface Props {
+  recipe: RawRecipe;
+  /** Pass the tree if the page already built one; otherwise it is built here. */
+  tree?: RecipeTree;
+}
+
+const { recipe, tree = buildTree(recipe) } = Astro.props;
+const schedule = buildSchedule(recipe, tree);
+const stepOf = new Map(recipe.steps.map((step) => [step.index, step]));
+const uid = `cm-${recipe.slug}`;
+
+/*
+ * Reading order for the cooking: earliest start first, ties broken by the schedule's own
+ * order, which is deepest-first. Because a task can never start before the tasks feeding it
+ * have ended, sorting on start keeps every dependency ahead of the thing that needs it.
+ */
+const taskOrder = new Map(schedule.tasks.map((task, i) => [task.id, i]));
+const inClockOrder = [...schedule.tasks].sort(
+  (a, b) => a.start - b.start || taskOrder.get(a.id)! - taskOrder.get(b.id)!,
+);
+
+const byId = new Map(schedule.tasks.map((task) => [task.id, task]));
+
+/** Every id that feeds this task, however far back. Those are not things to do meanwhile. */
+function upstreamOf(task: Task): Set<string> {
+  const seen = new Set<string>();
+  const walk = (id: string) => {
+    for (const dep of byId.get(id)?.dependsOn ?? []) {
+      if (seen.has(dep)) continue;
+      seen.add(dep);
+      walk(dep);
+    }
+  };
+  walk(task.id);
+  return seen;
+}
+
+/*
+ * What else you could be getting on with during a wait.
+ *
+ * A task can start the moment everything feeding it is done, so a task whose earliest start
+ * falls inside this wait is genuinely available then — that is the same fact the schedule's
+ * lanes are packed from, read per task so it can be said in words. Anything upstream of the
+ * wait is excluded: it is already finished, or the wait could not have begun.
+ */
+function meanwhileOf(task: Task): Task[] {
+  if (!task.timed || task.minutes <= 0 || task.attention !== 'unattended') return [];
+  const upstream = upstreamOf(task);
+  return inClockOrder.filter(
+    (other) =>
+      other.id !== task.id &&
+      !upstream.has(other.id) &&
+      other.start >= task.start &&
+      other.start < task.end,
+  );
+}
+
+/** "200 g" is the second unit from rule 3; "finely chopped" is a job you have to do. */
+function isSecondUnit(note: string): boolean {
+  const match = /^(\d+(?:[./]\d+)?(?:\s+\d+\/\d+)?)\s*([a-z]+(?:\s?[a-z]+)?)$/i.exec(note.trim());
+  if (!match) return false;
+  const canon = canonicalUnit(match[2]);
+  return canon !== null && canon.system !== 'count';
+}
+
+interface Item {
+  id: string;
+  quantity: string;
+  /** The parenthetical when it is only the amount said again in another unit. */
+  measure: string | null;
+  name: string;
+  /** The parenthetical when it is work: "finely chopped", "at room temperature". */
+  job: string | null;
+  /** Set when this ingredient is also wanted somewhere else in the recipe. */
+  alsoIn: string | null;
+}
+
+interface OpRow {
+  kind: 'op';
+  id: string;
+  number: number;
+  task: Task;
+  icon: string;
+  items: Item[];
+  /** Step numbers of the operations feeding this one. */
+  from: number[];
+  duration: string | null;
+  meanwhile: { number: number; label: string; over: string | null }[];
+}
+
+interface NoteRow {
+  kind: 'note';
+  id: string;
+  number: number;
+  text: string;
+  /*
+   * A whole sentence rather than an operation, so it gets an icon only when one was really
+   * recognised — matchOperation() returns null instead of the fallback bowl, and a bowl
+   * beside "Line the pan with parchment" would be a picture of nothing.
+   */
+  icon: string | null;
+}
+
+type Row = OpRow | NoteRow;
+
+function listWords(numbers: number[]): string {
+  if (numbers.length <= 1) return String(numbers[0] ?? '');
+  return `${numbers.slice(0, -1).join(', ')} and ${numbers[numbers.length - 1]}`;
+}
+
+/*
+ * Numbers first, rows second: the full-width sentences ("Heat the oven to 350°F") are real
+ * instructions, so they are steps too, and the numbering has to count them or "step 4" in a
+ * meanwhile line points at the wrong thing. The ids are the table's own cell ids — `s3`,
+ * `h0`, `f0` — so a step here and a cell there are plainly the same thing.
+ */
+const rowIds = [
+  ...tree.headers.map((_, i) => `h${i}`),
+  ...inClockOrder.map((task) => task.id),
+  ...tree.footers.map((_, i) => `f${i}`),
+];
+const numberOf = new Map(rowIds.map((id, i) => [id, i + 1]));
+
+/* Where else the same ingredient turns up, and what it comes to in all. */
+const appearances = new Map<string, { step: number; amount: Amount }[]>();
+for (const task of inClockOrder) {
+  for (const ing of stepOf.get(taskStepIndex(task))?.ingredients ?? []) {
+    const list = appearances.get(ing.name) ?? [];
+    list.push({ step: numberOf.get(task.id)!, amount: ing.amount });
+    appearances.set(ing.name, list);
+  }
+}
+
+/** The task's id is `s{stepIndex}` — the same id the table's operation cell carries. */
+function taskStepIndex(task: Task): number {
+  return Number(task.id.slice(1));
+}
+
+function itemsOf(task: Task): Item[] {
+  const stepIndex = taskStepIndex(task);
+  const number = numberOf.get(task.id)!;
+  return (stepOf.get(stepIndex)?.ingredients ?? []).map((ing, j) => {
+    const seen = appearances.get(ing.name) ?? [];
+    const elsewhere = seen.filter((one) => one.step !== number).map((one) => one.step);
+    return {
+      id: `p${stepIndex}-${j}`,
+      quantity: ing.quantity,
+      measure: ing.note && isSecondUnit(ing.note) ? ing.note : null,
+      name: ing.name,
+      job: ing.note && !isSecondUnit(ing.note) ? ing.note : null,
+      // formatTotal refuses to add a cup to a gram, so this can read "3 cups + 80 g".
+      alsoIn: elsewhere.length
+        ? `also in ${elsewhere.length === 1 ? 'step' : 'steps'} ${listWords(elsewhere)}` +
+          ` — ${formatTotal(seen.map((one) => one.amount))} in all`
+        : null,
+    };
+  });
+}
+
+const rows: Row[] = [
+  ...tree.headers.map((text, i): Row => ({
+    kind: 'note',
+    id: `h${i}`,
+    number: numberOf.get(`h${i}`)!,
+    text,
+    icon: noteIcon(text),
+  })),
+  ...inClockOrder.map((task): Row => ({
+    kind: 'op',
+    id: task.id,
+    number: numberOf.get(task.id)!,
+    task,
+    icon: iconSvg(iconForOperation(task.label), { size: 22 }),
+    items: itemsOf(task),
+    from: task.dependsOn
+      .map((id) => numberOf.get(id))
+      .filter((n): n is number => n !== undefined)
+      .sort((a, b) => a - b),
+    duration: task.timed && task.minutes > 0 ? formatDuration(task.minutes) : null,
+    /*
+     * "You could start step 6" is only the whole truth while step 6 fits inside the wait.
+     * The lentils simmer 15 min and the onions fry 25, so a cook who takes the suggestion at
+     * face value is at the stove with the onions when the lentils want draining. The schedule
+     * knows the overrun; saying it is one clause.
+     */
+    meanwhile: meanwhileOf(task).map((other) => ({
+      number: numberOf.get(other.id)!,
+      label: other.label,
+      over:
+        other.timed && other.end > task.end
+          ? `runs ${formatDuration(other.end - task.end)} past it`
+          : null,
+    })),
+  })),
+  ...tree.footers.map((text, i): Row => ({
+    kind: 'note',
+    id: `f${i}`,
+    number: numberOf.get(`f${i}`)!,
+    text,
+    icon: noteIcon(text),
+  })),
+];
+
+function noteIcon(text: string): string | null {
+  const name = matchOperation(text);
+  return name ? iconSvg(name, { size: 22 }) : null;
+}
+
+const opRows = rows.filter((row): row is OpRow => row.kind === 'op');
+const prepGroups = opRows.filter((row) => row.items.length > 0);
+
+/* Everything with a tick box, so the script can count them without knowing what they are. */
+const prepCount =
+  recipe.cookware.length + tree.headers.length + prepGroups.reduce((n, g) => n + g.items.length, 0);
+
+/*
+ * The facts about the clock, each one traceable to something the recipe said. `totalMinutes`
+ * is elapsed time along the longest chain; the hands-on and waiting figures are how much WORK
+ * is of each kind, which is a different sum whenever two branches overlap.
+ */
+/* A hand for time you have to be there for, an hourglass for time you can walk away from. */
+const handIcon = iconSvg(iconForAttention('hands-on'), { size: 16 });
+const waitIcon = iconSvg(iconForAttention('unattended'), { size: 16 });
+
+const workMinutes = schedule.handsOnMinutes + schedule.unattendedMinutes;
+const anyTiming = schedule.totalMinutes > 0 || workMinutes > 0;
+/* When branches overlap, the waits add up to more than the clock. Say so before it looks wrong. */
+const overlaps = workMinutes > schedule.totalMinutes;
+/*
+ * A step nobody timed ends the moment it starts, so both sums are floors as soon as one of
+ * them exists. "45 sec start to finish" on a recipe that times one step out of five is not a
+ * short recipe, it is a mostly unmeasured one — and a chip is read as a fact unless it says.
+ */
+const floor = schedule.untimedCount > 0 ? 'at least ' : '';
+const clockFacts = [
+  schedule.totalMinutes > 0 && {
+    icon: iconSvg('rest', { size: 16 }),
+    text: `${floor}${formatDuration(schedule.totalMinutes)} start to finish`,
+  },
+  schedule.handsOnMinutes > 0 && {
+    icon: handIcon,
+    text: `${floor}${formatDuration(schedule.handsOnMinutes)} needs you`,
+  },
+  schedule.unattendedMinutes > 0 && {
+    icon: waitIcon,
+    text: `${floor}${formatDuration(schedule.unattendedMinutes)} of waiting`,
+  },
+  schedule.untimedCount > 0 && {
+    icon: null,
+    text: `${schedule.untimedCount} ${schedule.untimedCount === 1 ? 'step gives' : 'steps give'} no time`,
+  },
+  /*
+   * The author's own `>> time:` is deliberately NOT repeated here. The page already prints it
+   * twice above — once as an "about 2 hr" chip under the title, once in the clock's own note —
+   * and a third copy in the same chip shape reads as three different claims rather than one.
+   */
+].filter(Boolean) as { icon: string | null; text: string }[];
+---
+
+<section class="cookmodes" data-cookmodes data-slug={recipe.slug}>
+  <h2 class="visually-hidden" id={`${uid}-ways`}>Three ways to read this recipe</h2>
+
+  <!-- Hidden until the script that makes it work has run; the panes below stand alone without it. -->
+  <div class="modebar" role="toolbar" aria-labelledby={`${uid}-ways`} data-modebar hidden>
+    <button
+      type="button"
+      class="mode"
+      data-mode="table"
+      aria-pressed="true"
+      aria-controls={`${uid}-table`}>Table</button>
+    <button
+      type="button"
+      class="mode"
+      data-mode="prep"
+      aria-pressed="false"
+      aria-controls={`${uid}-prep`}
+      tabindex="-1">Prep</button>
+    <button
+      type="button"
+      class="mode"
+      data-mode="cook"
+      aria-pressed="false"
+      aria-controls={`${uid}-cook`}
+      tabindex="-1">Cook</button>
+  </div>
+
+  <!-- ---- the table ------------------------------------------------------ -->
+  <section class="pane" id={`${uid}-table`} data-pane="table" aria-labelledby={`${uid}-table-t`}>
+    <h3 class="pane-title" id={`${uid}-table-t`}>The table</h3>
+    <slot />
+  </section>
+
+  <!-- ---- prep: what to lay out ------------------------------------------ -->
+  <section class="pane" id={`${uid}-prep`} data-pane="prep" aria-labelledby={`${uid}-prep-t`}>
+    <h3 class="pane-title" id={`${uid}-prep-t`}>What to lay out</h3>
+    <p class="pane-note">
+      Everything the recipe asks for, sitting under the step that eats it. Tick each one as
+      you measure it.
+      <span class="tally" data-tally>{prepCount} things to get out.</span>
+    </p>
+
+    {
+      recipe.cookware.length > 0 && (
+        <section class="group clay-surface">
+          <h4 class="group-head"><span class="group-what">Pans and tools</span></h4>
+          <ul class="items">
+            {recipe.cookware.map((thing, i) => (
+              <li class="item">
+                <label class="tick">
+                  <input type="checkbox" data-prep data-id={`k${i}`} />
+                  <span class="tick-text"><span class="name">{thing}</span></span>
+                </label>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+
+    {
+      tree.headers.length > 0 && (
+        <section class="group clay-surface">
+          <h4 class="group-head"><span class="group-what">Before anything else</span></h4>
+          <ul class="items">
+            {tree.headers.map((text, i) => (
+              <li class="item">
+                <label class="tick">
+                  <input type="checkbox" data-prep data-id={`ph${i}`} />
+                  <span class="tick-text"><span class="name">{text}</span></span>
+                </label>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+
+    {
+      prepGroups.map((group) => (
+        <section class="group clay-surface">
+          <h4 class="group-head">
+            <span class="group-num">{group.number}</span>
+            <Fragment set:html={group.icon} />
+            <span class="group-what">{group.task.label}</span>
+          </h4>
+          <ul class="items">
+            {group.items.map((item) => (
+              <li class="item">
+                <label class="tick">
+                  <input type="checkbox" data-prep data-id={item.id} />
+                  <span class="tick-text">
+                    <span class="qty">{item.quantity}</span>
+                    {item.measure && <span class="measure">({item.measure})</span>}
+                    <span class="name">{item.name}</span>
+                    {item.job && <span class="job">{item.job}</span>}
+                    {item.alsoIn && <span class="also">{item.alsoIn}</span>}
+                  </span>
+                </label>
+              </li>
+            ))}
+          </ul>
+          {group.from.length > 0 && (
+            <p class="group-from">
+              goes in with what {group.from.length === 1 ? 'step' : 'steps'}{' '}
+              {listWords(group.from)} made
+            </p>
+          )}
+        </section>
+      ))
+    }
+
+    <p class="pane-foot">
+      <button class="clay-button clay-button--soft" type="button" data-prep-reset hidden>
+        Untick everything
+      </button>
+    </p>
+  </section>
+
+  <!-- ---- cook: the timed run -------------------------------------------- -->
+  <section class="pane" id={`${uid}-cook`} data-pane="cook" aria-labelledby={`${uid}-cook-t`}>
+    <h3 class="pane-title" id={`${uid}-cook-t`}>Cooking it</h3>
+
+    {/*
+      No clock chips here. The timeline sits outside the panes and stays on screen whichever
+      one is showing, so the same two numbers were being printed twice about 200px apart —
+      and printed twice on paper. One place to read them is enough.
+    */}
+
+    {
+      !anyTiming && (
+        <p class="pane-note">
+          Not one step here is timed, so there is no clock to keep — only the order things
+          happen in.
+        </p>
+      )
+    }
+
+    {
+      overlaps && (
+        <p class="pane-note">
+          Start to finish is the longest chain through the table, so branches that overlap are
+          counted once. That is why the waits add up to more than the clock — and it only holds
+          if you get them going together.
+        </p>
+      )
+    }
+
+    <ol class="steps" data-cook-list>
+      {
+        rows.map((row) => (
+          <li class="step" data-step={row.id}>
+            {/*
+              No aria-pressed until the script can honour it: with no script this never
+              becomes pressed, and announcing "toggle button, not pressed" would be a promise
+              the page cannot keep. drawCook() sets it on every step the moment it runs.
+            */}
+            <button type="button" class="hit" data-cook-step data-id={row.id}>
+              <span class="num" aria-hidden="true">{row.number}</span>
+              <span class="body">
+                <span class="what">
+                  {row.icon && <Fragment set:html={row.icon} />}
+                  <span class="label">{row.kind === 'op' ? row.task.label : row.text}</span>
+                  <span class="now">now</span>
+                </span>
+
+                {row.kind === 'op' && (row.items.length > 0 || row.from.length > 0) && (
+                  <span class="into">
+                    {row.from.map((n, i) => (
+                      <span class="into-bit made">
+                        {i > 0 && <span class="sep" aria-hidden="true">·</span>}
+                        what step {n} made
+                      </span>
+                    ))}
+                    {row.items.map((item, i) => (
+                      <span class="into-bit">
+                        {(i > 0 || row.from.length > 0) && <span class="sep" aria-hidden="true">·</span>}
+                        <span class="qty">{item.quantity}</span>
+                        {item.measure && <span class="measure">({item.measure})</span>}
+                        <span class="name">{item.name}</span>
+                        {item.job && <span class="job">{item.job}</span>}
+                      </span>
+                    ))}
+                  </span>
+                )}
+
+                {row.kind === 'op' && (
+                  <span class="when">
+                    {row.duration ? (
+                      <>
+                        <span class="dur">
+                          <Fragment
+                            set:html={row.task.attention === 'unattended' ? waitIcon : handIcon}
+                          />
+                          {row.duration}
+                        </span>
+                        <span class="kind">
+                          {row.task.attention === 'unattended'
+                            ? 'you can walk away'
+                            : 'stay with it'}
+                        </span>
+                        {/* The minutes are the author's; whether you can leave was our reading. */}
+                        {row.task.confidence === 'unknown' && (
+                          <span class="hedge">the recipe does not say whether you can leave</span>
+                        )}
+                      </>
+                    ) : (
+                      <span class="kind">no time given</span>
+                    )}
+                  </span>
+                )}
+
+                {row.kind === 'op' && row.task.attention === 'unattended' && row.duration && (
+                  <span class="meanwhile">
+                    {row.meanwhile.length > 0 ? (
+                      <>
+                        <span class="meanwhile-head">meanwhile you could start</span>
+                        {row.meanwhile.map((other, i) => (
+                          <span class="meanwhile-bit">
+                            {i > 0 && <span class="sep" aria-hidden="true">·</span>}
+                            step {other.number}, {other.label}
+                            {other.over && <i class="over"> — {other.over}</i>}
+                          </span>
+                        ))}
+                      </>
+                    ) : (
+                      <span class="meanwhile-head">nothing else here needs you</span>
+                    )}
+                  </span>
+                )}
+              </span>
+              <span class="mark" aria-hidden="true">✓</span>
+            </button>
+          </li>
+        ))
+      }
+    </ol>
+
+    <p class="pane-foot">
+      <span class="hint">Tap a step when it is done; the next one lights up.</span>
+      <button class="clay-button clay-button--soft" type="button" data-cook-reset hidden>
+        Start over
+      </button>
+    </p>
+  </section>
+</section>
+
+<style>
+  .cookmodes {
+    margin: 1.5rem 0 0;
+  }
+
+  /* ---- the segmented control ---------------------------------------- */
+
+  /*
+   * `hidden` alone does not hide this. The browser's `[hidden] { display: none }` lives in the
+   * user-agent sheet, and ANY author `display` beats the user-agent origin no matter how
+   * specific it is — so without this line the control is on screen, and completely dead, on
+   * every page whose script never arrives.
+   */
+  .modebar[hidden] {
+    display: none;
+  }
+  .modebar {
+    display: inline-flex;
+    gap: 0.35rem;
+    padding: 0.35rem;
+    margin: 0 0 1.25rem;
+    border-radius: var(--clay-radius-pill);
+    background: var(--clay-well);
+    box-shadow: var(--clay-shadow-well);
+  }
+  .mode {
+    appearance: none;
+    border: 0;
+    padding: 0.5rem 1.15rem;
+    border-radius: var(--clay-radius-pill);
+    font: inherit;
+    font-family: var(--clay-font-body);
+    font-size: 1rem;
+    color: var(--clay-ink-soft);
+    background: var(--clay-surface-raised);
+    box-shadow: var(--clay-shadow-raised);
+    cursor: pointer;
+    transition: var(--clay-press);
+  }
+  .mode:hover {
+    color: var(--clay-ink);
+    transform: translateY(-1px);
+  }
+  .mode:active {
+    transform: translateY(1px) scale(0.99);
+    box-shadow: var(--clay-shadow-pressed);
+  }
+  .mode:focus-visible {
+    outline: 3px solid color-mix(in srgb, var(--clay-primary) 45%, transparent);
+    outline-offset: 2px;
+  }
+  /* The chosen one is pushed in — and says so in weight as well as colour. */
+  .mode[aria-pressed='true'] {
+    background: var(--clay-primary);
+    color: var(--clay-on-primary);
+    font-weight: 600;
+    box-shadow: var(--clay-shadow-pressed);
+    transform: none;
+  }
+
+  /* ---- panes --------------------------------------------------------- */
+
+  .pane {
+    margin: 0 0 2.5rem;
+  }
+  .pane[hidden] {
+    display: none;
+  }
+  .pane-title {
+    font-family: var(--clay-font-display);
+    font-size: 1.35rem;
+    margin: 0 0 0.75rem;
+  }
+  /* Once the control works, the pane's own heading would only repeat the button. */
+  .cookmodes[data-enhanced] .pane-title {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  .pane-note {
+    margin: 0 0 1rem;
+    max-width: 38rem;
+    color: var(--clay-ink-soft);
+  }
+  .tally {
+    display: block;
+    color: var(--clay-ink);
+  }
+  /* Nothing lights up without a script, so the promise is not made without one. */
+  .hint {
+    display: none;
+  }
+  .cookmodes[data-enhanced] .hint {
+    display: inline;
+  }
+  .pane-foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 1rem 0 0;
+    color: var(--clay-ink-soft);
+    font-size: 0.9rem;
+  }
+
+  /* ---- prep ---------------------------------------------------------- */
+
+  .group {
+    padding: 1rem 1.15rem;
+    margin: 0 0 0.9rem;
+    border-radius: var(--clay-radius);
+  }
+  .group-head {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0 0 0.6rem;
+    font-family: var(--clay-font-display);
+    font-size: 1.05rem;
+  }
+  .group-num {
+    display: inline-grid;
+    place-items: center;
+    width: 1.6rem;
+    height: 1.6rem;
+    flex: none;
+    border-radius: 50%;
+    background: var(--clay-well);
+    box-shadow: var(--clay-shadow-well);
+    font-family: var(--clay-font-body);
+    font-size: 0.85rem;
+    color: var(--clay-ink-soft);
+  }
+  .group-head :global(svg) {
+    flex: none;
+    color: var(--clay-primary);
+  }
+  .group-from {
+    margin: 0.6rem 0 0;
+    font-size: 0.9rem;
+    color: var(--clay-ink-soft);
+  }
+
+  .items {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .item + .item {
+    border-top: 1px solid var(--clay-border);
+  }
+  .tick {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.7rem;
+    align-items: baseline;
+    padding: 0.45rem 0.15rem;
+    border-radius: var(--clay-radius-sm);
+    cursor: pointer;
+  }
+  .tick:hover {
+    background: color-mix(in srgb, var(--clay-well) 60%, transparent);
+  }
+  .tick input {
+    width: 1.15rem;
+    height: 1.15rem;
+    accent-color: var(--clay-primary);
+    cursor: pointer;
+  }
+  .tick:focus-within {
+    outline: 3px solid color-mix(in srgb, var(--clay-primary) 45%, transparent);
+    outline-offset: 2px;
+  }
+  .tick-text {
+    display: block;
+  }
+  .qty {
+    font-weight: 600;
+  }
+  .measure {
+    color: var(--clay-ink-soft);
+    margin-left: 0.25rem;
+  }
+  .name {
+    margin-left: 0.35rem;
+  }
+  .job {
+    display: block;
+    color: var(--clay-ink-soft);
+    font-size: 0.9rem;
+  }
+  /* "60 mL; keeps it from turning bitter" has to be visibly not part of the name. */
+  .job::before {
+    content: '— ';
+  }
+  .also {
+    display: block;
+    color: var(--clay-ink-soft);
+    font-size: 0.85rem;
+    font-style: italic;
+  }
+  /* Crossed off the same way the table crosses a cell off. */
+  .tick input:checked ~ .tick-text {
+    color: var(--clay-ink-soft);
+    text-decoration: line-through;
+    text-decoration-color: color-mix(in srgb, var(--clay-primary) 60%, transparent);
+    text-decoration-thickness: 2px;
+  }
+
+  /* ---- cook ---------------------------------------------------------- */
+
+  .clock {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0 0 1.25rem;
+    padding: 0;
+  }
+  /* .clay-chip brings the clay; the padding is the page's own chip measure. */
+  .clock li {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.3rem 0.75rem;
+    font-size: 0.82rem;
+    color: var(--clay-ink-soft);
+  }
+  .clock li :global(svg) {
+    color: var(--clay-primary);
+  }
+
+  .steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.75rem;
+    counter-reset: none;
+  }
+  .hit {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 0.9rem;
+    align-items: start;
+    width: 100%;
+    text-align: left;
+    padding: 0.9rem 1rem;
+    border: 0;
+    border-radius: var(--clay-radius);
+    background: var(--clay-surface-raised);
+    box-shadow: var(--clay-shadow-raised);
+    color: var(--clay-ink);
+    font: inherit;
+    font-family: var(--clay-font-body);
+    cursor: pointer;
+    transition: var(--clay-press);
+  }
+  .hit:hover {
+    transform: translateY(-1px);
+  }
+  .hit:active {
+    transform: translateY(1px) scale(0.997);
+    box-shadow: var(--clay-shadow-pressed);
+  }
+  .hit:focus-visible {
+    outline: 3px solid color-mix(in srgb, var(--clay-primary) 45%, transparent);
+    outline-offset: 3px;
+  }
+  .num {
+    display: inline-grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background: var(--clay-well);
+    box-shadow: var(--clay-shadow-well);
+    font-size: 0.95rem;
+    color: var(--clay-ink-soft);
+  }
+  .body {
+    display: block;
+    min-width: 0;
+  }
+  .what {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .what :global(svg) {
+    align-self: center;
+    flex: none;
+    color: var(--clay-primary);
+  }
+  .label {
+    font-family: var(--clay-font-display);
+    font-size: clamp(1.15rem, 3.2vw, 1.45rem);
+    line-height: 1.25;
+  }
+  .into {
+    display: block;
+    margin-top: 0.35rem;
+    font-size: 1.02rem;
+  }
+  .into-bit .name {
+    margin-left: 0.3rem;
+  }
+  .into-bit.made {
+    color: var(--clay-ink-soft);
+    font-style: italic;
+  }
+  .into-bit .job {
+    display: inline;
+    margin-left: 0.3rem;
+  }
+  .sep {
+    padding: 0 0.4rem;
+    color: var(--clay-ink-soft);
+  }
+  .when {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem 0.6rem;
+    margin-top: 0.5rem;
+    font-size: 0.95rem;
+    color: var(--clay-ink-soft);
+  }
+  .dur {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.15rem 0.6rem;
+    border-radius: var(--clay-radius-pill);
+    background: var(--clay-well);
+    box-shadow: var(--clay-shadow-well);
+    color: var(--clay-ink);
+    font-weight: 600;
+  }
+  .hedge {
+    font-style: italic;
+  }
+  .meanwhile {
+    display: block;
+    margin-top: 0.5rem;
+    padding: 0.5rem 0.7rem;
+    border-radius: var(--clay-radius-sm);
+    background: color-mix(in srgb, var(--clay-primary) 8%, transparent);
+    font-size: 0.95rem;
+  }
+  .meanwhile-head {
+    color: var(--clay-ink-soft);
+  }
+  .meanwhile-head + .meanwhile-bit {
+    margin-left: 0.4rem;
+  }
+  /* The caveat rides with the suggestion, quieter than it but never out of sight of it. */
+  .meanwhile-bit .over {
+    color: var(--clay-ink-soft);
+    font-size: 0.9em;
+  }
+  .now,
+  .mark {
+    display: none;
+  }
+  .now {
+    padding: 0.1rem 0.55rem;
+    border-radius: var(--clay-radius-pill);
+    background: var(--clay-primary);
+    color: var(--clay-on-primary);
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .mark {
+    font-size: 1.1rem;
+    color: var(--clay-primary);
+  }
+
+  /* The current step is raised and named; the done ones are pressed in and ticked. */
+  .step[data-state='current'] .hit {
+    background: var(--clay-surface-raised);
+    box-shadow:
+      var(--clay-shadow-raised),
+      0 0 0 2px var(--clay-primary) inset;
+  }
+  .step[data-state='current'] .now {
+    display: inline-block;
+  }
+  .step[data-state='current'] .num {
+    background: var(--clay-primary);
+    color: var(--clay-on-primary);
+    box-shadow: var(--clay-shadow-pressed);
+  }
+  .step[data-state='done'] .hit {
+    background: var(--clay-well);
+    box-shadow: var(--clay-shadow-pressed);
+    color: var(--clay-ink-soft);
+  }
+  .step[data-state='done'] .label {
+    text-decoration: line-through;
+    text-decoration-color: color-mix(in srgb, var(--clay-primary) 60%, transparent);
+    text-decoration-thickness: 2px;
+  }
+  .step[data-state='done'] .mark {
+    display: inline-block;
+  }
+  .step[data-state='done'] .meanwhile {
+    background: none;
+  }
+
+  @media (max-width: 34rem) {
+    .modebar {
+      display: flex;
+      width: 100%;
+    }
+    .mode {
+      flex: 1;
+      padding: 0.5rem 0.5rem;
+    }
+    .hit {
+      gap: 0.6rem;
+      padding: 0.8rem 0.75rem;
+    }
+    .num {
+      width: 1.75rem;
+      height: 1.75rem;
+      font-size: 0.85rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mode,
+    .hit {
+      transition: none;
+    }
+    .mode:hover,
+    .hit:hover,
+    .hit:active,
+    .mode:active {
+      transform: none;
+    }
+  }
+</style>
+
+<script>
+  /*
+   * Three panes, one at a time — and everything the cook ticks kept in this browser, per
+   * recipe, the same way the table keeps its crossings-off. Separate keys from the table's,
+   * so two views never overwrite each other's marks.
+   */
+  type Mode = 'table' | 'prep' | 'cook';
+  const MODES: Mode[] = ['table', 'prep', 'cook'];
+
+  const store = {
+    /** A list of ids, or an empty one if the browser will not have it. */
+    read(key: string): string[] {
+      try {
+        const raw = localStorage.getItem(key);
+        const parsed = raw ? JSON.parse(raw) : null;
+        return Array.isArray(parsed) ? (parsed as string[]) : [];
+      } catch {
+        return [];
+      }
+    },
+    readMode(key: string): Mode | null {
+      try {
+        const parsed = JSON.parse(localStorage.getItem(key) ?? 'null');
+        return MODES.includes(parsed as Mode) ? (parsed as Mode) : null;
+      } catch {
+        return null;
+      }
+    },
+    write(key: string, value: unknown) {
+      try {
+        localStorage.setItem(key, JSON.stringify(value));
+      } catch {
+        /* private browsing — the marks just will not survive a reload */
+      }
+    },
+  };
+
+  document.querySelectorAll<HTMLElement>('[data-cookmodes]').forEach((root) => {
+    const slug = root.dataset.slug ?? 'recipe';
+    const modeKey = `tabular-recipes:mode:${slug}`;
+    const prepKey = `tabular-recipes:prep:${slug}`;
+    const cookKey = `tabular-recipes:cook:${slug}`;
+
+    const bar = root.querySelector<HTMLElement>('[data-modebar]');
+    const buttons = [...root.querySelectorAll<HTMLButtonElement>('.mode')];
+    const panes = new Map(
+      [...root.querySelectorAll<HTMLElement>('[data-pane]')].map((pane) => [
+        pane.dataset.pane as Mode,
+        pane,
+      ]),
+    );
+    if (!bar || buttons.length === 0 || panes.size === 0) return;
+
+    const calm = matchMedia('(prefers-reduced-motion: reduce)');
+
+    // ---- keeping the screen awake while cooking -------------------------
+    // Only where the browser has it, and never noisily: a kitchen tablet that cannot do
+    // this should simply behave as it always did.
+    let lock: { release(): Promise<void>; addEventListener(t: string, f: () => void): void } | null =
+      null;
+
+    async function holdScreenAwake() {
+      const wakeLock = (navigator as any).wakeLock;
+      if (!wakeLock || lock) return;
+      try {
+        lock = await wakeLock.request('screen');
+        lock?.addEventListener('release', () => {
+          lock = null;
+        });
+      } catch {
+        /* denied, or the tab is not visible — nothing to say about it */
+      }
+    }
+
+    function letScreenSleep() {
+      lock?.release().catch(() => {});
+      lock = null;
+    }
+
+    // ---- the segmented control ------------------------------------------
+    let mode: Mode = 'table';
+
+    function show(next: Mode, focusButton = false) {
+      mode = MODES.includes(next) ? next : 'table';
+      for (const [name, pane] of panes) pane.hidden = name !== mode;
+      buttons.forEach((button) => {
+        const chosen = button.dataset.mode === mode;
+        button.setAttribute('aria-pressed', String(chosen));
+        button.tabIndex = chosen ? 0 : -1;
+        if (chosen && focusButton) button.focus();
+      });
+      store.write(modeKey, mode);
+      if (mode === 'cook') holdScreenAwake();
+      else letScreenSleep();
+    }
+
+    buttons.forEach((button, i) => {
+      button.addEventListener('click', () => show(button.dataset.mode as Mode));
+      button.addEventListener('keydown', (event) => {
+        const step =
+          event.key === 'ArrowRight' || event.key === 'ArrowDown'
+            ? 1
+            : event.key === 'ArrowLeft' || event.key === 'ArrowUp'
+              ? -1
+              : 0;
+        let target = -1;
+        if (step) target = (i + step + buttons.length) % buttons.length;
+        else if (event.key === 'Home') target = 0;
+        else if (event.key === 'End') target = buttons.length - 1;
+        if (target < 0) return;
+        event.preventDefault();
+        show(buttons[target].dataset.mode as Mode, true);
+      });
+    });
+
+    // ---- prep: a checklist ----------------------------------------------
+    const ticks = [...root.querySelectorAll<HTMLInputElement>('[data-prep]')];
+    const prepDone = new Set(store.read(prepKey));
+    const tally = root.querySelector<HTMLElement>('[data-tally]');
+    const prepReset = root.querySelector<HTMLButtonElement>('[data-prep-reset]');
+
+    function drawPrep() {
+      if (tally) {
+        tally.textContent = ticks.length
+          ? `${prepDone.size} of ${ticks.length} out.`
+          : '';
+      }
+      if (prepReset) prepReset.hidden = prepDone.size === 0;
+    }
+
+    ticks.forEach((tick) => {
+      const id = tick.dataset.id!;
+      tick.checked = prepDone.has(id);
+      tick.addEventListener('change', () => {
+        if (tick.checked) prepDone.add(id);
+        else prepDone.delete(id);
+        store.write(prepKey, [...prepDone]);
+        drawPrep();
+      });
+    });
+
+    prepReset?.addEventListener('click', () => {
+      prepDone.clear();
+      ticks.forEach((tick) => {
+        tick.checked = false;
+      });
+      store.write(prepKey, [...prepDone]);
+      drawPrep();
+      ticks[0]?.focus();
+    });
+
+    drawPrep();
+
+    // ---- cook: one step at a time ---------------------------------------
+    const steps = [...root.querySelectorAll<HTMLButtonElement>('[data-cook-step]')];
+    const cookDone = new Set(store.read(cookKey));
+    const cookReset = root.querySelector<HTMLButtonElement>('[data-cook-reset]');
+
+    /* The step you are on is simply the first one not yet ticked off. */
+    function drawCook(scrollTo = false) {
+      const currentIndex = steps.findIndex((step) => !cookDone.has(step.dataset.id!));
+
+      steps.forEach((step, i) => {
+        const done = cookDone.has(step.dataset.id!);
+        const row = step.closest<HTMLElement>('.step');
+        step.setAttribute('aria-pressed', String(done));
+        if (i === currentIndex) step.setAttribute('aria-current', 'step');
+        else step.removeAttribute('aria-current');
+        if (row) row.dataset.state = done ? 'done' : i === currentIndex ? 'current' : 'todo';
+      });
+
+      if (cookReset) cookReset.hidden = cookDone.size === 0;
+      const current = currentIndex >= 0 ? steps[currentIndex].closest<HTMLElement>('.step') : null;
+      if (scrollTo && current) {
+        current.scrollIntoView({ block: 'center', behavior: calm.matches ? 'auto' : 'smooth' });
+      }
+    }
+
+    steps.forEach((step) => {
+      step.addEventListener('click', () => {
+        const id = step.dataset.id!;
+        if (cookDone.has(id)) cookDone.delete(id);
+        else cookDone.add(id);
+        store.write(cookKey, [...cookDone]);
+        drawCook(true);
+      });
+    });
+
+    cookReset?.addEventListener('click', () => {
+      cookDone.clear();
+      store.write(cookKey, [...cookDone]);
+      drawCook();
+      steps[0]?.focus();
+    });
+
+    drawCook();
+
+    // A tab that comes back to the front while cooking wants its screen held awake again.
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible' && mode === 'cook') holdScreenAwake();
+    });
+
+    // Last: unhide the control and take over the panes, so a page whose script never
+    // arrives is left with all three panes readable one after another.
+    bar.hidden = false;
+    root.dataset.enhanced = '';
+    show(store.readMode(modeKey) ?? 'table');
+  });
+</script>

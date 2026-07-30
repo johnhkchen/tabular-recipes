@@ -1,0 +1,712 @@
+---
+/*
+ * The strip under the table: how the time goes.
+ *
+ * Three decisions hold this up.
+ *
+ * 1. THE AXIS IS BROKEN ON PURPOSE. Durations here run from 30 seconds to three weeks. On a
+ *    linear axis the dill pickles' 3-week ferment takes 91% of the strip and the 2-hour soak
+ *    beside it is under half a millimetre, so instead the axis is cut at every moment
+ *    something starts or finishes — a "stretch" — and each stretch is given a width of
+ *    1 + log2(1 + minutes). Order survives (a longer stretch is never a narrower column,
+ *    though the floor below can make two nearly-equal ones the same width) and the widest
+ *    spread in the collection comes down from 60000:1 to about 10:1. Because a width can no
+ *    longer be trusted, EVERY stretch and EVERY bar is labelled with its real duration in
+ *    words, and the note at the bottom says so outright: read the words, not the widths. No
+ *    width is ever the only place a number lives.
+ *
+ * 2. NOTHING IS INVENTED. An operation the recipe never timed has no bar — it gets a mark at
+ *    the moment it happens and the words "not timed", and the count of them sits under the
+ *    headline so the two big numbers are read as floors rather than facts. A recipe that
+ *    times nothing at all gets a sentence instead of a chart.
+ *
+ * 3. THE PICTURE NEVER CARRIES ANYTHING ALONE. Hands-on and unattended differ by fill
+ *    (solid vs. hatched), by height, by icon and by the words next to them, so colour is the
+ *    fourth signal and never the first. `confidence` — which is about the ATTENTION, not the
+ *    minutes; the minutes are always the author's own — is drawn as the bar's edge, solid to
+ *    dashed to dotted, and also written out as "read off the step" or "assumed".
+ *
+ * Every task row carries `data-cell`, which is the same id its operation cell has in
+ * layout.ts, so a page that wants to light up the table when you touch a bar can, without
+ * this component owning that behaviour. There is no script here: nothing has to be clicked.
+ */
+import { formatDuration } from '../lib/time.ts';
+import { iconForOperation, iconSvg, type IconName } from '../lib/icons.ts';
+import { buildSchedule, type Schedule, type Task } from '../lib/schedule.ts';
+import { buildTree, type RawRecipe, type RecipeTree } from '../lib/tree.ts';
+
+interface Props {
+  recipe: RawRecipe;
+  /** Pass the tree the page already built; it is only rebuilt if you do not. */
+  tree?: RecipeTree;
+  /** Likewise the schedule, for a page that wants it for something else too. */
+  schedule?: Schedule;
+}
+
+const {
+  recipe,
+  tree = buildTree(recipe),
+  schedule = buildSchedule(recipe, tree),
+} = Astro.props;
+
+const round = (minutes: number) => Math.round(minutes * 100) / 100;
+
+/* ---------------------------------------------------------------- the axis */
+
+// Every moment at which something starts or finishes. The gaps between them are the
+// stretches, and they are the only columns the chart has.
+const marks = [...new Set(schedule.tasks.flatMap((task) => [task.start, task.end]))].sort(
+  (a, b) => a - b,
+);
+const markIndex = new Map(marks.map((minute, i) => [minute, i]));
+
+const stretches = marks.slice(0, -1).map((from, i) => ({
+  minutes: round(marks[i + 1] - from),
+  text: formatDuration(round(marks[i + 1] - from)),
+}));
+
+/**
+ * Width of a stretch. Logarithmic, so three weeks is about six times a two-minute stir
+ * rather than twenty thousand times it, and a floor of half an even share so a short
+ * stretch never shrinks below the width of its own label. The floor is deliberately low:
+ * it should bind only on the very shortest column, leaving the ordering intact everywhere
+ * else.
+ */
+const weights = stretches.map((s) => 1 + Math.log2(1 + s.minutes));
+const weightSum = weights.reduce((sum, w) => sum + w, 0) || 1;
+const shares = weights.map((w) => Math.max(w / weightSum, 0.5 / (weights.length || 1)));
+const shareSum = shares.reduce((sum, s) => sum + s, 0) || 1;
+// minmax(0, …fr) rather than a bare fr: a column may then shrink past its text, which is
+// what keeps a 320px phone from ever scrolling sideways.
+const columns = shares
+  .map((share) => `minmax(0, ${((share / shareSum) * 100).toFixed(3)}fr)`)
+  .join(' ');
+
+/* --------------------------------------------------------------- the rows */
+
+const ATTENTION: Record<string, { word: string; icon: IconName }> = {
+  'hands-on': { word: 'needs you', icon: 'hand' },
+  unattended: { word: 'walk away', icon: 'hourglass' },
+};
+
+/** What we are allowed to claim about the attention, in the author's absence. */
+const HEDGE: Record<string, string> = {
+  stated: '',
+  inferred: 'read off the step',
+  unknown: 'assumed',
+};
+
+interface Row {
+  task: Task;
+  icon: IconName;
+  /** True when there is a real duration to draw a bar for. */
+  spans: boolean;
+  /** Grid line the bar or mark starts at. */
+  from: number;
+  to: number;
+  duration: string;
+  when: string;
+  attention: { word: string; icon: IconName } | null;
+  hedge: string;
+}
+
+const rows: Row[] = [...schedule.tasks]
+  .sort((a, b) => a.start - b.start || a.column - b.column || a.id.localeCompare(b.id))
+  .map((task) => {
+    const from = markIndex.get(task.start) ?? 0;
+    const to = markIndex.get(task.end) ?? from;
+    return {
+      task,
+      icon: iconForOperation(task.label),
+      spans: task.minutes > 0,
+      from,
+      to,
+      duration: formatDuration(task.minutes) || (task.timed ? 'no length given' : 'not timed'),
+      when: task.start > 0 ? `${formatDuration(task.start)} in` : 'from the start',
+      attention: ATTENTION[task.attention] ?? null,
+      hedge: task.minutes > 0 ? HEDGE[task.confidence] ?? '' : '',
+    };
+  });
+
+// Two things genuinely running at once — the one thing a numbered list of steps hides.
+const overlaps = rows.some((row) =>
+  rows.some(
+    (other) =>
+      other !== row &&
+      row.spans &&
+      other.spans &&
+      row.task.start < other.task.end &&
+      other.task.start < row.task.end,
+  ),
+);
+
+/* ----------------------------------------------------------- the headline */
+
+const stepCount = schedule.tasks.length;
+const untimed = schedule.untimedCount;
+const timesNothing = schedule.totalMinutes === 0;
+const authorText =
+  schedule.authorMinutes && schedule.authorMinutes > 0
+    ? formatDuration(schedule.authorMinutes)
+    : '';
+
+/*
+ * What the "needs you" figure may claim under itself.
+ *
+ * "The rest you can walk away from" is only true when every step is timed. Blondies time the
+ * bake and nothing else, so hands-on comes to zero — and "Needs you: none of it / the rest you
+ * can walk away from" tells a cook they may leave the room through four steps nobody put a
+ * number on. Only three recipes in the collection time every step; for the rest the line says
+ * what the figure is a total OF, and speaks for nothing else. The note underneath already says
+ * how many steps went unmeasured, so it is not said twice.
+ */
+const allTimed = untimed === 0;
+const handsOnText = formatDuration(schedule.handsOnMinutes) || (allTimed ? 'none of it' : 'none given');
+const handsOnSub = allTimed
+  ? 'the rest you can walk away from'
+  : 'of the steps that give a time';
+
+/*
+ * An operation nobody timed ends the moment it starts, so start-to-finish is the sum of what
+ * WAS timed and nothing else — a floor, not a total. Pizzelle times the 45 seconds in the iron
+ * and none of the four steps around it, and a bare "45 sec" in display type over a recipe
+ * whose own header says 45 min is not an understatement, it is the wrong answer. So the number
+ * says out loud that it is a floor, where a small grey line under it would not be read in time.
+ */
+const totalText = `${allTimed ? '' : 'at least '}${formatDuration(schedule.totalMinutes)}`;
+
+const notes: string[] = [];
+if (untimed > 0) {
+  notes.push(
+    untimed === 1
+      ? `One of the ${stepCount} steps never says how long it takes, so both numbers are floors.`
+      : `${untimed} of the ${stepCount} steps never say how long they take, so both numbers are floors.`,
+  );
+}
+/*
+ * Hands-on is the fallback when a step says nothing about whether you can leave, so the
+ * "needs you" figure quietly collects minutes nobody claimed — french onion soup's 50-minute
+ * caramelise is there on our say-so alone. Printed plainly it reads as the recipe's word, so
+ * the part that is ours is named.
+ */
+if (schedule.assumedHandsOnMinutes > 0) {
+  const assumed = formatDuration(schedule.assumedHandsOnMinutes);
+  notes.push(
+    schedule.assumedHandsOnMinutes >= schedule.handsOnMinutes
+      ? `Nothing here says whether you can walk away, so all ${assumed} of it is counted as time you are standing over it.`
+      : `${assumed} of that is counted as needing you only because the step never said otherwise.`,
+  );
+}
+/*
+ * Two branches at once is more work than there is clock, which is arithmetic rather than a
+ * mistake — but "needs you 34 min" printed beside "start to finish 24 min" reads as one of
+ * them being wrong unless the page says which hands it is counting.
+ */
+if (schedule.handsOnMinutes > schedule.totalMinutes) {
+  notes.push(
+    'It adds up to more hands-on time than the whole dish takes because two branches run at once — which needs someone free to run both.',
+  );
+}
+if (authorText) notes.push(`The recipe itself says ${authorText}.`);
+
+/* Built here rather than in the markup so an empty note leaves no empty paragraph. */
+const note = [
+  stretches.length > 1 &&
+    'The scale is squeezed — one long wait would otherwise swallow everything short of it. Read the words, not the widths.',
+  overlaps && 'Bars that line up are happening at the same time.',
+  rows.some((row) => row.spans && row.task.confidence !== 'stated') &&
+    'The minutes are always the recipe’s own; a dashed edge means we worked out from the step whether you have to be there, and a dotted one means nothing was said, so we assumed you are standing over it.',
+]
+  .filter(Boolean)
+  .join(' ');
+
+const legend = {
+  hands: rows.some((row) => row.spans && row.task.attention === 'hands-on'),
+  wait: rows.some((row) => row.spans && row.task.attention === 'unattended'),
+  mark: rows.some((row) => !row.spans),
+};
+
+const headingId = `clock-${recipe.slug}`;
+---
+
+<section class="timeline clay-surface" aria-labelledby={headingId} style={`--stretches: ${columns}`}>
+  <h2 id={headingId}>The clock</h2>
+
+  {
+    timesNothing ? (
+      <p class="verdict">
+        This one never puts a number on anything — not one of its {stepCount} steps is timed, so
+        how long it takes is honestly unknown.
+        {authorText && ` The recipe itself says ${authorText} altogether, but it does not say where that time goes.`}
+      </p>
+    ) : (
+      <dl class="stats">
+        <div class="stat">
+          <dt>Start to finish</dt>
+          <dd>
+            <b>{totalText}</b>
+            <span class="sub">two waits that overlap count once</span>
+          </dd>
+        </div>
+        <div class="stat">
+          <dt>Needs you</dt>
+          <dd>
+            <b>{handsOnText}</b>
+            <span class="sub">{handsOnSub}</span>
+          </dd>
+        </div>
+      </dl>
+    )
+  }
+
+  {notes.length > 0 && !timesNothing && <p class="notes">{notes.join(' ')}</p>}
+
+  {
+    stretches.length > 0 && (
+      <>
+        <p class="axis-caption" aria-hidden="true">Each stretch, as long as it says:</p>
+        <div class="axis" aria-hidden="true">
+          {stretches.map((stretch, i) => (
+            <span class="stretch" style={`grid-column: ${i + 1}`}>
+              {stretch.text}
+            </span>
+          ))}
+        </div>
+      </>
+    )
+  }
+
+  <ol class="rows">
+    {
+      rows.map((row) => (
+        <li class="row" data-cell={row.task.id}>
+          <p class="what">
+            <span class="op-icon" set:html={iconSvg(row.icon, { size: 17 })} />
+            <span class="label">{row.task.label}</span>
+          </p>
+
+          <p class="facts">
+            <span class:list={['dur', !row.spans && 'dur--none']}>{row.duration}</span>
+            {row.attention && (
+              <span class="tag" data-attention={row.task.attention} data-confidence={row.task.confidence}>
+                <span class="tag-icon" set:html={iconSvg(row.attention.icon, { size: 13 })} />
+                {row.attention.word}
+                {row.hedge && <i class="hedge">({row.hedge})</i>}
+              </span>
+            )}
+            <span class="when">{row.when}</span>
+          </p>
+
+          {stretches.length > 0 && (
+            <div class="track" aria-hidden="true">
+              {stretches.map((_, i) => (
+                <span class="rule" style={`grid-column: ${i + 1}`} />
+              ))}
+              {row.spans ? (
+                <span
+                  class="bar"
+                  data-attention={row.task.attention}
+                  data-confidence={row.task.confidence}
+                  style={`grid-column: ${row.from + 1} / ${row.to + 1}`}
+                />
+              ) : (
+                <span
+                  class="mark"
+                  style={`grid-column: ${Math.min(row.from + 1, stretches.length)}; justify-self: ${row.from >= stretches.length ? 'end' : 'start'}`}
+                />
+              )}
+            </div>
+          )}
+        </li>
+      ))
+    }
+  </ol>
+
+  <ul class="legend" aria-label="How to read the bars" hidden={stretches.length === 0}>
+    {
+      legend.hands && (
+        <li>
+          <span class="swatch swatch--hands" aria-hidden="true" /> needs you
+        </li>
+      )
+    }
+    {
+      legend.wait && (
+        <li>
+          <span class="swatch swatch--wait" aria-hidden="true" /> you can walk away
+        </li>
+      )
+    }
+    {
+      legend.mark && (
+        <li>
+          <span class="swatch swatch--mark" aria-hidden="true" /> never timed
+        </li>
+      )
+    }
+  </ul>
+
+  {note && <p class="note">{note}</p>}
+</section>
+
+<style>
+  .timeline {
+    padding: clamp(0.9rem, 3.5vw, 1.4rem);
+    margin: 1rem 0 1.5rem;
+    font-family: var(--clay-font-body);
+    color: var(--clay-ink);
+  }
+
+  h2 {
+    font-family: var(--clay-font-display);
+    font-size: clamp(1.05rem, 4vw, 1.3rem);
+    margin: 0 0 0.7rem;
+  }
+
+  /* --- the two numbers, first thing read ------------------------------- */
+
+  .stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin: 0;
+  }
+
+  .stat {
+    flex: 1 1 8.5rem;
+    min-width: 0;
+    padding: 0.6rem 0.75rem 0.7rem;
+    background: var(--clay-well);
+    border-radius: var(--clay-radius-sm);
+    box-shadow: var(--clay-shadow-well);
+  }
+
+  /* Ink-soft is a shade light for small text on the darker well, so it is walked back
+     towards the ink until it clears 4.5:1. */
+  .stat dt,
+  .stat .sub {
+    color: color-mix(in srgb, var(--clay-ink-soft) 78%, var(--clay-ink));
+  }
+
+  .stat dt {
+    font-size: 0.78rem;
+    letter-spacing: 0.01em;
+  }
+
+  .stat dd {
+    margin: 0.1rem 0 0;
+  }
+
+  .stat b {
+    display: block;
+    font-family: var(--clay-font-display);
+    font-size: clamp(1.2rem, 5.5vw, 1.55rem);
+    line-height: 1.15;
+    font-weight: 600;
+  }
+
+  .stat .sub {
+    display: block;
+    margin-top: 0.15rem;
+    font-size: 0.72rem;
+    line-height: 1.35;
+  }
+
+  .verdict {
+    margin: 0;
+    padding: 0.7rem 0.8rem;
+    background: var(--clay-well);
+    border-radius: var(--clay-radius-sm);
+    box-shadow: var(--clay-shadow-well);
+    font-size: 0.92rem;
+    line-height: 1.5;
+  }
+
+  .notes {
+    margin: 0.55rem 0 0;
+    font-size: 0.78rem;
+    line-height: 1.45;
+    color: var(--clay-ink-soft);
+  }
+
+  /* --- the broken axis -------------------------------------------------- */
+
+  .axis-caption {
+    margin: 1.1rem 0 0.25rem;
+    font-size: 0.72rem;
+    color: var(--clay-ink-soft);
+  }
+
+  .axis {
+    display: grid;
+    grid-template-columns: var(--stretches);
+    align-items: end;
+    padding-bottom: 0.2rem;
+    border-bottom: 1px solid var(--clay-border);
+  }
+
+  .stretch {
+    grid-row: 1;
+    min-width: 0;
+    padding: 0 0.1rem;
+    font-size: clamp(0.6rem, 2.4vw, 0.68rem);
+    line-height: 1.2;
+    text-align: center;
+    color: var(--clay-ink-soft);
+    overflow-wrap: break-word;
+  }
+
+  /* A dashed rule is the seam where the axis was cut. */
+  .stretch + .stretch,
+  .rule + .rule {
+    border-left: 1px dashed var(--clay-border);
+  }
+
+  /* --- one row per operation -------------------------------------------- */
+
+  .rows {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .row {
+    padding: 0.5rem 0 0.35rem;
+    border-bottom: 1px solid var(--clay-border);
+  }
+
+  .row:last-child {
+    border-bottom: 0;
+  }
+
+  .what {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.4rem;
+    margin: 0;
+    font-size: 0.93rem;
+    line-height: 1.35;
+  }
+
+  .op-icon {
+    flex: 0 0 auto;
+    margin-top: 0.1rem;
+    color: var(--clay-primary);
+  }
+
+  .op-icon :global(svg),
+  .tag-icon :global(svg),
+  .swatch :global(svg) {
+    display: block;
+  }
+
+  .label {
+    min-width: 0;
+    overflow-wrap: break-word;
+  }
+
+  .facts {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.25rem 0.45rem;
+    margin: 0.3rem 0 0.35rem;
+    font-size: 0.75rem;
+    color: var(--clay-ink-soft);
+  }
+
+  /* The duration, in words, next to the bar it belongs to. The widths are squeezed; this
+     never is. */
+  .dur {
+    padding: 0.05rem 0.4rem;
+    background: var(--clay-well);
+    border-radius: var(--clay-radius-pill);
+    box-shadow: var(--clay-shadow-well);
+    font-weight: 700;
+    color: var(--clay-ink);
+  }
+
+  .dur--none {
+    font-weight: 500;
+    font-style: italic;
+    color: var(--clay-ink-soft);
+    box-shadow: none;
+    background: transparent;
+    border: 1px dotted var(--clay-ink-soft);
+  }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.22rem;
+  }
+
+  .tag[data-attention='hands-on'] {
+    color: var(--clay-primary-strong);
+  }
+
+  .hedge {
+    font-style: italic;
+  }
+
+  /* --- the bars ---------------------------------------------------------- */
+
+  .track {
+    display: grid;
+    grid-template-columns: var(--stretches);
+    align-items: center;
+    height: 1.1rem;
+  }
+
+  .rule {
+    grid-row: 1;
+    height: 100%;
+    min-width: 0;
+  }
+
+  .bar {
+    grid-row: 1;
+    /* No min-width: a bar always covers at least one whole column, and the share floor
+       keeps the narrowest column wide enough to see. Nothing here may overflow, because
+       the page must not scroll sideways on a phone. */
+    min-width: 0;
+    border-radius: var(--clay-radius-pill);
+    border: 1px solid color-mix(in srgb, var(--clay-ink) 45%, transparent);
+  }
+
+  /* Solid and tall: time you have to be there for. */
+  .bar[data-attention='hands-on'] {
+    height: 0.8rem;
+    background: var(--clay-primary);
+    box-shadow: var(--clay-shadow-raised);
+  }
+
+  /* Hatched and low: time that passes without you. Different fill, different height,
+     different icon and different words — colour is the last of four signals. */
+  .bar[data-attention='unattended'] {
+    height: 0.5rem;
+    background-color: color-mix(in srgb, var(--clay-primary) 14%, transparent);
+    background-image: repeating-linear-gradient(
+      45deg,
+      color-mix(in srgb, var(--clay-primary) 70%, transparent) 0 2px,
+      transparent 2px 6px
+    );
+  }
+
+  /* How sure we are about that reading, drawn as the edge. */
+  .bar[data-confidence='inferred'] {
+    border-style: dashed;
+  }
+
+  .bar[data-confidence='unknown'] {
+    border-style: dotted;
+  }
+
+  /* No duration to draw, so a moment rather than a length. */
+  .mark {
+    grid-row: 1;
+    width: 0.5rem;
+    height: 0.5rem;
+    border: 1.5px solid var(--clay-ink-soft);
+    border-radius: 1px;
+    background: var(--clay-bg);
+    transform: rotate(45deg);
+  }
+
+  /* --- legend ------------------------------------------------------------ */
+
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem 0.9rem;
+    list-style: none;
+    margin: 0.8rem 0 0;
+    padding: 0;
+    font-size: 0.74rem;
+    color: var(--clay-ink-soft);
+  }
+
+  /* With no chart drawn there is nothing for a key to explain. */
+  .legend[hidden] {
+    display: none;
+  }
+
+  .legend li {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .swatch {
+    flex: 0 0 auto;
+    display: block;
+    width: 1.5rem;
+    border-radius: var(--clay-radius-pill);
+    border: 1px solid color-mix(in srgb, var(--clay-ink) 45%, transparent);
+  }
+
+  .swatch--hands {
+    height: 0.8rem;
+    background: var(--clay-primary);
+  }
+
+  .swatch--wait {
+    height: 0.5rem;
+    background-color: color-mix(in srgb, var(--clay-primary) 14%, transparent);
+    background-image: repeating-linear-gradient(
+      45deg,
+      color-mix(in srgb, var(--clay-primary) 70%, transparent) 0 2px,
+      transparent 2px 6px
+    );
+  }
+
+  .swatch--mark {
+    width: 0.5rem;
+    height: 0.5rem;
+    margin: 0 0.5rem;
+    border-width: 1.5px;
+    border-color: var(--clay-ink-soft);
+    border-radius: 1px;
+    background: var(--clay-bg);
+    transform: rotate(45deg);
+  }
+
+  .note {
+    margin: 0.5rem 0 0;
+    font-size: 0.72rem;
+    line-height: 1.5;
+    color: var(--clay-ink-soft);
+  }
+
+  .note:empty {
+    display: none;
+  }
+
+  /* Windows high contrast: the fills are dropped, so keep the outlines. */
+  @media (forced-colors: active) {
+    .bar,
+    .swatch {
+      border: 1px solid CanvasText;
+    }
+    .bar[data-attention='hands-on'],
+    .swatch--hands {
+      background: CanvasText;
+    }
+  }
+
+  @media print {
+    .timeline {
+      box-shadow: none;
+      border: 1px solid #ccc;
+    }
+    .stat,
+    .verdict,
+    .dur {
+      box-shadow: none;
+      border: 1px solid #ddd;
+    }
+    .bar[data-attention='hands-on'] {
+      box-shadow: none;
+    }
+  }
+</style>

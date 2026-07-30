@@ -50,12 +50,35 @@ const UNATTENDED = new Set([
 /* Time you have to be there for, so an author can say so outright rather than by omission. */
 const HANDS_ON = new Set([
   'whisk', 'stir', 'knead', 'beat', 'mix', 'fold', 'toss', 'whip', 'roll', 'shape',
-  'saute', 'fry', 'deepfry', 'stirfry', 'sear', 'brown', 'temper', 'toast', 'grill',
+  'saute', 'fry', 'deepfry', 'stirfry', 'sear', 'brown', 'broil', 'temper', 'toast', 'grill',
   'flip', 'baste', 'skim', 'churn',
 ]);
 
+/*
+ * Words that mean the wait when an author NAMES a timer with them, and mean something else
+ * entirely when they are merely spotted in a sentence. Every one of these was caught lying:
+ *
+ *   dry    — "toast in a dry skillet 3 min" is an adjective on the pan, and it was reading
+ *            nine spice blends, three flatbreads and a comal as time you can walk away from.
+ *            Spices burn in seconds.
+ *   press  — "press in the hot iron for 45 sec" (pizzelle) is your hands on the iron, not a
+ *            weighted press draining tofu.
+ *   boil   — "boil 1 min a side" (bagels), "cook to a boil, 1 min" (whisking a pudding hard)
+ *            and "boil to a thick caramel, 10 min" are all standing at the pan.
+ *
+ * `~dry{3%hr}` still reads as a wait, because there the author said so on purpose. This set
+ * only withholds trust from the word when it is found loose in a step.
+ */
+const NOT_A_VERB_IN_A_SENTENCE = new Set(['boil', 'dry', 'press']);
+
 export type Attention = 'hands-on' | 'unattended';
 export type AttentionSource = 'name' | 'label' | 'default';
+
+/** Whether you have to be there, and which of the three ways we came to think so. */
+export interface Reading {
+  attention: Attention;
+  source: AttentionSource;
+}
 
 const normalise = (word: string) => word.trim().toLowerCase().replace(/[\s-]/g, '');
 
@@ -69,20 +92,81 @@ const normalise = (word: string) => word.trim().toLowerCase().replace(/[\s-]/g, 
  * the oven. Failing the name we read the operation the timer sits in, since "braise 3 hr" is
  * plainly not three hours of attention. Failing both we assume you are standing there,
  * because promising a cook they can leave when they cannot is the worse error.
+ *
+ * One timer at a time, for a caller that has only one. A step with several wants
+ * readTimers(), which gives each timer only the words that are its own.
  */
 export function attentionOf(
   timerName: string | null,
   operationLabel = '',
-): { attention: Attention; source: AttentionSource } {
-  if (timerName) {
-    const name = normalise(timerName);
-    if (UNATTENDED.has(name)) return { attention: 'unattended', source: 'name' };
-    if (HANDS_ON.has(name)) return { attention: 'hands-on', source: 'name' };
-  }
+): Reading {
+  return readTimers([{ name: timerName, text: '' }], operationLabel)[0];
+}
 
-  const words = operationLabel.toLowerCase().match(/[a-z]+/g) ?? [];
-  if (words.some((word) => UNATTENDED.has(word))) {
-    return { attention: 'unattended', source: 'label' };
+/** What a run of words says, if it says anything. Unattended wins, as it always did. */
+function readWords(text: string): Reading | null {
+  const words = text.toLowerCase().match(/[a-z]+/g) ?? [];
+  const said = (vocabulary: Set<string>) =>
+    words.some((word) => vocabulary.has(word) && !NOT_A_VERB_IN_A_SENTENCE.has(word));
+
+  if (said(UNATTENDED)) return { attention: 'unattended', source: 'label' };
+  /*
+   * Reading the hands-on words too is what stops the fallback below reaching over a comma
+   * for someone else's verb. Without it "knead 10 min, rise 1 hour" finds nothing in the
+   * knead, falls back to the whole step, finds "rise", and tells a cook that ten minutes of
+   * kneading is time they can walk away from.
+   */
+  if (said(HANDS_ON)) return { attention: 'hands-on', source: 'label' };
+  return null;
+}
+
+/**
+ * Which slice of the step each timer speaks for.
+ *
+ * A step is often two operations in one sentence — "knead 8 min, then rise 2 hours" — and
+ * reading the whole sentence for every timer in it hands the rise's answer to the knead. So
+ * each timer gets the words from the end of the previous timer up to the end of its own:
+ * "knead 8 min", then ", then rise 2 hours".
+ *
+ * The timers have to be found, in order, or nothing is narrowed — a label rewritten by a
+ * `>> step.N:` line may not contain them at all, and a wrong slice is worse than no slice.
+ */
+function regionsOf(label: string, timers: readonly { text: string }[]): string[] {
+  const regions: string[] = [];
+  let at = 0;
+  for (const timer of timers) {
+    const found = timer.text ? label.indexOf(timer.text, at) : -1;
+    if (found < 0) return timers.map(() => label);
+    regions.push(label.slice(at, found + timer.text.length));
+    at = found + timer.text.length;
   }
-  return { attention: 'hands-on', source: 'default' };
+  return regions;
+}
+
+/**
+ * Every timer in one step, read against the words that belong to it.
+ *
+ * A timer whose own slice says nothing falls back to the whole step, because a second timer
+ * continuing one operation — "bake in a Dutch oven 450°F, 30 min covered + 15 min open" —
+ * leaves the verb behind in the first slice, and "+ 15 min" on its own is not a claim that
+ * you have to stand there.
+ */
+export function readTimers(
+  timers: readonly { name: string | null; text: string }[],
+  operationLabel = '',
+): Reading[] {
+  const regions = regionsOf(operationLabel, timers);
+
+  return timers.map((timer, i) => {
+    if (timer.name) {
+      const name = normalise(timer.name);
+      if (UNATTENDED.has(name)) return { attention: 'unattended', source: 'name' };
+      if (HANDS_ON.has(name)) return { attention: 'hands-on', source: 'name' };
+    }
+
+    return (
+      readWords(regions[i]) ??
+      readWords(operationLabel) ?? { attention: 'hands-on', source: 'default' }
+    );
+  });
 }

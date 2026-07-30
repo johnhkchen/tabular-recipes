@@ -1,0 +1,926 @@
+---
+/*
+ * The cart the menu never had.
+ *
+ * Everything on this page is built in the browser, because the plan is in the browser: a
+ * few slugs in localStorage (src/lib/plan.ts) and one fetch of /plan.json for the amounts.
+ * Nothing about what you are cooking is ever on the server, and there is no build step that
+ * knows your week.
+ *
+ * The arithmetic is units.ts's, which means the refusals are units.ts's too: three cups and
+ * eighty grams are printed as "3 cups + 80 g", never turned into one number. There is no
+ * density in a recipe file, so there is no honest conversion — and a wrong number here is
+ * someone standing in a shop buying the wrong thing.
+ *
+ * On styling: the whole page is drawn by script, and Astro's scoped styles only reach
+ * elements that were in this file's markup. So every rule is written as
+ * `.list-page :global(…)` — scoped to this page by its container, and still landing on
+ * elements the script made.
+ */
+import Base from '../layouts/Base.astro';
+import { url } from '../lib/url.ts';
+---
+
+<Base
+  title="Your list — One Table"
+  blurb="The recipes you're cooking this week, added up into one shopping list."
+>
+  <div class="list-page" data-plan-json={url('plan.json')} data-home={url()}>
+    <nav class="crumbs">
+      <a href={url()}>All counters</a>
+    </nav>
+
+    <header class="masthead">
+      <h1>Your list</h1>
+      <p>
+        What you're cooking, and everything it needs added up into one list. It lives in this
+        browser — nothing about it leaves your computer.
+      </p>
+    </header>
+
+    <noscript>
+      <p class="notice">
+        This page adds the recipes up in your browser, so it needs JavaScript switched on.
+      </p>
+    </noscript>
+
+    <section class="empty" data-empty>
+      <p class="lead">Nothing on the list yet.</p>
+      <p>
+        Open any recipe and press <b>Add to the list</b> under its title. Add a few and
+        everything they need turns up here, added together, in one go.
+      </p>
+      <p><a class="clay-button" href={url()}>Go and find something</a></p>
+    </section>
+
+    <p class="notice" data-loading hidden>Reading the recipes…</p>
+    <p class="notice notice--bad" data-failed hidden>
+      The recipes didn't load, and the list is made out of them. Reload the page and it should
+      come back.
+    </p>
+
+    <section class="block" data-cooking hidden>
+      <div class="block-head">
+        <h2>Cooking <span class="n" data-cooking-count></span></h2>
+        <button class="clay-button clay-button--soft small" type="button" data-clear>
+          Take everything off
+        </button>
+      </div>
+      <ul class="planned" data-planned></ul>
+      <p class="fine">
+        Doubling doubles every number. Anything the recipe puts no number on — salt to taste, a
+        pinch of this — stays exactly as it is, because there is nothing to double.
+      </p>
+    </section>
+
+    <section class="block" data-shopping hidden>
+      <div class="block-head">
+        <h2>What to buy <span class="n" data-shopping-count></span></h2>
+        <button class="clay-button small" type="button" data-copy>Copy the list</button>
+      </div>
+
+      <ul class="lines" data-lines></ul>
+      <p class="fine" data-tick-hint>Tap a line to tick it off. The ticks stay in this browser.</p>
+
+      <div class="pantry" data-pantry hidden>
+        <h3>You probably have these already</h3>
+        <p class="fine">
+          The things bought once and spent by the spoonful. Worth a look in the cupboard before
+          you go, but they're off the shopping list.
+        </p>
+        <ul class="lines" data-pantry-lines></ul>
+      </div>
+
+      <label class="copy-out" data-copy-out hidden>
+        <span>Here it is as plain text — copy it and take it with you.</span>
+        <textarea readonly rows="12"></textarea>
+      </label>
+
+      <p class="said" role="status" data-said></p>
+    </section>
+  </div>
+</Base>
+
+<style>
+  /*
+   * Every selector under the container is :global() on purpose — see the note at the top of
+   * this file. The container itself is scoped, so none of this escapes the page.
+   */
+  .list-page :global([hidden]) {
+    display: none !important;
+  }
+
+  .list-page :global(.notice) {
+    margin: 0 0 1.5rem;
+    padding: 0.9rem 1.15rem;
+    border-radius: var(--clay-radius-sm);
+    background: var(--clay-well);
+    box-shadow: var(--clay-shadow-well);
+    color: var(--clay-ink-soft);
+  }
+  .list-page :global(.notice--bad) {
+    color: var(--clay-ink);
+    border-left: 4px solid var(--clay-primary);
+  }
+
+  /* ---- nothing here yet ------------------------------------------------- */
+
+  .list-page :global(.empty) {
+    max-width: 34rem;
+    margin-bottom: 2rem;
+  }
+  .list-page :global(.empty .lead) {
+    font-family: var(--clay-font-display);
+    font-size: 1.35rem;
+    margin: 0 0 0.6rem;
+  }
+  .list-page :global(.empty p) {
+    color: var(--clay-ink-soft);
+    line-height: 1.6;
+  }
+  .list-page :global(.empty .clay-button) {
+    display: inline-block;
+    margin-top: 0.6rem;
+    text-decoration: none;
+  }
+
+  /* ---- the two blocks --------------------------------------------------- */
+
+  .list-page :global(.block) {
+    margin-bottom: 2.5rem;
+  }
+  .list-page :global(.block-head) {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.6rem 1rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1.5px solid var(--clay-border);
+  }
+  .list-page :global(.block-head h2) {
+    font-size: 1.35rem;
+    margin: 0;
+  }
+  .list-page :global(.block-head .n) {
+    color: var(--clay-ink-soft);
+    font-family: var(--clay-font-body);
+    font-size: 0.85rem;
+    font-weight: 400;
+  }
+  .list-page :global(.small) {
+    font-size: 0.82rem;
+    padding: 0.45em 1em;
+  }
+  .list-page :global(.fine) {
+    color: var(--clay-ink-soft);
+    font-size: 0.85rem;
+    line-height: 1.55;
+    margin: 0.9rem 0 0;
+    max-width: 40rem;
+  }
+
+  /* ---- what you are cooking --------------------------------------------- */
+
+  .list-page :global(.planned) {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.75rem;
+  }
+  .list-page :global(.planned li) {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.6rem 1rem;
+    padding: 0.95rem 1.15rem;
+  }
+  .list-page :global(.planned .what) {
+    flex: 1 1 14rem;
+    min-width: 0;
+  }
+  .list-page :global(.planned h3) {
+    margin: 0;
+    font-size: 1.05rem;
+  }
+  .list-page :global(.planned h3 a) {
+    color: inherit;
+    text-decoration: none;
+  }
+  .list-page :global(.planned h3 a:hover) {
+    color: var(--clay-primary);
+    text-decoration: underline;
+  }
+  .list-page :global(.planned .meta) {
+    margin: 0.2rem 0 0;
+    color: var(--clay-ink-soft);
+    font-size: 0.82rem;
+  }
+  .list-page :global(.planned .gone) {
+    color: var(--clay-ink);
+    font-style: italic;
+  }
+
+  /* The multiplier dial: a row of real buttons, one of them pressed. */
+  .list-page :global(.dial) {
+    display: flex;
+    gap: 0.3rem;
+    padding: 0.25rem;
+    border-radius: var(--clay-radius-pill);
+    background: var(--clay-well);
+    box-shadow: var(--clay-shadow-well);
+  }
+  .list-page :global(.dial button) {
+    font-family: var(--clay-font-body);
+    font-size: 0.82rem;
+    font-variant-numeric: tabular-nums;
+    color: var(--clay-ink-soft);
+    background: transparent;
+    border: 0;
+    border-radius: var(--clay-radius-pill);
+    padding: 0.35em 0.75em;
+    cursor: pointer;
+    transition: var(--clay-press);
+  }
+  .list-page :global(.dial button:hover) {
+    color: var(--clay-ink);
+    background: color-mix(in srgb, var(--clay-surface-raised) 70%, transparent);
+  }
+  .list-page :global(.dial button[aria-pressed='true']) {
+    color: var(--clay-on-primary);
+    background: var(--clay-primary);
+    box-shadow: var(--clay-shadow-raised);
+    font-weight: 600;
+  }
+  .list-page :global(.dial button:focus-visible),
+  .list-page :global(.drop:focus-visible),
+  .list-page :global(.tick:focus-visible) {
+    outline: 3px solid color-mix(in srgb, var(--clay-primary) 45%, transparent);
+    outline-offset: 2px;
+  }
+
+  .list-page :global(.drop) {
+    font-family: var(--clay-font-body);
+    font-size: 0.82rem;
+    color: var(--clay-ink-soft);
+    background: transparent;
+    border: 0;
+    border-radius: var(--clay-radius-sm);
+    padding: 0.4em 0.6em;
+    cursor: pointer;
+  }
+  .list-page :global(.drop:hover) {
+    color: var(--clay-primary);
+    text-decoration: underline;
+  }
+
+  /* ---- the list itself --------------------------------------------------- */
+
+  .list-page :global(.lines) {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.15rem;
+  }
+  .list-page :global(.lines li) {
+    padding: 0.1rem 0;
+    border-bottom: 1px solid var(--clay-border);
+  }
+  .list-page :global(.tick) {
+    display: grid;
+    grid-template-columns: 1.5rem minmax(5.5rem, auto) 1fr;
+    align-items: baseline;
+    gap: 0.5rem;
+    width: 100%;
+    text-align: left;
+    font-family: var(--clay-font-body);
+    font-size: 1rem;
+    color: var(--clay-ink);
+    background: transparent;
+    border: 0;
+    border-radius: var(--clay-radius-sm);
+    padding: 0.55rem 0.5rem;
+    cursor: pointer;
+    transition: background-color 120ms var(--clay-ease), opacity 120ms var(--clay-ease);
+  }
+  .list-page :global(.tick:hover) {
+    background: color-mix(in srgb, var(--clay-primary) 7%, transparent);
+  }
+  .list-page :global(.tick .box) {
+    justify-self: start;
+    align-self: center;
+    width: 1.15rem;
+    height: 1.15rem;
+    border-radius: 0.35rem;
+    background: var(--clay-well);
+    box-shadow: var(--clay-shadow-well);
+    line-height: 1.1rem;
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--clay-primary);
+  }
+  .list-page :global(.tick .amount) {
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+  .list-page :global(.tick[aria-pressed='true']) {
+    opacity: 0.45;
+  }
+  .list-page :global(.tick[aria-pressed='true'] .amount),
+  .list-page :global(.tick[aria-pressed='true'] .name) {
+    text-decoration: line-through;
+    text-decoration-thickness: 1px;
+  }
+  .list-page :global(.tick[aria-pressed='true'] .box) {
+    background: var(--clay-primary);
+    color: var(--clay-on-primary);
+    box-shadow: var(--clay-shadow-pressed);
+  }
+  .list-page :global(.from) {
+    margin: -0.35rem 0 0.4rem;
+    padding-left: calc(1.5rem + 0.5rem + 0.5rem);
+    color: var(--clay-ink-soft);
+    font-size: 0.78rem;
+  }
+  /* "more than the pantry jar" — why a staple is up here with the shopping. */
+  .list-page :global(.why) {
+    font-style: italic;
+  }
+
+  .list-page :global(.pantry) {
+    margin-top: 2rem;
+    padding: 1.1rem 1.25rem 1.35rem;
+    border-radius: var(--clay-radius);
+    background: var(--clay-well);
+    box-shadow: var(--clay-shadow-well);
+  }
+  .list-page :global(.pantry h3) {
+    margin: 0;
+    font-size: 1.05rem;
+  }
+  .list-page :global(.pantry .fine) {
+    margin: 0.35rem 0 0.9rem;
+  }
+
+  .list-page :global(.copy-out) {
+    display: block;
+    margin-top: 1.5rem;
+    color: var(--clay-ink-soft);
+    font-size: 0.85rem;
+  }
+  .list-page :global(.copy-out textarea) {
+    display: block;
+    width: 100%;
+    margin-top: 0.4rem;
+    padding: 0.9rem 1rem;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.82rem;
+    line-height: 1.6;
+    color: var(--clay-ink);
+    background: var(--clay-surface-raised);
+    border: 1.5px solid var(--clay-border);
+    border-radius: var(--clay-radius-sm);
+    resize: vertical;
+  }
+
+  .list-page :global(.said) {
+    margin: 0.75rem 0 0;
+    min-height: 1.2em;
+    color: var(--clay-primary);
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .list-page :global(.dial button),
+    .list-page :global(.tick) {
+      transition: none;
+    }
+  }
+
+  /* A list is for taking with you, and paper is one way to take it. */
+  @media print {
+    .list-page :global(.block-head button),
+    .list-page :global(.dial),
+    .list-page :global(.drop),
+    .list-page :global(.copy-out),
+    .list-page :global(.said),
+    .list-page :global(.fine),
+    .list-page :global(.crumbs) {
+      display: none !important;
+    }
+    .list-page :global(.tick) {
+      padding: 0.2rem 0;
+    }
+    /* On paper the box is ticked with a pen, so give it an edge to tick inside. */
+    .list-page :global(.tick .box) {
+      background: none;
+      box-shadow: none;
+      border: 1px solid #555;
+    }
+    .list-page :global(.pantry) {
+      box-shadow: none;
+      background: none;
+      border-top: 1.5px solid #999;
+      border-radius: 0;
+      padding-left: 0;
+    }
+  }
+</style>
+
+<script>
+  import {
+    MULTIPLIERS,
+    clearPlan,
+    formatMultiplier,
+    onPlanChange,
+    readPlan,
+    removeFromPlan,
+    scaleAmount,
+    setMultiplier,
+    type PlanRecipe,
+  } from '../lib/plan.ts';
+  import {
+    canonicalUnit,
+    combine,
+    formatAmount,
+    matchesStaple,
+    type Amount,
+  } from '../lib/units.ts';
+
+  const page = document.querySelector<HTMLElement>('.list-page');
+  if (page) {
+    const q = <T extends HTMLElement>(name: string) => page.querySelector<T>(`[data-${name}]`)!;
+
+    const empty = q('empty');
+    const loading = q('loading');
+    const failed = q('failed');
+    const cooking = q('cooking');
+    const cookingCount = q('cooking-count');
+    const planned = q<HTMLUListElement>('planned');
+    const shopping = q('shopping');
+    const shoppingCount = q('shopping-count');
+    const linesEl = q<HTMLUListElement>('lines');
+    const pantry = q('pantry');
+    const pantryLines = q<HTMLUListElement>('pantry-lines');
+    const tickHint = q('tick-hint');
+    const copyButton = q<HTMLButtonElement>('copy');
+    const copyOut = q<HTMLLabelElement>('copy-out');
+    const said = q('said');
+    const clearButton = q<HTMLButtonElement>('clear');
+
+    const home = page.dataset.home!;
+
+    /* ---- ticking a line off ---------------------------------------------- */
+
+    // Its own key: what you have already put in the trolley is not what you are cooking.
+    const TICK_KEY = 'tabular-recipes:list';
+
+    const loadTicks = (): Set<string> => {
+      try {
+        const raw = localStorage.getItem(TICK_KEY);
+        const parsed = raw ? (JSON.parse(raw) as unknown) : [];
+        return new Set(Array.isArray(parsed) ? parsed.filter((k) => typeof k === 'string') : []);
+      } catch {
+        return new Set();
+      }
+    };
+
+    const ticked = loadTicks();
+
+    /** Keys currently on the page, so a tick for something long gone is not kept forever. */
+    let liveKeys = new Set<string>();
+
+    const saveTicks = () => {
+      try {
+        localStorage.setItem(TICK_KEY, JSON.stringify([...ticked]));
+      } catch {
+        /* private browsing — the ticks just will not survive a reload */
+      }
+    };
+
+    /** Drop ticks for things no longer on the list, so the key cannot grow without end. */
+    const pruneTicks = () => {
+      let dropped = false;
+      for (const key of [...ticked]) {
+        if (!liveKeys.has(key)) {
+          ticked.delete(key);
+          dropped = true;
+        }
+      }
+      if (dropped) saveTicks();
+    };
+
+    /* ---- the amounts ------------------------------------------------------ */
+
+    interface Line {
+      key: string;
+      name: string;
+      staple: boolean;
+      amounts: Amount[];
+      /** Which recipes wanted it, and how much of each you are making. */
+      from: { title: string; multiplier: number }[];
+      /** What combine() made of the amounts: one entry per bucket that would not merge. */
+      total: Amount[];
+      /**
+       * The recipe's own words, kept only while nothing has been added to them and nothing
+       * scaled — one recipe, ×1. Then the line says what the recipe says, letter for letter,
+       * instead of a re-rendering of the same number. Null as soon as there is arithmetic.
+       */
+      verbatim: string | null;
+      text: string;
+    }
+
+    let catalogue: Map<string, PlanRecipe> | null = null;
+    let fetching: Promise<void> | null = null;
+    let shown: { buy: Line[]; have: Line[] } = { buy: [], have: [] };
+
+    const load = (): Promise<void> => {
+      failed.hidden = true;
+      fetching ??= fetch(page.dataset.planJson!)
+        .then((response) => {
+          if (!response.ok) throw new Error(String(response.status));
+          return response.json() as Promise<PlanRecipe[]>;
+        })
+        .then((all) => {
+          catalogue = new Map(all.map((recipe) => [recipe.slug, recipe]));
+          paint();
+        })
+        .catch(() => {
+          fetching = null; // let a later change try again
+          failed.hidden = false;
+          loading.hidden = true;
+        });
+      return fetching;
+    };
+
+    /*
+     * A staple is a thing you buy once and spend by the spoonful, so it sits under "you
+     * probably have these". But a recipe that deep-fries wants a quart of oil, and a quart of
+     * oil is shopping whatever the pantry file says — src/data/staples.json says so itself.
+     * So a staple whose total runs past a cup, or past 250 g, goes back on the buying list
+     * and says why. The amount printed is the same either way; this only decides which
+     * heading it sits under.
+     */
+    const CUP_IN_ML = 236.5882365;
+    const BIG_MASS_G = 250;
+
+    const isMoreThanAJar = (line: Line): boolean => {
+      /*
+       * Water is the exception, and it is the only one: it comes out of a tap, so no amount
+       * of it is shopping. Without this, half the lines this rule catches are "8 cups
+       * boiling water", which is not a thing anyone buys. The staples file has already
+       * decided that rose water and coconut water are not this kind of water.
+       */
+      if (matchesStaple(line.name, ['water'])) return false;
+
+      return line.total.some((entry) => {
+        if (entry.value === null || !Number.isFinite(entry.value)) return false;
+        const canon = canonicalUnit(entry.unit);
+        if (!canon) return false;
+        const base = entry.value * canon.per;
+        if (canon.system === 'volume') return base >= CUP_IN_ML;
+        if (canon.system === 'mass') return base >= BIG_MASS_G;
+        return false; // a count of anything is never "too much to be pantry"
+      });
+    };
+
+    /** Every planned recipe's ingredients, scaled, gathered under one name each. */
+    const buildLines = (): Line[] => {
+      const lines = new Map<string, Line>();
+      if (!catalogue) return [];
+
+      for (const item of readPlan()) {
+        const recipe = catalogue.get(item.slug);
+        if (!recipe) continue;
+
+        for (const ingredient of recipe.ingredients) {
+          const key = ingredient.name.trim().toLowerCase();
+          let line = lines.get(key);
+          if (!line) {
+            line = {
+              key,
+              name: ingredient.name,
+              staple: ingredient.staple === true,
+              amounts: [],
+              from: [],
+              total: [],
+              /*
+               * An ingredient the recipe puts no number on has no words to quote — "salt, to
+               * taste" comes through with an empty quantity — and an empty string is not
+               * nullish, so quoting it would print a line with a name and a blank where the
+               * amount goes. combine() has an answer for that case and it is the word "some".
+               */
+              verbatim:
+                item.multiplier === 1 && ingredient.quantity.trim() ? ingredient.quantity : null,
+              text: '',
+            };
+            lines.set(key, line);
+          } else {
+            line.verbatim = null; // a second amount means adding up, so the words change
+          }
+          line.amounts.push(scaleAmount(ingredient.amount, item.multiplier));
+          if (!line.from.some((f) => f.title === recipe.title)) {
+            line.from.push({ title: recipe.title, multiplier: item.multiplier });
+          }
+        }
+      }
+
+      const out = [...lines.values()];
+      for (const line of out) {
+        line.total = combine(line.amounts);
+        // "3 cups + 80 g" when they will not merge. Never one invented number.
+        line.text = line.verbatim ?? line.total.map(formatAmount).join(' + ');
+      }
+      return out.sort((a, b) => a.name.localeCompare(b.name));
+    };
+
+    /* ---- drawing ---------------------------------------------------------- */
+
+    const el = <K extends keyof HTMLElementTagNameMap>(
+      tag: K,
+      className?: string,
+      text?: string,
+    ): HTMLElementTagNameMap[K] => {
+      const node = document.createElement(tag);
+      if (className) node.className = className;
+      if (text !== undefined) node.textContent = text;
+      return node;
+    };
+
+    /** What "×1/2" is when it is said out loud rather than looked at. */
+    const spoken = (multiplier: number): string => {
+      if (multiplier === 1) return 'as the recipe is written';
+      if (multiplier === 0.5) return 'half of it';
+      return `${multiplier} times the recipe`;
+    };
+
+    /** "serves 9 → 18" when the number can be read; the author's own words when it cannot. */
+    const servingsText = (servings: string | null, multiplier: number): string | null => {
+      if (!servings) return null;
+      if (multiplier === 1) return `serves ${servings}`;
+      const n = Number(servings.trim());
+      if (!Number.isFinite(n)) return `serves ${servings}, at ${formatMultiplier(multiplier)}`;
+      return `serves ${servings} → ${Number((n * multiplier).toFixed(2))}`;
+    };
+
+    /*
+     * Both blocks are drawn again from scratch on every change, which throws away the button
+     * that was just pressed — and with it the keyboard focus. So remember which one it was
+     * and put focus back on the one that replaced it. Pressing ×2 four times in a row with a
+     * keyboard has to keep working.
+     */
+    const focusedControl = (): { dial?: string; dropped?: boolean } => {
+      const active = document.activeElement as HTMLElement | null;
+      if (active?.dataset?.dial) return { dial: active.dataset.dial };
+      if (active?.dataset?.drop !== undefined && active?.dataset?.drop !== null) {
+        return { dropped: true };
+      }
+      return {};
+    };
+
+    const restoreFocus = (was: { dial?: string; dropped?: boolean }) => {
+      if (was.dial) {
+        const dials = [...planned.querySelectorAll<HTMLButtonElement>('[data-dial]')];
+        const slug = was.dial.slice(0, was.dial.lastIndexOf(':'));
+        const again =
+          dials.find((b) => b.dataset.dial === was.dial) ??
+          // That exact button is gone, so land on the one now pressed for the same recipe.
+          dials.find(
+            (b) =>
+              b.dataset.dial!.startsWith(`${slug}:`) && b.getAttribute('aria-pressed') === 'true',
+          );
+        again?.focus();
+        return;
+      }
+      if (was.dropped) {
+        // What was under the cursor no longer exists. Go somewhere that still does.
+        const next = planned.querySelector<HTMLButtonElement>('[data-drop]');
+        (next ?? (empty.hidden ? clearButton : empty.querySelector<HTMLAnchorElement>('a')))?.focus();
+      }
+    };
+
+    const drawPlanned = () => {
+      const items = readPlan();
+      planned.replaceChildren(
+        ...items.map((item) => {
+          const recipe = catalogue?.get(item.slug) ?? null;
+          const li = el('li', 'clay-surface');
+
+          const what = el('div', 'what');
+          const h3 = el('h3');
+          if (recipe) {
+            const a = el('a', undefined, recipe.title);
+            a.href = `${home}${item.slug}/`;
+            h3.append(a);
+          } else {
+            h3.textContent = item.slug;
+          }
+          what.append(h3);
+
+          const meta = el('p', 'meta');
+          if (recipe) {
+            const bits = [recipe.counters.join(' · '), servingsText(recipe.servings, item.multiplier)]
+              .filter(Boolean)
+              .join(' · ');
+            meta.textContent = bits;
+          } else {
+            meta.className = 'meta gone';
+            meta.textContent = 'This recipe is not in the collection any more.';
+          }
+          what.append(meta);
+          li.append(what);
+
+          if (recipe) {
+            const dial = el('div', 'dial');
+            dial.setAttribute('role', 'group');
+            dial.setAttribute('aria-label', `How much ${recipe.title} to make`);
+            for (const multiplier of MULTIPLIERS) {
+              const button = el('button', undefined, formatMultiplier(multiplier));
+              button.type = 'button';
+              // "×2" read aloud is a symbol and a digit. Say it in words instead.
+              button.setAttribute('aria-label', spoken(multiplier));
+              button.setAttribute('aria-pressed', String(multiplier === item.multiplier));
+              button.dataset.dial = `${item.slug}:${multiplier}`;
+              button.addEventListener('click', () => setMultiplier(item.slug, multiplier));
+              dial.append(button);
+            }
+            li.append(dial);
+          }
+
+          const drop = el('button', 'drop', 'Take it off');
+          drop.type = 'button';
+          drop.dataset.drop = item.slug;
+          drop.setAttribute(
+            'aria-label',
+            `Take ${recipe ? recipe.title : item.slug} off the list`,
+          );
+          drop.addEventListener('click', () => removeFromPlan(item.slug));
+          li.append(drop);
+
+          return li;
+        }),
+      );
+
+      cookingCount.textContent = items.length === 1 ? '1 recipe' : `${items.length} recipes`;
+    };
+
+    const drawLine = (line: Line, why?: string): HTMLLIElement => {
+      const li = el('li');
+
+      const button = el('button', 'tick');
+      button.type = 'button';
+      const on = ticked.has(line.key);
+      button.setAttribute('aria-pressed', String(on));
+
+      const box = el('span', 'box', on ? '✓' : '');
+      box.setAttribute('aria-hidden', 'true');
+      button.append(box, el('span', 'amount', line.text), el('span', 'name', line.name));
+
+      button.addEventListener('click', () => {
+        const nowOn = !ticked.has(line.key);
+        if (nowOn) ticked.add(line.key);
+        else ticked.delete(line.key);
+        button.setAttribute('aria-pressed', String(nowOn));
+        box.textContent = nowOn ? '✓' : '';
+        saveTicks();
+      });
+
+      li.append(button);
+
+      const from = el('p', 'from');
+      from.append(
+        document.createTextNode(
+          `for ${line.from
+            .map((f) => (f.multiplier === 1 ? f.title : `${f.title} ${formatMultiplier(f.multiplier)}`))
+            .join(', ')}`,
+        ),
+      );
+      if (why) from.append(document.createTextNode(' · '), el('span', 'why', why));
+      li.append(from);
+
+      return li;
+    };
+
+    const drawShopping = () => {
+      const lines = buildLines();
+      const buy = lines.filter((line) => !line.staple || isMoreThanAJar(line));
+      const have = lines.filter((line) => line.staple && !isMoreThanAJar(line));
+      shown = { buy, have };
+
+      liveKeys = new Set(lines.map((line) => line.key));
+      pruneTicks();
+
+      linesEl.replaceChildren(
+        ...buy.map((line) => drawLine(line, line.staple ? 'more than the pantry jar' : undefined)),
+      );
+      pantryLines.replaceChildren(...have.map((line) => drawLine(line)));
+      pantry.hidden = have.length === 0;
+      tickHint.hidden = lines.length === 0;
+      shoppingCount.textContent = buy.length === 1 ? '1 thing' : `${buy.length} things`;
+    };
+
+    /* ---- the whole page --------------------------------------------------- */
+
+    const paint = () => {
+      const items = readPlan();
+      const has = items.length > 0;
+      const was = focusedControl();
+
+      empty.hidden = has;
+      /*
+       * Both blocks wait for the recipes. The plan is only slugs, so until /plan.json lands
+       * there is no title to print and no amount to add up — showing the heading over an empty
+       * list would be a box with nothing in it, and after a failed fetch it would stay that
+       * way. While it is coming, "Reading the recipes…" says so; if it never comes, the red
+       * notice does.
+       */
+      cooking.hidden = !has || !catalogue;
+      shopping.hidden = !has || !catalogue;
+      loading.hidden = !has || catalogue !== null;
+      said.textContent = '';
+      copyOut.hidden = true;
+
+      if (!has) {
+        /*
+         * Nothing on the list means nothing drawn. Left in place, the old rows would still be
+         * in the DOM inside a hidden section — and restoreFocus() would hand the keyboard to a
+         * button nobody can see or reach, which drops focus to the body.
+         */
+        planned.replaceChildren();
+        linesEl.replaceChildren();
+        pantryLines.replaceChildren();
+        shown = { buy: [], have: [] };
+        restoreFocus(was);
+        return;
+      }
+      if (!catalogue) {
+        void load();
+        return;
+      }
+
+      drawPlanned();
+      drawShopping();
+      restoreFocus(was);
+    };
+
+    /* ---- taking it with you ----------------------------------------------- */
+
+    const plainText = (): string => {
+      const items = readPlan();
+      const names = items
+        .map((item) => {
+          const title = catalogue?.get(item.slug)?.title ?? item.slug;
+          return item.multiplier === 1 ? title : `${title} ${formatMultiplier(item.multiplier)}`;
+        })
+        .join(', ');
+
+      const out: string[] = [`Shopping list — ${names}`, ''];
+      let hidden = 0;
+
+      for (const line of shown.buy) {
+        if (ticked.has(line.key)) hidden += 1;
+        else out.push(`- ${line.text} ${line.name}`);
+      }
+
+      const have = shown.have.filter((line) => !ticked.has(line.key));
+      hidden += shown.have.length - have.length;
+      if (have.length > 0) {
+        out.push('', 'You probably have these already');
+        for (const line of have) out.push(`- ${line.text} ${line.name}`);
+      }
+
+      if (hidden > 0) {
+        out.push('', `(${hidden} already ticked off, left out.)`);
+      }
+      return out.join('\n');
+    };
+
+    copyButton.addEventListener('click', async () => {
+      const text = plainText();
+      try {
+        await navigator.clipboard.writeText(text);
+        said.textContent = 'Copied.';
+        copyOut.hidden = true;
+      } catch {
+        // No clipboard permission, or an insecure page. Put it where it can be copied by hand.
+        const box = copyOut.querySelector('textarea')!;
+        box.value = text;
+        copyOut.hidden = false;
+        box.focus();
+        box.select();
+        said.textContent = 'Copy it from the box below.';
+      }
+    });
+
+    clearButton.addEventListener('click', () => {
+      clearPlan();
+    });
+
+    onPlanChange(paint);
+    paint();
+  }
+</script>
