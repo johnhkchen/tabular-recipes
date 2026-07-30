@@ -4,16 +4,16 @@
  *
  * Three decisions hold this up.
  *
- * 1. THE AXIS IS BROKEN ON PURPOSE. Durations here run from 30 seconds to three weeks. On a
- *    linear axis the dill pickles' 3-week ferment takes 91% of the strip and the 2-hour soak
- *    beside it is under half a millimetre, so instead the axis is cut at every moment
- *    something starts or finishes — a "stretch" — and each stretch is given a width of
- *    1 + log2(1 + minutes). Order survives (a longer stretch is never a narrower column,
- *    though the floor below can make two nearly-equal ones the same width) and the widest
- *    spread in the collection comes down from 60000:1 to about 10:1. Because a width can no
- *    longer be trusted, EVERY stretch and EVERY bar is labelled with its real duration in
- *    words, and the note at the bottom says so outright: read the words, not the widths. No
- *    width is ever the only place a number lives.
+ * 1. THE AXIS IS TO SCALE. Durations here run from 30 seconds to three weeks, and the axis is
+ *    cut at every moment something starts or finishes — a "stretch" — but each stretch is as
+ *    wide as it is long, linearly. It was logarithmic first, to stop the dill pickles' 3-week
+ *    ferment taking 91% of the strip; that stopped it by making a 12-hour rise barely three
+ *    times a 1-minute boil, which is not a timeline. If a recipe is mostly one long wait, the
+ *    drawing should say so at a glance, because that is usually the most useful thing it can
+ *    say. The floor is in pixels, not in share, so the proportions stay exactly true at every
+ *    width while the shortest stretch still keeps enough room to be seen. A stretch too narrow
+ *    for its own label goes unlabelled on the axis rather than lying about its width — its
+ *    duration is printed beside its row either way, so no number lives only in a width.
  *
  * 2. NOTHING IS INVENTED. An operation the recipe never timed has no bar — it gets a mark at
  *    the moment it happens and the words "not timed", and the count of them sits under the
@@ -66,21 +66,33 @@ const stretches = marks.slice(0, -1).map((from, i) => ({
 }));
 
 /**
- * Width of a stretch. Logarithmic, so three weeks is about six times a two-minute stir
- * rather than twenty thousand times it, and a floor of half an even share so a short
- * stretch never shrinks below the width of its own label. The floor is deliberately low:
- * it should bind only on the very shortest column, leaving the ordering intact everywhere
- * else.
+ * Width of a stretch: its real duration, linearly.
+ *
+ * This was logarithmic, to stop an eighteen-hour rise swallowing the chart. It stopped it
+ * by swallowing the proportions instead — bagels drew a twelve-hour rise barely three times
+ * the width of a one-minute boil, and a timeline that is not scaled to time is not a
+ * timeline. If a recipe is mostly one long wait, the honest drawing says so at a glance,
+ * and that is usually the most useful thing it can say.
+ *
+ * The floor is in PIXELS rather than in share, so the proportions stay exactly true at
+ * every width while the shortest stretch still keeps enough room to be seen. A dozen
+ * stretches at this floor come to 132px, so a 320px phone is never forced sideways.
  */
-const weights = stretches.map((s) => 1 + Math.log2(1 + s.minutes));
-const weightSum = weights.reduce((sum, w) => sum + w, 0) || 1;
-const shares = weights.map((w) => Math.max(w / weightSum, 0.5 / (weights.length || 1)));
-const shareSum = shares.reduce((sum, s) => sum + s, 0) || 1;
-// minmax(0, …fr) rather than a bare fr: a column may then shrink past its text, which is
-// what keeps a 320px phone from ever scrolling sideways.
-const columns = shares
-  .map((share) => `minmax(0, ${((share / shareSum) * 100).toFixed(3)}fr)`)
+const FLOOR_PX = 11;
+const span = stretches.reduce((sum, s) => sum + s.minutes, 0) || 1;
+const columns = stretches
+  .map((s) => `minmax(${FLOOR_PX}px, ${Math.max(s.minutes, 0.001).toFixed(3)}fr)`)
   .join(' ');
+
+/*
+ * At true scale a short stretch is too narrow for its own label, so the axis only labels
+ * the ones with room. Nothing is lost: every row prints its own duration beside it.
+ */
+const LABEL_AT = 0.08;
+const axis = stretches.map((stretch) => ({
+  ...stretch,
+  labelled: stretch.minutes / span >= LABEL_AT,
+}));
 
 /* --------------------------------------------------------------- the rows */
 
@@ -212,7 +224,7 @@ if (authorText) notes.push(`The recipe itself says ${authorText}.`);
 /* Built here rather than in the markup so an empty note leaves no empty paragraph. */
 const note = [
   stretches.length > 1 &&
-    'The scale is squeezed — one long wait would otherwise swallow everything short of it. Read the words, not the widths.',
+    'Drawn to scale, so a long wait really does take up the room it takes. The shortest stretches keep a sliver so they stay visible; their times are printed beside them.',
   overlaps && 'Bars that line up are happening at the same time.',
   rows.some((row) => row.spans && row.task.confidence !== 'stated') &&
     'The minutes are always the recipe’s own; a dashed edge means we worked out from the step whether you have to be there, and a dotted one means nothing was said, so we assumed you are standing over it.',
@@ -264,11 +276,11 @@ const headingId = `clock-${recipe.slug}`;
   {
     stretches.length > 0 && (
       <>
-        <p class="axis-caption" aria-hidden="true">Each stretch, as long as it says:</p>
+        <p class="axis-caption" aria-hidden="true">Drawn to scale, longest wait and all:</p>
         <div class="axis" aria-hidden="true">
-          {stretches.map((stretch, i) => (
-            <span class="stretch" style={`grid-column: ${i + 1}`}>
-              {stretch.text}
+          {axis.map((stretch, i) => (
+            <span class="stretch" style={`grid-column: ${i + 1}`} title={stretch.text}>
+              {stretch.labelled ? stretch.text : ''}
             </span>
           ))}
         </div>
@@ -515,7 +527,7 @@ const headingId = `clock-${recipe.slug}`;
     color: var(--clay-ink-soft);
   }
 
-  /* The duration, in words, next to the bar it belongs to. The widths are squeezed; this
+  /* The duration, in words, next to the bar it belongs to. A bar can be a sliver; this
      never is. */
   .dur {
     padding: 0.05rem 0.4rem;
