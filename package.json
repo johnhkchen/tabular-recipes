@@ -1,0 +1,28 @@
+{
+  "name": "tabular-recipes",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Recipes as one table",
+  "type": "module",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/johnhkchen/tabular-recipes.git"
+  },
+  "scripts": {
+    "recipes": "node scripts/parse-recipes.mjs",
+    "check": "node scripts/check-recipes.mjs",
+    "dev": "npm run recipes && astro dev",
+    "build": "npm run recipes && astro build",
+    "preview": "astro preview",
+    "test": "vitest run",
+    "verify": "npm run check && npm run recipes && vitest run && astro build"
+  },
+  "dependencies": {
+    "astro": "^7.1.6"
+  },
+  "devDependencies": {
+    "@cooklang/cooklang": "^0.18.7",
+    "vitest": "^4.1.10"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "extends": "astro/tsconfigs/strict",
+  "include": [".astro/types.d.ts", "**/*"],
+  "exclude": ["dist"],
+  "compilerOptions": {
+    "resolveJsonModule": true,
+    "verbatimModuleSyntax": true,
+    // Internal imports carry the .ts extension so plain `node scripts/check-recipes.mjs`
+    // can import the same libs the site builds with.
+    "allowImportingTsExtensions": true
+  }
+}
