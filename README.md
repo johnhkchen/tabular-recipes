@@ -10,6 +10,12 @@ npm run dev        # or: just dev
 npm run verify     # parse + tests + build, the one command that must pass
 ```
 
+The site is arranged by **counter** — where you would have got the thing if you were not
+making it. The front page is a row of counters; each one's page is a menu, and every item on
+it leads to a table instead of into a cart. `docs/knowledge/counters.md` records the
+archetypes and the menu vocabulary they were drawn from; `docs/gaps/` records what each
+counter is still missing.
+
 ## The idea
 
 A table like this is a **merge tree** drawn sideways. Leaves are ingredients, one per
@@ -133,8 +139,7 @@ $ node scripts/check-recipes.mjs --labels recipes/soups/new-england-clam-chowder
 | Path | Job |
 | --- | --- |
 | `recipes/<category>/*.cook` | The source of truth. Hand-written. Basenames are URLs, so they are unique across the whole collection. |
-| `src/data/counters.json` | The counters, their blurbs, and the category fallback that keeps every recipe on at least one. |
-| `src/data/categories.json` | The one-line label under each shelf heading. |
+| `src/data/counters.json` | The counters, their blurbs, the sections each menu prints, and the category fallback that keeps every recipe on at least one. |
 | `src/lib/time.ts` | Timer durations in minutes, and whether a wait is hands-on or unattended. |
 | `src/lib/collection.test.ts` | The invariants no single file can be checked for: unique slugs, mutual pairings, one plain way per dish. |
 | `scripts/normalise.mjs` | The only place the WASM parser is touched. |
@@ -144,7 +149,9 @@ $ node scripts/check-recipes.mjs --labels recipes/soups/new-england-clam-chowder
 | `src/lib/layout.ts` | Tree → table cells, with the blank regions merged. |
 | `src/lib/layout.test.ts` | Pins the brownie table to the reference image, and checks every table tiles with no holes. |
 | `src/components/RecipeTable.astro` | The table, plus tap-to-cross-off. |
-| `src/pages/index.astro` | The shelves, and the search-and-filter box over them. Filtering is a DOM walk over `data-` attributes; the query lives in the URL, so a filtered view is shareable. |
+| `src/pages/index.astro` | The counters, and the search over all of them. The index is fetched from `/search.json` on the first keystroke, so no page carries it. |
+| `src/pages/menu/[counter].astro` | One counter's menu. |
+| `scripts/menu-sections.mjs` | Lifts the menu section names out of `docs/gaps/*.md` into `counters.json`. |
 | `src/styles/b28-clay.css` | Vendored from the shared kit — `just sync-kit` to update. |
 
 `src/generated/` is not committed; `npm run recipes` rebuilds it.
