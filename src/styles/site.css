@@ -167,6 +167,204 @@ main {
   text-align: center;
 }
 
+/* ---- the counters, on the front door ------------------------------------- */
+
+.counters {
+  display: grid;
+  gap: 1.1rem;
+  grid-template-columns: repeat(auto-fill, minmax(16.5rem, 1fr));
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+.counter a {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 1.5rem 1.6rem 1.3rem;
+  color: inherit;
+  text-decoration: none;
+  transition: var(--clay-press);
+}
+.counter a:hover { transform: translateY(-2px); }
+.counter a:active { box-shadow: var(--clay-shadow-pressed); transform: translateY(1px); }
+.counter h2 {
+  margin: 0 0 0.4rem;
+  font-size: 1.5rem;
+  letter-spacing: -0.01em;
+}
+.counter .blurb {
+  margin: 0 0 0.9rem;
+  color: var(--clay-ink-soft);
+  font-size: 0.95rem;
+}
+.counter .teaser {
+  margin: 0 0 1rem;
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+.counter .count {
+  margin: auto 0 0;
+  color: var(--clay-primary);
+  font-size: 0.8rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.results { margin-bottom: 2rem; }
+.results .more {
+  grid-column: 1 / -1;
+  color: var(--clay-ink-soft);
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+kbd {
+  padding: 0.05em 0.4em;
+  font: inherit;
+  font-size: 0.9em;
+  background: var(--clay-surface-raised);
+  border-radius: 0.35rem;
+  box-shadow: var(--clay-shadow-raised);
+}
+
+/* ---- one counter's menu -------------------------------------------------- */
+
+.menu-head {
+  margin: 0 0 2.25rem;
+  text-align: center;
+}
+.menu-head h1 {
+  margin: 0 0 0.4rem;
+  font-size: clamp(2.1rem, 6vw, 3.1rem);
+  letter-spacing: -0.015em;
+}
+.menu-head .blurb {
+  margin: 0 0 0.5rem;
+  color: var(--clay-ink-soft);
+  font-size: 1.05rem;
+}
+.menu-head .count {
+  margin: 0;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--clay-ink-soft);
+}
+
+.menu {
+  columns: 2 19rem;
+  column-gap: 2.5rem;
+}
+.menu-section {
+  break-inside: avoid;
+  margin: 0 0 1.9rem;
+}
+.menu-section h2 {
+  margin: 0 0 0.9rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1.5px solid color-mix(in srgb, var(--clay-primary) 40%, var(--clay-well));
+  font-size: 0.82rem;
+  font-family: var(--clay-font-body);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.menu-section ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.menu-section li + li { margin-top: 0.85rem; }
+.menu-section a {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  border-radius: var(--clay-radius-sm);
+}
+.menu-section a:hover .item-name { color: var(--clay-primary); }
+.menu-section a:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--clay-primary) 45%, transparent);
+  outline-offset: 3px;
+}
+.item-name {
+  display: block;
+  font-family: var(--clay-font-display);
+  font-size: 1.08rem;
+  line-height: 1.3;
+}
+.item-of,
+.item-aka {
+  display: block;
+  color: var(--clay-ink-soft);
+  font-size: 0.84rem;
+  line-height: 1.45;
+}
+.item-aka { font-style: italic; }
+.kit {
+  margin-left: 0.45em;
+  padding: 0.1em 0.5em;
+  font-family: var(--clay-font-body);
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--clay-on-primary);
+  background: var(--clay-primary);
+  border-radius: var(--clay-radius-pill);
+  vertical-align: 0.15em;
+}
+
+/* ---- the recipe page's trimmings ---------------------------------------- */
+
+.crumbs {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin-bottom: 1rem;
+  font-size: 0.85rem;
+  color: var(--clay-ink-soft);
+}
+.crumbs a {
+  color: var(--clay-primary);
+  font-weight: 600;
+  text-decoration: none;
+}
+.crumbs a:hover { text-decoration: underline; }
+
+.aka {
+  margin: 0;
+  color: var(--clay-ink-soft);
+  font-style: italic;
+}
+
+.chips a { color: inherit; text-decoration: none; }
+.chips a:hover { color: var(--clay-primary); }
+
+.variants {
+  margin: 0 0 1.15rem;
+  font-size: 0.92rem;
+}
+.variants a { color: var(--clay-primary); font-weight: 600; }
+
+.kit-list {
+  margin: 1rem 0 0;
+  color: var(--clay-ink-soft);
+  font-size: 0.88rem;
+}
+.kit-list .label {
+  font-weight: 600;
+  color: var(--clay-ink);
+}
+
+.pairs {
+  margin-top: 2.25rem;
+}
+.pairs h2 {
+  margin: 0 0 0.9rem;
+  font-size: 1.15rem;
+}
+.pairs .shelf a { padding: 1rem 1.2rem; }
+
 /* ---- the shelves --------------------------------------------------------- */
 
 .shelf-group {

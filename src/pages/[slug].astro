@@ -4,45 +4,111 @@ import path from 'node:path';
 import Base from '../layouts/Base.astro';
 import RecipeTable from '../components/RecipeTable.astro';
 import recipes from '../generated/recipes.json';
+import { counterByName } from '../lib/counters.ts';
 import { buildTree, type RawRecipe } from '../lib/tree.ts';
 import { layout } from '../lib/layout.ts';
 import { url } from '../lib/url.ts';
+
+const all = recipes as unknown as RawRecipe[];
+const titles = new Map(all.map((r) => [r.slug, r.title]));
 
 export function getStaticPaths() {
   return (recipes as unknown as RawRecipe[]).map((recipe) => ({
     params: { slug: recipe.slug },
     props: {
+      recipe,
       grid: layout(buildTree(recipe)),
       source: fs.readFileSync(path.resolve(recipe.path), 'utf8'),
     },
   }));
 }
 
-const { grid, source } = Astro.props;
+const { recipe, grid, source } = Astro.props;
 
-// Everything except the title, which is already the heading.
-const facts = Object.entries(grid.metadata).filter(([key]) => key !== 'title');
+// The counter you would most likely have bought it from leads the trail back.
+const home = counterByName.get(recipe.counters[0]);
+
+const facts = [
+  recipe.metadata.servings && { label: 'serves', value: recipe.metadata.servings },
+  recipe.metadata.time && { label: 'about', value: recipe.metadata.time },
+  { label: '', value: recipe.category },
+].filter(Boolean) as { label: string; value: string }[];
 ---
 
-<Base title={`${grid.title} — One Table`} blurb={`${grid.title} as a single table.`}>
-  <a class="back" href={url()}>← all recipes</a>
+<Base title={`${recipe.title} — One Table`} blurb={`${recipe.title} as a single table.`}>
+  <nav class="crumbs">
+    <a href={url()}>All counters</a>
+    {home && <span aria-hidden="true">→</span>}
+    {home && <a href={url(`menu/${home.slug}/`)}>{home.name}</a>}
+  </nav>
+
   <header class="masthead">
-    <h1>{grid.title}</h1>
+    <h1>{recipe.title}</h1>
+    {recipe.aka.length > 0 && <p class="aka">also called {recipe.aka.join(' · ')}</p>}
   </header>
 
-  {
-    facts.length > 0 && (
-      <ul class="chips">
-        {facts.map(([key, value]) => (
+  <ul class="chips">
+    {
+      recipe.counters.map((name) => {
+        const counter = counterByName.get(name);
+        return (
           <li class="clay-chip">
-            {key} <b>{value}</b>
+            {counter ? <a href={url(`menu/${counter.slug}/`)}>{name}</a> : name}
           </li>
+        );
+      })
+    }
+    {
+      facts.map((fact) => (
+        <li class="clay-chip">
+          {fact.label && `${fact.label} `}
+          <b>{fact.value}</b>
+        </li>
+      ))
+    }
+  </ul>
+
+  {
+    recipe.variants.length > 0 && (
+      <p class="variants">
+        Also written for{' '}
+        {recipe.variants.map((variant, i) => (
+          <>
+            {i > 0 && ', '}
+            <a href={url(`${variant.slug}/`)}>{variant.kit ?? 'the plain way'}</a>
+          </>
         ))}
-      </ul>
+        .
+      </p>
     )
   }
 
   <RecipeTable grid={grid} />
+
+  {
+    recipe.cookware.length > 0 && (
+      <p class="kit-list">
+        <span class="label">You'll need</span> {recipe.cookware.join(' · ')}
+      </p>
+    )
+  }
+
+  {
+    recipe.pairsWith.length > 0 && (
+      <section class="pairs">
+        <h2>Goes with</h2>
+        <ul class="shelf">
+          {recipe.pairsWith.map((slug) => (
+            <li class="clay-surface">
+              <a href={url(`${slug}/`)}>
+                <h3>{titles.get(slug) ?? slug}</h3>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
 
   <details class="source">
     <summary>See how it is written</summary>

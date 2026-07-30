@@ -17,6 +17,14 @@ import { findTilingErrors, layout } from '../src/lib/layout.ts';
 const ROOT = path.resolve(import.meta.dirname, '..');
 const REQUIRED_META = ['title', 'category', 'tags', 'servings'];
 
+// Counter names are validated here as well as in parse-recipes.mjs, so that someone
+// classifying one folder finds their typo without building the whole collection.
+const KNOWN_COUNTERS = new Set(
+  JSON.parse(fs.readFileSync(path.join(ROOT, 'src/data/counters.json'), 'utf8')).counters.map(
+    (c) => c.name,
+  ),
+);
+
 // --labels prints the operation cell each step came out as, which is the only way to see
 // whether a derived label reads like a cook's verb or like a mangled sentence fragment.
 const args = process.argv.slice(2).filter((a) => a !== '--labels');
@@ -43,6 +51,14 @@ for (const target of targets) {
 
     const recipe = normalise(source, { slug: target.slug, path: rel, folder: target.folder });
     for (const warning of recipe.warnings) notes.push(`cooklang: ${warning}`);
+
+    for (const counter of recipe.counters) {
+      if (!KNOWN_COUNTERS.has(counter)) {
+        problems.push(
+          `unknown counter "${counter}" — known: ${[...KNOWN_COUNTERS].join(', ')}`,
+        );
+      }
+    }
 
     const grid = layout(buildTree(recipe));
     problems.push(...findTilingErrors(grid));

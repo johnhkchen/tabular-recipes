@@ -1,0 +1,58 @@
+---
+/*
+ * One counter's menu. Sections are the kinds of thing it sells; every item is a door to its
+ * table rather than a line on a bill.
+ */
+import Base from '../../layouts/Base.astro';
+import recipes from '../../generated/recipes.json';
+import { counters, menuFor, principalIngredients } from '../../lib/counters.ts';
+import type { RawRecipe } from '../../lib/tree.ts';
+import { url } from '../../lib/url.ts';
+
+export function getStaticPaths() {
+  const all = recipes as unknown as RawRecipe[];
+  return counters
+    .map((counter) => menuFor(counter, all))
+    .filter((menu) => menu.count > 0)
+    .map((menu) => ({ params: { counter: menu.counter.slug }, props: { menu } }));
+}
+
+const { menu } = Astro.props;
+const { counter } = menu;
+---
+
+<Base title={`${counter.name} — One Table`} blurb={counter.blurb}>
+  <a class="back" href={url()}>← all counters</a>
+
+  <header class="menu-head">
+    <h1>{counter.name}</h1>
+    <p class="blurb">{counter.blurb}</p>
+    <p class="count">
+      {menu.count} {menu.count === 1 ? 'recipe' : 'recipes'}
+    </p>
+  </header>
+
+  <div class="menu">
+    {
+      menu.sections.map((section) => (
+        <section class="menu-section">
+          <h2>{section.title}</h2>
+          <ul>
+            {section.items.map((recipe) => (
+              <li>
+                <a href={url(`${recipe.slug}/`)}>
+                  <span class="item-name">
+                    {recipe.title}
+                    {recipe.kit && <span class="kit">{recipe.kit}</span>}
+                  </span>
+                  <span class="item-of">{principalIngredients(recipe).join(', ')}</span>
+                  {recipe.aka.length > 0 && <span class="item-aka">{recipe.aka.join(' · ')}</span>}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))
+    }
+  </div>
+</Base>
