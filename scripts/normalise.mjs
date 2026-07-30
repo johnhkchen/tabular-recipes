@@ -4,6 +4,8 @@
  * shared by the build (parse-recipes.mjs) and the checker (check-recipes.mjs).
  */
 import { Parser } from '@cooklang/cooklang';
+import { splitList } from '../src/lib/meta.ts';
+import { attentionOf, minutesOf } from '../src/lib/time.ts';
 
 /* ---- quantity formatting -------------------------------------------------- */
 
@@ -104,6 +106,7 @@ export function normalise(source, { slug, path: relPath, folder }) {
   const metadata = { ...(recipe.raw_metadata?.map ?? {}) };
   const steps = [];
   const ingredientNames = new Set();
+  const cookware = new Set();
 
   for (const section of recipe.sections ?? []) {
     for (const content of section.content ?? []) {
@@ -113,7 +116,36 @@ export function normalise(source, { slug, path: relPath, folder }) {
 
       const ingredients = [];
       const refs = [];
+      const timers = [];
+      /*
+       * The operation this timer belongs to, so an unnamed "3 hr" in a braise is not
+       * mistaken for three hours of standing there. Read the override when there is one:
+       * the raw text of a step whose label was overridden is usually mangled, which is
+       * exactly why it was overridden.
+       */
+      const rawLabel = stripIngredients(items, recipe);
+      const labelOverride = metadata[`step.${index + 1}`] ?? null;
+      const operationLabel = labelOverride ?? rawLabel;
+
       for (const item of items) {
+        if (item.type === 'cookware') {
+          const name = recipe.cookware?.[item.index]?.name;
+          if (name) cookware.add(name);
+          continue;
+        }
+        if (item.type === 'timer') {
+          const timer = recipe.timers?.[item.index];
+          if (timer) {
+            const name = timer.name ?? null;
+            timers.push({
+              name,
+              text: fmtQuantity(timer.quantity),
+              minutes: minutesOf(numericOf(timer.quantity?.value), timer.quantity?.unit ?? null),
+              ...attentionOf(name, operationLabel),
+            });
+          }
+          continue;
+        }
         if (item.type !== 'ingredient') continue;
         const ing = recipe.ingredients[item.index];
         const relation = ing.relation?.relation;
@@ -134,26 +166,33 @@ export function normalise(source, { slug, path: relPath, folder }) {
 
       steps.push({
         index,
-        rawLabel: stripIngredients(items, recipe),
-        labelOverride: metadata[`step.${index + 1}`] ?? null,
+        rawLabel,
+        labelOverride,
         ingredients,
         refs,
+        timers,
       });
     }
   }
 
   const title = metadata.title ?? titleCase(slug);
   const category = metadata.category ?? (folder ? titleCase(folder) : 'Other');
-  const tags = (metadata.tags ?? '')
-    .split(',')
-    .map((t) => t.trim().toLowerCase())
-    .filter(Boolean);
+  const tags = splitList(metadata.tags).map((t) => t.toLowerCase());
 
-  // Authoring directives and things with their own field are not recipe facts.
+  /*
+   * A dish can be cooked more than one way — a braise and its pressure-cooker version are
+   * two files with two different trees. `dish` is what they have in common; `kit` is the
+   * equipment that makes this one different. A file with no kit is the plain way to do it.
+   */
+  const dish = metadata.dish ?? slug;
+  const kit = metadata.kit ?? null;
+
+  // Authoring directives and anything promoted to its own field are not recipe facts.
+  const PROMOTED = new Set([
+    'title', 'category', 'tags', 'counters', 'dish', 'kit', 'aka', 'pairs-with',
+  ]);
   for (const key of Object.keys(metadata)) {
-    if (/^step\.\d+$/.test(key) || key === 'title' || key === 'category' || key === 'tags') {
-      delete metadata[key];
-    }
+    if (/^step\.\d+$/.test(key) || PROMOTED.has(key)) delete metadata[key];
   }
 
   return {
@@ -162,7 +201,19 @@ export function normalise(source, { slug, path: relPath, folder }) {
     title,
     category,
     tags,
+    // Filled in from src/data/counters.json when the file names none.
+    counters: splitList(recipe.raw_metadata?.map?.counters),
+    dish,
+    kit,
+    /*
+     * What people call it when they order it. A cook looking for the pâté in their bánh mì
+     * does not know to search for "pork liver pâté", so the menu vocabulary has to be
+     * searchable too.
+     */
+    aka: splitList(recipe.raw_metadata?.map?.aka),
+    pairsWith: splitList(recipe.raw_metadata?.map?.['pairs-with']),
     ingredientNames: [...ingredientNames].sort(),
+    cookware: [...cookware].sort(),
     metadata,
     steps,
     warnings: (recipe.warnings ?? []).map(String),

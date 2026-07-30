@@ -1,0 +1,83 @@
+{
+  "//": "Where you would buy this if you were not making it. A recipe can sit at several counters — noodles are not only sold by the sushi-and-ramen place — so `counters` on a recipe is a list. `categories` here is only a fallback: a recipe that names no counters lands at whichever counters claim its category, so nothing is ever orphaned. These fallbacks are deliberately coarse and are meant to be replaced recipe by recipe.",
+  "counters": [
+    {
+      "name": "Bakery",
+      "slug": "bakery",
+      "blurb": "Loaves and rolls, out of the oven this morning.",
+      "categories": ["Breads"]
+    },
+    {
+      "name": "Pastry Case",
+      "slug": "pastry-case",
+      "blurb": "The glass case you point at.",
+      "categories": ["Cakes & Loaves", "Cookies", "Bars & Brownies"]
+    },
+    {
+      "name": "Deli",
+      "slug": "deli",
+      "blurb": "Sliced, spread, and sold by the tub.",
+      "categories": ["Dressings & Dips"]
+    },
+    {
+      "name": "Diner",
+      "slug": "diner",
+      "blurb": "Breakfast all day, and a bowl of soup.",
+      "categories": ["Flatbreads & Pancakes", "Soups", "Rice, Beans & Grains"]
+    },
+    {
+      "name": "Bistro",
+      "slug": "bistro",
+      "blurb": "One good braise, one good custard.",
+      "categories": ["Custards & Puddings"]
+    },
+    {
+      "name": "Trattoria",
+      "slug": "trattoria",
+      "blurb": "Sauce, dough, rice, and something at the end.",
+      "categories": ["Sauces & Gravies"]
+    },
+    {
+      "name": "Taquería",
+      "slug": "taqueria",
+      "blurb": "Tortillas pressed to order, three fillings deep.",
+      "categories": []
+    },
+    {
+      "name": "Curry House",
+      "slug": "curry-house",
+      "blurb": "Bread from the tandoor, dal on the side.",
+      "categories": []
+    },
+    {
+      "name": "Ramen Shop",
+      "slug": "ramen-shop",
+      "blurb": "A bowl at the counter, rice on the side.",
+      "categories": []
+    },
+    {
+      "name": "Hawker Stall",
+      "slug": "hawker-stall",
+      "blurb": "One wok, one dish, done properly.",
+      "categories": []
+    },
+    {
+      "name": "Mezze Counter",
+      "slug": "mezze-counter",
+      "blurb": "Five small plates and a stack of bread.",
+      "categories": []
+    },
+    {
+      "name": "Spice Merchant",
+      "slug": "spice-merchant",
+      "blurb": "Jars you would otherwise pay a lot for.",
+      "categories": ["Spice Blends & Marinades"]
+    },
+    {
+      "name": "Butcher",
+      "slug": "butcher",
+      "blurb": "The cut, and what to do with it all afternoon.",
+      "categories": ["Stews & Braises"]
+    }
+  ]
+}

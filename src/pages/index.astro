@@ -17,8 +17,16 @@ const all = (recipes as unknown as RawRecipe[]).map((recipe) => {
     moves: grid.colCount - 1,
     servings: recipe.metadata.servings ?? null,
     time: recipe.metadata.time ?? null,
-    // Everything the search box looks through, in one lowercased string.
-    haystack: [recipe.title, recipe.category, ...recipe.tags, ...recipe.ingredientNames]
+    // Everything the search box looks through, in one lowercased string. `aka` is in here
+    // because people search for what they ordered, not for what a cook would call it.
+    haystack: [
+      recipe.title,
+      recipe.category,
+      ...recipe.counters,
+      ...recipe.aka,
+      ...recipe.tags,
+      ...recipe.ingredientNames,
+    ]
       .join(' ')
       .toLowerCase(),
   };

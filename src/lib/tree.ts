@@ -15,6 +15,14 @@ export interface RawIngredient {
   display: string;
 }
 
+export interface RawTimer {
+  /** `~rise{90%min}` — the name says what kind of wait it is. */
+  name: string | null;
+  text: string;
+  minutes: number | null;
+  attention: 'hands-on' | 'unattended';
+}
+
 export interface RawStep {
   index: number;
   /** The step text with its ingredients removed — see cleanLabel(). */
@@ -23,6 +31,7 @@ export interface RawStep {
   labelOverride: string | null;
   ingredients: RawIngredient[];
   refs: number[];
+  timers: RawTimer[];
 }
 
 export interface RawRecipe {
@@ -32,8 +41,23 @@ export interface RawRecipe {
   title: string;
   category: string;
   tags: string[];
+  /** Where you would buy this. A recipe can sit at several counters. */
+  counters: string[];
+  /** True when the counters came from the category fallback rather than the file. */
+  countersInferred: boolean;
+  /** What this and its equipment variants have in common. */
+  dish: string;
+  /** The equipment that makes this variant different; null is the plain way. */
+  kit: string | null;
+  /** What people call it when they order it. */
+  aka: string[];
+  /** Slugs of recipes that go with this one. Made mutual at build time. */
+  pairsWith: string[];
+  variants: { slug: string; title: string; kit: string | null }[];
   /** Lowercased ingredient names, for searching. */
   ingredientNames: string[];
+  /** Every #pan{} and #stand mixer{} the recipe asks for. */
+  cookware: string[];
   metadata: Record<string, string>;
   steps: RawStep[];
   warnings?: string[];

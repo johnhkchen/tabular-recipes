@@ -41,6 +41,36 @@ file overrides it. Four metadata lines are required:
 `tags` and the ingredient names are what the search box on the front page looks through,
 so tag by what someone would actually reach for: main ingredient, meal, method.
 
+Then the optional lines, which are what the site is organised by:
+
+```cooklang
+>> counters: Taquería, Butcher      # where you would buy this if you were not making it
+>> aka: taco de carnitas, carnitas  # what people call it when they order it
+>> pairs-with: corn-tortillas, salsa-roja
+>> dish: beef-stew                  # what this and its equipment variants have in common
+>> kit: instant pot                 # the equipment that makes this variant different
+```
+
+- **`counters`** is a list, because a recipe can sit at more than one — noodles are not only
+  sold by the sushi-and-ramen place. Leave it off and the recipe inherits whichever counters
+  claim its category (see `src/data/counters.json`), so nothing is ever orphaned. Naming a
+  counter that does not exist is a build error, which catches typos.
+- **`aka`** is searchable alongside the title. Someone who wants to recreate the pâté from a
+  bánh mì does not know to search for "pork liver pâté" — they know what the menu said.
+- **`pairs-with`** takes slugs and is **made mutual at build time**, so you only write it on
+  one side. Pointing at a recipe that is not here is a build error.
+- **`dish` and `kit`** are how one dish has two tables. A braise and its pressure-cooker
+  version have different steps, different times and different trees, so they are two files
+  that share a `dish`. Only one file per dish may omit `kit` — that one is the plain way.
+  A `kit` line means *a variant exists and is written*, never *this would probably adapt*.
+
+**Name your timers.** `~rise{90%min}`, `~chill{4%hr}`, `~bake{30%min}` — the name is what
+separates time you spend from time you merely wait out, which is the most useful thing a
+recipe page can tell a cook. An unnamed timer is read from the operation it sits in
+("braise 3 hr" is plainly not three hours of your attention) and, failing that, counted as
+time you are standing there, because promising a cook they can leave when they cannot is
+the worse error.
+
 Then the rules, which are short:
 
 1. **Every step after the first must say what it consumes** — `@&(~1)batter{}` for the
@@ -103,7 +133,10 @@ $ node scripts/check-recipes.mjs --labels recipes/soups/new-england-clam-chowder
 | Path | Job |
 | --- | --- |
 | `recipes/<category>/*.cook` | The source of truth. Hand-written. Basenames are URLs, so they are unique across the whole collection. |
+| `src/data/counters.json` | The counters, their blurbs, and the category fallback that keeps every recipe on at least one. |
 | `src/data/categories.json` | The one-line label under each shelf heading. |
+| `src/lib/time.ts` | Timer durations in minutes, and whether a wait is hands-on or unattended. |
+| `src/lib/collection.test.ts` | The invariants no single file can be checked for: unique slugs, mutual pairings, one plain way per dish. |
 | `scripts/normalise.mjs` | The only place the WASM parser is touched. |
 | `scripts/parse-recipes.mjs` | Walks `recipes/`, emits `src/generated/recipes.json`. |
 | `scripts/check-recipes.mjs` | Says what is wrong with one file, or all of them. |
