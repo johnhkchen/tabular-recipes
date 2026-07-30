@@ -1,0 +1,195 @@
+---
+import Base from '../layouts/Base.astro';
+import recipes from '../generated/recipes.json';
+import blurbs from '../data/categories.json';
+import { buildTree, type RawRecipe } from '../lib/tree.ts';
+import { layout } from '../lib/layout.ts';
+import { url } from '../lib/url.ts';
+
+const all = (recipes as unknown as RawRecipe[]).map((recipe) => {
+  const grid = layout(buildTree(recipe));
+  return {
+    slug: recipe.slug,
+    title: recipe.title,
+    category: recipe.category,
+    tags: recipe.tags,
+    rows: grid.rowCount,
+    moves: grid.colCount - 1,
+    servings: recipe.metadata.servings ?? null,
+    time: recipe.metadata.time ?? null,
+    // Everything the search box looks through, in one lowercased string.
+    haystack: [recipe.title, recipe.category, ...recipe.tags, ...recipe.ingredientNames]
+      .join(' ')
+      .toLowerCase(),
+  };
+});
+
+const shelves = [...new Set(all.map((r) => r.category))].sort().map((category) => ({
+  category,
+  blurb: (blurbs as Record<string, string>)[category] ?? null,
+  recipes: all.filter((r) => r.category === category).sort((a, b) => a.title.localeCompare(b.title)),
+}));
+---
+
+<Base
+  title="One Table — recipes you can read at a glance"
+  blurb="Every recipe drawn as a single table: ingredients down the side, what to do with them across."
+>
+  <header class="masthead">
+    <h1>One Table</h1>
+    <p>
+      Every recipe here is one table. Ingredients run down the left, what you do with them
+      runs across. Cook from it on your phone and tap things off as you go.
+    </p>
+  </header>
+
+  <div class="finder clay-well" data-total={all.length}>
+    <label class="search">
+      <span class="visually-hidden">Search recipes</span>
+      <input
+        type="search"
+        id="finder-q"
+        placeholder="Search a dish, or an ingredient you have"
+        autocomplete="off"
+        spellcheck="false"
+      />
+    </label>
+
+    <div class="filters" role="group" aria-label="Shelves">
+      {
+        shelves.map((shelf) => (
+          <button type="button" class="filter" data-category={shelf.category} aria-pressed="false">
+            {shelf.category}
+            <span class="n">{shelf.recipes.length}</span>
+          </button>
+        ))
+      }
+      <button type="button" class="filter filter--clear" hidden>Clear</button>
+    </div>
+
+    <p class="tally" aria-live="polite">
+      {all.length} {all.length === 1 ? 'recipe' : 'recipes'} on the shelf
+    </p>
+  </div>
+
+  {
+    shelves.map((shelf) => (
+      <section class="shelf-group" data-category={shelf.category}>
+        <h2>
+          {shelf.category} <span class="n">{shelf.recipes.length}</span>
+        </h2>
+        {shelf.blurb && <p class="blurb">{shelf.blurb}</p>}
+        <ul class="shelf">
+          {shelf.recipes.map((recipe) => (
+            <li
+              class="clay-surface"
+              data-category={recipe.category}
+              data-haystack={recipe.haystack}
+            >
+              <a href={url(`${recipe.slug}/`)}>
+                <h3>{recipe.title}</h3>
+                <p>
+                  {recipe.rows} ingredients · {recipe.moves} {recipe.moves === 1 ? 'move' : 'moves'}
+                  {recipe.servings && ` · serves ${recipe.servings}`}
+                </p>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))
+  }
+
+  <p class="nothing" hidden>
+    Nothing on the shelf matches that. Try an ingredient instead of a dish.
+  </p>
+</Base>
+
+<script>
+  // Filtering is a DOM walk over data attributes — a few hundred cards, no framework needed.
+  const finder = document.querySelector<HTMLElement>('.finder');
+  const input = document.querySelector<HTMLInputElement>('#finder-q');
+  const clear = document.querySelector<HTMLButtonElement>('.filter--clear');
+  const tally = document.querySelector<HTMLElement>('.tally');
+  const nothing = document.querySelector<HTMLElement>('.nothing');
+  const groups = [...document.querySelectorAll<HTMLElement>('.shelf-group')];
+  const cards = [...document.querySelectorAll<HTMLLIElement>('.shelf > li')];
+  const filters = [...document.querySelectorAll<HTMLButtonElement>('.filter[data-category]')];
+
+  if (finder && input && tally && nothing) {
+    const total = Number(finder.dataset.total ?? cards.length);
+    const chosen = new Set<string>();
+
+    const apply = () => {
+      // Every word has to appear somewhere in the card: "chocolate cake" beats one long OR.
+      const words = input.value.toLowerCase().split(/\s+/).filter(Boolean);
+      let shown = 0;
+
+      for (const card of cards) {
+        const haystack = card.dataset.haystack ?? '';
+        const matches =
+          (chosen.size === 0 || chosen.has(card.dataset.category ?? '')) &&
+          words.every((word) => haystack.includes(word));
+        card.hidden = !matches;
+        if (matches) shown++;
+      }
+
+      for (const group of groups) {
+        const any = [...group.querySelectorAll<HTMLLIElement>('.shelf > li')].some((c) => !c.hidden);
+        group.hidden = !any;
+      }
+
+      const filtering = words.length > 0 || chosen.size > 0;
+      tally.textContent = filtering
+        ? `${shown} of ${total} recipes`
+        : `${total} ${total === 1 ? 'recipe' : 'recipes'} on the shelf`;
+      nothing.hidden = shown > 0;
+      if (clear) clear.hidden = !filtering;
+
+      const url = new URL(location.href);
+      if (words.length) url.searchParams.set('q', input.value);
+      else url.searchParams.delete('q');
+      if (chosen.size) url.searchParams.set('on', [...chosen].join('|'));
+      else url.searchParams.delete('on');
+      history.replaceState(null, '', url);
+    };
+
+    // A shared link should land on the same view.
+    const start = new URL(location.href).searchParams;
+    input.value = start.get('q') ?? '';
+    for (const name of (start.get('on') ?? '').split('|').filter(Boolean)) chosen.add(name);
+    for (const filter of filters) {
+      const on = chosen.has(filter.dataset.category ?? '');
+      filter.setAttribute('aria-pressed', String(on));
+    }
+
+    input.addEventListener('input', apply);
+    for (const filter of filters) {
+      filter.addEventListener('click', () => {
+        const name = filter.dataset.category ?? '';
+        if (chosen.has(name)) chosen.delete(name);
+        else chosen.add(name);
+        filter.setAttribute('aria-pressed', String(chosen.has(name)));
+        apply();
+      });
+    }
+    clear?.addEventListener('click', () => {
+      chosen.clear();
+      input.value = '';
+      for (const filter of filters) filter.setAttribute('aria-pressed', 'false');
+      apply();
+      input.focus();
+    });
+
+    // "/" jumps to the search box, the way it does everywhere else.
+    document.addEventListener('keydown', (event) => {
+      if (event.key === '/' && document.activeElement !== input) {
+        event.preventDefault();
+        input.focus();
+        input.select();
+      }
+    });
+
+    apply();
+  }
+</script>
