@@ -30,7 +30,7 @@ work = "docs/active/work"
 
 [scheduling]
 # Limits how many coding agents can work at once.
-max_threads = 2
+max_threads = 4
 # Lets Lisa move reviewed work forward without waiting for approval.
 # auto_advance = false
 # Limits how long Lisa waits for review to finish.
