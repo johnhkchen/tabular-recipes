@@ -1,0 +1,15 @@
+---
+import Base from '../layouts/Base.astro';
+import { url } from '../lib/url.ts';
+---
+
+<Base title="Not on the shelf — One Table" blurb="That recipe is not here.">
+  <header class="masthead">
+    <h1>Not on the shelf</h1>
+    <p>
+      That recipe is not here — it may have been renamed. The shelves are all on one page,
+      and the search box there looks through ingredients as well as dish names.
+    </p>
+  </header>
+  <p><a class="clay-button" href={url()}>Back to the recipes</a></p>
+</Base>

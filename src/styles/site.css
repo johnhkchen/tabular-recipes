@@ -1,0 +1,362 @@
+/*
+ * The table is the whole point, so it gets the room. Ingredients read down the left
+ * edge; what you do with them reads across. Two line weights carry the whole drawing:
+ * a heavier frame around the outside and along the spine between "what is in it" and
+ * "what you do", and a hairline between rows. Fills stay almost flat, the way the
+ * pencil-and-paper version does — only the operations get a tint, because they are
+ * the cells you act on.
+ */
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  padding: clamp(1.25rem, 4vw, 3rem) clamp(1rem, 4vw, 2.5rem) 4rem;
+  line-height: 1.5;
+}
+
+main {
+  max-width: 54rem;
+  margin: 0 auto;
+}
+
+.skip {
+  position: absolute;
+  left: -9999px;
+}
+.skip:focus {
+  left: 1rem;
+  top: 1rem;
+  z-index: 2;
+  padding: 0.6rem 1rem;
+  background: var(--clay-surface-raised);
+  border-radius: var(--clay-radius-sm);
+  box-shadow: var(--clay-shadow-raised);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ---- page furniture ------------------------------------------------------- */
+
+.masthead {
+  margin: 0 0 1.5rem;
+}
+.masthead h1 {
+  margin: 0 0 0.35rem;
+  font-size: clamp(1.9rem, 4.5vw, 2.6rem);
+  letter-spacing: -0.01em;
+}
+.masthead p {
+  margin: 0;
+  max-width: 34rem;
+  color: var(--clay-ink-soft);
+  font-size: 1.05rem;
+}
+
+.back {
+  display: inline-block;
+  margin-bottom: 1rem;
+  color: var(--clay-primary);
+  font-weight: 600;
+  text-decoration: none;
+}
+.back:hover { text-decoration: underline; }
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin: 0 0 1.15rem;
+  padding: 0;
+  list-style: none;
+}
+.chips li {
+  padding: 0.3rem 0.75rem;
+  font-size: 0.82rem;
+  color: var(--clay-ink-soft);
+}
+.chips b {
+  color: var(--clay-ink);
+  font-weight: 600;
+}
+
+/* ---- the finder ---------------------------------------------------------- */
+
+[hidden] { display: none !important; }
+
+.finder {
+  padding: clamp(0.9rem, 2vw, 1.25rem);
+  margin: 0 0 2.25rem;
+}
+
+.search input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font: inherit;
+  font-size: 1.02rem;
+  color: var(--clay-ink);
+  background: var(--clay-surface-raised);
+  border: 1px solid var(--clay-border);
+  border-radius: var(--clay-radius-pill);
+  box-shadow: var(--clay-shadow-pressed);
+}
+.search input::placeholder { color: var(--clay-ink-soft); }
+.search input:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--clay-primary) 45%, transparent);
+  outline-offset: 1px;
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0.9rem 0 0;
+}
+
+/* A shelf label you can press. Pressed means "showing only this". */
+.filter {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  padding: 0.4rem 0.8rem;
+  font: inherit;
+  font-size: 0.85rem;
+  color: var(--clay-ink);
+  background: var(--clay-surface-raised);
+  border: none;
+  border-radius: var(--clay-radius-pill);
+  box-shadow: var(--clay-shadow-raised);
+  cursor: pointer;
+  transition: var(--clay-press);
+}
+.filter:hover { transform: translateY(-1px); }
+.filter[aria-pressed='true'] {
+  color: var(--clay-on-primary);
+  background: var(--clay-primary);
+  box-shadow: var(--clay-shadow-pressed);
+  transform: translateY(1px);
+}
+.filter:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--clay-primary) 45%, transparent);
+  outline-offset: 2px;
+}
+.filter .n {
+  font-size: 0.78em;
+  color: var(--clay-ink-soft);
+  font-variant-numeric: tabular-nums;
+}
+.filter[aria-pressed='true'] .n { color: color-mix(in srgb, var(--clay-on-primary) 78%, transparent); }
+.filter--clear { color: var(--clay-primary); font-weight: 600; }
+
+.tally {
+  margin: 0.9rem 0 0;
+  color: var(--clay-ink-soft);
+  font-size: 0.85rem;
+}
+
+.nothing {
+  padding: 2rem 0;
+  color: var(--clay-ink-soft);
+  text-align: center;
+}
+
+/* ---- the shelves --------------------------------------------------------- */
+
+.shelf-group {
+  margin: 0 0 2.5rem;
+}
+.shelf-group h2 {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin: 0 0 0.2rem;
+  font-size: 1.4rem;
+}
+.shelf-group h2 .n {
+  font-family: var(--clay-font-body);
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: var(--clay-ink-soft);
+  font-variant-numeric: tabular-nums;
+}
+.shelf-group .blurb {
+  margin: 0 0 1rem;
+  color: var(--clay-ink-soft);
+  font-size: 0.95rem;
+}
+
+.shelf {
+  display: grid;
+  gap: 1.25rem;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+.shelf a {
+  display: block;
+  height: 100%;
+  padding: 1.4rem 1.5rem;
+  color: inherit;
+  text-decoration: none;
+  transition: var(--clay-press);
+}
+.shelf a:hover { transform: translateY(-2px); }
+.shelf a:active { box-shadow: var(--clay-shadow-pressed); transform: translateY(1px); }
+.shelf h3 {
+  margin: 0 0 0.3rem;
+  font-family: var(--clay-font-display);
+  font-size: 1.15rem;
+}
+.shelf p {
+  margin: 0;
+  color: var(--clay-ink-soft);
+  font-size: 0.92rem;
+}
+
+/* ---- the table ----------------------------------------------------------- */
+
+.table-well {
+  --frame: color-mix(in srgb, var(--clay-primary) 52%, var(--clay-well));
+  --line: color-mix(in srgb, var(--clay-primary) 24%, var(--clay-well));
+  margin: 0;
+  padding: clamp(0.7rem, 1.6vw, 1rem);
+}
+
+/* The frame lives here, not on the table, so collapsed cell borders cannot fight it. */
+.table-scroll {
+  overflow-x: auto;
+  border: 1.5px solid var(--frame);
+  border-radius: var(--clay-radius-sm);
+  background: var(--clay-surface-raised);
+}
+
+.recipe-table {
+  width: 100%;
+  min-width: 30rem;
+  border-collapse: collapse;
+}
+
+.cell {
+  border: 1px solid var(--line);
+  padding: 0.62rem 0.85rem;
+  vertical-align: middle;
+  cursor: pointer;
+  transition: background-color 120ms var(--clay-ease), opacity 120ms var(--clay-ease);
+}
+/*
+ * No first-child/last-child border resets here: with rowspans, the last <td> in a row
+ * is usually not the last column, so those rules erase edges at random. Every cell keeps
+ * all four hairlines, and the collapsed outer edge sits just inside the frame — which
+ * reads as one heavier frame, the way the drawn version does.
+ */
+
+.cell:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--clay-primary) 45%, transparent);
+  outline-offset: -3px;
+}
+.cell:not(.cell--blank):hover {
+  background: color-mix(in srgb, var(--clay-primary) 8%, var(--clay-surface-raised));
+}
+
+/*
+ * Ingredients: the left edge, one per row, and the column that absorbs all the slack
+ * so the operations stay as narrow as their words.
+ */
+.cell--ingredient {
+  width: 100%;
+  border-right: 1.5px solid var(--frame);
+}
+.cell--ingredient .qty {
+  display: inline-block;
+  min-width: 4.4rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.cell--ingredient .note {
+  margin-left: 0.3em;
+  color: var(--clay-ink-soft);
+  font-size: 0.92em;
+}
+.cell--ingredient .name { margin-left: 0.35em; }
+
+/* Operations: a verb, centred in the block of ingredients it acts on. */
+.cell--op {
+  min-width: 4.75rem;
+  max-width: 8.5rem;
+  font-family: var(--clay-font-display);
+  font-size: 1rem;
+  text-align: center;
+  text-wrap: balance;
+  background: color-mix(in srgb, var(--clay-primary) 7%, var(--clay-surface-raised));
+}
+
+/* Prep steps that touch no ingredients, spanning the full width. */
+.cell--prep {
+  text-align: center;
+  font-family: var(--clay-font-display);
+  background: color-mix(in srgb, var(--clay-primary) 12%, var(--clay-surface-raised));
+  border-bottom-color: var(--frame);
+}
+
+/* The columns an ingredient skips on its way in. Empty on purpose. */
+.cell--blank {
+  cursor: default;
+}
+
+.cell[data-done] {
+  opacity: 0.4;
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+}
+
+.table-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.8rem 0.3rem 0.15rem;
+}
+.hint {
+  color: var(--clay-ink-soft);
+  font-size: 0.82rem;
+}
+.reset { font-size: 0.82rem; padding: 0.4em 0.95em; }
+
+/* ---- the source --------------------------------------------------------- */
+
+.source {
+  margin-top: 1.75rem;
+}
+.source summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--clay-primary);
+}
+.source pre {
+  margin: 0.75rem 0 0;
+  padding: 1rem 1.15rem;
+  overflow-x: auto;
+  background: var(--clay-well);
+  border-radius: var(--clay-radius-sm);
+  box-shadow: var(--clay-shadow-well);
+  font-size: 0.86rem;
+  line-height: 1.6;
+}
+
+@media print {
+  body { padding: 0; }
+  .back, .table-foot, .source, .skip { display: none; }
+  .table-well { padding: 0; box-shadow: none; background: #fff; }
+  .table-scroll { background: #fff; border-color: #222; }
+  .table-well { --frame: #222; --line: #777; }
+  .cell--op, .cell--prep { background: #fff; }
+  .cell[data-done] { opacity: 1; text-decoration: none; }
+}

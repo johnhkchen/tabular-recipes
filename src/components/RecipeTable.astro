@@ -1,0 +1,141 @@
+---
+import type { Grid } from '../lib/layout.ts';
+
+interface Props {
+  grid: Grid;
+}
+
+const { grid } = Astro.props;
+---
+
+<figure class="table-well clay-well">
+  <div class="table-scroll">
+    <table class="recipe-table" data-slug={grid.slug}>
+      <caption class="visually-hidden">
+        {grid.title}: ingredients down the left, what to do with them across.
+        Tap any cell to cross it off.
+      </caption>
+      <tbody>
+        {
+          grid.headers.map((text, i) => (
+            <tr>
+              <td class="cell cell--prep" colspan={grid.colCount} data-cell={`h${i}`}>
+                {text}
+              </td>
+            </tr>
+          ))
+        }
+        {
+          grid.rows.map((row) => (
+            <tr>
+              {row.map((cell) =>
+                cell.kind === 'blank' ? (
+                  <td class="cell cell--blank" rowspan={cell.rowSpan} colspan={cell.colSpan} />
+                ) : (
+                  <td
+                    class={`cell cell--${cell.kind}`}
+                    rowspan={cell.rowSpan}
+                    colspan={cell.colSpan}
+                    data-cell={cell.id}
+                  >
+                    {cell.parts ? (
+                      <>
+                        <span class="qty">{cell.parts.quantity}</span>
+                        {cell.parts.note && <span class="note">({cell.parts.note})</span>}
+                        <span class="name">{cell.parts.name}</span>
+                      </>
+                    ) : (
+                      cell.text
+                    )}
+                  </td>
+                ),
+              )}
+            </tr>
+          ))
+        }
+        {
+          grid.footers.map((text, i) => (
+            <tr>
+              <td class="cell cell--prep" colspan={grid.colCount} data-cell={`f${i}`}>
+                {text}
+              </td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </div>
+  <figcaption class="table-foot">
+    <span class="hint">Tap anything to cross it off.</span>
+    <button class="clay-button clay-button--soft reset" type="button" hidden>Clear the marks</button>
+  </figcaption>
+</figure>
+
+<script>
+  // Tap a cell to cross it off while cooking. Kept per recipe in this browser only.
+  document.querySelectorAll<HTMLTableElement>('.recipe-table').forEach((table) => {
+    const key = `tabular-recipes:${table.dataset.slug}`;
+    const reset = table.closest('.table-well')?.querySelector<HTMLButtonElement>('.reset');
+
+    const load = (): Set<string> => {
+      try {
+        const raw = localStorage.getItem(key);
+        return new Set(raw ? (JSON.parse(raw) as string[]) : []);
+      } catch {
+        return new Set();
+      }
+    };
+
+    const done = load();
+
+    const save = () => {
+      try {
+        localStorage.setItem(key, JSON.stringify([...done]));
+      } catch {
+        /* private browsing — the marks just will not survive a reload */
+      }
+      if (reset) reset.hidden = done.size === 0;
+    };
+
+    const cells = table.querySelectorAll<HTMLTableCellElement>('[data-cell]');
+    cells.forEach((cell) => {
+      const id = cell.dataset.cell!;
+      if (done.has(id)) cell.dataset.done = '';
+      cell.tabIndex = 0;
+      cell.setAttribute('role', 'button');
+      cell.setAttribute('aria-pressed', String(done.has(id)));
+
+      const toggle = () => {
+        const nowDone = cell.dataset.done === undefined;
+        if (nowDone) {
+          cell.dataset.done = '';
+          done.add(id);
+        } else {
+          delete cell.dataset.done;
+          done.delete(id);
+        }
+        cell.setAttribute('aria-pressed', String(nowDone));
+        save();
+      };
+
+      cell.addEventListener('click', toggle);
+      cell.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          toggle();
+        }
+      });
+    });
+
+    reset?.addEventListener('click', () => {
+      done.clear();
+      cells.forEach((cell) => {
+        delete cell.dataset.done;
+        cell.setAttribute('aria-pressed', 'false');
+      });
+      save();
+    });
+
+    if (reset) reset.hidden = done.size === 0;
+  });
+</script>

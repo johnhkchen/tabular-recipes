@@ -1,0 +1,33 @@
+---
+import '../styles/b28-clay.css';
+import '../styles/site.css';
+
+interface Props {
+  title: string;
+  blurb?: string;
+}
+
+const { title, blurb } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en" class="b28-clay">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    {blurb && <meta name="description" content={blurb} />}
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..600;1,400&family=Karla:wght@400;600&display=swap"
+    />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to the recipe</a>
+    <main id="main">
+      <slot />
+    </main>
+  </body>
+</html>

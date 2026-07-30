@@ -1,0 +1,51 @@
+---
+import fs from 'node:fs';
+import path from 'node:path';
+import Base from '../layouts/Base.astro';
+import RecipeTable from '../components/RecipeTable.astro';
+import recipes from '../generated/recipes.json';
+import { buildTree, type RawRecipe } from '../lib/tree.ts';
+import { layout } from '../lib/layout.ts';
+import { url } from '../lib/url.ts';
+
+export function getStaticPaths() {
+  return (recipes as unknown as RawRecipe[]).map((recipe) => ({
+    params: { slug: recipe.slug },
+    props: {
+      grid: layout(buildTree(recipe)),
+      source: fs.readFileSync(path.resolve(recipe.path), 'utf8'),
+    },
+  }));
+}
+
+const { grid, source } = Astro.props;
+
+// Everything except the title, which is already the heading.
+const facts = Object.entries(grid.metadata).filter(([key]) => key !== 'title');
+---
+
+<Base title={`${grid.title} — One Table`} blurb={`${grid.title} as a single table.`}>
+  <a class="back" href={url()}>← all recipes</a>
+  <header class="masthead">
+    <h1>{grid.title}</h1>
+  </header>
+
+  {
+    facts.length > 0 && (
+      <ul class="chips">
+        {facts.map(([key, value]) => (
+          <li class="clay-chip">
+            {key} <b>{value}</b>
+          </li>
+        ))}
+      </ul>
+    )
+  }
+
+  <RecipeTable grid={grid} />
+
+  <details class="source">
+    <summary>See how it is written</summary>
+    <pre><code>{source}</code></pre>
+  </details>
+</Base>
