@@ -289,9 +289,43 @@ import { url } from '../lib/url.ts';
     padding: 0.1rem 0;
     border-bottom: 1px solid var(--clay-border);
   }
+  /*
+   * The shelf edge you are standing at. Not a heading you read so much as a place you
+   * arrive: small caps, a rule under it, and the count so you know when you are done here.
+   */
+  .list-page :global(.lines li.aisle) {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    margin: 1.4rem 0 0.2rem;
+    padding: 0 0.5rem 0.35rem;
+    border-bottom: 1.5px solid color-mix(in srgb, var(--clay-primary) 40%, var(--clay-well));
+  }
+  .list-page :global(.lines li.aisle:first-child) {
+    margin-top: 0.2rem;
+  }
+  .list-page :global(.aisle-name) {
+    font-family: var(--clay-font-body);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .list-page :global(.aisle-note) {
+    flex: 1;
+    color: var(--clay-ink-soft);
+    font-size: 0.78rem;
+    font-style: italic;
+  }
+  .list-page :global(.aisle-n) {
+    color: var(--clay-ink-soft);
+    font-size: 0.75rem;
+    font-variant-numeric: tabular-nums;
+  }
+
   .list-page :global(.tick) {
     display: grid;
-    grid-template-columns: 1.5rem minmax(5.5rem, auto) 1fr;
+    grid-template-columns: 1.5rem minmax(5.5rem, auto) 1fr auto;
     align-items: baseline;
     gap: 0.5rem;
     width: 100%;
@@ -326,6 +360,49 @@ import { url } from '../lib/url.ts';
     font-weight: 600;
     font-variant-numeric: tabular-nums;
   }
+  /*
+   * How much of a pack this is. Three pips and the words for them: the pips are read at a
+   * glance and the words say what they mean, so neither is doing the job alone.
+   */
+  .list-page :global(.scale) {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    justify-self: end;
+    color: var(--clay-ink-soft);
+    font-size: 0.72rem;
+    white-space: nowrap;
+  }
+  .list-page :global(.pips) {
+    display: inline-flex;
+    gap: 0.15rem;
+  }
+  .list-page :global(.pip) {
+    width: 0.42rem;
+    height: 0.42rem;
+    border-radius: 50%;
+    background: var(--clay-well);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--clay-ink) 12%, transparent);
+  }
+  .list-page :global(.pip--on) {
+    background: var(--clay-primary);
+    box-shadow: none;
+  }
+  /* A whole pack is the one worth noticing on the shelf, so it is the one that reads darkest. */
+  .list-page :global(.scale--pack) {
+    color: var(--clay-ink);
+    font-weight: 600;
+  }
+  .list-page :global(.scale--smidge .pip--on) {
+    background: color-mix(in srgb, var(--clay-primary) 55%, var(--clay-well));
+  }
+  @media (max-width: 34rem) {
+    /* The words go; the pips and the title attribute keep the meaning. */
+    .list-page :global(.scale-word) {
+      display: none;
+    }
+  }
+
   .list-page :global(.tick[aria-pressed='true']) {
     opacity: 0.45;
   }
@@ -450,6 +527,16 @@ import { url } from '../lib/url.ts';
     matchesStaple,
     type Amount,
   } from '../lib/units.ts';
+  import {
+    aisleFor,
+    OTHER_AISLE,
+    purchaseOf,
+    SCALE_WORDS,
+    shoppingKey,
+    soldAs,
+    walkOrder,
+    type Purchase,
+  } from '../lib/shopping.ts';
 
   const page = document.querySelector<HTMLElement>('.list-page');
   if (page) {
@@ -518,7 +605,12 @@ import { url } from '../lib/url.ts';
 
     interface Line {
       key: string;
+      /** The name as a shop would put it on the shelf edge. */
       name: string;
+      /** Where in the shop it is picked up. */
+      aisle: string;
+      /** A pack, part of one, or a spoonful — null where there is no honest answer. */
+      purchase: Purchase | null;
       staple: boolean;
       amounts: Amount[];
       /** Which recipes wanted it, and how much of each you are making. */
@@ -598,12 +690,19 @@ import { url } from '../lib/url.ts';
         if (!recipe) continue;
 
         for (const ingredient of recipe.ingredients) {
-          const key = ingredient.name.trim().toLowerCase();
+          /*
+           * Keyed by what a shop sells, not by what the recipe calls for, so "melted
+           * unsalted butter" and "softened unsalted butter" are one thing to buy, and so
+           * are "yellow onion" and "yellow onions".
+           */
+          const key = shoppingKey(ingredient.name);
           let line = lines.get(key);
           if (!line) {
             line = {
               key,
-              name: ingredient.name,
+              name: soldAs(ingredient.name),
+              aisle: aisleFor(ingredient.name).slug,
+              purchase: null,
               staple: ingredient.staple === true,
               amounts: [],
               from: [],
@@ -634,6 +733,8 @@ import { url } from '../lib/url.ts';
         line.total = combine(line.amounts);
         // "3 cups + 80 g" when they will not merge. Never one invented number.
         line.text = line.verbatim ?? line.total.map(formatAmount).join(' + ');
+        // Judged on everything the plan wants, not one recipe's share of it.
+        line.purchase = purchaseOf(line.name, line.amounts);
       }
       return out.sort((a, b) => a.name.localeCompare(b.name));
     };
@@ -780,6 +881,23 @@ import { url } from '../lib/url.ts';
       box.setAttribute('aria-hidden', 'true');
       button.append(box, el('span', 'amount', line.text), el('span', 'name', line.name));
 
+      /*
+       * How much of a pack this comes to, as three filled pips and the words for them.
+       * The pips are never the only signal — a meter alone would be a colour-and-shape
+       * guess, and the whole point is being able to tell at a glance without decoding.
+       */
+      if (line.purchase) {
+        const { scale, as } = line.purchase;
+        const filled = scale === 'pack' ? 3 : scale === 'part' ? 2 : 1;
+        const scaleEl = el('span', `scale scale--${scale}`);
+        const pips = el('span', 'pips');
+        pips.setAttribute('aria-hidden', 'true');
+        for (let i = 0; i < 3; i++) pips.append(el('span', i < filled ? 'pip pip--on' : 'pip'));
+        scaleEl.append(pips, el('span', 'scale-word', SCALE_WORDS[scale].label));
+        scaleEl.title = `${SCALE_WORDS[scale].hint} — ${as}`;
+        button.append(scaleEl);
+      }
+
       button.addEventListener('click', () => {
         const nowOn = !ticked.has(line.key);
         if (nowOn) ticked.add(line.key);
@@ -814,8 +932,32 @@ import { url } from '../lib/url.ts';
       liveKeys = new Set(lines.map((line) => line.key));
       pruneTicks();
 
+      /*
+       * Grouped by where the thing is picked up, in the order you would walk a shop: the
+       * counters you queue at, then the aisles, then the way out. A list sorted this way is
+       * walked once instead of criss-crossed.
+       */
+      const byAisle = new Map<string, Line[]>();
+      for (const line of buy) {
+        byAisle.set(line.aisle, [...(byAisle.get(line.aisle) ?? []), line]);
+      }
+
       linesEl.replaceChildren(
-        ...buy.map((line) => drawLine(line, line.staple ? 'more than the pantry jar' : undefined)),
+        ...walkOrder(byAisle.keys()).flatMap((aisle) => {
+          const mine = byAisle.get(aisle.slug) ?? [];
+          const heading = el('li', 'aisle');
+          heading.append(
+            el('span', 'aisle-name', aisle.name),
+            el('span', 'aisle-note', aisle.note),
+            el('span', 'aisle-n', String(mine.length)),
+          );
+          return [
+            heading,
+            ...mine.map((line) =>
+              drawLine(line, line.staple ? 'more than the pantry jar' : undefined),
+            ),
+          ];
+        }),
       );
       pantryLines.replaceChildren(...have.map((line) => drawLine(line)));
       pantry.hidden = have.length === 0;
@@ -881,9 +1023,23 @@ import { url } from '../lib/url.ts';
       const out: string[] = [`Shopping list — ${names}`, ''];
       let hidden = 0;
 
+      // Grouped the same way on paper as on screen, so the walk round the shop is the same.
+      const byAisle = new Map<string, Line[]>();
       for (const line of shown.buy) {
-        if (ticked.has(line.key)) hidden += 1;
-        else out.push(`- ${line.text} ${line.name}`);
+        if (ticked.has(line.key)) {
+          hidden += 1;
+          continue;
+        }
+        byAisle.set(line.aisle, [...(byAisle.get(line.aisle) ?? []), line]);
+      }
+
+      for (const aisle of walkOrder(byAisle.keys())) {
+        out.push(`${aisle.name}`);
+        for (const line of byAisle.get(aisle.slug) ?? []) {
+          const scale = line.purchase ? `  (${SCALE_WORDS[line.purchase.scale].label})` : '';
+          out.push(`- ${line.text} ${line.name}${scale}`);
+        }
+        out.push('');
       }
 
       const have = shown.have.filter((line) => !ticked.has(line.key));
