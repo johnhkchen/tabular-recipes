@@ -3,9 +3,9 @@ id: T-001-05
 story: S-001
 title: smokehouse
 type: task
-status: open
+status: done
 priority: high
-phase: ready
+phase: done
 depends_on: [T-001-01]
 ---
 
