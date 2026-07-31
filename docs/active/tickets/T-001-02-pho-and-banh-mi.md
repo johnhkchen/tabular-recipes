@@ -3,9 +3,9 @@ id: T-001-02
 story: S-001
 title: pho-and-banh-mi
 type: task
-status: open
+status: done
 priority: critical
-phase: ready
+phase: done
 depends_on: [T-001-01]
 ---
 
