@@ -55,6 +55,7 @@ Then the optional lines, which are what the site is organised by:
 >> pairs-with: corn-tortillas, salsa-roja
 >> dish: beef-stew                  # what this and its equipment variants have in common
 >> kit: instant pot                 # the equipment that makes this variant different
+>> slack: forgiving — an extra half hour in the oven only softens the beef further
 ```
 
 - **`counters`** is a list, because a recipe can sit at more than one — noodles are not only
@@ -69,6 +70,27 @@ Then the optional lines, which are what the site is organised by:
   version have different steps, different times and different trees, so they are two files
   that share a `dish`. Only one file per dish may omit `kit` — that one is the plain way.
   A `kit` line means *a variant exists and is written*, never *this would probably adapt*.
+- **`slack`** is what happens if you get it wrong, and it renders next to the clock. One
+  line: a level, then the reason. The level is one of **`forgiving`** (the window is wide;
+  late costs little), **`narrow`** (there is a real window and missing it makes the dish
+  worse, but it is still dinner) or **`unforgiving`** (miss it and it is gone — broken,
+  ruined or unsafe).
+
+  ```cooklang
+  >> slack: forgiving — three weeks is when to start tasting, not a deadline
+  >> slack: unforgiving — past 82°C the yolks scramble and the sauce will not come back
+  ```
+
+  **The value is entirely in the reason.** "Forgiving" on its own is a vibe; *"an extra hour
+  in the pot changes little"* is something a cook can plan an evening around. So a level with
+  no reason is a build error, and so is a level nobody agreed on. Name the *actual* failure —
+  the temperature it breaks at, the window it has, the thing that cannot be undone.
+
+  **Leave the line off when you cannot.** A recipe that cannot name its real failure has not
+  earned a rating, and the page prints nothing at all rather than an empty slot. Most of the
+  collection has no slack line, which is a legitimate answer and not a gap to fill in with
+  filler. It is authored, never worked out from the timers: a five-minute custard is less
+  forgiving than a six-hour braise.
 
 **Name your timers.** `~rise{90%min}`, `~chill{4%hr}`, `~bake{30%min}` — the name is what
 separates time you spend from time you merely wait out, which is the most useful thing a
@@ -141,6 +163,7 @@ $ node scripts/check-recipes.mjs --labels recipes/soups/new-england-clam-chowder
 | `recipes/<category>/*.cook` | The source of truth. Hand-written. Basenames are URLs, so they are unique across the whole collection. |
 | `src/data/counters.json` | The counters, their blurbs, the sections each menu prints, and the category fallback that keeps every recipe on at least one. |
 | `src/lib/time.ts` | Timer durations in minutes, and whether a wait is hands-on or unattended. |
+| `src/lib/slack.ts` | The three slack levels, and the one reader that turns a `>> slack:` line into a level and a reason. |
 | `src/lib/collection.test.ts` | The invariants no single file can be checked for: unique slugs, mutual pairings, one plain way per dish. |
 | `scripts/normalise.mjs` | The only place the WASM parser is touched. |
 | `scripts/parse-recipes.mjs` | Walks `recipes/`, emits `src/generated/recipes.json`. |
