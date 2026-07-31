@@ -3,9 +3,9 @@ id: T-001-10
 story: S-001
 title: taqueria
 type: task
-status: open
+status: done
 priority: medium
-phase: ready
+phase: done
 depends_on: [T-001-01]
 ---
 
