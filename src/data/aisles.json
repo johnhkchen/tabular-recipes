@@ -150,7 +150,17 @@
         "poblanos",
         "jalapenos",
         "habaneros",
-        "serranos"
+        "serranos",
+        "radishes",
+        "turnips",
+        "mangoes",
+        "green mangoes",
+        "papaya",
+        "green papaya",
+        "jicama",
+        "bok choy",
+        "baby bok choy",
+        "taro"
       ],
       "except": [
         "dried oregano",
@@ -265,7 +275,16 @@
         "soppressata",
         "mortadella",
         "speck",
-        "lardons"
+        "lardons",
+        "char siu",
+        "chashu",
+        "chả lụa",
+        "cha lua",
+        "thịt nguội",
+        "lap cheong",
+        "schmaltz",
+        "rendered fat",
+        "pork floss"
       ],
       "except": [
         "chicken stock",
@@ -313,7 +332,9 @@
         "anchovy",
         "anchovy fillets",
         "littleneck clams",
-        "clam juice"
+        "clam juice",
+        "whitefish",
+        "smoked whitefish"
       ],
       "except": [
         "fish sauce",
@@ -401,7 +422,9 @@
         "lassi",
         "mayonnaise",
         "japanese mayonnaise",
-        "kewpie"
+        "kewpie",
+        "ajitama",
+        "hollandaise"
       ],
       "except": [
         "coconut milk",
@@ -458,7 +481,22 @@
         "graham cracker crumbs",
         "cookie crumbs",
         "wafer crumbs",
-        "biscuit crumbs"
+        "biscuit crumbs",
+        "croissant",
+        "croissants",
+        "croissant dough",
+        "english muffins",
+        "rolls",
+        "bánh mì rolls",
+        "banh mi rolls",
+        "pizza dough",
+        "sicilian pan dough",
+        "hojaldre",
+        "masa para pan dulce",
+        "pie crust",
+        "tart shells",
+        "vanilla wafers",
+        "cornbread"
       ]
     },
     {
@@ -555,7 +593,14 @@
         "white chocolate chips",
         "peanut butter chips",
         "custard powder",
-        "birds custard powder"
+        "birds custard powder",
+        "frangipane",
+        "costra de azúcar",
+        "attar",
+        "rennet",
+        "baker's ammonia",
+        "ascorbic acid",
+        "jaggery"
       ]
     },
     {
@@ -666,7 +711,13 @@
         "tempeh",
         "dried wakame",
         "wakame",
-        "dried mushrooms"
+        "dried mushrooms",
+        "ziti",
+        "sesame paste",
+        "lotus seeds",
+        "kikurage",
+        "wood ear",
+        "wheat starch"
       ],
       "except": [
         "rice vinegar",
@@ -725,7 +776,20 @@
         "condensed cream",
         "evaporated cream",
         "cherry preserves",
-        "apricot jam"
+        "apricot jam",
+        "marinara sauce",
+        "ketchup",
+        "barbecue sauce",
+        "chili sauce",
+        "prepared horseradish",
+        "horseradish",
+        "sweet and sour sauce",
+        "house brown sauce",
+        "makhani gravy",
+        "bamboo shoots",
+        "chipotles in adobo",
+        "relleno de piña",
+        "braising liquid"
       ],
       "except": [
         "anchovy fillets"
@@ -829,7 +893,14 @@
         "nigella",
         "black cardamom",
         "long pepper",
-        "grains of paradise"
+        "grains of paradise",
+        "chaat masala",
+        "pickling spice",
+        "poultry seasoning",
+        "dried savory",
+        "mahlab",
+        "shawarma spice",
+        "dried tangerine peel"
       ],
       "except": [
         "salt pork",
@@ -868,7 +939,8 @@
         "balsamic vinegar",
         "sherry vinegar",
         "malt vinegar",
-        "cooking spray"
+        "cooking spray",
+        "frying fat"
       ]
     },
     {
@@ -944,7 +1016,32 @@
         "pandan",
         "pandan leaf",
         "pandan extract",
-        "ube"
+        "ube",
+        "đồ chua",
+        "nước chấm",
+        "maggi seasoning",
+        "kansui",
+        "naruto maki",
+        "beni shoga",
+        "menma",
+        "salted bamboo shoots",
+        "shio tare",
+        "shoyu tare",
+        "miso tare",
+        "mayu",
+        "pad thai sauce",
+        "vindaloo paste",
+        "tandoori marinade",
+        "al pastor adobo",
+        "red bean paste",
+        "birista",
+        "fried shallots",
+        "dried scallop",
+        "dried lily buds",
+        "lotus leaves",
+        "dried lotus leaves",
+        "matzo meal",
+        "matzo"
       ]
     },
     {
@@ -1001,7 +1098,10 @@
         "grand marnier",
         "cointreau",
         "cachaca",
-        "pisco"
+        "pisco",
+        "seltzer",
+        "lager",
+        "pomegranate juice"
       ]
     }
   ],
@@ -1361,7 +1461,8 @@
         "patterns": [
           "peanut butter",
           "almond butter",
-          "tahini"
+          "tahini",
+          "sesame paste"
         ],
         "pack": {
           "value": 2,
@@ -1453,13 +1554,112 @@
           "garam masala",
           "dried oregano",
           "dried thyme",
-          "black pepper"
+          "black pepper",
+          "chaat masala",
+          "pickling spice",
+          "poultry seasoning",
+          "shawarma spice",
+          "mahlab"
         ],
         "pack": {
           "value": 6,
           "unit": "Tbs"
         },
         "as": "a spice jar"
+      },
+      {
+        "patterns": [
+          "barbecue sauce"
+        ],
+        "pack": {
+          "value": 2,
+          "unit": "cup"
+        },
+        "as": "an 18 oz bottle"
+      },
+      {
+        "patterns": [
+          "marinara sauce"
+        ],
+        "pack": {
+          "value": 3,
+          "unit": "cup"
+        },
+        "as": "a 24 oz jar"
+      },
+      {
+        "patterns": [
+          "ketchup"
+        ],
+        "pack": {
+          "value": 2.5,
+          "unit": "cup"
+        },
+        "as": "a 20 oz bottle"
+      },
+      {
+        "patterns": [
+          "wheat starch"
+        ],
+        "pack": {
+          "value": 3.5,
+          "unit": "cup"
+        },
+        "as": "a 1 lb bag"
+      },
+      {
+        "patterns": [
+          "matzo meal"
+        ],
+        "pack": {
+          "value": 4,
+          "unit": "cup"
+        },
+        "as": "a 1 lb box"
+      },
+      {
+        "patterns": [
+          "red bean paste"
+        ],
+        "pack": {
+          "value": 2,
+          "unit": "cup"
+        },
+        "as": "a tin"
+      },
+      {
+        "patterns": [
+          "ziti",
+          "penne",
+          "rigatoni",
+          "macaroni",
+          "pasta"
+        ],
+        "pack": {
+          "value": 1,
+          "unit": "lb"
+        },
+        "as": "a 1 lb box"
+      },
+      {
+        "patterns": [
+          "vanilla wafers"
+        ],
+        "pack": {
+          "value": 11,
+          "unit": "oz"
+        },
+        "as": "an 11 oz box"
+      },
+      {
+        "patterns": [
+          "seltzer"
+        ],
+        "pack": {
+          "value": 4,
+          "unit": "cup"
+        },
+        "as": "a 1 L bottle"
       }
     ]
   }
