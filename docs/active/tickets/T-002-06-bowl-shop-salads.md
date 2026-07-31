@@ -3,9 +3,9 @@ id: T-002-06
 story: S-002
 title: bowl-shop-salads
 type: task
-status: open
+status: done
 priority: high
-phase: ready
+phase: done
 depends_on: [T-002-01]
 ---
 
