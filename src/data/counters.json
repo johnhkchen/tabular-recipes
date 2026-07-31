@@ -1452,6 +1452,98 @@
           "items": []
         }
       ]
+    },
+    {
+      "name": "The Soup Pot",
+      "slug": "soup-pot",
+      "blurb": "Put it on, leave it alone for three hours, and it gets better.",
+      "categories": [],
+      "sections": [
+        {
+          "title": "Old-fire soups (老火湯)",
+          "items": []
+        },
+        {
+          "title": "Quick daily soups (滾湯)",
+          "items": []
+        },
+        {
+          "title": "What each thing is for",
+          "items": []
+        },
+        {
+          "title": "Congee and rice soups",
+          "items": []
+        },
+        {
+          "title": "Also here",
+          "items": []
+        }
+      ]
+    },
+    {
+      "name": "Japanese Home Cooking",
+      "slug": "japanese-home",
+      "blurb": "Small dishes, made once, that add up to dinner all week.",
+      "categories": [],
+      "sections": [
+        {
+          "title": "The soup and the rice",
+          "items": []
+        },
+        {
+          "title": "Simmered things (煮物)",
+          "items": []
+        },
+        {
+          "title": "Grilled and pan-fried mains",
+          "items": []
+        },
+        {
+          "title": "Small sides (小鉢)",
+          "items": []
+        },
+        {
+          "title": "Made ahead (作り置き)",
+          "items": []
+        },
+        {
+          "title": "Rice bowls and one-plate suppers",
+          "items": []
+        },
+        {
+          "title": "Also here",
+          "items": []
+        }
+      ]
+    },
+    {
+      "name": "The Slow Cooker",
+      "slug": "slow-cooker",
+      "blurb": "Fill it before you leave; dinner is waiting when you get back.",
+      "categories": [],
+      "sections": [
+        {
+          "title": "Braises, left alone all day",
+          "items": []
+        },
+        {
+          "title": "Beans and pulses",
+          "items": []
+        },
+        {
+          "title": "Stocks",
+          "items": []
+        },
+        {
+          "title": "Whole birds and big cuts",
+          "items": []
+        },
+        {
+          "title": "Also here",
+          "items": []
+        }
+      ]
     }
   ]
 }
