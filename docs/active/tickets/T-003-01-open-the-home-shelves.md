@@ -3,9 +3,9 @@ id: T-003-01
 story: S-003
 title: open-the-home-shelves
 type: task
-status: open
+status: done
 priority: critical
-phase: ready
+phase: done
 depends_on: [T-002-01]
 ---
 
