@@ -3,9 +3,9 @@ id: T-001-06
 story: S-001
 title: panaderia
 type: task
-status: open
+status: done
 priority: critical
-phase: ready
+phase: done
 depends_on: [T-001-01]
 ---
 
