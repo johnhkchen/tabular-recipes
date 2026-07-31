@@ -38,13 +38,26 @@ export function formatDuration(minutes: number): string {
   return parts.join(' ');
 }
 
-/* Waits you can walk away from. */
+/*
+ * Waits you can walk away from.
+ *
+ * The pressure-cooker words are the sealed wait by definition — the lid is locked, so there is
+ * nothing a cook could do at the pot even if they stood there. `pressure` is listed bare as well
+ * as compounded, because it is the word an unnamed timer's step reliably carries ("cook at high
+ * pressure 35 min"), and it appears nowhere in the 514 files today, so it has no prose meaning
+ * here to lie about. `release` is deliberately NOT here on its own: "what makes the shell
+ * release" (ajitama) and "until the mushrooms release their liquid" are hands doing work, which
+ * is the trap NOT_A_VERB_IN_A_SENTENCE below exists for. Same for `seal`, which is twenty-two
+ * dumpling and empanada edges.
+ */
 const UNATTENDED = new Set([
   'rise', 'prove', 'proof', 'ferment', 'rest', 'chill', 'cool', 'freeze', 'set',
   'marinate', 'brine', 'soak', 'steep', 'bake', 'roast', 'braise', 'simmer', 'steam',
   'boil', 'slowcook', 'infuse', 'dry', 'cure', 'age', 'refrigerate', 'overnight',
   'leave', 'stand', 'sit', 'blindbake', 'parbake', 'prebake', 'autolyse', 'retard',
   'thaw', 'defrost', 'macerate', 'wilt', 'drain', 'press', 'smoke', 'stew', 'poach',
+  'pressure', 'pressurecook', 'pressurecooking', 'pressurerelease', 'naturalrelease',
+  'naturalpressurerelease', 'quickrelease', 'cometopressure', 'keepwarm',
 ]);
 
 /* Time you have to be there for, so an author can say so outright rather than by omission. */
