@@ -5,7 +5,7 @@ title: open-the-three-shelves
 type: task
 status: open
 priority: critical
-phase: ready
+phase: implement
 depends_on: []
 ---
 
