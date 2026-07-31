@@ -159,21 +159,23 @@ $ node scripts/check-recipes.mjs --labels recipes/soups/new-england-clam-chowder
 ## Publishing
 
 The site is static, and `.github/workflows/deploy.yml` publishes it to GitHub Pages on every
-push to `main`. Turn it on once, in **Settings → Pages → Source → GitHub Actions**. After
-that it lands at `https://johnhkchen.github.io/tabular-recipes/`.
+push to `main`. It lands at **https://recipes.b28.dev/**.
 
 The job runs `npm run verify` before it publishes, so a recipe that would not draw a table
 fails the deploy instead of reaching a reader.
 
-Two details worth knowing if you change hosting:
+Three details worth knowing if you change hosting:
 
-- **The base path.** Because it is a project page, every internal link needs the
-  `/tabular-recipes/` prefix. Links go through `url()` in `src/lib/url.ts` rather than being
-  written by hand, and the prefix comes from `SITE_BASE` in the workflow. `npm run dev` uses
-  the same prefix, so local URLs look like `localhost:4321/tabular-recipes/`.
-- **Moving to a custom domain**, say `recipes.b28.dev`: put the domain in `public/CNAME`, set
-  `SITE_URL` to `https://recipes.b28.dev` and `SITE_BASE` to `/` in the workflow. Nothing
-  else changes.
+- **The domain lives in two places.** `public/CNAME` is what GitHub reads to serve the site
+  there, and `SITE_URL` in the workflow is what Astro uses to write absolute URLs. They have
+  to agree. DNS is a `CNAME` record at Cloudflare, `recipes` → `johnhkchen.github.io`, set to
+  **DNS only** — proxying it puts Cloudflare's certificate in front of GitHub's and the two
+  fight over the handshake.
+- **The base path** is `/`, because a custom domain serves from its own root. Links still go
+  through `url()` in `src/lib/url.ts` rather than being written by hand, so serving the site
+  under a path again is a one-line change: set `SITE_BASE` in the workflow.
+- **Reverting to the project page** means `SITE_URL: https://johnhkchen.github.io`,
+  `SITE_BASE: /tabular-recipes`, and deleting `public/CNAME`.
 
 `public/.nojekyll` has to stay — without it GitHub ignores Astro's `_astro/` directory and
 the site loads with no CSS.

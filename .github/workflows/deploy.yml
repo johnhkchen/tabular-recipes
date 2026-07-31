@@ -22,10 +22,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      # The project page URL. For a custom domain, set these to the domain and "/",
-      # and add public/CNAME.
-      SITE_URL: https://johnhkchen.github.io
-      SITE_BASE: /tabular-recipes
+      # The custom domain, which also lives in public/CNAME. A domain serves from its
+      # root, so the base is "/". For a project page instead, this would be
+      # https://johnhkchen.github.io and /tabular-recipes.
+      SITE_URL: https://recipes.b28.dev
+      SITE_BASE: /
     steps:
       - uses: actions/checkout@v7
 
