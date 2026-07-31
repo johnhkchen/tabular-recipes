@@ -3,9 +3,9 @@ id: T-003-04
 story: S-003
 title: japanese-home-cooking
 type: task
-status: open
+status: done
 priority: high
-phase: ready
+phase: done
 depends_on: [T-003-01, T-003-02]
 ---
 
