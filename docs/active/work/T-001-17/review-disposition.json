@@ -1,0 +1,7 @@
+{
+  "disposition": "note",
+  "reason": null,
+  "criterion_quote": "`npx vitest run` passes, including the aisle-coverage test.",
+  "evidence_citation": "docs/active/work/T-001-17/review.md",
+  "summary": "The aisle-coverage test passes, but three other tests were already failing before this ticket and can only be fixed in files this ticket is not allowed to change."
+}

@@ -3,9 +3,9 @@ id: T-001-17
 story: S-001
 title: shelve-and-place
 type: task
-status: open
+status: done
 priority: high
-phase: ready
+phase: done
 depends_on: [T-001-02, T-001-03, T-001-04, T-001-05, T-001-06, T-001-07, T-001-08, T-001-09, T-001-10, T-001-11, T-001-12, T-001-13, T-001-14, T-001-15, T-001-16]
 ---
 
