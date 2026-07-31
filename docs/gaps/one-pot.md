@@ -6,9 +6,10 @@ already written *as* a one-pot recipe and simply has not been shelved that way.
 
 The list below is grounded in the `cookware` line each file already declares, not in its title.
 When a recipe says `Dutch oven`, `heavy pot`, `cast-iron skillet`, `cazuela`, `stockpot` or `wok`
-and says nothing else, the claim is the file's own. **86 recipes already qualify**, which makes
-this the second-largest shelf on the site before a single new word is written — and it is the
-reason six writers should read this page before starting anything.
+and says nothing else, the claim is the file's own. **114 recipes already qualify** — which, with
+the Bowl Shop's 116, would make these two the largest shelves on the site before a single new word
+is written, ahead of the Bakery's 107. It is the reason six writers should read this page before
+starting anything.
 
 What is genuinely missing is smaller than it looks, and it is specific: the Louisiana line, the
 chicken-and-dumplings line, and the pans where the starch cooks in its own sauce.

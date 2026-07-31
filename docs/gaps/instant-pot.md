@@ -130,8 +130,8 @@ replaces, taken from the existing file.
 `white-cut-chicken`, `baked-turkey-wings`, `coq-au-vin`, `brunswick-stew`, `matzo-ball-soup`,
 `biryani`, `lo-mai-gai`, `chicken-feet`, `hummus` (a 45-minute chickpea simmer becomes 15).
 
-That is **57 existing dishes**, every one with a slug, and none of them needing a new recipe
-written from nothing.
+That is **58 existing dishes** named above, every one with a slug, and none of them needing a new
+recipe written from nothing.
 
 ---
 

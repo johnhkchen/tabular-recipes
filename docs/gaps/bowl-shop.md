@@ -3,7 +3,7 @@
 **0 recipes. The shelf was opened by T-002-01 and nothing is on it yet.** But the drawer under it
 is the fullest on the site: `recipes/dressings-and-dips/` holds **40 files**, and almost every one
 of them is a line on a bowl-shop board. Between the dressings, the grain dishes, the pickles and
-the crunchy toppings, **around 130 recipes already belong on this shelf**, and none of them needs
+the crunchy toppings, **116 recipes already belong on this shelf**, and none of them needs
 rewriting.
 
 What this counter is missing is not sauces. It is **the vegetables and the grains** — the middle
