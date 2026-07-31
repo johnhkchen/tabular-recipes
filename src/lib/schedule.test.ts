@@ -435,12 +435,34 @@ describe('the recipes with the longest critical path', () => {
     .map((recipe) => ({ slug: recipe.slug, schedule: buildSchedule(recipe) }))
     .sort((a, b) => b.schedule.totalMinutes - a.schedule.totalMinutes);
 
-  it('are the three ferments', () => {
-    expect(longest.slice(0, 3).map((r) => r.slug)).toEqual([
-      'sour-dill-pickles', // 2 hr soak → 3 weeks ferment → 2 days chill
-      'injera',            // 3 days ferment → 3 min on the pan
-      'pizza-dough',       // 8 min knead → 2 hr rise → 24 hr cold ferment
-    ]);
+  /*
+   * This used to name three slugs, and it was wrong within one ticket of being written and
+   * wrong again after every ticket since — the collection has more than doubled and each new
+   * pickle or cure displaces one of them. The property is what the three names were standing
+   * in for, and it survives the next twenty recipes.
+   *
+   * Today the three are sour-dill-pickles (2 hr soak → 3 weeks ferment → 2 days chill),
+   * sauerkraut (3 weeks at 18°C → 2 days in the fridge) and lime-pickle (7 days in the sun →
+   * 7 days more in the jar).
+   */
+  it('are ferments and cures, long from one named wait rather than from many steps', () => {
+    for (const { slug, schedule } of longest.slice(0, 3)) {
+      expect(schedule.totalMinutes, slug).toBeGreaterThan(7 * 24 * 60);
+
+      const onPath = schedule.tasks.filter((task) => schedule.criticalPath.includes(task.id));
+      const waiting = onPath
+        .filter((task) => task.attention === 'unattended')
+        .reduce((total, task) => total + task.minutes, 0);
+
+      // Nearly all of it is waiting. A long list of short jobs is a different animal.
+      expect(waiting / schedule.totalMinutes, slug).toBeGreaterThan(0.99);
+      // Three or four steps, not thirty: the length is in the waits, not in the work.
+      expect(onPath.length, slug).toBeLessThanOrEqual(6);
+      // And the author named every long one, rather than us reading it off a sentence.
+      for (const task of onPath.filter((t) => t.minutes >= 60)) {
+        expect(task.confidence, `${slug}: ${task.label}`).toBe('stated');
+      }
+    }
   });
 
   it('agree with what their authors claim, within a few percent', () => {
