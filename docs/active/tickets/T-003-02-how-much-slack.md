@@ -3,9 +3,9 @@ id: T-003-02
 story: S-003
 title: how-much-slack
 type: task
-status: open
+status: done
 priority: critical
-phase: research
+phase: done
 depends_on: []
 ---
 
