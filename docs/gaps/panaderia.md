@@ -1,59 +1,47 @@
 # Panadería — what is missing
 
-**8 recipes**, and six of them are shared with the Bakery. The shelf is the menu here, so the item
-names are the only vocabulary a customer ever learns — which makes a thin shelf worse at this counter
-than anywhere else. **The Pan Salado rack is completely empty**, and the Pan Dulce heading that one
-shop printed twenty-eight items under has three.
+**30 recipes, 17 of them only here.** The counter that had no menu of its own now has one: thirteen of
+the fourteen ranked pan dulce are written, both breads on the savoury rack are here, and the tray is
+worth carrying. `nixtamalised-masa` gives the tortillería side its first real item.
+
+What is missing is now **the fryer and the drinks**: churros and buñuelos, the two things a panadería
+sells hot, and café de olla. Everything left on the list is either fried, steamed in a husk, or poured.
 
 ---
 
 ## What it has
 
-**Pan Dulce.** cinnamon-rolls (rol de canela, roles de canela) · pan-de-muerto · russian-tea-cakes
-(shelved with *polvorones* in its aka)
+**Pan Dulce.** cinnamon-rolls · pan-de-muerto · russian-tea-cakes · conchas · cuernos · bigotes-de-pina · orejas · campechanas · polvorones-rosas · puerquitos · empanadas-de-pina · mantecadas · cubiletes-de-queso
 
-**Pan Salado.** — nothing.
+**Pan Salado.** bolillos · teleras
 
-**Cakes and flan, from the same counter.** tres-leches-cake · pound-cake (panqué) · flan (flan
-napolitano)
+**Cakes and flan, from the same counter.** tres-leches-cake · pound-cake · flan · chocoflan
 
-**The tortillería side.** corn-tortillas (tortilla taquera)
+**The tortillería side.** corn-tortillas · nixtamalised-masa · crema-mexicana · queso-fresco
 
-**Also here.** alfajores — a real item at a Latin bakery, though South American rather than Mexican.
+**Also here.** alfajores · sweet-tart-shell · pan-dulce-dough · costra-de-azucar · relleno-de-pina · hojaldre · piloncillo-syrup
 
 ---
 
 ## What it is missing
 
-1. **Concha** — vanilla, chocolate and pink strawberry. It was on every single list in every pass;
-   it is *the* panadería item, and it is not here. This is the most conspicuous single absence on the
-   whole site.
-2. **Bolillo** — and it is missing twice over, because the Taquería's tortas have nothing to be built
-   on and the entire savoury rack is empty.
-3. **Telera** — the other torta roll, flatter and creased into three. Boards print both.
-4. **Oreja** — puff pastry rolled in sugar. On every list.
-5. **Empanada de piña** (also de calabaza, de camote) — the fruit turnover, on every list.
-6. **Cuerno** (cuernito) — the softer, sweeter Mexican crescent.
-7. **Puerquito** (marranito, cochinito de piloncillo) — the pig cookie, on most lists.
-8. **Campechana** — the shattering sugar-glazed sheet.
-9. **Mantecada** — the fluted paper-cased muffin. pound-cake carries *panqué* in its aka but is a
-   different thing on the shelf.
-10. **Cubilete de queso** — the little baked cheese cup.
-11. **Bigote de piña** — the moustache roll.
-12. **Polvorón rosa** — specifically the pink one. russian-tea-cakes covers the white nut version;
-    the tinted crumbly disc is its own item and it is what is in the case.
-13. **Chocoflan** — flan is here; the shop's version baked in one tin with a chocolate cake so they
-    swap places is a separate board line.
-14. **Tamales** — sold from the same counter, in the same errand, and the reference records them under
+1. **Tamales** — sold from the same counter, in the same errand, and the reference records them under
     this heading.
-15. **Churros** — no fried dough anywhere in the collection.
-16. **Pan de elote** — the sweet corn cake.
-17. **Buñuelos** — seasonal, fried, sugared.
-18. **Gelatina** — the wall of coloured cups beside the register.
-19. **Capirotada** — the bread pudding with piloncillo, cheese and fruit.
-20. **Masa fresca** and **masa preparada** — sold by the pound when the shop is also a tortillería.
-21. **Tostadas** and **totopos** — the fried side of the tortilla rack.
-22. **Café de olla** or **atole / champurrado** — the drink, and there is no drink on the site at all.
+
+2. **Churros** — no fried dough anywhere in the collection.
+
+3. **Pan de elote** — the sweet corn cake.
+
+4. **Buñuelos** — seasonal, fried, sugared.
+
+5. **Gelatina** — the wall of coloured cups beside the register.
+
+6. **Capirotada** — the bread pudding with piloncillo, cheese and fruit.
+
+7. **Tostadas** and **totopos** — the fried side of the tortilla rack.
+
+8. **Café de olla** or **atole / champurrado** — the drink. `recipes/drinks/` now holds three, and
+   `ca-phe-sua-da` shows the shape a counter's own coffee takes.
 
 ---
 
@@ -65,17 +53,10 @@ napolitano)
 - **Pan dulce base dough** — one enriched, lightly sweet dough sits under conchas, cuernos, bigotes
   and roles. It must be its own recipe, because one dough feeding four breads is precisely the split
   the build refuses.
-- **Piloncillo syrup** — puerquitos, capirotada, buñuelos, café de olla. Unrefined cane sugar is what
-  the flavour of half this shelf actually is.
-- **Pineapple filling**, **calabaza filling**, **camote filling** — the three empanadas, and each is a
-  short cooked-down table.
 - **Cajeta / dulce de leche** — alfajores presumably makes it inline. On its own table it feeds
   bigotes, churros, alfajores and gelatina.
-- **Nixtamalised masa** — corn tortillas are here, almost certainly from masa harina. The nixtamal
-  itself (corn, cal, an overnight soak, a grind) is the tortillería's real product.
 - **Masa preparada** — masa beaten with lard and salt until it lightens. Tamales cannot start without
   it and the phrase is on the counter sign.
-- **Crema mexicana** and **queso fresco** — sold from the same case, and both are short tables.
 - **Orange-blossom sugar wash** — pan de muerto's finish.
 - **Tamal filling** (chile-braised pork or chicken, salsa verde).
 

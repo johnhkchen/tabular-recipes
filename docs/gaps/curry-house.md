@@ -1,95 +1,84 @@
 # Curry House — what is missing
 
-**15 recipes.** The bread section is genuinely good — four flatbreads, which is more than any other
-counter has of anything structural. **The curry section, which on a real board is a list of eight or
-ten sauces priced across four proteins, has two entries.** The chutney tray that arrives before
-anything else has none. And there are no starters at all.
+**47 recipes, every one of them only here** — the only counter on the site that borrows nothing. Eleven
+of the twelve ranked lines are written, the sauce list runs to ten, and `onion-tomato-masala` is the
+base nine of them stand on.
+
+What is missing is **the South Indian half**. Sambar, idli, coconut chutney, tamarind rice and rava
+kesari are all on the list, and the gap note's own reading is that they are a **Dosa Counter** rather
+than a curry-house shelf — they stand on a dosa/idli batter the build refuses to split four ways. That
+is a board decision, not a writing job. `dosa` is written; the batter under it is not shared.
 
 ---
 
 ## What it has
 
-**Starters and the tray.** — nothing.
+**Starters and the tray.** samosa · onion-bhaji · papadom · mango-chutney · lime-pickle · mint-chutney · raita · kachumber
 
-**Tandoori.** tandoori-marinade (a component; nothing is on the skewer)
+**Tandoori.** tandoori-marinade · chicken-tikka · seekh-kabab
 
-**The sauce list.** chicken-tikka-masala · chana-masala
+**The sauce list.** chicken-tikka-masala · chana-masala · balti · bhuna · butter-chicken · dansak · dopiaza · jalfrezi · karahi · korma · madras · passanda · patia · rogan-josh · vindaloo
 
-**Dal and vegetarian.** dal-tadka · kitchari
+**Dal and vegetarian.** dal-tadka · kitchari · palak-paneer
 
-**Rice.** lemon-rice (a tiffin item rather than the board's default rice)
+**Rice.** lemon-rice · biryani · pilau-rice
 
 **Breads.** naan · chapati · paratha · dosa
 
 **Sweets.** kheer
 
-**The spice shelf.** garam-masala · madras-curry-powder · berbere
+**The spice shelf.** garam-masala · madras-curry-powder · berbere · ginger-garlic-paste · vindaloo-paste · makhani-gravy · onion-tomato-masala · birista · paneer
 
-**Shelved here from the Ethiopian board.** doro-wat, and berbere above. The reference records
-"Ethiopian Platter" as an archetype found and deliberately not shelved, so these two are sitting at the
-nearest counter rather than at their own. Worth a maintainer's decision; `injera` landed at the
-Shawarma Counter, which splits the pair across two rooms.
+**Shelved here from the Ethiopian board.** doro-wat
 
 ---
 
 ## What it is missing
 
-1. **Butter chicken** (murgh makhani) — usually the mildest and most-ordered line on the board, and the
-   only thing here from that half of the list is tikka masala.
-2. **Korma** — the pale nut-thickened one, and the second name everybody knows.
-3. **Rogan josh** — Kashmiri chile, deep red, lamb.
-4. **Bhuna**, **dopiaza**, **jalfrezi**, **madras**, **vindaloo**, **dansak**, **karahi**, **balti**,
-   **passanda**, **patia** — the rest of the printed sauce list. Ten more lines. `madras-curry-powder`
-   is on the shelf with no madras under it.
-5. **Papadom** and the **chutney tray** — mango chutney, lime pickle, mint sauce, raw onion salad. Four
-   small dishes that arrive before you have ordered, and not one exists.
-6. **Raita** — the cooling one, and what you reach for when a vindaloo goes wrong.
-7. **Samosa** and **pakora / onion bhaji** — the starter section is empty and nothing is deep-fried
-   anywhere on the site.
-8. **Chicken tikka** — the marinade is written with nothing on the skewer. And **seekh kabab** beside it.
-9. **Biryani** — a printed section of its own, layered and sealed, not stirred.
-10. **Pilau rice** — the default rice with every curry. lemon-rice is the tiffin counter's.
-11. **Paneer** and **palak paneer** — the cheese is both a component and a menu word, and neither is here.
-12. **Saag aloo**, **bombay aloo**, **bhindi bhaji**, **aloo gobi**, **baingan bharta** — the vegetable
+1. **Saag aloo**, **bombay aloo**, **bhindi bhaji**, **aloo gobi**, **baingan bharta** — the vegetable
     column, five lines.
-13. **Garlic naan**, **keema naan**, **peshwari naan**, **tandoori roti**, **poori** — naan is here plain
+
+2. **Garlic naan**, **keema naan**, **peshwari naan**, **tandoori roti**, **poori** — naan is here plain
     and the section has six variants.
-14. **Sambar** — the tiffin counter's workhorse, poured alongside everything. `dosa` is written and
+
+3. **Sambar** — the tiffin counter's workhorse, poured alongside everything. `dosa` is written and
     arrives with two things, neither of which exists.
-15. **Coconut chutney** — the other of those two things.
-16. **Gulab jamun** — the dessert, soaked in rose-and-cardamom syrup.
-17. **Mango lassi** and **masala chai** and **filter kaapi** (Madras coffee, pulled between tumbler and
-    bowl) — three drinks, and the site has none.
-18. **Idli**, **medu vada**, **uttapam**, **rava dosa**, **ven pongal**, **curd rice**, **upma** — the
+
+4. **Coconut chutney** — the other of those two things.
+
+5. **Gulab jamun** — the dessert, soaked in rose-and-cardamom syrup.
+
+6. **Mango lassi** and **masala chai** and **filter kaapi** (Madras coffee, pulled between tumbler and
+    bowl) — three drinks. The site has three (`ca-phe-sua-da`, `egg-cream`, `milkshake`) and no hot one.
+
+7. **Idli**, **medu vada**, **uttapam**, **rava dosa**, **ven pongal**, **curd rice**, **upma** — the
     tiffin grid. If these accumulate, the reference says split out a **Dosa Counter**.
-19. **Tamarind rice** (puliyodarai) and **bisi bele bath**.
-20. **Rava kesari** or **mysore pak** — the sweet counter.
+
+8. **Tamarind rice** (puliyodarai) and **bisi bele bath**.
+
+9. **Rava kesari** or **mysore pak** — the sweet counter.
+
+10. **Naan, declared** — `naan` is written plain, and the gap note asks for a file that says which one it
+   is: a tandoor naan or a home-oven one. Garlic naan is a second file on top of that answer.
 
 ---
 
 ## Components it would need
 
-- **Onion-tomato masala base** — onions cooked down dark with ginger, garlic, tomato and spice. **This
-  is the single highest-value missing component at this counter**: it sits under bhuna, dopiaza,
-  jalfrezi, madras, vindaloo, karahi, balti and chana masala alike. One table, ten menu lines.
-- **Makhani gravy** — tomato, cashew, butter, cream. Butter chicken and tikka masala are the same gravy
-  with a different amount of butter, which is a fact worth one table.
-- **Ginger-garlic paste** — assumed by everything on the board, written nowhere.
-- **Paneer** — milk curdled with acid and pressed. It never melts, which is why it can be cubed.
 - **Cashew or almond paste** — korma, passanda.
 - **Kashmiri chile paste** — rogan josh's colour without its heat.
-- **Vindaloo paste** — vinegar and dried red chile, from Goa.
 - **Tamarind pulp** — dansak, patia, sambar, tamarind rice.
 - **Sambar powder** — a different blend from garam masala and from madras powder, and the difference is
   the point of having three.
 - **Dosa and idli batter** — `dosa` is written, so the batter exists inside it. It should be its own
   table, because the same fermented batter becomes dosa, uttapam and set dosa, and (ground differently)
   idli. See below.
-- **Birista** — onions fried to near-black. Biryani's layer, and mujaddara's at the Shawarma Counter.
 - **Ghee** — and the **tadka** pour itself, which `dal-tadka` presumably does inline. The reference is
   emphatic that the tadka is the pour, not an ingredient.
-- **Mango chutney**, **lime pickle**, **mint chutney**, **tamarind chutney** — four tables, all short.
 - **Chai masala**.
+- **A shared onion-tomato masala, actually consumed** — `onion-tomato-masala` exists and
+  `chana-masala` still derives its own inline across steps 2 to 4. Recorded by T-001-09 §5, unfixed:
+  it is a rewrite of a dish, not an edit to a metadata line.
 
 ---
 

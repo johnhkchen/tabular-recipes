@@ -1,57 +1,42 @@
 # Smokehouse — what is missing
 
-**5 recipes**, and they are the rubs, the brine and the sauce. **Nothing has been in the smoke.** This
-counter sells meat by weight and by cut out of a pit; what is written is everything you put *on* the meat and
-none of the meat. It is the clearest instance of the pattern that runs through the whole collection:
-components are well covered and the thing they are for is absent.
+**21 recipes, 14 of them only here.** The pit has eight things on it, both sauces are written, and the
+old header's two complaints are gone: there is cornbread — two of them — and there is a hushpuppy.
+
+What is missing is **the regional sauce set** and one meat: Alabama white, Carolina mustard and Kansas
+City thick are three tables that each unlock a printed line, and there is no smoked sausage. The
+brisket carries its salt-and-pepper rub inline, which is the whole of that rub; a separate file would
+be one ingredient row and a whisk.
 
 ---
 
 ## What it has
 
-**From the pit.** — nothing.
+**From the pit.** smoked-brisket · burnt-ends · chopped-pork · smoked-pork-ribs · rib-tips · smoked-chicken · smoked-turkey-breast · smoked-bologna
 
-**Sauce on the table.** barbecue-sauce (the sweet tomato one)
+**Sauce on the table.** barbecue-sauce · barbecue-dip
 
 **Rubs and brines.** memphis-dry-rub · jerk-marinade · turkey-brine
 
-**Sides.** boston-baked-beans (a New England molasses bean rather than a pit bean, but the closest thing here)
+**Sides.** boston-baked-beans · coleslaw · barbecue-slaw · brunswick-stew
 
-**Bread.** — nothing. There is no cornbread and no hushpuppy on the site.
+**Bread.** skillet-cornbread · hot-water-cornbread · hush-puppies
 
-**Dessert.** — nothing, and banana pudding is on the dessert list of nearly every pit.
+**Dessert.** banana-pudding
 
 ---
 
 ## What it is missing
 
-1. **Chopped pork** — smoked shoulder off the bone and cut up. In North Carolina the menu word is simply
-   "barbecue", which is why those boards offer Chopped, Coarse Chopped and Sliced with no noun after them.
-   Both vocabularies belong in one recipe's `aka`, and neither exists.
-2. **Sliced brisket** — and the lean/moist distinction, which is a customer instruction rather than two
-   recipes: same brisket, different end.
-3. **Pork ribs**, St. Louis cut — dry (rub, no sauce) and wet.
-4. **Burnt ends** — the point half cubed and returned to the smoke until the edges candy.
-5. **The dip** — the thin ketchup-vinegar-pepper sauce that comes to the table in a cup, and gets used on the
-   fries and the hushpuppies too. `barbecue-sauce` is the sweet one; this is a different sauce and the
-   reference treats it as the more important of the two.
-6. **Barbecue slaw** (red slaw) — cabbage dressed with the sauce instead of mayonnaise — and **white slaw**
-   beside it. Boards list them together and neither exists.
-7. **Hush puppies** — served in place of bread and dunked in the sauce. Nothing on the site is deep-fried.
-8. **Banana pudding** — the one dessert the Smokehouse, the Diner and Meat and Three all share, and it is on
-   none of the three.
-9. **Cornbread** — required at two counters and written at neither.
-10. **Smoked chicken** and **smoked turkey** — the poultry half of a Tennessee board.
-11. **Smoked bologna** ("Oklahoma prime rib", bologna steak) — a whole log scored, glazed and smoked for
-    hours. Exactly the kind of item nobody would think to look up, which is what this site is for.
-12. **Brunswick stew** — sold by the cup off the side list.
-13. **Rib tips** — the pork answer to burnt ends.
-14. **Mac and cheese**, **potato salad**, **collard greens**, **pit beans** — the side list; one bean is here
-    and it is the wrong bean.
-15. **Smoked sausage / hot links**.
-16. **Coarse chopped** (outside brown, bark) — you ask for it by name, and it is a different item from chopped.
-17. **Peach cobbler** and **pecan pie** — the rest of the dessert list.
-18. **Sweet tea** — the drink. The site has none.
+1. **Smoked sausage / hot links**.
+
+2. **Pecan pie** — the rest of the dessert list. `peach-cobbler` is written; this one waits on a pie
+   shell being consumed rather than re-derived.
+
+3. **Sweet tea** — the drink. Three are written and not one of them is brewed and sweetened.
+
+4. **Mac and cheese** — `macaroni-and-cheese` is written and is shelved at Meat and Three only. Whether
+   it should also print here is a board judgement rather than an edit; both counters sell it.
 
 ---
 
@@ -67,8 +52,6 @@ components are well covered and the thing they are for is absent.
 - **A mop or spritz** — vinegar and juice, applied through the cook. It is a component that gets used ten
   times over twelve hours, which is a shape a table handles poorly and prose handles well.
 - **Rendered pit drippings / beef tallow** — for the brisket wrap and for seasoning the beans.
-- **Smoked pork stock** — a hock or the trimmings, simmered. The greens and the pit beans at every pit start
-  here, and it is the same component Meat and Three needs.
 - **Slaw dressing**, both ways — mayonnaise and vinegar — since the two slaws are the same cabbage.
 - **Vanilla custard and wafer layers** — banana pudding, and the Diner's case would take it too.
 

@@ -1,75 +1,69 @@
 # Thai Kitchen — what is missing
 
-**5 recipes**, and they are arranged in the least useful possible way: **the green curry is written and
-its paste is not; the red paste is written and its curry is not.** Curries are listed by colour on every
-board and one of five colours is here. There is no noodle dish, no salad, and no appetiser.
+**21 recipes, every one of them only here.** The asymmetry the old header led with is closed: all four
+curry colours are written and so are all four pastes. There are four noodle dishes, two salads, two
+soups and the rice under them.
+
+What is missing is **the sweet end and the drinks**, and the two noodle dishes with a story — khao soi
+and rad naa. Three older files here still carry unnamed timers (`tom-kha-gai`, `coconut-rice`,
+`thai-green-curry`), and the collection still spells the same leaf two ways: `makrut lime` in the newer
+files, `kaffir lime` in `thai-green-curry`. Both were recorded by T-001-03 and neither is fixed.
 
 ---
 
 ## What it has
 
-**Appetisers.** — nothing.
+**Soups.** tom-kha-gai · tom-yum-goong
 
-**Soups.** tom-kha-gai
+**Salads (yum).** som-tum · larb-gai
 
-**Salads (yum).** — nothing.
+**Curries by colour.** thai-green-curry · thai-red-curry · thai-yellow-curry · panang-curry · massaman-curry
 
-**Curries by colour.** thai-green-curry (gaeng keow wan)
+**Noodles.** pad-thai · pad-see-ew · pad-kee-mao
 
-**Noodles.** — nothing.
+**Rice.** coconut-rice · pad-krapow
 
-**Rice.** coconut-rice
+**The shelf.** thai-red-curry-paste · thai-green-curry-paste · thai-yellow-curry-paste · panang-curry-paste · massaman-curry-paste · pad-thai-sauce
 
-**The shelf.** thai-red-curry-paste
-
-**Shelved here from a neighbouring board.** beef-rendang — Malay/Indonesian rather than Thai. A real
-item at a roti stall or a Malaysian kitchen; the reference lists **Roti Stall** and **Kopitiam** among
-the archetypes found and not shelved, so it is sitting at the nearest counter.
+**Shelved here from a neighbouring board.** beef-rendang
 
 ---
 
 ## What it is missing
 
-1. **Pad thai** — the most-ordered Thai dish anywhere, and **there is no noodle dish on the whole site**.
-2. **Red curry** (gaeng dang / gaeng ped) — the paste is written with no curry under it, which is the
-   most fixable asymmetry on this page.
-3. **Yellow curry** (gaeng karee), **panang**, **massaman** — the other three colours. The colours *are*
-   the section.
-4. **Tom yum** — the clear fierce sour-hot one with no coconut milk. tom-kha-gai is here, and the two are
-   always printed as a pair.
-5. **Pad see-ew** and **pad kee mao** (drunken noodles) — the wide-noodle pair, one sweet and one hot.
-6. **Pad krapow** over rice with a crisp-edged fried egg — the lunch plate the whole country eats.
-7. **Som tum** (green papaya salad) — pounded in a mortar, Thai style with peanuts or Lao style with
-   fermented fish.
-8. **Larb** — and **yum nam tok**, which is the same dressing on sliced grilled steak.
-9. **Khao pad** — Thai fried rice. coconut-rice is here; the fried one is on every board.
-10. **Curry puffs**, **tod mun pla** (fish cakes), **satay with peanut sauce**, **fresh spring rolls**,
+1. **Khao pad** — Thai fried rice. coconut-rice is here; the fried one is on every board.
+
+2. **Curry puffs**, **tod mun pla** (fish cakes), **satay with peanut sauce**, **fresh spring rolls**,
     **fried spring rolls**, **chicken wings** — the entire appetiser list.
-11. **Khao soi** — northern coconut curry noodles with crisp noodles on top and pickled mustard green.
-12. **Rad naa** — the same wide noodles charred first then flooded with pale gravy.
-13. **Mango sticky rice** — the dessert, on every board.
-14. **Thai iced tea** (cha yen) — the drink, and the site has none.
-15. **Kai jeow** — the puffed, crisp-edged Thai omelette over rice.
-16. **Yum woon sen** — glass noodle salad.
-17. **Prik king** — the dry red-curry-paste stir-fry with green beans.
-18. **Guay tiew nam** — rice noodle soup, and *guay tiew reua* (boat noodles) beside it.
-19. **SF garlic noodles** — a San Francisco invention out of Vietnamese kitchens, printed on Thai boards
+
+3. **Khao soi** — northern coconut curry noodles with crisp noodles on top and pickled mustard green.
+
+4. **Rad naa** — the same wide noodles charred first then flooded with pale gravy.
+
+5. **Mango sticky rice** — the dessert, on every board.
+
+6. **Thai iced tea** (cha yen) — the drink. `ca-phe-sua-da` is the same shape at another counter.
+
+7. **Kai jeow** — the puffed, crisp-edged Thai omelette over rice.
+
+8. **Yum woon sen** — glass noodle salad.
+
+9. **Prik king** — the dry red-curry-paste stir-fry with green beans.
+
+10. **Guay tiew nam** — rice noodle soup, and *guay tiew reua* (boat noodles) beside it.
+
+11. **SF garlic noodles** — a San Francisco invention out of Vietnamese kitchens, printed on Thai boards
     right next to pad thai. One of the few genuinely local items in the whole reference.
-20. **Woon gati** — the two-layer coconut jelly.
-21. **Sticky rice, steamed** — mango sticky rice and larb both need it and it is its own item on the board.
+
+12. **Woon gati** — the two-layer coconut jelly.
+
+13. **Sticky rice, steamed** — mango sticky rice and larb both need it and it is its own item on the board.
 
 ---
 
 ## Components it would need
 
-- **Green curry paste** (prik gaeng keow wan) — fresh green chile, lemongrass, galangal, lime leaf,
-  shrimp paste. The written green curry makes it inline or assumes it; on its own table it matches the
-  red paste already here and closes the asymmetry.
-- **Yellow curry paste**, **panang paste**, **massaman paste** — three more, and each is one table that
-  unlocks one printed line.
 - **Nam prik pao** (roasted chile jam) — tom yum's depth, and a spoonful in half the stir-fries.
-- **Pad thai sauce** — tamarind, palm sugar, fish sauce, cooked down. This is the counter's
-  nobody-looks-it-up component: people search for "pad thai" and what they actually need is the ratio.
 - **Khao khua** (toasted ground sticky rice) — larb's grit, and unbuyable.
 - **Prik nam pla** and **prik nam som** — two of the four pots in the caddy on the table.
 - **Nam jim gai** (sweet chile sauce) — with everything fried.

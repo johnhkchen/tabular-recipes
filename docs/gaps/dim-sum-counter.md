@@ -1,61 +1,55 @@
 # Dim Sum Counter — what is missing
 
-**7 recipes**, and **not one of them is a dumpling.** This counter's menu is priced by the piece and
-marked "(3)" to an order; what it sells is steamer baskets. There is no steamed item here at all, and
-none of the Four Heavenly Kings — har gow, siu mai, char siu bao, dan tat — is written.
+**30 recipes, 20 of them only here.** All twelve ranked items are written, steamer and fryer both, and
+the roast-meat window has four things hanging in it. `beef-chow-fun` covers the noodle line.
+
+What is missing is **the trolley's second half**: the greens, the sweets and the fried breakfast.
+`youtiao` is the component two other gap notes also point at, and `gai lan` is still blocked on a
+decision nobody has made — the collection has no home for a plain plate of vegetables.
 
 ---
 
 ## What it has
 
-**Out of the steamer.** — nothing.
+**Out of the steamer.** har-gow · siu-mai · char-siu-bao · cheung-fun · xiao-long-bao · lo-mai-gai · chicken-feet · turnip-cake · taro-cake
 
-**Out of the fryer.** scallion-pancakes (cong you bing — a snack from the same case, griddled rather
-than fried)
+**Out of the fryer.** scallion-pancakes · wu-gok · ham-sui-gok · sesame-balls
 
-**Rice and noodle.** egg-fried-rice · congee (jook, plain)
+**Rice and noodle.** egg-fried-rice · congee · beef-chow-fun
 
-**Roast meats in the glass.** red-braised-pork-belly (hong shao rou — the closest thing here, though
-Shanghainese and braised rather than Cantonese and roasted)
+**Roast meats in the glass.** red-braised-pork-belly · char-siu · siu-yuk · soy-sauce-chicken · white-cut-chicken
 
-**The bakery case at the till.** chiffon-cake (its aka carries gai daan gou)
+**The bakery case at the till.** chiffon-cake · sweet-tart-shell · pineapple-bun · egg-custard-tart
 
-**Sweets.** mango-pudding
+**Sweets.** mango-pudding · lotus-seed-paste · red-bean-paste
 
-**The shelf.** chinese-five-spice-powder
+**The shelf.** chinese-five-spice-powder · ginger-scallion-oil
 
 ---
 
 ## What it is missing
 
-1. **Har gow** — the first of the Four Heavenly Kings, and the item the pleat count is judged by.
-   Nothing steamed exists here.
-2. **Siu mai** — the second King, and the easiest of the four to write.
-3. **Char siu bao** — the third King, steamed or baked.
-4. **Egg custard tart** (dan tat) — the fourth King. Missing at the Bakery too, and for the same
-   reason: no pastry shell exists on the site.
-5. **Char siu** — the roast-meat window's anchor, and a component of at least four other items across
-   three counters. If one thing gets written from this file, it should be this.
-6. **Siu yuk** (crispy-skin roast pork belly) and **soy sauce chicken** and **white cut chicken** — the
-   glass case with the birds hanging in it, empty.
-7. **Cheung fun** — plain, shrimp, beef, or wrapped around a fried cruller.
-8. **Turnip cake** (lo bak go) and **taro cake** (wu tau go) — steamed into a loaf, then sliced and
-   pan-fried, which is the counter's signature two-stage move.
-9. **Lo mai gai** — sticky rice steamed in a lotus leaf.
-10. **Xiao long bao** — Shanghainese, on most boards now.
-11. **Chicken feet** (fung zao) — the item that tells you the kitchen is serious.
-12. **Wu gok** (taro puff), **ham sui gok**, **sesame ball** (jin deui) — the fried basket, all three.
-13. **Chow fun** — dry-fried beef ho fun. **There is no noodle dish anywhere on the site.**
-14. **Gai lan with oyster sauce** — the green plate every table orders.
-15. **Wife cake** (lo po beng).
-16. **Youtiao** — the fried cruller, eaten beside congee and rolled inside cheung fun.
-17. **Congee with century egg and pork**, and **fish congee** — plain congee is written; the board
+1. **Gai lan with oyster sauce** — the green plate every table orders.
+
+2. **Wife cake** (lo po beng).
+
+3. **Youtiao** — the fried cruller, eaten beside congee and rolled inside cheung fun.
+
+4. **Congee with century egg and pork**, and **fish congee** — plain congee is written; the board
     sells it by its topping.
-18. **Dau fu fa** (tofu pudding), **red bean soup**, **almond jelly** — the sweet end of the trolley.
-19. **Lotus paste bun** and **custard bun** (lai wong bao) — the sweet steamed pair.
-20. **Two Choice / Three Choice over rice** — recorded below as something a table cannot hold, but the
+
+5. **Dau fu fa** (tofu pudding), **red bean soup**, **almond jelly** — the sweet end of the trolley.
+
+6. **Lotus paste bun** and **custard bun** (lai wong bao) — the sweet steamed pair.
+
+7. **Two Choice / Three Choice over rice** — recorded below as something a table cannot hold, but the
     *meats* it points at are all missing, which is the real gap.
-21. **Hot tea** — chrysanthemum or bo lei. Yum cha literally means drink tea and there is no drink here.
+
+8. **Hot tea** — chrysanthemum or bo lei. Yum cha literally means drink tea, and this counter pours nothing.
+
+9. **Wor tip** (鍋貼) — the pan-fried pot-sticker. `gyoza` is written and is shelved at the Ramen Shop,
+   where it belongs: this counter's dumpling is a different wrapper, a different fold and a different
+   name on the board. T-001-08 asked whether gyoza should be shelved here; this is the honest answer.
 
 ---
 
@@ -72,10 +66,8 @@ Shanghainese and braised rather than Cantonese and roasted)
   from every enriched dough written here.
 - **Cheung fun batter** — rice flour, wheat starch and tapioca, steamed in a thin sheet on a tray.
 - **Master stock** (lou sui) — soy sauce chicken's poaching liquid.
-- **Ginger-scallion oil** — white cut chicken's entire point, and a table in its own right.
 - **Sweetened soy** — poured over cheung fun.
 - **Chiu chow chile oil** and **XO sauce** — the two jars on the table.
-- **Red bean paste** and **lotus seed paste** — see the Bakery.
 - **Youtiao dough** — alkaline, rested overnight, stretched and fried in pairs.
 - **Glutinous rice, soaked and steamed** — lo mai gai, jin deui, ham sui gok.
 - **Dried shrimp and lap cheong** — bought, not made, but worth saying so: they are the savoury base of

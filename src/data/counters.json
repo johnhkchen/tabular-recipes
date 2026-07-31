@@ -517,7 +517,7 @@
       "categories": [],
       "sections": [
         {
-          "title": "Broths — the menu's first decision",
+          "title": "Broths",
           "items": [
             "tonkotsu-ramen",
             "shoyu-ramen",
@@ -756,7 +756,7 @@
       ],
       "sections": [
         {
-          "title": "The spit — three or four proteins",
+          "title": "The spit",
           "items": [
             "chicken-shawarma",
             "gyro-meat",
@@ -1076,7 +1076,7 @@
       ],
       "sections": [
         {
-          "title": "Breakfast all day — eggs, meats, potatoes",
+          "title": "Breakfast all day",
           "items": [
             "eggs-benedict",
             "western-omelette",

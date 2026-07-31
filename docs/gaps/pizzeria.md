@@ -1,71 +1,68 @@
 # Pizzeria — what is missing
 
-**22 recipes**, and the arrangement is almost comic: **six pasta sauces and no pasta; a pizza dough and a
-pizza sauce and no pizza.** This board is four shops stacked — slices out front, whole pies to order,
-heroes at the back, and a red-sauce dinner list — and what is written is the sauce shelf and the primi.
+**32 recipes, 26 of them only here.** Four pies are written, over two doughs and two sauces — and the
+raw crushed-tomato sauce a pie actually takes is written into `margherita` and `grandma-pie` as a
+branch, which is why `marinara-sauce` no longer answers to *pizza sauce*.
+
+What is missing is **the back of the shop**: the hero, the calzone, the baked-pasta list beyond ziti,
+and the sweets. Nothing here is stuffed, folded or built into a sandwich.
 
 ---
 
 ## What it has
 
-**By the slice.** — nothing.
+**By the slice.** margherita · white-pizza · grandma-pie · sicilian-pizza
 
-**Whole pies.** pizza-dough · marinara-sauce (the two halves of a pie, and no pie)
+**Whole pies.** pizza-dough · sicilian-pan-dough
 
-**The sauce shelf.** marinara-sauce · arrabbiata-sauce · puttanesca-sauce · vodka-sauce ·
-alfredo-sauce · bolognese · bechamel · beurre-blanc · basil-pesto
+**The sauce shelf.** marinara-sauce · arrabbiata-sauce · puttanesca-sauce · vodka-sauce · alfredo-sauce · bolognese · bechamel · beurre-blanc · basil-pesto
 
-**Primi.** mushroom-risotto · risotto-alla-milanese · polenta
+**Primi.** mushroom-risotto · risotto-alla-milanese · polenta · baked-ziti · fresh-egg-pasta
 
-**Secondi.** osso-buco
+**Secondi.** osso-buco · chicken-parmigiana · meatballs
 
 **Soup.** minestrone
 
-**Bread and flat things.** focaccia · socca
+**Bread and flat things.** focaccia · socca · garlic-knots
 
-**Salad dressings, for a salad that is not here.** caesar-dressing · ranch-dressing ·
-blue-cheese-dressing
+**Salad dressings, for a salad that is not here.** caesar-dressing · ranch-dressing · blue-cheese-dressing
 
-**Sweets.** panna-cotta · zabaglione (both the trattoria's rather than the slice shop's)
-
-**Fried appetisers.** — nothing.
+**Sweets.** panna-cotta · zabaglione
 
 ---
 
 ## What it is missing
 
-1. **A cheese pie / Margherita** — the dough is written, the sauce is written, and the pizza is not. This
-   is the most conspicuous absence on the site: two components and no item.
-2. **Sicilian** and **Grandma pie** — the square pair. The reference notes they are sold beside each other
-   and that being sold beside each other is the only reliable way to tell them apart, which makes them a
-   pair worth writing together.
-3. **White pizza** (pizza bianca) — no tomato, ricotta and garlic.
-4. **Baked ziti** — the red-sauce dinner list's anchor. **No baked pasta exists on the site.**
-5. **Chicken parmigiana** — and eggplant, veal, meatball and shrimp, since "parm" applies across all five
-   equally.
-6. **Meatballs** — under the spaghetti, in the hero, and on the parm plate.
-7. **Fresh egg pasta** — and a properly written plate of dried pasta. Six sauces are here with nothing to
-   put them on, which is the clearest single fix on this page.
-8. **Garlic knots** — from the same dough as everything else, and one of the two things everybody adds to
-   an order.
-9. **Calzone** and **stromboli** — the folded and the rolled.
-10. **Eggplant rollatini** — the reference's third named dinner-list item.
-11. **Lasagna** — bechamel and bolognese are both already here.
-12. **Italian hero / the combo** — the hero section, and the reference notes which word the board uses
+1. **Calzone** and **stromboli** — the folded and the rolled.
+
+2. **Eggplant rollatini** — the reference's third named dinner-list item.
+
+3. **Lasagna** — bechamel and bolognese are both already here.
+
+4. **Italian hero / the combo** — the hero section, and the reference notes which word the board uses
     tells you what city you are in (see also the Deli).
-13. **Chicken wings**, **mozzarella sticks**, **jalapeño poppers**, **garlic fries** — the fried appetiser
+
+5. **Chicken wings**, **mozzarella sticks**, **jalapeño poppers**, **garlic fries** — the fried appetiser
     section that has nothing to do with Italy, and nothing on the site is fried.
-14. **Arancini** — two risottos are written, and this is what a pizzeria does with them the next day.
-15. **Pasta e fagioli** — the thick bean-and-pasta soup.
-16. **Cannoli**, **tiramisu**, **zeppole**, **Italian ice** — the dessert case. zeppole in particular is
+
+6. **Arancini** — two risottos are written, and this is what a pizzeria does with them the next day.
+
+7. **Pasta e fagioli** — the thick bean-and-pasta soup.
+
+8. **Cannoli**, **tiramisu**, **zeppole**, **Italian ice** — the dessert case. zeppole in particular is
     the fryer's dessert made from the same dough as everything else, which is a nice thing for a table to
     show.
-17. **Chopped antipasto salad** or **house salad** — three dressings are written with nothing to dress.
-18. **Saltimbocca**, **chicken piccata**, **veal marsala** — the trattoria's secondi.
-19. **Tomato pie** (Trenton) — built cheese-first with the sauce on top, and Philadelphia's is a different
+
+9. **Chopped antipasto salad** or **house salad** — three dressings are written with nothing to dress.
+
+10. **Saltimbocca**, **chicken piccata**, **veal marsala** — the trattoria's secondi.
+
+11. **Tomato pie** (Trenton) — built cheese-first with the sauce on top, and Philadelphia's is a different
     thing again. A good `aka` case.
-20. **Vodka slice** — the sauce is written; the slice is a board line of its own.
-21. **Sfincione** — the Palermo square with onion, anchovy and breadcrumb.
+
+12. **Vodka slice** — the sauce is written; the slice is a board line of its own.
+
+13. **Sfincione** — the Palermo square with onion, anchovy and breadcrumb.
 
 ---
 
@@ -77,8 +74,6 @@ blue-cheese-dressing
 - **Uncooked crushed-tomato pizza sauce** — `marinara-sauce` is a *cooked* sauce. A Neapolitan pie uses raw
   crushed tomato that cooks in the oven, and using marinara instead is precisely why home pizza tastes
   stewed. Two tables, and the difference is the recipe's point.
-- **Sicilian pan dough** — high hydration, proofed in an oiled tray. `pizza-dough` is one dough and the
-  square pies need another; one dough cannot be split into a round and a tray anyway.
 - **Meatball mix** — three meats, a bread panade, and the choice of fried or baked before it goes in sauce.
 - **The breading standard** — flour, egg, seasoned crumb. Every parm, every cutlet, mozzarella sticks.
 - **Seasoned breadcrumbs** — and sfincione's topping.

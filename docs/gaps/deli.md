@@ -1,73 +1,73 @@
 # Deli — what is missing
 
-**38 recipes**, the third-largest counter, and **the slicer is empty.** This is the counter where things
-are sliced, spread and sold by weight — and what is written is the bread rack and the spread case. There
-is no cured meat, no smoked fish, no salad-by-the-pound, no sandwich, and **not one pickle**, which at
-this counter is the barrel by the register.
+**62 recipes, 24 of them only here.** The slicer, the smoked-fish case, the salads-by-the-pound
+list, the barrel and the spread case are all stocked — pastrami and corned beef off one cure,
+belly lox, five salads, the sour dill, the sauerkraut, the schmaltz and the cream cheese.
+
+What is missing is **ranks 12 to 25**, which are a coherent next ticket in three parts: the Italian
+side (roast pork with broccoli rabe, hot pepper relish, Dutch crunch, swirl rye), the Polish side
+(pierogi, kiełbasa, Leberkäse, kasha varnishkes) and the appetizing herrings. `egg-cream` is written
+and is the site's third drink.
 
 ---
 
 ## What it has
 
-**The bread rack.** bagels · baguette · challah · chocolate-babka · ciabatta · deli-rye-bread ·
-white-sandwich-bread · whole-wheat-sandwich-bread
+**The bread rack.** bagels · baguette · challah · chocolate-babka · ciabatta · deli-rye-bread · white-sandwich-bread · whole-wheat-sandwich-bread
 
-**Spreads and dressings sold by the tub.** hummus · baba-ganoush · guacamole · romesco · basil-pesto ·
-chimichurri · aioli · mayonnaise · basic-vinaigrette · caesar-dressing · green-goddess-dressing ·
-honey-mustard-dressing
+**The sandwich board.** club-sandwich · grilled-cheese · tuna-melt
 
-**Soups.** borscht · butternut-squash-soup · caldo-verde · chicken-noodle-soup · minestrone ·
-potato-leek-soup · split-pea-soup
+**The slicer.** pastrami · corned-beef
 
-**The hot case.** hungarian-goulash
+**The smoked-fish case.** belly-lox · whitefish-salad
 
-**The sweet end.** new-york-cheesecake · honey-cake · marble-cake · sour-cream-coffee-cake ·
-chocolate-chip-cookies · oatmeal-raisin-cookies · rice-pudding
+**Salads by the pound.** chicken-salad · egg-salad · tuna-salad · macaroni-salad · potato-salad · coleslaw
+
+**Spreads and dressings sold by the tub.** hummus · baba-ganoush · guacamole · romesco · basil-pesto · chimichurri · aioli · mayonnaise · basic-vinaigrette · caesar-dressing · green-goddess-dressing · honey-mustard-dressing · pork-liver-pate · cream-cheese · scallion-schmear · chopped-liver · russian-dressing · schmaltz
+
+**The barrel.** sour-dill-pickles · sauerkraut
+
+**Soups.** borscht · butternut-squash-soup · caldo-verde · chicken-noodle-soup · minestrone · potato-leek-soup · split-pea-soup · chicken-broth · matzo-ball-soup
+
+**The hot case.** hungarian-goulash · potato-knish
+
+**The sweet end.** new-york-cheesecake · honey-cake · marble-cake · sour-cream-coffee-cake · chocolate-chip-cookies · oatmeal-raisin-cookies · rice-pudding
 
 **Also here.** blini · cranberry-sauce · mojo-marinade
-
-**Empty:** the slicer · the smoked-fish case · salads by the pound · the sandwich board · the pickle barrel.
 
 ---
 
 ## What it is missing
 
-1. **A pickle** — sour and half-sour dills, in brine, from the barrel. **Nothing in the entire collection
-   is pickled**, and at this counter the pickle is not a garnish, it is a product line. Start here.
-2. **Pastrami on rye** — the deli's signature and the item most people would search the site for. Beef
-   navel brined, rubbed, smoked, steamed until it gives, hand-cut, mustard and nothing else.
-3. **Corned beef** — the same brine, a different finish — and **the Reuben**, and the **Rachel** beside it.
-4. **Russian dressing** — twelve dressings are written and the one the Reuben needs is not.
-5. **Coleslaw** — sold by the tub beside the pickles, and named in the reference for exactly that reason.
-6. **Matzoh ball soup** — seven soups are written and not this one. Floaters or sinkers, and people have
-   opinions.
-7. **Potato salad**, **macaroni salad**, **egg salad**, **tuna salad**, **chicken salad** — the
-   salads-by-the-pound case, which is what "sold by the tub" actually means here. Five lines, none written,
-   and `mayonnaise` is already on the site so all five are one step away.
-8. **Chopped liver** — chicken liver with onion and schmaltz, sold by weight, spread on rye.
-9. **Whitefish salad**, **schmear** (plain and scallion), **nova lox** — the appetizing side, which is the
-   exact mirror of the delicatessen and is empty. `bagels` are here with nothing to put on them.
-10. **Sauerkraut** — the Reuben needs it, and it is the site's second obvious ferment.
-11. **Knish** — and the reference's own note that the square baked one and the round fried one are two
-    different foods under one word, which is a good reason to write both.
-12. **Italian combo / hoagie** — "#1 Italian Combo" on the board, and the reference records eleven regional
+1. **Italian combo / hoagie** — "#1 Italian Combo" on the board, and the reference records eleven regional
     names for the same sandwich. The best `aka` line available anywhere on this site.
-13. **Philly cheesesteak** — wit or witout.
-14. **Italian roast pork with broccoli rabe** — and **broccoli rabe** on its own, sold by the pound from the
+
+2. **Philly cheesesteak** — wit or witout.
+
+3. **Italian roast pork with broccoli rabe** — and **broccoli rabe** on its own, sold by the pound from the
     hot case.
-15. **Hot pepper relish** (hoagie spread, long hots) — what keeps a cold sandwich from tasting flat.
-16. **Dutch crunch roll** — the default San Francisco sandwich bread, and a bread this collection would be
+
+4. **Hot pepper relish** (hoagie spread, long hots) — what keeps a cold sandwich from tasting flat.
+
+5. **Dutch crunch roll** — the default San Francisco sandwich bread, and a bread this collection would be
     glad of: a rice-flour paste painted on before baking so the top cracks.
-17. **Swirl rye** (marble rye) — `deli-rye-bread` is here; the marbled loaf in the case is a different item.
-18. **Kasha varnishkes**, **kishka**, **noodle kugel**, **blintzes** — the hot case, four lines.
-19. **Pierogi**, **uszka**, **żurek**, **bigos** — the Polish side. borscht is here alone.
-20. **Kiełbasa biała** and **kiełbasa wiejska** — the fresh one you poach and the smoked horseshoe.
-21. **Leberkäse** — baked in a pan, sliced thick, eaten warm. Writable, unlike the dry sausages.
-22. **Pickled herring in cream** and **schmaltz herring**.
-23. **Sloppy Joe (New Jersey)** — a *cold* triple-decker on thin rye, no ground beef, no relation to the
+
+6. **Swirl rye** (marble rye) — `deli-rye-bread` is here; the marbled loaf in the case is a different item.
+
+7. **Kasha varnishkes**, **kishka**, **noodle kugel**, **blintzes** — the hot case, four lines.
+
+8. **Pierogi**, **uszka**, **żurek**, **bigos** — the Polish side. borscht is here alone.
+
+9. **Kiełbasa biała** and **kiełbasa wiejska** — the fresh one you poach and the smoked horseshoe.
+
+10. **Leberkäse** — baked in a pan, sliced thick, eaten warm. Writable, unlike the dry sausages.
+
+11. **Pickled herring in cream** and **schmaltz herring**.
+
+12. **Sloppy Joe (New Jersey)** — a *cold* triple-decker on thin rye, no ground beef, no relation to the
     school-lunch version. Worth writing for the disambiguation alone.
-24. **Egg cream** — milk, seltzer and chocolate syrup, no egg and no cream. The site has no drink.
-25. **Farmer cheese** — a component and a case item both.
+
+13. **Farmer cheese** — a component and a case item both.
 
 ---
 
@@ -79,12 +79,7 @@ chocolate-chip-cookies · oatmeal-raisin-cookies · rice-pudding
 - **Pastrami rub and the steam finish** — cracked black pepper and coriander, then steamed until it gives.
   Those two operations are the entire difference between pastrami and corned beef, which is worth a table
   saying out loud.
-- **Russian dressing** — see above.
-- **Clear chicken broth** — golden, skimmed, unthickened. `chicken-noodle-soup` is here but the broth on its
-  own sits under matzoh ball soup, kreplach and half the case.
 - **Matzo balls** — and the schmaltz that makes them work.
-- **Schmaltz and gribenes** — chopped liver, kishka, matzo balls, roast potatoes.
-- **Cream cheese** and the **schmear** variants — plain, scallion, vegetable, lox.
 - **Farmer cheese** — blintzes and rugelach fillings both want it, and the reference lists it as a
   by-the-pound item in its own right.
 - **Knish dough** — stretched thin — and **potato filling** and **kasha filling**.

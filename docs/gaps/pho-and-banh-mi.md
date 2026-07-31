@@ -1,63 +1,54 @@
 # Phở & Bánh Mì — what is missing
 
-**1 recipe.** The emptiest counter on the site, and the one the project's own worked example comes
-from: someone who ate a "#1 combo bánh mì" and wants to recreate the pâté does not know to search for
-"pork liver pâté". **That pâté is not here. Neither is the bread, the pickle, the pork loaf, or the
-broth.** Every section of this board is empty except one.
+**18 recipes, 16 of them only here** — up from one. The counter this project's own worked example is
+drawn from now has three phở, three bánh mì and the bread under them, the pâté, the đồ chua and the
+nước chấm, plus the iced coffee.
+
+The old header's two complaints are both gone: the pâté and the đồ chua are written. What is left is
+**ranks 13 to 22**, worked in order and stopped at twelve. Two are worth doing first — **bì**, because
+it needs thính, a component nothing else on the site has, and **giò thủ**, which the reference calls
+exactly the kind of thing this site exists to record.
 
 ---
 
 ## What it has
 
-**Appetisers / plates (A).** banh-xeo (bánh xèo — the sizzling crepe, a real board item though more
-often a plate than a starter)
+**Appetisers / plates (A).** banh-xeo · cha-gio · goi-cuon
 
-**Phở (P).** — nothing.
-**Bún (B).** — nothing.
-**Cơm (C).** — nothing.
-**Bánh mì (S).** — nothing.
-**The cold case and drinks.** — nothing.
+**Phở (P).** pho-bo · pho-ga · pho-broth
+
+**Bún (B).** bun-thit-nuong · nuoc-cham
+
+**Cơm (C).** com-tam
+
+**Bánh mì (S).** pork-liver-pate · do-chua · char-siu · banh-mi-dac-biet · banh-mi-thit-nuong · banh-mi-khong · xiu-mai
+
+**The cold case and drinks.** cha-lua · ca-phe-sua-da
 
 ---
 
 ## What it is missing
 
-1. **Bánh mì đặc biệt** — item **#1** on four of the five numbered boards read. This is the order most
-   people mean when they say "the combo one", and it is the single most conspicuous absence on the
-   entire site.
-2. **Pâté** (pork liver pâté, bò pâté) — the project's own example of the component nobody can name.
-   No menu says what is in it, it is the first thing smeared on the bread, and it is what makes a bánh
-   mì taste like a bánh mì. Write this first.
-3. **Đồ chua** — carrot and daikon in sweetened vinegar. **Menus print this one in English**, so
-   searchers arrive with the exact words, and there is nothing to find. It is also the site's only
-   plausible first pickle: nothing in the collection is pickled.
-4. **Phở bò** — the broth: charred onion and ginger, parboiled bones, a spice sachet, hours. And
-   **phở gà** beside it.
-5. **Chả lụa** (pork roll, giò lụa) — sliced thin into the sandwich and sold whole by the roll.
-6. **Bánh mì thịt nướng** — grilled lemongrass pork, the second-most-ordered sandwich on every board.
-7. **Bún thịt nướng** — the cool vermicelli bowl with herbs and pickles, which is not a soup and is a
-   printed section of its own.
-8. **Nước chấm** — the fish-sauce dressing under bún, gỏi cuốn and chả giò alike. One table, three
-   sections.
-9. **Chả giò** (fried rolls) and **gỏi cuốn** (fresh rolls) — the appetiser section, and the reference
-   notes "spring roll" means one at some shops and the other elsewhere, so both names are load-bearing.
-10. **Cơm tấm** with a grilled pork chop — broken rice, the classic plate.
-11. **Cà phê sữa đá** — the counter's drink, dripped over condensed milk. There is **no drink recipe
-    anywhere on the site**, and this is the one people ask about.
-12. **Xíu mại** — soft pork meatballs in thin sweet tomato sauce, spooned in wet so the bread soaks.
-13. **Nem nướng** — grilled pork on a skewer, dry and springy, a different animal from xíu mại.
-14. **Bì** — fine-shredded pork and skin tossed with toasted rice powder.
-15. **Chả cá** — the dill fish cake.
-16. **Chả bông** (pork floss) — sprinkled on, and impossible to find under an English name.
-17. **Bò kho** — the beef stew you tear baguette into.
-18. **Bún bò Huế** — a different soup entirely: thick round noodles, lemongrass, fermented shrimp paste.
-19. **Pâté chaud** (bánh patê sô) — the puff-pastry pork pocket sold warm from the case.
-20. **Bánh mì ốp la** — with a fried egg, yolk soft.
-21. **Chè ba màu** — the three-colour glass, eaten with a spoon.
-22. **Thịt nguội** and **giò thủ** — the cold-cut set and the head cheese. Giò thủ is almost never
+1. **Nem nướng** — grilled pork on a skewer, dry and springy, a different animal from xíu mại.
+
+2. **Bì** — fine-shredded pork and skin tossed with toasted rice powder.
+
+3. **Chả cá** — the dill fish cake.
+
+4. **Chả bông** (pork floss) — sprinkled on, and impossible to find under an English name.
+
+5. **Bò kho** — the beef stew you tear baguette into.
+
+6. **Bún bò Huế** — a different soup entirely: thick round noodles, lemongrass, fermented shrimp paste.
+
+7. **Pâté chaud** (bánh patê sô) — the puff-pastry pork pocket sold warm from the case.
+
+8. **Bánh mì ốp la** — with a fried egg, yolk soft.
+
+9. **Chè ba màu** — the three-colour glass, eaten with a spoon.
+
+10. **Thịt nguội** and **giò thủ** — the cold-cut set and the head cheese. Giò thủ is almost never
     printed; it hides inside Đặc Biệt, which is exactly the kind of thing this site exists to record.
-23. **Bánh mì không** — the roll on its own. The item that tells you the shop bakes, and the component
-    everything else needs.
 
 ---
 
@@ -66,11 +57,6 @@ often a plate than a starter)
 - **The Vietnamese baguette** (bánh mì không) — lightened with rice flour, thin-crusted, nearly hollow,
   and **not the same bread as the `baguette` already on the site**. A French baguette makes a bad bánh
   mì and that is the whole point of writing this one separately.
-- **Pâté** — pork liver, fat, aromatics, cooked coarse and spreadable. Repeat: this is the one.
-- **Đồ chua**.
-- **Nước chấm** — fish sauce, lime, sugar, water, garlic, chile, in a ratio.
-- **Phở broth** — parboil the bones, char the onion and ginger, sachet the star anise and cassia,
-  simmer six hours, skim. A long unattended timer, well suited to a named `~simmer{6%hr}`.
 - **Lemongrass-and-sugar marinade** — thịt nướng, nem nướng, and the cơm tấm chop all use it.
 - **Thính** (toasted rice powder) — bì's entire texture, and unbuyable under an English name.
 - **Mỡ hành** (scallion oil) and **fried shallot** — over the rice plate and the grilled pork.

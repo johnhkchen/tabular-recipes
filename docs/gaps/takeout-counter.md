@@ -1,57 +1,62 @@
 # Takeout Counter — what is missing
 
-**5 recipes.** This is the most standardised board of any counter on the site — two menus from
-opposite ends of the country ran near-identical sections in near-identical order — which makes it the
-easiest counter to fill and the most obviously unfilled. **Of the fourteen printed sections, twelve are
-empty.** What is here is two sauces off the shelf, a fried rice, and an appetiser.
+**20 recipes, 15 of them only here.** Every numbered line at the front of the board is written — the
+two fried chickens, the lo mein, the beef and broccoli, the egg roll, the egg foo young, the crab
+rangoon, the soups and the mei fun. `char-siu` is the roast pork in all of them, and
+`chicken-broth` (written at the Deli) closes the plain-stock gap T-001-01 and T-001-04 both flagged as
+owned by nobody.
+
+What is missing is **the second column of the menu**: moo shu, moo goo gai pan, boneless spare ribs,
+pork fried rice, and the wrappers and sauces that would let them be written.
 
 ---
 
 ## What it has
 
-**Appetizer / Side Orders.** scallion-pancakes
+**Appetizer / Side Orders.** scallion-pancakes · crab-rangoon · egg-rolls
 
-**Fried Rice.** egg-fried-rice (its aka carries house fried rice and chow fan)
+**Soup.** egg-drop-soup · hot-and-sour-soup · wonton-soup
 
-**The sauce shelf.** sweet-and-sour-sauce · teriyaki-sauce
+**Lo Mein.** lo-mein
+
+**Egg Foo Young.** egg-foo-young
+
+**Fried Rice.** egg-fried-rice
+
+**Pork.** char-siu · sweet-and-sour-pork
+
+**Beef.** beef-with-broccoli
+
+**Chicken.** general-tsos-chicken · sesame-chicken · orange-chicken
+
+**Mei Fun.** singapore-mei-fun
+
+**The sauce shelf.** sweet-and-sour-sauce · teriyaki-sauce · house-brown-sauce
 
 **Spice.** chinese-five-spice-powder
-
-**Empty sections, as printed on the board:** Soup · Chow Mein / Chop Suey · Lo Mein · Egg Foo Young ·
-Vegetables · Pork · Beef · Seafood · Chicken · Mei Fun · House Specialties · Combination Platters.
 
 ---
 
 ## What it is missing
 
-1. **General Tso's chicken** — the single most-ordered item on this kind of board anywhere in the
-   country, printed as C16 at one shop and C12 at another. Its absence is the loudest thing here.
-2. **Sesame chicken** and **orange chicken** — the same fried chicken under two other glazes. Once the
-   fry is written, these are one operation apart.
-3. **Lo mein** — soft tossed wheat noodles. **There is no noodle dish anywhere on the site**, and this
-   is the section where three counters would each be glad of one.
-4. **Beef with broccoli** — the plain brown-sauce line every board carries.
-5. **Egg roll** — it comes *with* the combination platter, so it is on more plates than anything else
-   on the menu.
-6. **Hot and sour soup**, **egg drop soup**, **wonton soup** — the entire soup section, and the site has
-   sixteen soups elsewhere.
-7. **Egg foo young** and its **brown gravy** — a printed section of its own with nothing in it.
-8. **Crab rangoon** — American, not Burmese, and universally on the appetiser list.
-9. **Sweet and sour pork** — the sauce is written with nothing under it.
-10. **Mei fun** and **Singapore mei fun** — thin rice noodles, and the curry one that is not from
-    Singapore.
-11. **Moo shu pork**, with the **thin pancakes** and the **hoisin** to roll it yourself.
-12. **Roast pork** (char siu) — the strips in the fried rice and the lo mein. Missing at the Dim Sum
-    Counter too; one table serves both.
-13. **Boneless spare ribs**, with **duck sauce** and **hot mustard**.
-14. **Chicken with garlic sauce** (yu xiang) — the "fish fragrant" sauce with no fish in it.
-15. **Moo goo gai pan** and **kung pao chicken** and **Happy Family**.
-16. **Pork fried rice** — egg fried rice is here, but the rice that comes with the combo is the pork one.
-17. **Yat gaw mein** — the plain noodle soup, and worth writing for the aka alone, since the same word
+1. **Moo shu pork**, with the **thin pancakes** and the **hoisin** to roll it yourself.
+
+2. **Boneless spare ribs**, with **duck sauce** and **hot mustard**.
+
+3. **Chicken with garlic sauce** (yu xiang) — the "fish fragrant" sauce with no fish in it.
+
+4. **Moo goo gai pan** and **kung pao chicken** and **Happy Family**.
+
+5. **Pork fried rice** — egg fried rice is here, but the rice that comes with the combo is the pork one.
+
+6. **Yat gaw mein** — the plain noodle soup, and worth writing for the aka alone, since the same word
     names a completely different soup in New Orleans.
-18. **Pu pu platter** — a tray of the fried items, which is why the fried items come first.
-19. **Fortune cookie** / **almond cookie** — the dessert.
-20. **Chow mein, American-style** — a pale soupy stir-fry served with rice and a packet of crisp noodles,
+
+7. **Pu pu platter** — a tray of the fried items, which is why the fried items come first.
+
+8. **Fortune cookie** / **almond cookie** — the dessert.
+
+9. **Chow mein, American-style** — a pale soupy stir-fry served with rice and a packet of crisp noodles,
     which the reference is careful to say is not the dish the name means elsewhere.
 
 ---
@@ -61,8 +66,6 @@ Vegetables · Pork · Beef · Seafood · Chicken · Mei Fun · House Specialties
 - **Velveting slurry** — egg white, cornstarch, a pinch of baking soda, and a rest. It is the reason
   takeout chicken and beef are tender and it is the single thing home cooks most reliably do not know
   to look up.
-- **The house brown sauce** — soy, oyster sauce, stock, sugar, cornstarch. One table sits under a dozen
-  printed lines on this board.
 - **The house white sauce** — moo goo gai pan, seafood delight, the pale mild ones.
 - **A twice-fry batter** — cornstarch-heavy, fried once and again, which is how General Tso's stays
   crisp under a wet glaze.
@@ -71,9 +74,7 @@ Vegetables · Pork · Beef · Seafood · Chicken · Mei Fun · House Specialties
 - **Egg roll wrapper** and **egg roll filling** (cabbage and pork, cooked and cooled).
 - **Wonton wrapper** and **wonton filling** — wonton soup, crab rangoon, fried wontons.
 - **Mandarin pancakes** — moo shu.
-- **Char siu** — see the Dim Sum Counter.
 - **Crisp fried noodle strips** — the packet scattered on chow mein.
-- **Chicken stock, plain** — every soup on the board and the base of the brown sauce.
 
 ---
 
