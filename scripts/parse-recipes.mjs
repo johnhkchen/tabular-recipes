@@ -47,6 +47,14 @@ for (const file of files) {
 
 const slugs = new Set(recipes.map((r) => r.slug));
 
+/* ---- slack, which is a controlled vocabulary like the counters ------------ */
+
+for (const recipe of recipes) {
+  if (recipe.slackProblem) {
+    throw new Error(`${recipe.path}: ${recipe.slackProblem}`);
+  }
+}
+
 /* ---- counters ------------------------------------------------------------- */
 
 for (const recipe of recipes) {

@@ -60,6 +60,10 @@ for (const target of targets) {
       }
     }
 
+    // A level nobody agreed on, or a level with no reason. The message names the legal
+    // values, because the whole point of the field is that it can be read by a stranger.
+    if (recipe.slackProblem) problems.push(recipe.slackProblem);
+
     const grid = layout(buildTree(recipe));
     problems.push(...findTilingErrors(grid));
 

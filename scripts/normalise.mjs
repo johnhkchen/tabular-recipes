@@ -5,6 +5,7 @@
  */
 import { Parser } from '@cooklang/cooklang';
 import { splitList } from '../src/lib/meta.ts';
+import { readSlack } from '../src/lib/slack.ts';
 import { minutesOf, readTimers } from '../src/lib/time.ts';
 
 /* ---- quantity formatting -------------------------------------------------- */
@@ -202,9 +203,17 @@ export function normalise(source, { slug, path: relPath, folder }) {
   const dish = metadata.dish ?? slug;
   const kit = metadata.kit ?? null;
 
+  /*
+   * How much room the recipe leaves you. Authored, never worked out from the timers — a
+   * five-minute custard is less forgiving than a six-hour braise. A line that is there but
+   * not whole reads as no slack at all and hands back the reason why, which check-recipes
+   * prints and parse-recipes throws on, so a half-declared field never reaches a page.
+   */
+  const { slack, problem: slackProblem } = readSlack(metadata.slack);
+
   // Authoring directives and anything promoted to its own field are not recipe facts.
   const PROMOTED = new Set([
-    'title', 'category', 'tags', 'counters', 'dish', 'kit', 'aka', 'pairs-with',
+    'title', 'category', 'tags', 'counters', 'dish', 'kit', 'aka', 'pairs-with', 'slack',
   ]);
   for (const key of Object.keys(metadata)) {
     if (/^step\.\d+$/.test(key) || PROMOTED.has(key)) delete metadata[key];
@@ -220,6 +229,9 @@ export function normalise(source, { slug, path: relPath, folder }) {
     counters: splitList(recipe.raw_metadata?.map?.counters),
     dish,
     kit,
+    /** `>> slack: forgiving — an extra hour in the pot changes little`, or null. */
+    slack,
+    slackProblem,
     /*
      * What people call it when they order it. A cook looking for the pâté in their bánh mì
      * does not know to search for "pork liver pâté", so the menu vocabulary has to be
