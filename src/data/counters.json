@@ -292,7 +292,8 @@
         {
           "title": "Dessert",
           "items": [
-            "flan"
+            "flan",
+            "rice-pudding"
           ]
         }
       ]
@@ -1107,7 +1108,8 @@
             "hollandaise",
             "homemade-ketchup",
             "creamed-chipped-beef",
-            "hot-fudge"
+            "hot-fudge",
+            "cream-gravy"
           ]
         },
         {
@@ -1135,7 +1137,9 @@
             "hungarian-goulash",
             "chili-con-carne",
             "fried-chicken",
-            "tuna-noodle-casserole"
+            "tuna-noodle-casserole",
+            "country-fried-steak",
+            "meatloaf"
           ]
         },
         {
@@ -1189,7 +1193,8 @@
             "patty-melt",
             "pork-roll-egg-and-cheese",
             "smash-burger",
-            "tuna-melt"
+            "tuna-melt",
+            "tuna-salad"
           ]
         }
       ]

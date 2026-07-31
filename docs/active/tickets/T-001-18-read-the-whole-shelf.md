@@ -5,7 +5,7 @@ title: read-the-whole-shelf
 type: task
 status: open
 priority: high
-phase: ready
+phase: implement
 depends_on: [T-001-17]
 ---
 
