@@ -3,9 +3,9 @@ id: T-002-01
 story: S-002
 title: open-the-three-shelves
 type: task
-status: open
+status: done
 priority: critical
-phase: implement
+phase: done
 depends_on: []
 ---
 
