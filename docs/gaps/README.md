@@ -1,120 +1,168 @@
 # What each counter is missing
 
-One page per counter, written after all 241 recipes were assigned. Each file says what landed there
-grouped into the sections that counter's menu actually prints, what a place like that obviously sells and
-we do not have yet, which sub-recipes those dishes wait on, and which of its items a single table
+One page per counter, rewritten after the whole shelf was read at 514 recipes. Each file says what landed
+there grouped into the sections that counter's menu actually prints, what a place like that obviously sells
+and we do not have yet, which sub-recipes those dishes wait on, and which of its items a single table
 genuinely cannot hold.
 
 The vocabulary throughout comes from `docs/knowledge/counters.md`. Dish names are the names on real
 boards, because that is the way in.
 
+The `## What it has` block of each file is machine-read: `node scripts/menu-sections.mjs` parses it back
+into `src/data/counters.json`, and as of this pass it **reproduces that file byte for byte** rather than
+replacing it. Keep the `**Section title.** slug · slug` shape when you edit one, and keep the section
+titles free of an em-dash aside — the parser cuts a title at ` — `.
+
 ## Build state
 
-`npm run recipes` and `npx vitest run` both pass, unchanged. **Nothing needed repairing.** 241 recipes,
-12 categories, 311 counter assignments, 116 pairings made mutual, timers in 221 files, 0 orphans, 0
-counters inferred from category, 0 parser warnings, 269 tests green. No bad counter name, no pairing
-pointing at a missing slug, no recipe left uncounted.
+`npm run verify` passes end to end: 514 files draw a table, 514 recipes parse, 666 tests green, the site
+builds. 514 recipes, 27 categories, 623 counter assignments, 558 pairings made mutual, timers in 491
+files, 0 orphans, 0 counters inferred from category, 0 parser warnings, 0 duplicate slugs.
+
+Three things needed repairing, and none of them was visible from inside one folder:
+
+- **`ginger-garlic-paste` wrote its shelf life as a timer** (`~chill{3%weeks}` on a fifteen-minute paste),
+  which put a 21-day edge on the critical path and made it the third-longest recipe on the site.
+- **`lime-pickle` claimed 15 days** against two seven-day waits.
+- **`schedule.test.ts` named three slugs** that had been wrong since the third ticket of this story. It now
+  asserts the property those names stood for.
 
 ## The tally
 
 Counts of *assignments*, so a recipe at two counters is counted twice. "Only here" is how many of a
 counter's recipes are not also shelved somewhere else — the number that says whether a counter has a
-menu of its own or is borrowing one.
+menu of its own or is borrowing one. The **was** columns are the state this story started from.
 
-| Counter | Recipes | Only here | Missing dishes | Missing components |
-| --- | --: | --: | --: | --: |
-| [Bakery](bakery.md) | 91 | 58 | 22 | 15 |
-| [Diner](diner.md) | 43 | 17 | 20 | 10 |
-| [Deli](deli.md) | 38 | 7 | 25 | 14 |
-| [Meat and Three](meat-and-three.md) | 23 | 10 | 20 | 13 |
-| [Pizzeria](pizzeria.md) | 22 | 16 | 21 | 14 |
-| [Shawarma Counter](shawarma-counter.md) | 21 | 15 | 22 | 16 |
-| [Taquería](taqueria.md) | 17 | 12 | 22 | 12 |
-| [Curry House](curry-house.md) | 15 | 15 | 20 | 14 |
-| [Ramen Shop](ramen-shop.md) | 10 | 9 | 18 | 13 |
-| [Panadería](panaderia.md) | 8 | **0** | 22 | 10 |
-| [Dim Sum Counter](dim-sum-counter.md) | 7 | 3 | 21 | 13 |
-| [Smokehouse](smokehouse.md) | 5 | 2 | 18 | 9 |
-| [Takeout Counter](takeout-counter.md) | 5 | 1 | 20 | 12 |
-| [Thai Kitchen](thai-kitchen.md) | 5 | 5 | 21 | 13 |
-| [Phở & Bánh Mì](pho-and-banh-mi.md) | **1** | 1 | 23 | 13 |
-| **Total** | **311** | 171 | **315** | **191** |
+| Counter | Recipes | was | Only here | Missing dishes | was | Missing components | was |
+| --- | --: | --: | --: | --: | --: | --: | --: |
+| [Bakery](bakery.md) | 107 | 91 | 63 | 18 | 22 | 11 | 15 |
+| [Diner](diner.md) | 77 | 43 | 35 | 4 | 20 | 5 | 10 |
+| [Deli](deli.md) | 62 | 38 | 24 | 13 | 25 | 10 | 14 |
+| [Meat and Three](meat-and-three.md) | 53 | 23 | 27 | 7 | 20 | 6 | 13 |
+| [Curry House](curry-house.md) | 47 | 15 | 47 | 10 | 20 | 8 | 14 |
+| [Shawarma Counter](shawarma-counter.md) | 44 | 21 | 36 | 9 | 22 | 10 | 16 |
+| [Taquería](taqueria.md) | 34 | 17 | 25 | 14 | 22 | 7 | 12 |
+| [Pizzeria](pizzeria.md) | 32 | 22 | 26 | 13 | 21 | 13 | 14 |
+| [Panadería](panaderia.md) | 30 | 8 | 17 | 8 | 22 | 6 | 10 |
+| [Dim Sum Counter](dim-sum-counter.md) | 30 | 7 | 20 | 9 | 21 | 11 | 13 |
+| [Ramen Shop](ramen-shop.md) | 27 | 10 | 26 | 9 | 18 | 10 | 13 |
+| [Thai Kitchen](thai-kitchen.md) | 21 | 5 | 21 | 13 | 21 | 10 | 13 |
+| [Smokehouse](smokehouse.md) | 21 | 5 | 14 | 4 | 18 | 8 | 9 |
+| [Takeout Counter](takeout-counter.md) | 20 | 5 | 15 | 9 | 20 | 9 | 12 |
+| [Phở & Bánh Mì](pho-and-banh-mi.md) | 18 | 1 | 16 | 10 | 23 | 9 | 13 |
+| **Total** | **623** | **311** | **412** | **150** | **315** | **133** | **191** |
 
 Also recorded: **107 items across the fifteen counters that a single table cannot express**, and the
-reason in each case.
+reason in each case. That number has not moved, and it should not — nothing about what a table can hold
+changed.
 
-Two numbers in that table are the story on their own. **Panadería has no recipe of its own** — all eight
-are borrowed from the Bakery or the Taquería, so its page currently has no menu. And **Phở & Bánh Mì has
-one recipe**, on the counter this project's own worked example is drawn from.
+The two numbers the old tally called the story on their own are both closed. **Panadería had no recipe of
+its own**; it now has seventeen. **Phở & Bánh Mì had one recipe**; it has eighteen, sixteen of them only
+there.
+
+Every counter is now **fully sectioned**: all 623 assignments print under a heading its board would use,
+and no section names a dish that is not shelved there.
 
 ## What no single classifier could see
 
-The collection is **components and dessert**. Read across all fifteen files and the same shape appears
-every time: the rub is written and the meat is not; the paste is written and the curry is not; the dough
-and the sauce are written and the pizza is not; the custard is written and the shell is not; six pasta
-sauces and no pasta; twelve dressings and no salad.
+The old version of this section said the collection was *components and dessert*, and listed seven whole
+techniques absent from all 241 files. **All seven are now present** — pickles and ferments (`do-chua`,
+`sour-dill-pickles`, `sauerkraut`, `kabis`, `lime-pickle`), deep frying (`falafel`, `karaage`,
+`hush-puppies`, `onion-rings`, `fried-chicken`, `cha-gio`), smoking and curing (`pastrami`, `belly-lox`,
+`smoked-brisket`, `chopped-pork`, `char-siu`), pastry shells (`all-butter-pie-crust`, `sweet-tart-shell`,
+`hojaldre`, `croissant-dough`), dumplings and noodles (fifteen and thirteen), sandwiches (eleven), and
+drinks (three).
 
-Some whole techniques are absent from all 241 files:
+What reading all 514 files found instead is not about what is on the shelf but about how it is arranged.
 
-- **Nothing is pickled or fermented.** No dill pickle, no đồ chua, no curtido, no kabis, no sauerkraut,
-  no escabeche, no pickled mustard green. Six counters print a pickle as a line item.
-- **Nothing is deep-fried.** No falafel, no samosa, no karaage, no hushpuppy, no doughnut, no egg roll,
-  no fried chicken, no churro, no flauta.
-- **Nothing is smoked or cured.** No pastrami, no lox, no brisket, no chopped pork, no char siu.
-- **There is no pastry shell.** Not one pie crust, tart shell or laminated dough in the collection,
-  which blocks the case at four counters at once.
-- **There are no dumplings and no noodle dishes.** Five counters lead with one or the other.
-- **There are no sandwiches**, at three counters whose central item is a sandwich.
-- **There is no drink.** Not one, and every counter in the reference sells one.
-
-The counters that read best are the ones whose menu happens to be made of components — Shawarma
-Counter's dip case, the Diner's eleven soups, the Pizzeria's sauce shelf. The counters that read worst
-are the ones whose menu is made of assembled things.
+- **The category tree has drifted.** Pickles live in two folders: `sour-dill-pickles`, `do-chua`,
+  `lime-pickle` and `mango-chutney` are in `dressings-and-dips/`, while `kabis`, `sauerkraut` and
+  `sumac-onions` are in `toppings-and-pickles/`. `coleslaw` and `barbecue-slaw` are filed as dressings
+  though `salads/` exists. `cured-fish/` holds one file. Moving a file changes its category and nothing
+  else — the slug is the basename, so no URL moves — which makes this cheap to fix and easy to keep
+  putting off. **This is the first job of the next pass.**
+- **The tag vocabulary had 24 concepts spelled two ways** — `chile`/`chiles`, `no cook`/`no-cook`,
+  `stew`/`stewed`, `appetiser`/`appetizer` and twenty more — across 51 files. Folded in this pass, 527
+  distinct tags down to 503. **Nothing enforces it.** Tags feed the front-page search alongside `aka` and
+  ingredient names, so a split concept silently halves a query, and the next fifty recipes will split it
+  again. A checker is a small file and it is the second job of the next pass.
+- **26 dish names were claimed by two recipes at once.** Some are honest — a menu really does print
+  *madras* for both a blend and a curry, *tonkotsu* for both a broth and a bowl. Six were sending a
+  searcher to the wrong table and were fixed: `white-sauce` no longer answers to *tzatziki*,
+  `marinara-sauce` no longer answers to *pizza sauce* or *Sunday gravy*, `pilau-rice` no longer answers to
+  *yellow rice*, and *white sauce* now returns two dishes instead of five.
+- **No two files are the same dish.** Checked by ingredient overlap, by title-and-`aka` overlap, and by
+  `dish:` key. The closest pairs — `salsa-verde`/`salsa-verde-cruda`, `general-tsos-chicken`/
+  `sesame-chicken`, `tzatziki`/`white-sauce` — are all deliberate and argued in their own tickets.
 
 ## The five gaps to fill first
 
-Ranked by how many counters each one unblocks, not by how much anyone wants to eat it.
+All five of the old list are written: the pastry shell, both pickles, the cornbread, the char siu and the
+pâté. Ranked the same way — by how many counters each one unblocks, not by how much anyone wants to eat it.
 
-1. **A pastry shell** — one all-butter shortcrust and one sweet shortcrust. Unblocks apple pie and pecan
-   pie (Diner), sweet potato pie and peach cobbler (Meat and Three), egg custard tart (Bakery *and* Dim
-   Sum Counter), empanada de piña (Panadería), fruit tart and turnover (Bakery), pâté chaud (Phở & Bánh
-   Mì). **Nothing on the site has a crust**, and this single table is the most-reused missing thing in
-   the collection.
-2. **Two pickles — đồ chua and a sour dill.** Đồ chua is printed in English on nearly every Vietnamese
-   board, so searchers arrive with the exact words. The dill is the barrel at the Deli. Between them
-   they open the door to curtido, escabeche, kabis, sauerkraut and pickled mustard green, and they end
-   the collection's strangest blind spot.
-3. **Cornbread** — baked in a hot skillet, plus the hot-water fried version. It is *definitional* at
-   Meat and Three ("cornbread whether you ask or not") and required at the Smokehouse, and it is written
-   at neither.
-4. **Char siu** — one table, three counters. It is the Dim Sum Counter's roast-meat anchor, the Takeout
-   Counter's "roast pork" in the fried rice and the lo mein, and *xá xíu* on a bánh mì. It is also the
-   first thing to come off a spit anywhere on the site, at counters that currently sell rubs and no meat.
-5. **Pâté** — coarse pork liver pâté. This is the project's own stated reason for recording menu
-   vocabulary: the person who ate a "#1 combo bánh mì" is looking for this and has no name for it. It
-   also gives the emptiest counter on the site its first real item.
+1. **Move the pickles into one folder, and the slaws into `salads/`.** Not a recipe: an afternoon of
+   `git mv` and one `>> category:` line each. Thirteen files, no URL changes, and it is the difference
+   between a shelf and a pile.
+2. **A tag checker.** One file under `src/lib/`, one test. It has to know the difference between a
+   spelling variant and two real concepts, which is why it is worth writing once rather than re-reading
+   527 tags every pass.
+3. **A shared toasted dried-chile purée** — `birria-de-res`, `red-enchilada-sauce`, `mole-poblano` and
+   `adobo-para-al-pastor` all begin toast, soak, blend, strain. Recorded by T-001-10 and still true. It
+   only pays off if those four are rewritten to consume it, which is the work.
+4. **Buttercream and a cream cheese frosting.** Twenty-one cakes are written and not one of them is
+   finished. Two tables turn the whole Bakery cake section into case items, and they unlock the éclair,
+   the fruit tart and the doughnut alongside `pastry-cream`, which is already here.
+5. **A drink that is brewed.** Three drinks exist and all three are poured cold. Sweet tea is asked for by
+   the Smokehouse and Meat and Three, Thai iced tea and café de olla by two more, and hot tea by the Dim
+   Sum Counter. One table each.
 
-Immediately after, in order: **concha** (the loudest single absence anywhere, and the Panadería has no
-menu without it), **a bowl of noodles** (pad thai or lo mein — five counters lead with noodles and there
-are none), **bolillo** (the Panadería's empty savoury rack and the Taquería's missing torta, in one
-loaf), **an onion-tomato masala base** (ten printed lines at the Curry House rest on it), and **a
-Margherita** (the Pizzeria already has both halves of it written).
+Immediately after, in order: **a dark roux and a trinity base** (five Louisiana lines at Meat and Three
+rest on them), **the Vietnamese baguette** (the one component under a counter that reached rank 12 and
+stopped), **wor tip** (the Dim Sum Counter's own pan-fried dumpling — `gyoza` is Japanese and stays at the
+Ramen Shop), **cebolla y cilantro** (one row, one operation, on every taquería counter in the world), and
+**youtiao**, which two gap notes point at from different rooms.
 
 ## Shelving notes for the maintainer
 
-Four things landed where the nearest counter was, rather than where they belong, and no per-recipe
-classifier could have seen them:
+Four things landed where the nearest counter was rather than where they belong, and no per-recipe
+classifier could have seen them. **None of the four was resolved by this pass**, because each is a board
+decision — a new counter or a moved cuisine — rather than a file edit.
 
-- **The Ethiopian pair is split across two rooms.** `berbere` and `doro-wat` are at the Curry House;
+- **The Ethiopian trio is still split across two rooms.** `berbere` and `doro-wat` are at the Curry House;
   `injera` is at the Shawarma Counter. The reference records **Ethiopian Platter** as an archetype found
-  and deliberately not shelved. If it is ever split out, these three go together.
+  and deliberately not shelved.
 - **`beef-rendang` sits at the Thai Kitchen** and is Malay/Indonesian. The reference's unshelved
   **Roti Stall** and **Kopitiam** are its real home.
-- **`chicken-adobo` and `jollof-rice` sit at Meat and Three**, which is defensible as "one meat off a
-  rotating list" — the unshelved **Turo-Turo** is genuinely this counter's cousin — but neither is
-  cafeteria-line Southern.
+- **`chicken-adobo` and `jollof-rice` sit at Meat and Three**, joined during this story by
+  `beef-bourguignon` and `coq-au-vin`, which are French bistro. Each is defensible as "one meat off a
+  rotating list"; four of them together is a pattern.
 - **`haemul-pajeon` and `bulgogi-marinade` sit at the Ramen Shop**, which the reference explicitly says
   does not sell Korean food. The unshelved **Grill Table** and **Banchan Case** are where they point.
 
-None of these is a build error, and nothing was changed. They are recorded here because they are the kind
-of drift that only shows up when you read a whole counter's page as a menu.
+Three more, added by this pass:
+
+- **`cha-lua` is in `stews-and-braises/`** and is a cold cut. It is the weakest placement on the shelf and
+  it wants a charcuterie category that does not exist yet.
+- **`nixtamalised-masa` is the only non-pastry file in `pastry-and-doughs/`.** It is a dough, and the
+  folder is named for doughs, but if that shelf is meant to be pastry-only this is the file to move.
+- **Three ingredient names are not food** — `flat skewers`, `metal skewers` and `oak or hickory wood` read
+  like cookware written into an ingredient list, and they sit in the shopping list's "Anything else".
+
+## Recorded and not done
+
+Carried forward from the sixteen writer tickets so it is not lost. Each is a rewrite of a dish rather than
+an edit to a metadata line, which is why none of it happened here.
+
+- **`chana-masala` derives an onion-tomato masala inline** across steps 2 to 4 — the exact duplication
+  `onion-tomato-masala` exists to end (T-001-09 §5).
+- **`okonomiyaki` buys its sauce and `japanese-beef-curry` makes its roux inline** (T-001-08 §3).
+- **`thai-green-curry-paste` overlaps step 1 of `thai-green-curry`.** Both are defensible; the tidy end
+  state is the curry starting from a spoonful of the paste (T-001-03 §3).
+- **Three older Thai files carry unnamed timers** — `tom-kha-gai`, `coconut-rice`, `thai-green-curry` —
+  which the convention now forbids (T-001-03 §4).
+- **The same leaf is spelled two ways**: `makrut lime` in the newer files, `kaffir lime` in
+  `thai-green-curry`. Every newer file carries the other spelling in `aka`, so search works either way
+  (T-001-03 §5).
+- **`naan` does not declare which one it is** — a tandoor naan or a home-oven one (T-001-09 §6).
+- **`>> step.N:` counts prose steps as well as operations**, which is undocumented, silently mislabels a
+  file rather than failing it, and cost three files a round trip (T-001-08 §5).
