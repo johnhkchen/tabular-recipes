@@ -3,9 +3,9 @@ id: T-002-02
 story: S-002
 title: instant-pot-braises
 type: task
-status: open
+status: done
 priority: high
-phase: ready
+phase: done
 depends_on: [T-002-01]
 ---
 
