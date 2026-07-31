@@ -3,9 +3,9 @@ id: T-001-15
 story: S-001
 title: diner
 type: task
-status: open
+status: done
 priority: low
-phase: ready
+phase: done
 depends_on: [T-001-01]
 ---
 
