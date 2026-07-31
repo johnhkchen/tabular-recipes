@@ -3,9 +3,9 @@ id: T-002-03
 story: S-002
 title: instant-pot-beans-and-stocks
 type: task
-status: open
+status: done
 priority: high
-phase: ready
+phase: done
 depends_on: [T-002-01]
 ---
 
