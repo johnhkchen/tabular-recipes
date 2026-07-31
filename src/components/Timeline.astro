@@ -33,6 +33,7 @@
 import { formatDuration } from '../lib/time.ts';
 import { iconForOperation, iconSvg, type IconName } from '../lib/icons.ts';
 import { buildSchedule, type Schedule, type Task } from '../lib/schedule.ts';
+import { slackWord } from '../lib/slack.ts';
 import { buildTree, type RawRecipe, type RecipeTree } from '../lib/tree.ts';
 
 interface Props {
@@ -238,6 +239,14 @@ const legend = {
   mark: rows.some((row) => !row.spans),
 };
 
+/*
+ * The third fact about the recipe, next to the two the clock counts: what happens if you
+ * get it wrong. Authored, never worked out from the timers above it — and null for most of
+ * the collection, which draws nothing at all rather than an empty slot. A recipe that cannot
+ * name its real failure has not earned a rating, so silence here is an answer, not a gap.
+ */
+const slack = recipe.slack;
+
 const headingId = `clock-${recipe.slug}`;
 ---
 
@@ -272,6 +281,17 @@ const headingId = `clock-${recipe.slug}`;
   }
 
   {notes.length > 0 && !timesNothing && <p class="notes">{notes.join(' ')}</p>}
+
+  {
+    slack && (
+      <dl class="slack" data-level={slack.level}>
+        <dt>If you get it wrong</dt>
+        <dd>
+          <b>{slackWord(slack.level)}</b> — {slack.reason}
+        </dd>
+      </dl>
+    )
+  }
 
   {
     stretches.length > 0 && (
@@ -439,6 +459,37 @@ const headingId = `clock-${recipe.slug}`;
     font-size: 0.78rem;
     line-height: 1.45;
     color: var(--clay-ink-soft);
+  }
+
+  /* --- what happens if you get it wrong -------------------------------- */
+
+  /* The same well as the two numbers, so it reads as one family of facts — but full width,
+     because the value is the sentence and a sentence needs a line. No colour keyed to the
+     level: this panel's rule is that colour is the fourth signal, never the first, and a
+     traffic light over someone's dinner would be alarm rather than information. */
+  .slack {
+    margin: 0.55rem 0 0;
+    padding: 0.6rem 0.75rem 0.7rem;
+    background: var(--clay-well);
+    border-radius: var(--clay-radius-sm);
+    box-shadow: var(--clay-shadow-well);
+  }
+
+  .slack dt {
+    font-size: 0.78rem;
+    letter-spacing: 0.01em;
+    color: color-mix(in srgb, var(--clay-ink-soft) 78%, var(--clay-ink));
+  }
+
+  .slack dd {
+    margin: 0.1rem 0 0;
+    font-size: 0.88rem;
+    line-height: 1.45;
+  }
+
+  .slack b {
+    font-family: var(--clay-font-display);
+    font-weight: 600;
   }
 
   /* --- the broken axis -------------------------------------------------- */
@@ -713,6 +764,7 @@ const headingId = `clock-${recipe.slug}`;
     }
     .stat,
     .verdict,
+    .slack,
     .dur {
       box-shadow: none;
       border: 1px solid #ddd;
