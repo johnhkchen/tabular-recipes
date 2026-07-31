@@ -3,9 +3,9 @@ id: T-001-16
 story: S-001
 title: bakery
 type: task
-status: open
+status: done
 priority: low
-phase: ready
+phase: done
 depends_on: [T-001-01]
 ---
 
