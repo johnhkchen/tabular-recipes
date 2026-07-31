@@ -3,9 +3,9 @@ id: T-001-18
 story: S-001
 title: read-the-whole-shelf
 type: task
-status: open
+status: done
 priority: high
-phase: implement
+phase: done
 depends_on: [T-001-17]
 ---
 
