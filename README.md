@@ -158,27 +158,29 @@ $ node scripts/check-recipes.mjs --labels recipes/soups/new-england-clam-chowder
 
 ## Publishing
 
-The site is static, and `.github/workflows/deploy.yml` publishes it to GitHub Pages on every
-push to `main`. It lands at **https://recipes.b28.dev/**.
+The site is static and lives at **https://recipes.b28.dev/**, served by a Cloudflare Worker
+that does nothing but hand out files. Cloudflare watches `main` and rebuilds on every push;
+`wrangler.jsonc` is the whole configuration.
 
-The job runs `npm run verify` before it publishes, so a recipe that would not draw a table
-fails the deploy instead of reaching a reader.
+The build command is `npm run verify`, so a recipe that would not draw a table fails the
+deploy instead of reaching a reader.
 
-Three details worth knowing if you change hosting:
+Three details worth knowing:
 
-- **The domain lives in two places.** `public/CNAME` is what GitHub reads to serve the site
-  there, and `SITE_URL` in the workflow is what Astro uses to write absolute URLs. They have
-  to agree. DNS is a `CNAME` record at Cloudflare, `recipes` → `johnhkchen.github.io`, set to
-  **DNS only** — proxying it puts Cloudflare's certificate in front of GitHub's and the two
-  fight over the handshake.
-- **The base path** is `/`, because a custom domain serves from its own root. Links still go
-  through `url()` in `src/lib/url.ts` rather than being written by hand, so serving the site
-  under a path again is a one-line change: set `SITE_BASE` in the workflow.
-- **Reverting to the project page** means `SITE_URL: https://johnhkchen.github.io`,
-  `SITE_BASE: /tabular-recipes`, and deleting `public/CNAME`.
+- **Why Cloudflare and not GitHub Pages.** `b28.dev` sends HSTS with `includeSubDomains` and
+  `preload`, so a browser will not talk to any subdomain of it without a valid certificate —
+  there is no plain-HTTP window to be served in while one is issued. Cloudflare holds the
+  zone, so it issues the certificate and writes the DNS record itself, and the site is never
+  reachable in a state a browser refuses.
+- **The domain is declared once**, in the `routes` block of `wrangler.jsonc`. `site` in
+  `astro.config.mjs` has to name the same host, because that is what Astro writes absolute
+  URLs against.
+- **The base path** is `/`, because the site has its own domain. Links still go through
+  `url()` in `src/lib/url.ts` rather than being written by hand, so serving it under a path
+  again is one setting: `SITE_BASE`.
 
-`public/.nojekyll` has to stay — without it GitHub ignores Astro's `_astro/` directory and
-the site loads with no CSS.
+`.github/workflows/ci.yml` runs the same `npm run verify` and deploys nothing. It is there to
+fail a pull request before the merge rather than after.
 
 ## Not yet
 

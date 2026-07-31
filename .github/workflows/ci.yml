@@ -1,0 +1,33 @@
+name: Check
+
+# Publishing happens on Cloudflare, which runs this same `npm run verify` before it deploys —
+# so this workflow does not deploy anything. It exists to fail a pull request before merge
+# rather than after, and to say plainly which recipe broke.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      # Node 24: the build scripts import src/lib/*.ts directly, which needs a Node that
+      # strips types without a flag. Pinned in .node-version, which Cloudflare reads too.
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .node-version
+          cache: npm
+
+      - run: npm ci
+
+      # Parses every .cook file, refuses the ones that would not draw a table, runs the
+      # layout tests, then builds. A broken recipe fails here, not in front of a reader.
+      - run: npm run verify

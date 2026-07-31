@@ -1,0 +1,27 @@
+{
+  // The site is entirely pre-rendered — every page exists as a file before deploy — so this
+  // Worker serves assets and nothing else. There is no `main`, no adapter, and no server.
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "tabular-recipes",
+  "compatibility_date": "2026-07-31",
+
+  "assets": {
+    "directory": "./dist",
+
+    // Astro is configured `trailingSlash: 'always'` with directory output, so /list/index.html
+    // is what exists on disk and /list/ is what links point at. Saying so here rather than
+    // letting it be inferred means a request for /list redirects instead of 404ing.
+    "html_handling": "force-trailing-slash",
+
+    // src/pages/404.astro, served with an actual 404 status.
+    "not_found_handling": "404-page"
+  },
+
+  // b28.dev is on this account, so Cloudflare issues the certificate and writes the DNS record
+  // itself. This is the whole reason for moving off GitHub Pages: the apex sends HSTS with
+  // includeSubDomains and preload, which leaves no window in which a subdomain may serve
+  // without a valid certificate.
+  "routes": [
+    { "pattern": "recipes.b28.dev", "custom_domain": true }
+  ]
+}

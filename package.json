@@ -23,6 +23,7 @@
   },
   "devDependencies": {
     "@cooklang/cooklang": "^0.18.7",
-    "vitest": "^4.1.10"
+    "vitest": "^4.1.10",
+    "wrangler": "^4.118.0"
   }
 }
