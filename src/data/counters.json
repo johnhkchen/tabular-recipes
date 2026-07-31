@@ -1356,6 +1356,102 @@
           ]
         }
       ]
+    },
+    {
+      "name": "The Bowl Shop",
+      "slug": "bowl-shop",
+      "blurb": "Pick a base, pile it up, dress it last.",
+      "categories": [],
+      "sections": [
+        {
+          "title": "Grain bowls",
+          "items": []
+        },
+        {
+          "title": "Leafy salads",
+          "items": []
+        },
+        {
+          "title": "What goes on top",
+          "items": []
+        },
+        {
+          "title": "Roasted vegetables",
+          "items": []
+        },
+        {
+          "title": "Dressings and drizzles",
+          "items": []
+        },
+        {
+          "title": "Soups",
+          "items": []
+        },
+        {
+          "title": "Also here",
+          "items": []
+        }
+      ]
+    },
+    {
+      "name": "Instant Pot",
+      "slug": "instant-pot",
+      "blurb": "Lock the lid and walk away; it gets there on its own.",
+      "categories": [],
+      "sections": [
+        {
+          "title": "Braises that took all afternoon",
+          "items": []
+        },
+        {
+          "title": "Beans from dry",
+          "items": []
+        },
+        {
+          "title": "Stocks and broths",
+          "items": []
+        },
+        {
+          "title": "Rice, grains and porridge",
+          "items": []
+        },
+        {
+          "title": "Whole birds and big cuts",
+          "items": []
+        },
+        {
+          "title": "Also here",
+          "items": []
+        }
+      ]
+    },
+    {
+      "name": "One Pot",
+      "slug": "one-pot",
+      "blurb": "Everything goes in one pan, and that is the only pan to wash.",
+      "categories": [],
+      "sections": [
+        {
+          "title": "Braises and stews",
+          "items": []
+        },
+        {
+          "title": "Skillet dinners",
+          "items": []
+        },
+        {
+          "title": "Rice and grains that cook in",
+          "items": []
+        },
+        {
+          "title": "Soups that are the whole meal",
+          "items": []
+        },
+        {
+          "title": "Also here",
+          "items": []
+        }
+      ]
     }
   ]
 }
