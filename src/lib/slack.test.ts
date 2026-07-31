@@ -1,5 +1,10 @@
 import { describe, expect, it } from 'vitest';
+import recipes from '../generated/recipes.json';
 import { SLACK_LEVELS, readSlack, slackWord } from './slack.ts';
+import type { RawRecipe } from './tree.ts';
+
+const all = recipes as unknown as RawRecipe[];
+const declared = all.filter((recipe) => recipe.slack !== null);
 
 describe('readSlack', () => {
   it('reads each level, and keeps the reason as the author wrote it', () => {
@@ -81,5 +86,57 @@ describe('slackWord', () => {
     expect(slackWord('forgiving')).toBe('Forgiving');
     expect(slackWord('narrow')).toBe('Narrow');
     expect(slackWord('unforgiving')).toBe('Unforgiving');
+  });
+});
+
+/*
+ * The render is one guard over one value — `{slack && …}` in Timeline.astro — so these are
+ * what stand behind it. A recipe is either whole or null; there is no third state for the
+ * component to draw an empty slot out of.
+ */
+describe('slack across the collection', () => {
+  it('leaves every recipe either whole or silent, never half-declared', () => {
+    const halfway = all
+      .filter((recipe) => recipe.slack !== null && !recipe.slack?.reason?.trim())
+      .map((recipe) => recipe.slug);
+    expect(halfway).toEqual([]);
+  });
+
+  it('renders nothing for a recipe that never declared one', () => {
+    // Nothing to draw is the common case: 500-odd files predate the field.
+    const undeclared = all.filter((recipe) => recipe.slack === null);
+    expect(undeclared.length).toBeGreaterThan(0);
+    for (const recipe of undeclared) expect(recipe.slack, recipe.slug).toBeNull();
+  });
+
+  it('only uses levels that are in the vocabulary', () => {
+    const strange = declared
+      .filter((recipe) => !SLACK_LEVELS.includes(recipe.slack!.level))
+      .map((recipe) => `${recipe.slug}: ${recipe.slack!.level}`);
+    expect(strange).toEqual([]);
+  });
+
+  it('re-reads every declared line without a complaint', () => {
+    const problems = declared
+      .map((recipe) => ({
+        slug: recipe.slug,
+        problem: readSlack(`${recipe.slack!.level} — ${recipe.slack!.reason}`).problem,
+      }))
+      .filter((entry) => entry.problem)
+      .map((entry) => `${entry.slug}: ${entry.problem}`);
+    expect(problems).toEqual([]);
+  });
+
+  it('has worked examples for all three levels, so a writer has one to copy', () => {
+    const levels = new Set(declared.map((recipe) => recipe.slack!.level));
+    expect([...levels].sort()).toEqual([...SLACK_LEVELS].sort());
+    expect(declared.length).toBeGreaterThanOrEqual(8);
+  });
+
+  it('gives reasons that name a failure rather than restating the level', () => {
+    const thin = declared
+      .filter((recipe) => recipe.slack!.reason.split(/\s+/).length < 5)
+      .map((recipe) => `${recipe.slug}: ${recipe.slack!.reason}`);
+    expect(thin).toEqual([]);
   });
 });
