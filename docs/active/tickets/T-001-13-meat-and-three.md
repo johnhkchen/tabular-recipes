@@ -3,9 +3,9 @@ id: T-001-13
 story: S-001
 title: meat-and-three
 type: task
-status: open
+status: done
 priority: medium
-phase: ready
+phase: done
 depends_on: [T-001-01]
 ---
 
