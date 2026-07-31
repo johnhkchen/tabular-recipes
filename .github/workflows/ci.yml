@@ -3,10 +3,13 @@ name: Check
 # Publishing happens on Cloudflare, which runs this same `npm run verify` before it deploys —
 # so this workflow does not deploy anything. It exists to fail a pull request before merge
 # rather than after, and to say plainly which recipe broke.
+#
+# Deliberately not run on push to main: Cloudflare already runs verify there, and its run is
+# the one that can actually stop a bad recipe from shipping. A second copy on GitHub would
+# report the same answer a minute later without being able to act on it. Look in the
+# Cloudflare dashboard for the state of what is deployed.
 
 on:
-  push:
-    branches: [main]
   pull_request:
   workflow_dispatch:
 
