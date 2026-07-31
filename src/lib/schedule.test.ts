@@ -57,6 +57,7 @@ function fixture(slug: string, steps: StepSpec[], metadata: Record<string, strin
     countersInferred: false,
     dish: slug,
     kit: null,
+    slack: null,
     aka: [],
     pairsWith: [],
     variants: [],

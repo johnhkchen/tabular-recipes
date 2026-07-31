@@ -6,6 +6,7 @@
  * parser resolves to step indices — so the tree is written in the .cook file, not guessed.
  */
 import { cleanLabel } from './label.ts';
+import type { Slack } from './slack.ts';
 
 
 export interface RawIngredient {
@@ -52,6 +53,14 @@ export interface RawRecipe {
   dish: string;
   /** The equipment that makes this variant different; null is the plain way. */
   kit: string | null;
+  /**
+   * How much room the recipe leaves you, and what actually goes wrong when you run out.
+   * Authored, never derived. Null is the honest answer for a recipe that cannot name its
+   * real failure, and most of the collection is null.
+   */
+  slack: Slack | null;
+  /** What is wrong with a `>> slack:` line that is there but not whole. A diagnostic, not a fact. */
+  slackProblem?: string | null;
   /** What people call it when they order it. */
   aka: string[];
   /** Slugs of recipes that go with this one. Made mutual at build time. */
