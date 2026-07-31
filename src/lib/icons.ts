@@ -192,6 +192,8 @@ const VERB_ICONS: Record<string, IconName> = {
   griddle: 'flame', sweat: 'flame', render: 'flame', caramelize: 'flame', cook: 'flame',
   caramelise: 'flame', melt: 'flame', warm: 'flame', scramble: 'flame', pop: 'flame',
   toast: 'flame', blister: 'flame', flambe: 'flame', smoke: 'flame', singe: 'flame',
+  // "crack the cream 5 min" — coconut cream fried until the oil splits out of it.
+  crack: 'flame',
 
   // Fire underneath something you can see the bars of
   grill: 'grill', broil: 'grill', char: 'grill', torch: 'grill', barbecue: 'grill',
@@ -209,6 +211,7 @@ const VERB_ICONS: Record<string, IconName> = {
   // A bowl and something going round in it
   mix: 'bowl', combine: 'bowl', assemble: 'bowl', dissolve: 'stir', stir: 'stir',
   toss: 'stir', swirl: 'stir', loosen: 'stir', thicken: 'stir', ripple: 'stir',
+  return: 'stir', slacken: 'stir', velvet: 'stir',
   whisk: 'whisk', beat: 'whisk', whip: 'whisk', cream: 'whisk', foam: 'whisk',
   emulsify: 'whisk', aerate: 'whisk', soften: 'whisk',
   fold: 'fold', fluff: 'fold',
@@ -224,22 +227,24 @@ const VERB_ICONS: Record<string, IconName> = {
   crumble: 'hand', knead: 'hand', shape: 'hand', braid: 'hand', pat: 'hand', press: 'hand', rub: 'hand',
   dimple: 'hand', pipe: 'hand', seal: 'hand', stuff: 'hand', tuck: 'hand', truss: 'hand',
   weight: 'hand', pinch: 'hand', stretch: 'hand', work: 'hand', crimp: 'hand',
-  scoop: 'hand',
+  scoop: 'hand', mould: 'hand', thread: 'hand', tie: 'hand',
 
   // Rolling and flattening
-  roll: 'roll', flatten: 'roll', laminate: 'roll',
+  roll: 'roll', flatten: 'roll', laminate: 'roll', sheet: 'roll',
 
   // Machines that break things down
   blend: 'blend', puree: 'blend', pulse: 'blend', grind: 'blend', mash: 'blend',
   pound: 'blend', crush: 'blend', process: 'blend', mill: 'blend', whizz: 'blend',
+  blitz: 'blend', bruise: 'blend',
 
   // Through a mesh
   strain: 'strain', drain: 'strain', sift: 'strain', rinse: 'strain', wash: 'strain',
-  skim: 'strain', squeeze: 'strain', filter: 'strain',
+  skim: 'strain', squeeze: 'strain', filter: 'strain', clarify: 'strain', wring: 'strain',
 
   // Liquid moving
   pour: 'pour', drizzle: 'pour', stream: 'pour', ladle: 'pour', thin: 'pour',
   splash: 'pour', spoon: 'pour', water: 'pour', slake: 'pour', deglaze: 'pour',
+  dress: 'pour', perfume: 'pour', ribbon: 'pour', slide: 'pour',
 
   // Dry things landing on top
   sprinkle: 'sprinkle', scatter: 'sprinkle', season: 'sprinkle', salt: 'sprinkle',
@@ -256,6 +261,7 @@ const VERB_ICONS: Record<string, IconName> = {
   // Stacked
   layer: 'layer', sandwich: 'layer', arrange: 'layer', nestle: 'layer', stack: 'layer',
   fill: 'layer', pack: 'layer', wrap: 'layer', cover: 'layer', line: 'pan',
+  build: 'layer', lay: 'layer',
 
   // Getting the tin ready
   grease: 'pan', butter: 'pan', oil: 'pan',
@@ -273,6 +279,8 @@ const VERB_ICONS: Record<string, IconName> = {
 
   // On their own these say very little; see WEAK_VERBS, which reads past most of them.
   temper: 'thermometer', heat: 'flame', add: 'bowl', turn: 'stir',
+  // "throw the bread in last" is do-this-to-these and nothing more specific is true.
+  throw: 'bowl',
 };
 
 /**

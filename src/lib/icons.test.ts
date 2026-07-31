@@ -4,8 +4,8 @@
  * That the drawings are real: valid path data, inside the 24x24 box, stroke-only, and each
  * one carrying a word so nothing is condensed past legibility.
  *
- * That the mapping covers the collection: every distinct verb the 249 recipes actually open
- * an operation with gets a reading. The last test prints anything that falls through to the
+ * That the mapping covers the collection: every distinct verb the recipes actually open an
+ * operation with gets a reading. The last test prints anything that falls through to the
  * plain bowl, so a verb that arrives with a new recipe says so by name instead of quietly
  * turning into a bowl on the page.
  */
@@ -20,14 +20,25 @@ import {
   matchOperation,
   type IconName,
 } from './icons.ts';
-import type { RawRecipe } from './tree.ts';
+import { layout } from './layout.ts';
+import { buildTree, type RawRecipe } from './tree.ts';
 
 const all = recipes as unknown as RawRecipe[];
 const names = Object.keys(icons) as IconName[];
 
-/** Every operation label in the collection, as it is drawn in a cell. */
+/*
+ * Every operation label in the collection, taken off the table the way the page takes it.
+ *
+ * Not every step is an operation. A step with no ingredients becomes a full-width row —
+ * a preheat above the table, a closing note below it — and no icon is ever drawn beside one.
+ * Reading those as operations is reading the first word of a sentence as a verb, which is how
+ * `a`, `the`, `these` and `printed` came to be reported as verbs the icon map was missing.
+ */
 const operationLabels = all.flatMap((recipe) =>
-  recipe.steps.map((step) => step.labelOverride ?? step.rawLabel),
+  layout(buildTree(recipe))
+    .rows.flat()
+    .filter((cell) => cell.kind === 'op')
+    .map((cell) => cell.text),
 );
 
 /** The word each operation opens with — the verb the icon has to answer to. */
