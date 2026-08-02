@@ -246,6 +246,12 @@ try {
 
       const seen = await page.evaluate(PROBE);
       checked++;
+      /*
+       * Said before the desktop branch returns, not after the phone checks. A third of this run
+       * is the 768px pass, and with the counter below the `continue` it printed nothing for the
+       * whole of it — a tool that looks hung for five minutes is a tool nobody runs twice.
+       */
+      if (checked % 100 === 0) console.error(`  …${checked} pages`);
 
       /* Above the breakpoint only claim 4 is being made; the rest is the desktop drawing. */
       if (width === DESKTOP) {
