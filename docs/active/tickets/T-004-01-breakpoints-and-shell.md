@@ -3,9 +3,9 @@ id: T-004-01
 story: S-004
 title: breakpoints-and-shell
 type: task
-status: open
+status: done
 priority: critical
-phase: ready
+phase: done
 depends_on: []
 ---
 
