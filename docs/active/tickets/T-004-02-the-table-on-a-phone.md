@@ -3,9 +3,9 @@ id: T-004-02
 story: S-004
 title: the-table-on-a-phone
 type: task
-status: open
+status: done
 priority: critical
-phase: ready
+phase: done
 depends_on: [T-004-01]
 ---
 
