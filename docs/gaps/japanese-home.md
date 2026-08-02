@@ -1,33 +1,61 @@
 # Japanese Home Cooking — what is missing
 
-**0 recipes. The shelf was opened by T-003-01 and nothing is on it yet.** The site is not short of
-Japanese food — **31 files** mention Japan and 28 carry a `japanese` tag — but almost every one of
-them arrived through the **Ramen Shop**, and a ramen shop is a restaurant. Four ramens, three
-tares, two broths, an aroma oil, a marinated egg and a bamboo pickle are the parts of a bowl that
-exists to be sold. What is absent is the food a household actually eats on a Tuesday.
+**38 recipes: 28 written by T-003-04 and 10 shelved here from elsewhere.** The site was never
+short of Japanese food — 31 files mentioned Japan when this page was written — but almost every
+one had arrived through the **Ramen Shop**, and a ramen shop is a restaurant. What was absent was
+the food a household actually eats on a Tuesday.
 
-Missing entirely: nikujaga, shōgayaki, oyakodon, gyūdon, katsudon, omurice, tamagoyaki, kinpira,
-hijiki, ohitashi, sunomono, buri daikon, saba shioyaki, takikomi gohan, chikuzenni, korokke,
-hambāgu, nimono of any kind. **And there is no plain rice recipe anywhere on the site** — not
-Japanese rice, not any rice; every file in `recipes/rice-beans-and-grains/` is seasoned. That is
-the first hole on this shelf and the one everything else sits on.
+That hole is now mostly filled. Every section a board would print has something on it, and the
+one that mattered most — **煮物, the heart of the shelf, which had nothing at all** — has six.
+
+**The first absence this page named was plain rice**, and it was the one everything else sat on:
+there was no unseasoned rice recipe anywhere on the site. `gohan` is now written, `takikomi-gohan`
+beside it, and both are the thing every other file on this shelf is served with.
 
 What holds this list together is not a cuisine, it is a **system**. 一汁三菜 — rice, a soup and
 three dishes — is a rule for composing a dinner, and 作り置き is the Sunday hour that makes it
 possible on a Thursday. Most of the parts are small on purpose. **A small recipe is not a lesser
-recipe:** a kinpira is four ingredients and three operations, and that is the correct size for it.
+recipe:** `kinpira-gobo` is four ingredients and three operations, and that is the correct size
+for it. Twelve of the forty-one ranked entries below are still out, and they are listed at the
+end of each section rather than hidden.
 
 ---
 
-## What is already here
+## What it has
 
-This heading is not `## What it has` yet, and that is deliberate: no recipe names this counter, so
-`scripts/menu-sections.mjs` would report every slug below as *listed but not shelved here*. These
-are shelved at the Ramen Shop and the Bakery. **T-003-06 renames this block to `## What it has`**
-once the `>> counters:` lines are written; the `**Title.** slug · slug` line shape is already
-correct, so that is the whole of the edit.
+The heading was `## What is already here` while no recipe named the counter. Thirty-eight now do,
+and the six sections below are the shelf.
 
-### The test used to sort them
+**The soup and the rice.** dashi · miso-soup · sumashi-jiru · tonjiru · gohan · takikomi-gohan
+
+**Simmered things (煮物).** nikujaga · buri-daikon · chikuzenni · saba-no-misoni ·
+kabocha-no-nimono · kiriboshi-daikon
+
+**Grilled and pan-fried mains.** shogayaki · saba-shioyaki · buri-teriyaki · hambagu · gyoza ·
+karaage
+
+**Small sides (小鉢).** kinpira-gobo · hijiki-no-nimono · ohitashi · goma-ae · sunomono ·
+tamagoyaki · chawanmushi
+
+**Made ahead (作り置き).** nikumiso · nanbanzuke · mentsuyu · asazuke · teriyaki-sauce · goma-dare ·
+shichimi-togarashi
+
+**Rice bowls and one-plate suppers.** oyakodon · gyudon · omurice · chahan · okonomiyaki ·
+japanese-beef-curry
+
+Ten of those thirty-eight were already on the site and were shelved here rather than rewritten:
+`dashi`, `miso-soup`, `gyoza`, `karaage`, `okonomiyaki`, `chawanmushi`, `japanese-beef-curry`,
+`teriyaki-sauce`, `goma-dare` and `shichimi-togarashi`. All ten keep their Ramen Shop placement
+and gain a second board, which is what a home shelf and a restaurant shelf sharing a dish should
+look like. `japanese-milk-bread` and `castella` stayed at the Bakery, as this page recommended.
+
+---
+
+## How the ten were sorted
+
+Kept because it is the argument, and the next thing shelved here will need it.
+
+### The test used
 
 Not *is it Japanese* — all 31 are. Not *is it hard* — `gyoza` is easy and is still a thing you buy.
 The test is: **does a home kitchen make this as part of an ordinary dinner, or as an event, or as
@@ -67,116 +95,109 @@ answer is that they belong to the bowl, so they stay at the Ramen Shop.
 `docs/gaps/README.md` already records as a misplacement. They are not this shelf's to fix, and
 they are named here only so nobody counts them as Japanese.
 
-### Grouped the way this counter's sections will print
-
-**The soup and the rice.** dashi · miso-soup
-
-**Simmered things (煮物).** *(empty — and that is the finding: the heart of the shelf has nothing
-on it)*
-
-**Grilled and pan-fried mains.** teriyaki-sauce (the sauce only; there is no dish under it)
-
-**Small sides (小鉢).** *(empty)*
-
-**Made ahead (作り置き).** *(empty)*
-
-**Rice bowls and one-plate suppers.** *(empty)*
-
-**Also here.** karaage · gyoza · okonomiyaki · chawanmushi · japanese-beef-curry · goma-dare ·
-shichimi-togarashi
+The six sections this counter prints were empty or nearly so when that sort was made: 煮物 had
+nothing, 小鉢 had nothing, 作り置き had nothing, and *Grilled and pan-fried mains* held
+`teriyaki-sauce` — a sauce with no dish under it. Every one of them is now stocked, and the
+current contents are in **What it has** above rather than repeated here.
 
 ---
 
 ## What it is missing
 
-Grouped by the section it lands in, ranked inside each group, so the counts T-003-04 has to hit
-are readable off the page: **≥3 in every section, and ≥5 in each of 煮物 and 小鉢.**
+Grouped by the section it lands in, ranked inside each group. The counts T-003-04 had to hit
+were ≥3 in every section and ≥5 in each of 煮物 and 小鉢; all six were cleared, 煮物 with six and
+小鉢 with seven.
 
-### The soup and the rice — 5
+**Twenty-eight of the forty-one ranks are written and marked below with their slug.** The twelve
+still out are ranks that were genuinely lower down every list — plus `karaage`, which was already
+on the site and is recorded so nobody writes it twice. The reasoning is kept on every entry,
+written or not, because it is what a writer needs when they come back for the next one.
 
-1. **Gohan / plain steamed rice** — ご飯, *gohan*, `gohan`. The single most conspicuous absence on
+### The soup and the rice — 4 of 5 written
+
+1. **Written** as `gohan`. **Gohan / plain steamed rice** — ご飯, *gohan*, `gohan`. The single most conspicuous absence on
    the site. Rinse until the water runs nearly clear, soak 30 minutes, a 1 : 1.1 rice-to-water
    ratio by volume, and a ten-minute rest off the heat that is part of the cooking and not a pause.
 2. **Tamago-toji / vegetable miso variations** — 具だくさん味噌汁, *gudakusan misoshiru*. `miso-soup`
    exists as tofu and wakame; the version a household actually makes has whatever is in the fridge
    in it, and the rule that **miso is never boiled** is the recipe.
-3. **Sumashi-jiru** — すまし汁, *sumashijiru*, `sumashi jiru`. The clear soup: dashi, a little
+3. **Written** as `sumashi-jiru`. **Sumashi-jiru** — すまし汁, *sumashijiru*, `sumashi jiru`. The clear soup: dashi, a little
    usukuchi, a little salt, one or two things in it. It is the other half of 汁物 and it is three
    ingredients.
-4. **Butajiru / tonjiru** — 豚汁, *tonjiru*, `tonjiru`. Pork and root vegetables in miso; the one
+4. **Written** as `tonjiru`. **Butajiru / tonjiru** — 豚汁, *tonjiru*, `tonjiru`. Pork and root vegetables in miso; the one
    soup that is a meal, and the winter staple.
-5. **Takikomi gohan** — 炊き込みご飯, *takikomi gohan*, `takikomi gohan`. Rice cooked in seasoned
+5. **Written** as `takikomi-gohan`. **Takikomi gohan** — 炊き込みご飯, *takikomi gohan*, `takikomi gohan`. Rice cooked in seasoned
    dashi with mushroom, carrot and abura-age. Also the answer to "what do I do with one piece of
    chicken".
 
-### Simmered things (煮物) — 9, and the heart of the shelf
+### Simmered things (煮物) — 6 of 9 written, and the heart of the shelf
 
-1. **Nikujaga** — 肉じゃが, *nikujaga*, `nikujaga`. The dish this shelf is missing most. Thin beef,
+1. **Written** as `nikujaga`. **Nikujaga** — 肉じゃが, *nikujaga*, `nikujaga`. The dish this shelf is missing most. Thin beef,
    potato, onion, and the ratio doing all the work. The lid is a drop lid (落し蓋) and that is a
    real operation, not a flourish.
-2. **Buri daikon** — ぶり大根, *buri daikon*, `buri daikon`. Yellowtail collar and daikon. The
+2. **Written** as `buri-daikon`. **Buri daikon** — ぶり大根, *buri daikon*, `buri daikon`. Yellowtail collar and daikon. The
    daikon is parboiled in rice water first; skipping that is the usual failure.
-3. **Kabocha no nimono** — かぼちゃの煮物, *kabocha no nimono*, `kabocha no nimono`. Four
+3. **Written** as `kabocha-no-nimono`. **Kabocha no nimono** — かぼちゃの煮物, *kabocha no nimono*, `kabocha no nimono`. Four
    ingredients, one pot, twenty minutes, and it keeps three days.
-4. **Chikuzenni** — 筑前煮, *chikuzenni*, `chikuzenni` (also 煮しめ, *nishime*). Root vegetables and
+4. **Written** as `chikuzenni`. **Chikuzenni** — 筑前煮, *chikuzenni*, `chikuzenni` (also 煮しめ, *nishime*). Root vegetables and
    chicken, fried first then simmered dry. The New Year dish that is also a Sunday batch.
-5. **Sabu no misoni** — さばの味噌煮, *saba no misoni*, `saba no misoni`. Mackerel simmered in miso
+5. **Written** as `saba-no-misoni`. **Sabu no misoni** — さばの味噌煮, *saba no misoni*, `saba no misoni`. Mackerel simmered in miso
    with ginger. Twenty minutes, and the ginger is there to do a job.
 6. **Satoimo no nikkorogashi** — 里芋の煮っころがし, *satoimo no nikkorogashi*,
    `satoimo no nikkorogashi`. Taro simmered until it glazes itself.
-7. **Kiriboshi daikon no nimono** — 切干大根の煮物, *kiriboshi daikon*, `kiriboshi daikon`. Dried
+7. **Written** as `kiriboshi-daikon`. **Kiriboshi daikon no nimono** — 切干大根の煮物, *kiriboshi daikon*, `kiriboshi daikon`. Dried
    shredded daikon rehydrated and simmered — pantry to plate, and a 作り置き staple.
 8. **Nikujaga's pork cousin / niku-dofu** — 肉豆腐, *nikudofu*, `nikudofu`. Beef and tofu in the
    same seasoning, faster, and the answer on a night with no potatoes.
 9. **Aburaage to hakusai no nimono** — 白菜と油揚げの煮物, *hakusai to aburaage no nimono*,
    `hakusai aburaage nimono`. Cabbage and fried tofu; nearly free, and it is a whole dish.
 
-### Grilled and pan-fried mains — 6
+### Grilled and pan-fried mains — 5 of 6 written
 
-1. **Shōgayaki** — 生姜焼き, *shōgayaki*, `shogayaki`. Pork loin in ginger, soy, mirin and sake.
+1. **Written** as `shogayaki`. **Shōgayaki** — 生姜焼き, *shōgayaki*, `shogayaki`. Pork loin in ginger, soy, mirin and sake.
    Ten minutes, and the most-cooked pork dish in the country.
-2. **Saba shioyaki** — さばの塩焼き, *saba shioyaki*, `saba shioyaki`. Salt, thirty minutes, a
+2. **Written** as `saba-shioyaki`. **Saba shioyaki** — さばの塩焼き, *saba shioyaki*, `saba shioyaki`. Salt, thirty minutes, a
    grill. Three ingredients and it is dinner.
-3. **Buri no teriyaki** — ぶりの照り焼き, *buri no teriyaki*, `buri teriyaki`. Teriyaki done the home
+3. **Written** as `buri-teriyaki`. **Buri no teriyaki** — ぶりの照り焼き, *buri no teriyaki*, `buri teriyaki`. Teriyaki done the home
    way — the glaze is made in the pan from the same four bottles, not poured from `teriyaki-sauce`.
    The table should say so plainly, since the site's teriyaki is a bottle sauce today.
-4. **Hambāgu** — ハンバーグ, *hanbāgu*, `hambagu`. Panko soaked in milk, a steamed finish under a
+4. **Written** as `hambagu`. **Hambāgu** — ハンバーグ, *hanbāgu*, `hambagu`. Panko soaked in milk, a steamed finish under a
    lid, and a pan sauce from the fond. Not a hamburger.
 5. **Tori no karaage** — already here as `karaage`. Recorded so nobody writes it twice.
 6. **Yakitori (home version, no charcoal)** — 焼き鳥, *yakitori*, `yakitori`. Thigh and negi under
    a broiler with a tare reduced from the same four bottles.
 
-### Small sides (小鉢) — 9, tiny and correct at that size
+### Small sides (小鉢) — 7 of 9 written, tiny and correct at that size
 
-1. **Kinpira gobō** — きんぴらごぼう, *kinpira gobō*, `kinpira gobo`. Burdock and carrot,
+1. **Written** as `kinpira-gobo`. **Kinpira gobō** — きんぴらごぼう, *kinpira gobō*, `kinpira gobo`. Burdock and carrot,
    matchsticked, fried in sesame oil, seasoned and cooked dry. Keeps 3 days, 4–5 if the liquid is
    fully cooked off.
-2. **Hijiki no nimono** — ひじきの煮物, *hijiki no nimono*, `hijiki nimono`. Dried hijiki, carrot,
+2. **Written** as `hijiki-no-nimono`. **Hijiki no nimono** — ひじきの煮物, *hijiki no nimono*, `hijiki nimono`. Dried hijiki, carrot,
    abura-age. Keeps 1–2 days, which is shorter than people assume and is worth stating.
-3. **Ohitashi** — おひたし, *ohitashi*, `ohitashi`. Spinach or komatsuna blanched, squeezed, dressed
+3. **Written** as `ohitashi`. **Ohitashi** — おひたし, *ohitashi*, `ohitashi`. Spinach or komatsuna blanched, squeezed, dressed
    in dashi and soy. Two ingredients and a technique.
-4. **Sunomono** — 酢の物, *sunomono*, `sunomono`. Cucumber and wakame in sanbaizu. The vinegar
+4. **Written** as `sunomono`. **Sunomono** — 酢の物, *sunomono*, `sunomono`. Cucumber and wakame in sanbaizu. The vinegar
    ratio is the recipe.
-5. **Goma-ae** — ごま和え, *goma-ae*, `goma ae`. Green beans or spinach in ground sesame, sugar and
+5. **Written** as `goma-ae`. **Goma-ae** — ごま和え, *goma-ae*, `goma ae`. Green beans or spinach in ground sesame, sugar and
    soy.
 6. **Horenso no shiraae** — 白和え, *shiraae*, `shiraae`. Tofu mashed with sesame as a dressing.
    The tofu is drained first and that is the whole difficulty.
-7. **Tamagoyaki** — 卵焼き, *tamagoyaki*, `tamagoyaki`. Rolled in a rectangular pan, sweet or dashi
+7. **Written** as `tamagoyaki`. **Tamagoyaki** — 卵焼き, *tamagoyaki*, `tamagoyaki`. Rolled in a rectangular pan, sweet or dashi
    style — **they are two different recipes** and a file that does not say which is unusable.
-8. **Kyūri no asazuke** — 浅漬け, *asazuke*, `asazuke`. The overnight pickle, not the fermented
+8. **Written** as `asazuke`. **Kyūri no asazuke** — 浅漬け, *asazuke*, `asazuke`. The overnight pickle, not the fermented
    one, and the difference matters.
 9. **Nasu no agebitashi** — 揚げ浸し, *agebitashi*, `agebitashi`. Fried aubergine steeped in dashi,
    eaten cold. The one that most rewards being made the day before.
 
-### Made ahead (作り置き) — 5, plus the ones above that qualify
+### Made ahead (作り置き) — 3 of 5 written, plus the ones above that qualify
 
-1. **Niku miso** — 肉味噌, *nikumiso*, `nikumiso`. Minced pork cooked down with miso; goes on rice,
+1. **Written** as `nikumiso`. **Niku miso** — 肉味噌, *nikumiso*, `nikumiso`. Minced pork cooked down with miso; goes on rice,
    on tofu, on noodles. Keeps a week.
 2. **Shio kōji chicken / salt-cured chicken** — 塩麹, *shiokōji*, `shio koji`. A make-ahead
    marinade rather than a dish; it is what makes a Thursday chicken worth eating.
-3. **Nanbanzuke** — 南蛮漬け, *nanbanzuke*, `nanbanzuke`. Fried fish or chicken steeped in sweet
+3. **Written** as `nanbanzuke`. **Nanbanzuke** — 南蛮漬け, *nanbanzuke*, `nanbanzuke`. Fried fish or chicken steeped in sweet
    vinegar with onion. Better on day two, which is the point.
-4. **Mentsuyu** — めんつゆ, *mentsuyu*, `mentsuyu`. Dashi, soy, mirin, concentrated. One bottle that
+4. **Written** as `mentsuyu`. **Mentsuyu** — めんつゆ, *mentsuyu*, `mentsuyu`. Dashi, soy, mirin, concentrated. One bottle that
    seasons half this shelf, and it is a component more than a dish.
 5. **Onigiri** — おにぎり, *onigiri*, `onigiri`. Not made ahead exactly, but it is what the rice and
    the fillings become, and no other file on the site covers it.
@@ -184,16 +205,16 @@ are readable off the page: **≥3 in every section, and ≥5 in each of 煮物 a
 Also 作り置き by nature and already ranked above: `kinpira gobo`, `hijiki nimono`,
 `kiriboshi daikon`, `kabocha no nimono`, `chikuzenni`, `agebitashi`, `asazuke`.
 
-### Rice bowls and one-plate suppers — 7
+### Rice bowls and one-plate suppers — 4 of 7 written
 
-1. **Oyakodon** — 親子丼, *oyakodon*, `oyakodon`. Chicken and egg over rice. The egg goes in in two
+1. **Written** as `oyakodon`. **Oyakodon** — 親子丼, *oyakodon*, `oyakodon`. Chicken and egg over rice. The egg goes in in two
    pours and the second one is barely set; that is the dish.
-2. **Gyūdon** — 牛丼, *gyūdon*, `gyudon`. Thin beef and onion. Fifteen minutes.
+2. **Written** as `gyudon`. **Gyūdon** — 牛丼, *gyūdon*, `gyudon`. Thin beef and onion. Fifteen minutes.
 3. **Katsudon** — カツ丼, *katsudon*, `katsudon`. The cutlet is a component and the simmer is the
    recipe.
-4. **Omurice** — オムライス, *omuraisu*, `omurice`. Ketchup rice under an omelette. A children's
+4. **Written** as `omurice`. **Omurice** — オムライス, *omuraisu*, `omurice`. Ketchup rice under an omelette. A children's
    dish that adults keep cooking.
-5. **Chāhan** — チャーハン, *chāhan*, `chahan`. Japanese fried rice, seasoned with soy and pepper
+5. **Written** as `chahan`. **Chāhan** — チャーハン, *chāhan*, `chahan`. Japanese fried rice, seasoned with soy and pepper
    rather than oyster sauce. `egg-fried-rice` is the Chinese one and stays where it is.
 6. **Curry rice, the home version** — カレーライス, *karē raisu*, `kare raisu`. `japanese-beef-curry`
    exists and makes its roux inline, which `docs/gaps/README.md` already records as a debt. The
@@ -235,6 +256,46 @@ difference between the dish and an approximation. **State them as real quantitie
 Sources for all four are named at the foot of this file. **Where a writer cannot establish a ratio
 from a source, write a different dish** — this is exactly where the story's "never fabricate a
 number" bites hardest.
+
+---
+
+## What reading the whole collection found
+
+T-003-07 read the 658 files as one collection. Five things about this shelf that no writer ticket
+could see on its own:
+
+**一汁三菜 is now buildable off this one page.** Rice, a soup and three sides: `gohan` ·
+`sumashi-jiru` · `kinpira-gobo` · `ohitashi` · `goma-ae`. Elapsed, that is 55 · 5 · 12 · 31 · 3
+minutes, and most of the rice is a soak. Hands-on, it is **3 · 2 · 7 · 1 · 5 — eighteen minutes
+of standing in a kitchen for a five-part dinner.** That was the claim this shelf was opened on and
+it is now measurable rather than asserted.
+
+**The small recipes came out the right size, and the clock proves it.** `goma-ae` is three
+minutes, `shogayaki` four, `chahan` four, `omurice` seven. Those read as hands-on-dominant in the
+timeline and that is the truth — a four-minute stir-fry is four minutes of standing at the pan.
+Nothing on this shelf claims to be walk-away when it is not.
+
+**One file was lying about its clock and has been fixed.** `buri-daikon` reported 30 of its 55
+minutes as time you have to be there for, and twenty of those were `~parboil{20%min}` — a pot of
+rice water with daikon in it. `parboil` was not in `src/lib/time.ts`'s unattended vocabulary. It
+is now, and the dish reads 10 hands-on against 45 unattended, which is what a 煮魚 actually is.
+The number was never touched.
+
+**Every file on the shelf declares its slack.** Thirty-one arrived with it; the seven shelved from
+elsewhere — `dashi`, `miso-soup`, `gyoza`, `okonomiyaki`, `teriyaki-sauce`, `goma-dare`,
+`japanese-beef-curry` — did not, and T-003-07 wrote all seven. `dashi` and `miso-soup` are both
+`unforgiving` for the same reason, which is the one rule this whole shelf rests on: **boiled kombu
+is bitter and boiled miso is flat, and neither comes back.** Half this counter is built on those
+two files, so the mistake travels.
+
+**Nothing is written twice.** `seaweed-egg-drop-soup` and `egg-drop-soup` were checked against
+each other and are different soups, as this page and `soup-pot.md` both said they would be.
+`chahan` and `egg-fried-rice` likewise. No file on this shelf duplicates a Ramen Shop file.
+
+**What is left open** is the twelve unwritten ranks — most conspicuously `katsudon` and
+`ochazuke`, which are the two a Japanese reader would notice first — and one thing this page
+already flagged and nobody has taken: `japanese-beef-curry` makes its roux inline, and the home
+version starts from a block. That is a second recipe, not an edit to the first.
 
 ---
 

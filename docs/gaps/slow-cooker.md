@@ -1,75 +1,75 @@
 # The Slow Cooker — what is missing
 
-**0 recipes. The shelf was opened by T-003-01 and nothing is on it yet.** Like the Instant Pot it
-is a lid, not a cuisine, and everything it will ever sell is already written here as a pot on a
-stove. Unlike the Instant Pot, it is the *second* lid: **25 Instant Pot variants already exist**,
-so for most of the dishes below a cook can already see two ways to spend the day and this shelf
-adds the third.
+**20 recipes, every one of them a `kit: Slow Cooker` variant of a dish already on the shelf.**
+T-003-05 wrote all twenty. Like the Instant Pot it is a lid, not a cuisine, and everything it
+sells was already written here as a pot on a stove. Unlike the Instant Pot, it is the *second*
+lid — and now that both are here, **thirteen dishes exist in all three forms**, which is the
+thing this counter was opened to make possible.
 
-That is the whole point of the counter. A person looking at `pot-roast` should be able to read:
+That is the whole point of it. A person looking at `pot-roast` now reads:
 
 ```
-(plain)              4 hr 30, tended
-kit: Instant Pot       50 min, unattended
-kit: Slow Cooker         8 hr, unattended and gone
+(plain)                4 hr,  0 min hands-on
+kit: Instant Pot    2 hr 16, 20 min hands-on
+kit: Slow Cooker    8 hr 32, 32 min hands-on
 ```
 
-So the ranked list below is **not a wish list**, and it is not a copy of `instant-pot.md`'s
-either. Every line names a recipe that already exists, with its slug, and every line carries a
-verdict: whether the machine helps **more**, **less**, or **differently** than pressure does for
-that dish. A shelf of eighteen dishes the machine genuinely improves is worth more than thirty
-where a third of them come out worse than the original. Read this page beside
+Three shapes of day for one dinner, and the numbers are the recipes' own.
+
+The ranked list below was **not a wish list** and it is not one now. Every line named a recipe
+that already existed, with its slug and a verdict: whether the machine helps **more**, **less**,
+or **differently** than pressure does. **All eighteen ranks were written, plus two more off the
+candidate table** — `hungarian-goulash` and `baked-turkey-wings`. Read this page beside
 `docs/gaps/instant-pot.md`; the two were written to be read together.
 
-**The times are not on this page.** A slow-cooker time is not a braise time doubled, and this file
-will not invent one. What it gives is the setting the dish wants and the reason; T-003-05 sources
-the hours per dish and records where each came from.
+**The times were not on this page and are still not.** A slow-cooker time is not a braise time
+doubled. T-003-05 sourced the hours per dish and recorded where each came from in
+`docs/active/work/T-003-05/`; that is the file to read before writing a nineteenth.
 
 ---
 
-## What is already here
+## What it has
 
-This heading is not `## What it has` yet, and that is deliberate: no recipe names this counter, so
-`scripts/menu-sections.mjs` would report every slug below as *listed but not shelved here*.
+This block used to be a candidate list under the heading `## What is already here`, because no
+recipe named the counter and `scripts/menu-sections.mjs` would have reported every slug in it as
+*listed but not shelved here*. That is over. **All twenty members carry `kit: Slow Cooker` and
+name the counter in their own file**, which is what a kit shelf means, and every slug below is
+one of them.
 
-**And unlike the other two home shelves, this block is a candidate list rather than a borrowing
-list.** T-003-06's own criterion is that The Slow Cooker *"shelves every recipe carrying
-`kit: Slow Cooker`, and nothing else"* — it is a kit shelf, and a dish cooked another way does not
-belong on it however slow it is. Nothing below gets shelved here until a `-slow-cooker` variant of
-it is written. **T-003-06 renames this heading to `## What it has` and replaces these slugs with
-the variants**, which is a bigger edit than the sibling files need; the `**Title.** slug · slug`
-line shape is already correct.
+**Braises, left alone all day.** pot-roast-slow-cooker · beef-stew-slow-cooker ·
+chili-con-carne-slow-cooker · braised-short-ribs-slow-cooker · carnitas-slow-cooker ·
+birria-de-res-slow-cooker · cachete-slow-cooker · oxtails-slow-cooker · chile-verde-slow-cooker ·
+hungarian-goulash-slow-cooker · collard-greens-slow-cooker · corned-beef-slow-cooker ·
+osso-buco-slow-cooker · lamb-tagine-slow-cooker · irish-stew-slow-cooker ·
+baked-turkey-wings-slow-cooker · brunswick-stew-slow-cooker ·
+new-england-boiled-dinner-slow-cooker
 
-**Braises, left alone all day.** pot-roast · beef-stew · chili-con-carne · braised-short-ribs ·
-beef-bourguignon · carnitas · birria-de-res · cachete · oxtails · chile-verde · hungarian-goulash ·
-collard-greens · corned-beef · osso-buco · lamb-tagine · lengua · suadero · tripas · irish-stew ·
-coq-au-vin · red-braised-pork-belly · chashu · baked-turkey-wings · smothered-pork-chops ·
-brunswick-stew · new-england-boiled-dinner · chicken-adobo · japanese-beef-curry · doro-wat ·
-beef-rendang · borscht
+**Beans and pulses.** boston-baked-beans-slow-cooker
 
-**Beans and pulses.** boston-baked-beans · cuban-black-beans · refried-beans · black-eyed-peas ·
-butter-beans · gigantes-plaki · hoppin-john · split-pea-soup · ful-medames
+**Whole birds and big cuts.** soy-sauce-chicken-slow-cooker
 
-**Stocks.** chicken-broth · ham-hock-stock · pho-broth · chintan-broth · tonkotsu-broth
-
-**Whole birds and big cuts.** soy-sauce-chicken · white-cut-chicken · chicken-feet · pastrami
-
-**Also here.** congee · consome-de-birria
+There is no stocks section here, and that is the shelf agreeing with itself: every stock in the
+candidate table below ranks *less* against pressure and none was written. `counters.json` still
+carries an empty *Stocks* heading from when one was expected; an empty section does not render,
+so it costs nothing and it is a place for one if a case is ever made.
 
 ---
 
 ## What it is missing
 
-### Read it in this order
+### All eighteen ranks below are written
 
-**Write the twelve below first, in order, then the six after them.** The first twelve all name a
-dish that already has an Instant Pot variant, which is what makes the three-way choice visible on
-the page — and it is T-003-05's criterion that at least twelve do. The six after are dishes the
-machine is *better* at than the pressure cooker but which have no pressure variant to sit beside.
-Taking twelve from the first block and six from the second satisfies both counts without anybody
-having to work it out.
+**Both blocks are done.** The twelve each named a dish that already had an Instant Pot variant —
+that is what made the three-way choice visible on the page, and thirteen dishes now show it. The
+six after them were dishes the machine is *better* at with no pressure variant to sit beside;
+all six were written too. Two more came off the candidate table: `hungarian-goulash-slow-cooker`
+(a *differently*) and `baked-turkey-wings-slow-cooker` (a *more*).
 
-### The twelve that pay for the appliance — and already have a pressure sibling
+**What is left is in the candidate table**, not in these two blocks. The ranks are kept below
+with their reasoning intact, because the argument for each one is what a writer needs when they
+come back for the nineteenth — not the fact that it exists.
+
+### The twelve that pay for the appliance — all written
 
 1. **Pot roast** — `pot-roast` [Instant Pot variant exists]. The dish the machine is sold on, in
    both directions. Chuck, a low setting and a day away. The three-way page starts here.
@@ -117,7 +117,7 @@ having to work it out.
     flavour work pressure does not reproduce. A crock is the closest vessel to a bean pot there
     is. **Read the bean hazard below before writing it.**
 
-### Six more the machine is better at, with no pressure sibling to sit beside
+### Six more the machine is better at, with no pressure sibling — all written
 
 13. **Osso buco** — `osso-buco`. The shins have to hold their shape on the bone.
     `instant-pot.md` flags exactly this as the risk its own variant runs; the slow cooker does not
@@ -197,6 +197,44 @@ slow cooker is the better of the two machines for this dish. **less** = the pres
 
 That is **46 existing dishes named, every one with a slug and a verdict, 24 of them already
 carrying an Instant Pot variant** — and none of them needing a recipe written from nothing.
+**Twenty have since been written**, all from the *more* and *differently* rows. **No row marked
+*less* was written**, which is the table doing its job.
+
+---
+
+## What reading the whole collection found
+
+T-003-07 read the 658 files as one collection. Four things about this shelf that no writer ticket
+could see on its own:
+
+**The three-way choice is real and it is visible.** Thirteen dishes exist as plain, Instant Pot
+and Slow Cooker: `beef-stew`, `carnitas`, `pot-roast`, `chili-con-carne`, `collard-greens`,
+`birria-de-res`, `corned-beef`, `oxtails`, `boston-baked-beans`, `braised-short-ribs`, `cachete`,
+`chile-verde`, `hungarian-goulash`. Every one of those pages offers both other forms, in both
+directions.
+
+**The bargain the shelf promises is in the numbers.** Setting `corned-beef-slow-cooker` aside —
+its 132 hours are a five-day cure, not a cook — elapsed time runs **4 hr 40 to 10 hr 15 against 0
+to 45 minutes of hands-on**. `birria-de-res-slow-cooker` is 8 hr 5 with **5 minutes** of your
+attention; `irish-stew-slow-cooker`, `soy-sauce-chicken-slow-cooker` and
+`new-england-boiled-dinner-slow-cooker` ask for **none at all**. Not one of the twenty reports
+the bulk of its duration as hands-on.
+
+**Every one declares its slack, and thirteen of the twenty are `forgiving`.** That was the point
+of the property and this shelf is where it pays: *an extra hour on low only softens the beef
+further* is what makes a walk-away shelf trustworthy. The six `narrow` ones are the ones worth
+reading — `new-england-boiled-dinner-slow-cooker` and `corned-beef-slow-cooker` because a
+vegetable goes in late and cannot be taken back out, `hungarian-goulash-slow-cooker` because the
+paprika has thirty seconds before the machine is even switched on. The one `unforgiving` file is
+`soy-sauce-chicken-slow-cooker`.
+
+**One alias was drifting.** `corned-beef-slow-cooker` carried *crockpot corned beef and cabbage*,
+which belongs to `new-england-boiled-dinner` — its plain sibling carries it and `corned-beef`
+does not. Dropped, so the variant matches the dish it is a variant of.
+
+**What is left open.** The candidate table's remaining *differently* rows: `borscht`, `congee`,
+`chicken-adobo`, `chashu`, `lengua`, `suadero`, `japanese-beef-curry`, `split-pea-soup`. None is
+urgent and each would be a real dish. Nothing marked *less* should be written at all.
 
 ---
 
