@@ -516,6 +516,19 @@ import { url } from '../lib/url.ts';
       justify-content: center;
       min-height: 44px;
     }
+    /*
+     * The fifth, found by reading the page rather than the criteria: the recipe's own title in
+     * the plan block is the way back from the list to the dish, and it was 22px — the last
+     * control here still sized for a mouse, sitting directly above a column of 44px rows.
+     *
+     * inline-flex rather than block, so the link stays as wide as the name it draws and the
+     * heading beside it does not become a full-width strip.
+     */
+    .list-page :global(.planned h3 a) {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+    }
   }
 
   .list-page :global(.tick[aria-pressed='true']) {

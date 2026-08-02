@@ -232,6 +232,32 @@ main {
   }
 }
 
+/* ---- the kit's button, on a phone ---------------------------------------- */
+
+/*
+ * `.clay-button` comes from src/styles/b28-clay.css, which is **vendored** from b28.dev and
+ * reconciled there rather than here — the same rule breakpoints.test.ts states in its own
+ * failure message. So the touch floor the kit does not carry is written on this side of the
+ * line, where the next `just sync-kit` cannot take it away.
+ *
+ * The kit sizes the button with `padding: 0.7em 1.4em`, which comes to 41.4px. Every other
+ * clay-button on the site already has a local override that clears 44 — AddToPlan's toggle and
+ * CookModes' pane foot both say 2.75rem — and the one that does not is the only control on the
+ * 404 page, which no ticket owned and nobody had looked at. "Clear the marks" under the table
+ * is the same 41.4px whenever it appears.
+ *
+ * inline-flex, not a bare min-height: half of these are anchors, and min-height does nothing to
+ * an inline box. The centring is what a button does by default and what an anchor does not.
+ */
+@media (max-width: 34rem) {
+  .clay-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+  }
+}
+
 /* ---- the finder ---------------------------------------------------------- */
 
 [hidden] { display: none !important; }
@@ -655,6 +681,25 @@ kbd {
     padding: 0.75rem;
     border-radius: var(--clay-radius-sm);
   }
+  /*
+   * The 6.7px above, answered without touching the sentence.
+   *
+   * Both variant links are 44px tall and on boston-baked-beans they sit 6.6px apart — two
+   * targets that size, that close, on the switch that decides whether you are cooking this in
+   * a pot, an Instant Pot or a slow cooker. Each one is big enough; the pair is not.
+   *
+   * `a + a` still matches across the ", " text node between them, so the margin lands AFTER the
+   * comma, in the space that is already there — the comma stays against "Instant Pot" instead
+   * of drifting off it, which is what a margin on every link would have done. 1.1rem takes the
+   * gap from 6.6px to 24.2px, the spacing figure WCAG 2.2's target-size criterion is written
+   * around. Where the two links wrap onto separate lines it costs nothing.
+   *
+   * A mitigation, not the cure. The cure is for the sentence to become a list, and that changes
+   * the desktop, which this ticket's criteria forbid. docs/gaps/mobile.md carries it.
+   */
+  .variants a + a {
+    margin-inline-start: 1.1rem;
+  }
 }
 
 /* ---- the shelves --------------------------------------------------------- */
@@ -993,6 +1038,23 @@ kbd {
   box-shadow: var(--clay-shadow-well);
   font-size: 0.86rem;
   line-height: 1.6;
+}
+
+/*
+ * narrow — a phone. The disclosure is 24px of line box on all 658 recipe pages, and it is the
+ * one control on the page no ticket in S-004 owned: not the table, not the clock, not the views,
+ * not the trimmings. So it kept a mouse's height while everything around it grew.
+ *
+ * Padding rather than a bare min-height, because a <summary> has to stay `display: list-item`
+ * to keep its disclosure marker — inline-flex would take the triangle away. 24px of line plus
+ * 0.63rem above and below measures 44.2px, and the min-height stands behind the arithmetic so
+ * the floor does not move with whichever font loaded.
+ */
+@media (max-width: 34rem) {
+  .source summary {
+    min-height: 44px;
+    padding: 0.63rem 0;
+  }
 }
 
 @media print {
