@@ -283,11 +283,25 @@ import { url } from '../lib/url.ts';
 
   /* ---- the list itself --------------------------------------------------- */
 
+  /*
+   * A flex column, and not a grid — which it was, with the same 0.15rem gap.
+   *
+   * A grid item can only travel inside its own grid area, and every row here is its own area, so
+   * the sticky aisle heading below would have had nowhere to go: it would compute as sticky and
+   * never move. A flex item's containing block is the whole flex container, so there it can run
+   * the length of its aisle.
+   *
+   * Flex rather than plain block flow for the same reason `gap` is kept: block siblings collapse
+   * their margins into each other, and a hand-rolled `margin-bottom` gap would have quietly
+   * swallowed 0.15rem above every aisle heading — measured at 50px off the page height before
+   * this was flex. Same boxes as the grid, to the pixel.
+   */
   .list-page :global(.lines) {
     list-style: none;
     margin: 0;
     padding: 0;
-    display: grid;
+    display: flex;
+    flex-direction: column;
     gap: 0.15rem;
   }
   .list-page :global(.lines li) {
@@ -297,17 +311,32 @@ import { url } from '../lib/url.ts';
   /*
    * The shelf edge you are standing at. Not a heading you read so much as a place you
    * arrive: small caps, a rule under it, and the count so you know when you are done here.
+   *
+   * And it stays. Produce alone runs 1.8 metres of screen on a phone — nearly three screenfuls —
+   * and a heading that scrolls away leaves you halfway down a list of food with nothing saying
+   * which aisle you are standing in. Stuck to the top, the first line of the screen reads
+   * PRODUCE … 27 for as long as Produce lasts, and the next aisle's heading pushes it off.
+   *
+   * It needs the page's own colour behind it, or the rows slide through the words. And it needs
+   * room above the text once it is against the top edge, which is the 0.4rem that has moved out
+   * of margin-top and into padding-top: the box grows upward by exactly what the margin gave up,
+   * so nothing on the page at rest moves, and the taller box is invisible because it is painted
+   * the colour that was already there.
    */
   .list-page :global(.lines li.aisle) {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background: var(--clay-bg);
     display: flex;
     align-items: baseline;
     gap: 0.5rem;
-    margin: 1.4rem 0 0.2rem;
-    padding: 0 0.5rem 0.35rem;
+    margin: 1rem 0 0.2rem;
+    padding: 0.4rem 0.5rem 0.35rem;
     border-bottom: 1.5px solid color-mix(in srgb, var(--clay-primary) 40%, var(--clay-well));
   }
   .list-page :global(.lines li.aisle:first-child) {
-    margin-top: 0.2rem;
+    margin-top: -0.2rem; /* 0.2rem, less the 0.4rem that became padding */
   }
   .list-page :global(.aisle-name) {
     font-family: var(--clay-font-body);
@@ -426,6 +455,15 @@ import { url } from '../lib/url.ts';
     /* A narrow badge needs a narrower reservation, or it eats the name's share of the line. */
     .list-page :global(.tick) {
       grid-template-columns: 1.5rem minmax(0, 1fr) auto minmax(4.8rem, auto);
+    }
+    /*
+     * The note is the charm, not the wayfinding, and at 375px it is what turns "Baking aisle —
+     * flour, sugar, the things that make it rise" into a two-line heading. A bar pinned to the
+     * top of the screen has to be one predictable line, and dropping the phrase is kinder than
+     * cutting it off halfway with an ellipsis.
+     */
+    .list-page :global(.aisle-note) {
+      display: none;
     }
   }
 
