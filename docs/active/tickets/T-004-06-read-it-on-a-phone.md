@@ -3,9 +3,9 @@ id: T-004-06
 story: S-004
 title: read-it-on-a-phone
 type: task
-status: open
+status: done
 priority: high
-phase: ready
+phase: done
 depends_on: [T-004-04, T-004-05]
 ---
 
