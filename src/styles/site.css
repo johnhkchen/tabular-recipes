@@ -11,7 +11,7 @@
  *
  * Wide, then snug, then narrow. Two numbers, and the whole site writes only these:
  *
- *   snug     max-width: 44rem   [reserved]  the widest recipes have stopped fitting
+ *   snug     max-width: 44rem   [in use]    the widest recipes have stopped fitting
  *   narrow   max-width: 34rem   [in use]    the common recipe has stopped fitting,
  *                                           and the page furniture is cramped
  *
@@ -704,6 +704,49 @@ kbd {
   font-size: 0.82rem;
 }
 .reset { font-size: 0.82rem; padding: 0.4em 0.95em; }
+
+/*
+ * snug — the ingredients stay put while the operations scroll.
+ *
+ * Below 44rem the widest recipes no longer fit: at a 700px window miso-ramen still wants 651px
+ * in a 618px box. Above it the most a table can travel sideways is about 29px, which cannot
+ * carry a 168px column off the screen, so this is where pinning starts to be worth its cost.
+ *
+ * The cost is the borders. Under border-collapse: collapse the borders belong to the *table* and
+ * are painted at the table's coordinates: the cell travels and its edges stay behind, which
+ * leaves an unbordered slab of background beside a fully drawn table. So the cell gives up its
+ * border and draws its own three edges as shadows, which do travel. These are not decoration —
+ * delete them and the column loses its spine and its row lines the moment anyone scrolls.
+ *
+ * There is no first-child/last-child reset here and there does not need to be: every ingredient
+ * cell gets the same three edges, and the one edge left undrawn — the bottom of the last row —
+ * sits against the frame, where a missing hairline cannot show.
+ *
+ * The background has to be opaque, because operation cells scroll underneath it. That is also
+ * why a crossed-off ingredient fades its text rather than itself: opacity on the cell fades its
+ * background too, and the table then reads straight through it.
+ */
+@media (max-width: 44rem) {
+  .cell--ingredient {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    border: 0;
+    background: var(--clay-surface-raised);
+    /* No depth until something is genuinely hidden behind the column — see .table-more. */
+    --edge: 0 0 0 transparent;
+    box-shadow:
+      inset 0 1px 0 var(--line),
+      inset 1px 0 0 var(--line),
+      inset -1.5px 0 0 var(--frame),
+      var(--edge);
+  }
+  .table-well[data-more] .cell--ingredient {
+    --edge: 0.3rem 0 0.4rem -0.28rem color-mix(in srgb, var(--clay-ink) 34%, transparent);
+  }
+  .cell--ingredient[data-done] { opacity: 1; }
+  .cell--ingredient[data-done] > span { opacity: 0.4; }
+}
 
 /* ---- the three views, and the clock under them --------------------------- */
 
