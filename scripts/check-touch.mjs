@@ -22,7 +22,10 @@
  *   1. every visible interactive element is at least 44px tall — a thumb, not a mouse
  *   2. the shortest drawn table cell is at least 44px — every cell is a button
  *   3. .table-well[data-more] is set exactly when .table-scroll actually overflows — the edge
- *      cue must not say a table continues when it does not, or stay silent when it does
+ *      cue must not say a table continues when it does not, or stay silent when it does.
+ *      "Overflows" means more than 1px of unseen table, which is RecipeTable.astro's own
+ *      threshold (`room > 1`, at :161) rather than a second opinion about the same question —
+ *      see the note under UNSEEN below
  *   4. .cell--ingredient is `sticky` below 44rem and `static` above it — the pinned column is
  *      a narrow-width behaviour and must not leak onto a desktop
  *
@@ -76,6 +79,20 @@ const THUMB = 44;
 const DESKTOP = 768;
 
 /*
+ * How much unseen table counts as "the table continues past the edge".
+ *
+ * This number is RecipeTable.astro's, at :161 — `const unseen = room > 1 && …`. It is written
+ * here because the alternative is worse: a checker that picks its own threshold is not testing
+ * the affordance, it is disagreeing with it. `cornbread-dressing` at 375px has exactly 1px of
+ * unseen table, and the first draft of this file called that a lie. It is not one. A 40px
+ * gradient and a line of text for one pixel would be the affordance lying the other way.
+ *
+ * If RecipeTable.astro ever changes its threshold, this line has to change with it, and the
+ * comment at each end says so.
+ */
+const UNSEEN = 1;
+
+/*
  * A plan, so /list/ draws its lines instead of its empty state. Seven recipes across the whole
  * aisle walk; the shape is src/lib/plan.ts's StoredPlan, version 1.
  */
@@ -88,6 +105,7 @@ const SEED_PLAN = `localStorage.setItem('tabular-recipes:plan', JSON.stringify({
 
 const PROBE = `(() => {
   const THUMB = ${THUMB};
+  const UNSEEN = ${UNSEEN};
   const round = (n) => Math.round(n * 10) / 10;
 
   /*
@@ -155,10 +173,11 @@ const PROBE = `(() => {
   if (scroller) {
     const cells = [...document.querySelectorAll('td.cell')];
     const ingredient = document.querySelector('.cell--ingredient');
+    const room = scroller.scrollWidth - scroller.clientWidth;
     out.table = {
       shortestCell: cells.length ? round(Math.min(...cells.map((c) => c.getBoundingClientRect().height))) : null,
-      overflows: scroller.scrollWidth > scroller.clientWidth + 0.5,
-      over: scroller.scrollWidth - scroller.clientWidth,
+      overflows: room > UNSEEN,
+      over: room,
       says: document.querySelector('.table-well').hasAttribute('data-more'),
       pinned: ingredient ? getComputedStyle(ingredient).position === 'sticky' : null,
     };
