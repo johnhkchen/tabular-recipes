@@ -3,9 +3,9 @@ id: T-004-04
 story: S-004
 title: the-clock-and-the-cook-views
 type: task
-status: open
+status: done
 priority: high
-phase: ready
+phase: done
 depends_on: [T-004-03]
 ---
 
