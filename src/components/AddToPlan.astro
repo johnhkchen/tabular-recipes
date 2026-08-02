@@ -97,6 +97,23 @@ const { slug } = Astro.props;
     border-radius: var(--clay-radius-sm);
   }
 
+  /*
+   * On a phone this pair is most of what there is to press on a recipe page, so both reach
+   * 44px. The link needs a box before a minimum height means anything to it — min-height does
+   * nothing to an inline box — and inline-flex is the smallest thing that gives it one without
+   * making it a block and pushing "See the list" onto its own line.
+   */
+  @media (max-width: 34rem) {
+    .toggle {
+      min-height: 2.75rem;
+    }
+    .to-list {
+      display: inline-flex;
+      align-items: center;
+      min-height: 2.75rem;
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .toggle[aria-pressed='true'],
     .toggle[aria-pressed='true']:hover {
