@@ -3,9 +3,9 @@ id: T-003-07
 story: S-003
 title: backfill-and-read-it-all
 type: task
-status: open
+status: done
 priority: high
-phase: ready
+phase: done
 depends_on: [T-002-09, T-003-06]
 ---
 
