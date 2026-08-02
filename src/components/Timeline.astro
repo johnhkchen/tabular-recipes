@@ -88,11 +88,36 @@ const columns = stretches
 /*
  * At true scale a short stretch is too narrow for its own label, so the axis only labels
  * the ones with room. Nothing is lost: every row prints its own duration beside it.
+ *
+ * Two questions, asked in two places, because they are two different questions. This one —
+ * is this stretch big enough that a number on it is worth reading — is about the recipe, so
+ * it is answered here. Whether the label then FITS the column it landed in is about the
+ * window, and only the browser knows that; see the @container rules under .stretch.
  */
 const LABEL_AT = 0.08;
+
+/*
+ * How much room a label needs, indexed by how many characters it has.
+ *
+ * Measured rather than guessed: every one of the 93 duration strings formatDuration() can
+ * produce for this collection, rendered in Karla at the 0.68rem the axis uses. The vocabulary
+ * is small enough — "8 hr", "38 min", "21 days", "13 hr 50 min" — that length sorts them with
+ * no overlap, and each entry here is the WIDEST label of that length, rounded up to the pixel.
+ * So the rule errs towards holding a label back rather than towards stacking one that will not
+ * fit, which costs a handful of labels across the whole collection and buys never having to
+ * read "1 hr / 10 / min" down three lines.
+ *
+ * These are text widths, with no padding in them, because that is what the rules below compare
+ * against: a size container is queried on its CONTENT box, so the stretch's own 0.1rem sides
+ * are already out of the number the browser tests.
+ */
+const LABEL_FITS_AT = [20, 20, 20, 20, 20, 30, 36, 36, 52, 52, 52, 58, 61];
+const fitsAt = (text: string) => LABEL_FITS_AT[Math.min(text.length, LABEL_FITS_AT.length - 1)];
+
 const axis = stretches.map((stretch) => ({
   ...stretch,
   labelled: stretch.minutes / span >= LABEL_AT,
+  fitsAt: fitsAt(stretch.text),
 }));
 
 /* --------------------------------------------------------------- the rows */
@@ -300,7 +325,11 @@ const headingId = `clock-${recipe.slug}`;
         <div class="axis" aria-hidden="true">
           {axis.map((stretch, i) => (
             <span class="stretch" style={`grid-column: ${i + 1}`} title={stretch.text}>
-              {stretch.labelled ? stretch.text : ''}
+              {stretch.labelled && (
+                <span class="stretch-label" data-fits={stretch.fitsAt}>
+                  {stretch.text}
+                </span>
+              )}
             </span>
           ))}
         </div>
@@ -508,15 +537,57 @@ const headingId = `clock-${recipe.slug}`;
     border-bottom: 1px solid var(--clay-border);
   }
 
+  /*
+   * One size, not a clamp. The clamp only ever bound below a 453px window, where it took the
+   * smallest type on the site down to 9.6px on the surface with the least room — and the fit
+   * rules below are measured at one size, so two sizes would mean two sets of thresholds for a
+   * 13% difference. Above 453px this is the size it already was.
+   */
   .stretch {
     grid-row: 1;
     min-width: 0;
     padding: 0 0.1rem;
-    font-size: clamp(0.6rem, 2.4vw, 0.68rem);
+    font-size: 0.68rem;
     line-height: 1.2;
     text-align: center;
     color: var(--clay-ink-soft);
     overflow-wrap: break-word;
+    /* Each stretch measures its own column, so the rules below can ask whether the label fits. */
+    container-type: inline-size;
+  }
+
+  /*
+   * A label shows only when the column it belongs to can hold it on one line.
+   *
+   * These numbers are not breakpoints and they are deliberately not in the block at the top of
+   * site.css: each is the width of a COLUMN, which the browser measures for us, not the width
+   * of a window. No viewport query could answer this — the same phone draws one stretch at
+   * 278px and the next at 11px, because the width is the recipe's, not the device's.
+   *
+   * data-fits carries the room this label needs; the table it comes from is LABEL_FITS_AT
+   * above, and these six numbers are that table's six values. A browser without container
+   * queries fires none of these, every label renders, and a long one wraps inside its own
+   * column exactly as it did before — the old behaviour, not a broken one. Same for a font
+   * whose metrics beat the measurement: it wraps, it never spills, because .stretch keeps
+   * min-width: 0 and overflow-wrap: break-word.
+   */
+  @container (max-width: 20px) {
+    .stretch-label[data-fits='20'] { display: none; }
+  }
+  @container (max-width: 30px) {
+    .stretch-label[data-fits='30'] { display: none; }
+  }
+  @container (max-width: 36px) {
+    .stretch-label[data-fits='36'] { display: none; }
+  }
+  @container (max-width: 52px) {
+    .stretch-label[data-fits='52'] { display: none; }
+  }
+  @container (max-width: 58px) {
+    .stretch-label[data-fits='58'] { display: none; }
+  }
+  @container (max-width: 61px) {
+    .stretch-label[data-fits='61'] { display: none; }
   }
 
   /* A dashed rule is the seam where the axis was cut. */
