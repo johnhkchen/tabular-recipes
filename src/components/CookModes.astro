@@ -948,6 +948,16 @@ const clockFacts = [
     background: none;
   }
 
+  /*
+   * This is the surface a cook uses standing up, one-handed, with the other hand in the bowl —
+   * so nothing you have to hit here is under 44px. A minimum rather than more padding: padding
+   * has to be re-derived from the line box every time the type moves, and .tick was already
+   * within 1.2px of failing. Where a row is taller than the minimum — one with a note under it,
+   * or a step card — these do nothing at all.
+   *
+   * The step buttons are left alone: they are 213px tall at 375px already. So is the checkbox,
+   * at 18.4px, because the target is the whole label wrapped around it.
+   */
   @media (max-width: 34rem) {
     .modebar {
       display: flex;
@@ -956,6 +966,13 @@ const clockFacts = [
     .mode {
       flex: 1;
       padding: 0.5rem 0.5rem;
+      min-height: 2.75rem;
+    }
+    .tick {
+      min-height: 2.75rem;
+    }
+    .pane-foot .clay-button {
+      min-height: 2.75rem;
     }
     .hit {
       gap: 0.6rem;
