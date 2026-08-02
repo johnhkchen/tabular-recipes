@@ -605,6 +605,58 @@ kbd {
 }
 .pairs .shelf a { padding: 1rem 1.2rem; }
 
+/*
+ * narrow — a phone. Everything here fits; nothing here can be pressed.
+ *
+ * Measured at 375px on boston-baked-beans: the two crumb links 20px, the counter chips 15px, the
+ * two variant links 17px. A thumb wants 44, and these are the trail back, the way to the counter
+ * this dish came from, and the switch between the three ways of cooking it.
+ *
+ * The chips grow as *pills*, not as links inside them. The pill is the thing you can see; a 44px
+ * link inside a 24px pill would put the target outside its own drawing. The facts — serves, about,
+ * the category — take the same height without being links, so the row stays one row of one shape.
+ * That costs about 80px on a seven-chip recipe, which is what tappable costs.
+ *
+ * `.chips li` is declared up in the page furniture, but chips are drawn on the recipe page and
+ * nowhere else, so this is the section that owns how they behave narrow. Writing it here rather
+ * than editing that rule is the point of dividing the file by section.
+ *
+ * The variant switch is prose — "Also written for Instant Pot, Slow Cooker." — and the commas and
+ * the full stop are text, not markup. So each link takes a 44px line box and stays a link in a
+ * sentence; the punctuation sits on the baseline between the two. What this cannot do is separate
+ * them: two variants on one line leave their targets about 4px apart. That needs the sentence to
+ * become a list, which needs markup this ticket does not own.
+ */
+@media (max-width: 34rem) {
+  .crumbs a,
+  .variants a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+  /*
+   * Grown by padding, not by turning the chip into a flex row. A fact chip is a text node and a
+   * <b> — "serves " then "8" — and a flex container makes each an anonymous item, which strips
+   * the trailing space between them and prints "serves8".
+   */
+  .chips li {
+    min-height: 44px;
+    padding: 0.75rem;
+  }
+  /*
+   * The link takes the chip's own padding back off it, so it covers the whole pill rather than
+   * the 20px of text inside it. Without this the pill measures 44px and the thing that actually
+   * navigates measures 20: a tap on the pill's own padding lands on the <li> and does nothing.
+   */
+  .chips a {
+    display: block;
+    min-height: 44px;
+    margin: -0.75rem;
+    padding: 0.75rem;
+    border-radius: var(--clay-radius-sm);
+  }
+}
+
 /* ---- the shelves --------------------------------------------------------- */
 
 .shelf-group {
@@ -657,6 +709,28 @@ kbd {
   margin: 0;
   color: var(--clay-ink-soft);
   font-size: 0.92rem;
+}
+
+/*
+ * narrow — a phone. Spacing only: the grid already collapses to one column and every card
+ * clears 44px by twenty (the shortest measured 55px), so there is nothing here to fix, only air
+ * to give back. A shelf is two things at once — the pair cards at the foot of a recipe and the
+ * search results on the front door — and both are long lists of one-line cards on a phone:
+ * 30 pairs under pita-bread, 60 results for a common word. The gap is worth 209px of the first
+ * and 464px of the second; the padding takes another 9px off each result card.
+ *
+ * The padding is written as the same 1rem 1.2rem `.pairs .shelf a` already uses, so a phone shows
+ * one card size rather than two. It has to be *written*, not inherited: `.pairs .shelf a` is the
+ * more specific selector and wins over this one whatever the order, so the only cards this line
+ * moves are the search results on the front door.
+ */
+@media (max-width: 34rem) {
+  .shelf {
+    gap: 0.8rem;
+  }
+  .shelf a {
+    padding: 1rem 1.2rem;
+  }
 }
 
 /* ---- the table ----------------------------------------------------------- */
