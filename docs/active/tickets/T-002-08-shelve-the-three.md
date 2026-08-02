@@ -3,9 +3,9 @@ id: T-002-08
 story: S-002
 title: shelve-the-three
 type: task
-status: open
+status: done
 priority: high
-phase: ready
+phase: done
 depends_on: []
 ---
 
