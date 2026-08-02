@@ -1,0 +1,7 @@
+{
+  "disposition": "note",
+  "reason": null,
+  "criterion_quote": "Only `src/data/counters.json` and `src/data/aisles.json` are modified.",
+  "evidence_citation": "docs/active/work/T-002-08/review.md",
+  "summary": "All three shelves are built and everything else passes, but thirteen recipe files each gained one counter name, because the previous ticket on these same files measured that a menu cannot show a dish that does not name the counter and wrote this ticket's name into the handover."
+}

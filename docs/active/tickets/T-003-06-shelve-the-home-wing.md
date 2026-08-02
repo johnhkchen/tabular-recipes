@@ -3,9 +3,9 @@ id: T-003-06
 story: S-003
 title: shelve-the-home-wing
 type: task
-status: open
+status: done
 priority: high
-phase: ready
+phase: done
 depends_on: [T-002-08]
 ---
 
