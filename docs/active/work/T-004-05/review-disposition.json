@@ -1,0 +1,7 @@
+{
+  "disposition": "note",
+  "reason": null,
+  "criterion_quote": "A 1440px window renders exactly as today.",
+  "evidence_citation": "docs/active/work/T-004-05/review.md",
+  "summary": "The desktop page is unchanged except for the two things the ticket itself asked for, because the name could not be moved to the front of every line without also moving it on a desktop."
+}

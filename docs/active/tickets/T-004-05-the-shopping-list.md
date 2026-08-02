@@ -3,9 +3,9 @@ id: T-004-05
 story: S-004
 title: the-shopping-list
 type: task
-status: open
+status: done
 priority: high
-phase: ready
+phase: done
 depends_on: [T-004-01]
 ---
 
