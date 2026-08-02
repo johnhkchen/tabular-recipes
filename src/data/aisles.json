@@ -160,7 +160,16 @@
         "jicama",
         "bok choy",
         "baby bok choy",
-        "taro"
+        "taro",
+        "burdock root",
+        "lotus root",
+        "kabocha",
+        "radicchio",
+        "snow pear",
+        "snow pears",
+        "hairy gourd",
+        "amaranth",
+        "yuca"
       ],
       "except": [
         "dried oregano",
@@ -334,7 +343,9 @@
         "littleneck clams",
         "clam juice",
         "whitefish",
-        "smoked whitefish"
+        "smoked whitefish",
+        "yellowtail",
+        "crucian carp"
       ],
       "except": [
         "fish sauce",
@@ -789,7 +800,11 @@
         "bamboo shoots",
         "chipotles in adobo",
         "relleno de piña",
-        "braising liquid"
+        "braising liquid",
+        "pepperoncini",
+        "basic vinaigrette",
+        "ranch dressing",
+        "caesar dressing"
       ],
       "except": [
         "anchovy fillets"
@@ -900,7 +915,10 @@
         "dried savory",
         "mahlab",
         "shawarma spice",
-        "dried tangerine peel"
+        "dried tangerine peel",
+        "filé powder",
+        "taco seasoning",
+        "aged tangerine peel"
       ],
       "except": [
         "salt pork",
@@ -1041,7 +1059,20 @@
         "lotus leaves",
         "dried lotus leaves",
         "matzo meal",
-        "matzo"
+        "matzo",
+        "abura-age",
+        "konnyaku",
+        "hijiki",
+        "laver",
+        "job's tears",
+        "lily bulb",
+        "fox nut",
+        "apricot kernels",
+        "Solomon's seal",
+        "adenophora root",
+        "overlord flower",
+        "goma dare",
+        "teriyaki sauce"
       ]
     },
     {
