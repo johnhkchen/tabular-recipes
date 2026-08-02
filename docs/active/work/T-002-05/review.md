@@ -202,4 +202,23 @@ Two artifacts were left contradicting the seal and have since been corrected:
 
 The work itself was verified independently before any of this: `check-recipes.mjs --labels` ok
 on all twelve, `all 12 file(s) draw a table.`, `icons.test.ts` 20/20, and every commit cited
-above present on `main`. **The record is hand-made; the work is not.**
+above present on `main`. **The record was hand-made; the work was not.**
+
+### Third attempt, and what actually seals it
+
+The hand-made commit was undone (`git reset --mixed`, both commits local and unpushed) so that
+`lisa complete-ticket` could make the seal itself. It did, at generation 2 — `bb5877c`, carrying
+`Lisa-Completion-Key: v1:542d3030322d3035:31:2`.
+
+That still left the ticket parked, because the *first* two invocations had failed with
+`ticket T-002-05 has no changes in the requested include paths`, and Lisa recorded the operator
+-requested completion as a review disposition of `block`. The reason string in that disposition
+was the text of my failed command, not a judgement about the twelve bowls.
+
+The lesson, written down so the next person does not spend an afternoon on it:
+**`complete-ticket` counts changes in `--work-dir` only.** A modified `--ticket-file` is not
+enough on its own. With a clean work directory it refuses, whatever else has changed — which is
+exactly the state a hand-made commit leaves behind, and why the hand-made commit was the wrong
+move in the first place. The right move, from the moment the completion transport failed, was
+`lisa unblock` followed by letting the loop re-run the review phase, because the review phase
+writes this file and that is what gives the seal something to commit.
