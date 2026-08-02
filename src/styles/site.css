@@ -727,6 +727,15 @@ kbd {
  * background too, and the table then reads straight through it.
  */
 @media (max-width: 44rem) {
+  /*
+   * A thumb is 44px, and every cell is a button. The drawn table was clearing that by 0.8px
+   * entirely by arithmetic — block padding plus a line plus the border — and the pinned cell
+   * giving up its border took the margin with it. Say the floor out loud instead, so the next
+   * person to touch the padding finds a rule rather than a coincidence.
+   */
+  .cell {
+    height: 2.75rem;
+  }
   .cell--ingredient {
     position: sticky;
     left: 0;
@@ -746,6 +755,40 @@ kbd {
   }
   .cell--ingredient[data-done] { opacity: 1; }
   .cell--ingredient[data-done] > span { opacity: 0.4; }
+}
+
+/*
+ * narrow — a phone, where the table stops being told how wide to be.
+ *
+ * `min-width: 30rem` reads like a rule about the drawing and is really a rule about phones:
+ * width: 100% already fills the container, so a 480px minimum can only bind when the container
+ * is smaller than that, which happens below about a 529px window and nowhere else. What it did
+ * there was force every recipe on the site — including the 162 that would otherwise fit — to
+ * scroll at least 153px, and hand the surplus to the ingredient column, which has width: 100%
+ * and absorbs all of it. conchas gave 240px of a 327px screen to its ingredients and showed one
+ * of its three operations.
+ *
+ * Letting the table be as narrow as its contents costs height: a recipe that used to be
+ * stretched now wraps instead (biryani +360px, conchas +192px). On a phone that is the good
+ * side of the trade — vertical scroll is free and one-handed, sideways scroll hides things.
+ *
+ * The tightening below is the ticket's third item and buys about a fifth. Only the *inline*
+ * padding moves: 0.62rem of block padding plus a 24px line is what puts the shortest cell at
+ * 44.8px, and 44px is a thumb.
+ */
+@media (max-width: 34rem) {
+  .recipe-table {
+    min-width: 0;
+  }
+  .cell {
+    padding: 0.62rem 0.45rem;
+  }
+  .cell--ingredient .qty {
+    min-width: 3.4rem;
+  }
+  .cell--op {
+    min-width: 4rem;
+  }
 }
 
 /* ---- the three views, and the clock under them --------------------------- */
