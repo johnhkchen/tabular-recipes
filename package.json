@@ -16,7 +16,8 @@
     "build": "npm run recipes && astro build",
     "preview": "astro preview",
     "test": "vitest run",
-    "verify": "npm run check && npm run recipes && vitest run && astro build"
+    "verify": "npm run check && npm run recipes && vitest run && astro build",
+    "verify:mobile": "npm run build && node scripts/check-overflow.mjs --width 375,390,768 && node scripts/check-touch.mjs"
   },
   "dependencies": {
     "astro": "^7.1.6"
