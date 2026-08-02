@@ -105,6 +105,11 @@ import { url } from '../lib/url.ts';
   /*
    * Every selector under the container is :global() on purpose — see the note at the top of
    * this file. The container itself is scoped, so none of this escapes the page.
+   *
+   * Widths: this file writes one number, 34rem — `narrow` in the block at the top of
+   * src/styles/site.css. 44rem/`snug` is declared there but [reserved], and using it from here
+   * would mean editing that block, which is another ticket's file. src/styles/breakpoints.test.ts
+   * fails the build on any third number, so this is enforced rather than promised.
    */
   .list-page :global([hidden]) {
     display: none !important;
@@ -323,9 +328,26 @@ import { url } from '../lib/url.ts';
     font-variant-numeric: tabular-nums;
   }
 
+  /*
+   * The name comes first, and it is the only thing on the line that starts in the same place on
+   * every row. That is what makes a column of names scannable while you are walking: you read
+   * down one edge for the thing, and the amount is there when you have found it.
+   *
+   * Each row is its own grid, so a track sized to its contents is sized to THAT row's contents.
+   * Hence the shape of these four:
+   *
+   *   1.5rem          the ✓ box, fixed
+   *   minmax(0, 1fr)  the name. A bare 1fr floors at min-content, and one long unbreakable
+   *                   word would then push the row wider than the page.
+   *   auto            the amount, right up against the badge. It takes what it needs and can
+   *                   shrink when the line is tight.
+   *   minmax(7rem, …) the badge — reserved even on the 55 rows in 84 that have none, because an
+   *                   empty auto track collapses to zero and the amounts would go ragged. 7rem
+   *                   is 112px against a measured 103.2px for the widest badge.
+   */
   .list-page :global(.tick) {
     display: grid;
-    grid-template-columns: 1.5rem minmax(5.5rem, auto) 1fr auto;
+    grid-template-columns: 1.5rem minmax(0, 1fr) auto minmax(7rem, auto);
     align-items: baseline;
     gap: 0.5rem;
     width: 100%;
@@ -400,6 +422,10 @@ import { url } from '../lib/url.ts';
     /* The words go; the pips and the title attribute keep the meaning. */
     .list-page :global(.scale-word) {
       display: none;
+    }
+    /* A narrow badge needs a narrower reservation, or it eats the name's share of the line. */
+    .list-page :global(.tick) {
+      grid-template-columns: 1.5rem minmax(0, 1fr) auto minmax(4.8rem, auto);
     }
   }
 
@@ -879,7 +905,13 @@ import { url } from '../lib/url.ts';
 
       const box = el('span', 'box', on ? '✓' : '');
       box.setAttribute('aria-hidden', 'true');
-      button.append(box, el('span', 'amount', line.text), el('span', 'name', line.name));
+      /*
+       * The name, then the amount. What you are looking for on a shelf is the thing, not how
+       * much of it — "bean sprouts" reads first and "1/2 cup" answers the next question. The
+       * copied text below says it in the same order, and so does the printed page, because the
+       * page is printed from these same elements.
+       */
+      button.append(box, el('span', 'name', line.name), el('span', 'amount', line.text));
 
       /*
        * How much of a pack this comes to, as three filled pips and the words for them.
@@ -1037,7 +1069,8 @@ import { url } from '../lib/url.ts';
         out.push(`${aisle.name}`);
         for (const line of byAisle.get(aisle.slug) ?? []) {
           const scale = line.purchase ? `  (${SCALE_WORDS[line.purchase.scale].label})` : '';
-          out.push(`- ${line.text} ${line.name}${scale}`);
+          // Name first here too, or the clipboard would be the one place the amount leads.
+          out.push(`- ${line.name} — ${line.text}${scale}`);
         }
         out.push('');
       }
@@ -1046,7 +1079,7 @@ import { url } from '../lib/url.ts';
       hidden += shown.have.length - have.length;
       if (have.length > 0) {
         out.push('', 'You probably have these already');
-        for (const line of have) out.push(`- ${line.text} ${line.name}`);
+        for (const line of have) out.push(`- ${line.name} — ${line.text}`);
       }
 
       if (hidden > 0) {
