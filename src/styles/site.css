@@ -387,8 +387,8 @@ kbd {
  * hiding them from the eye while still reading them aloud would make the page longer for the
  * reader least able to afford the length.
  *
- * With the padding and gaps, the column comes to about 3150px. The name and the count keep
- * their size; they are what the card is for.
+ * With the padding and gaps, the column measures 3103px. The name and the count keep their size;
+ * they are what the card is for.
  */
 @media (max-width: 34rem) {
   .counters {
@@ -527,7 +527,7 @@ kbd {
  * narrow — a phone, holding a 107-item menu.
  *
  * Two things, and deliberately not a third. The multicol needs nothing: `columns: 2 19rem` with a
- * 2.5rem gap resolves to one column under about a 688px window, so it already carries its own
+ * 2.5rem gap resolves to one column under about a 700px window, so it already carries its own
  * narrow behaviour in its own units — measured as one column on Bakery, The Bowl Shop and Phở &
  * Bánh Mì at 375px. And the menu stays as long as it is: the ingredient gloss under each name is
  * what tells two similar breads apart, and a reader who opened The Bowl Shop asked for its 103
@@ -615,7 +615,7 @@ kbd {
  * The chips grow as *pills*, not as links inside them. The pill is the thing you can see; a 44px
  * link inside a 24px pill would put the target outside its own drawing. The facts — serves, about,
  * the category — take the same height without being links, so the row stays one row of one shape.
- * That costs about 80px on a seven-chip recipe, which is what tappable costs.
+ * The row grows from 66px to 95px, which is what tappable costs.
  *
  * `.chips li` is declared up in the page furniture, but chips are drawn on the recipe page and
  * nowhere else, so this is the section that owns how they behave narrow. Writing it here rather
@@ -624,7 +624,7 @@ kbd {
  * The variant switch is prose — "Also written for Instant Pot, Slow Cooker." — and the commas and
  * the full stop are text, not markup. So each link takes a 44px line box and stays a link in a
  * sentence; the punctuation sits on the baseline between the two. What this cannot do is separate
- * them: two variants on one line leave their targets about 4px apart. That needs the sentence to
+ * them: two variants on one line leave their targets 6.7px apart. That needs the sentence to
  * become a list, which needs markup this ticket does not own.
  */
 @media (max-width: 34rem) {
@@ -712,12 +712,13 @@ kbd {
 }
 
 /*
- * narrow — a phone. Spacing only: the grid already collapses to one column and every card
- * clears 44px by twenty (the shortest measured 55px), so there is nothing here to fix, only air
- * to give back. A shelf is two things at once — the pair cards at the foot of a recipe and the
- * search results on the front door — and both are long lists of one-line cards on a phone:
- * 30 pairs under pita-bread, 60 results for a common word. The gap is worth 209px of the first
- * and 464px of the second; the padding takes another 9px off each result card.
+ * narrow — a phone. Spacing only: the grid already collapses to one column and every card clears
+ * 44px by twenty (a pair card measures 64px), so there is nothing here to fix, only air to give
+ * back. A shelf is two things at once — the pair cards at the foot of a recipe and the search
+ * results on the front door — and both are long lists of one-line cards on a phone: 30 pairs
+ * under pita-bread, 60 results for a common word. The gap is worth 209px of the first and 432px
+ * of the second, and the padding another 768px of the second — a 60-result page falls from
+ * 7669px to 6470px.
  *
  * The padding is written as the same 1rem 1.2rem `.pairs .shelf a` already uses, so a phone shows
  * one card size rather than two. It has to be *written*, not inherited: `.pairs .shelf a` is the
