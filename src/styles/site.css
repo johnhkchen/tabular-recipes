@@ -253,11 +253,11 @@ main {
  * failure message. So the touch floor the kit does not carry is written on this side of the
  * line, where the next `just sync-kit` cannot take it away.
  *
- * The kit sizes the button with `padding: 0.7em 1.4em`, which comes to 41.4px. Every other
- * clay-button on the site already has a local override that clears 44 — AddToPlan's toggle and
- * CookModes' pane foot both say 2.75rem — and the one that does not is the only control on the
- * 404 page, which no ticket owned and nobody had looked at. "Clear the marks" under the table
- * is the same 41.4px whenever it appears.
+ * The kit sizes the button with `padding: 0.7em 1.4em`, so its height follows its font. Measured
+ * at 375px before this rule: 41.4px for "Back to the recipes" on the 404 page, and 25.5px for
+ * "Clear the marks" under the table, which sets its own 0.82rem. AddToPlan's toggle and
+ * CookModes' pane foot both already say 2.75rem locally; these two are the ones nobody had. The
+ * 404 page is the one no ticket owned, and its button is the only thing on it.
  *
  * inline-flex, not a bare min-height: half of these are anchors, and min-height does nothing to
  * an inline box. The centring is what a button does by default and what an anchor does not.
