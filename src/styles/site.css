@@ -605,6 +605,11 @@ kbd {
   padding: clamp(0.7rem, 1.6vw, 1rem);
 }
 
+/* Nothing but a peg for the edge cue below; the scroller cannot hold one of its own. */
+.table-view {
+  position: relative;
+}
+
 /* The frame lives here, not on the table, so collapsed cell borders cannot fight it. */
 .table-scroll {
   overflow-x: auto;
@@ -703,6 +708,17 @@ kbd {
   color: var(--clay-ink-soft);
   font-size: 0.82rem;
 }
+/*
+ * Sits inside .hint rather than beside it: the foot is a space-between row, and a third item
+ * would have to share a phone's width with the button. Nested, it just wraps to a second line.
+ * It ships hidden and only the measurement in RecipeTable.astro reveals it — a table that fits
+ * never says otherwise.
+ */
+.table-more {
+  display: block;
+  color: var(--clay-primary);
+}
+
 .reset { font-size: 0.82rem; padding: 0.4em 0.95em; }
 
 /*
@@ -742,16 +758,30 @@ kbd {
     z-index: 1;
     border: 0;
     background: var(--clay-surface-raised);
-    /* No depth until something is genuinely hidden behind the column — see .table-more. */
-    --edge: 0 0 0 transparent;
     box-shadow:
       inset 0 1px 0 var(--line),
       inset 1px 0 0 var(--line),
-      inset -1.5px 0 0 var(--frame),
-      var(--edge);
+      inset -1.5px 0 0 var(--frame);
   }
-  .table-well[data-more] .cell--ingredient {
-    --edge: 0.3rem 0 0.4rem -0.28rem color-mix(in srgb, var(--clay-ink) 34%, transparent);
+  /*
+   * The far edge, when there is table behind it. Sits just inside the frame, so the drawing
+   * reads as content passing under the edge rather than stopping at it. Only ever seen when the
+   * measurement in RecipeTable.astro says so, and it lets taps through to the cells beneath.
+   */
+  .table-well[data-more] .table-view::after {
+    content: '';
+    position: absolute;
+    top: 1.5px;
+    right: 1.5px;
+    bottom: 1.5px;
+    width: 2.5rem;
+    border-radius: 0 calc(var(--clay-radius-sm) - 1.5px) calc(var(--clay-radius-sm) - 1.5px) 0;
+    background: linear-gradient(
+      to left,
+      color-mix(in srgb, var(--clay-ink) 17%, transparent),
+      transparent
+    );
+    pointer-events: none;
   }
   .cell--ingredient[data-done] { opacity: 1; }
   .cell--ingredient[data-done] > span { opacity: 0.4; }

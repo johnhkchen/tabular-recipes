@@ -9,64 +9,74 @@ const { grid } = Astro.props;
 ---
 
 <figure class="table-well clay-well">
-  <div class="table-scroll">
-    <table class="recipe-table" data-slug={grid.slug}>
-      <caption class="visually-hidden">
-        {grid.title}: ingredients down the left, what to do with them across.
-        Tap any cell to cross it off.
-      </caption>
-      <tbody>
-        {
-          grid.headers.map((text, i) => (
-            <tr>
-              <td class="cell cell--prep" colspan={grid.colCount} data-cell={`h${i}`}>
-                {text}
-              </td>
-            </tr>
-          ))
-        }
-        {
-          grid.rows.map((row) => (
-            <tr>
-              {row.map((cell) =>
-                cell.kind === 'blank' ? (
-                  <td class="cell cell--blank" rowspan={cell.rowSpan} colspan={cell.colSpan} />
-                ) : (
-                  <td
-                    class={`cell cell--${cell.kind}`}
-                    rowspan={cell.rowSpan}
-                    colspan={cell.colSpan}
-                    data-cell={cell.id}
-                  >
-                    {cell.parts ? (
-                      <>
-                        <span class="qty">{cell.parts.quantity}</span>
-                        {cell.parts.note && <span class="note">({cell.parts.note})</span>}
-                        <span class="name">{cell.parts.name}</span>
-                      </>
-                    ) : (
-                      cell.text
-                    )}
-                  </td>
-                ),
-              )}
-            </tr>
-          ))
-        }
-        {
-          grid.footers.map((text, i) => (
-            <tr>
-              <td class="cell cell--prep" colspan={grid.colCount} data-cell={`f${i}`}>
-                {text}
-              </td>
-            </tr>
-          ))
-        }
-      </tbody>
-    </table>
+  <!--
+    table-view exists only to hold the edge cue against the scroller. The scroller cannot hold it
+    itself: anything positioned inside a scroll box scrolls with the content, and an inset shadow
+    paints underneath the cells.
+  -->
+  <div class="table-view">
+    <div class="table-scroll">
+      <table class="recipe-table" data-slug={grid.slug}>
+        <caption class="visually-hidden">
+          {grid.title}: ingredients down the left, what to do with them across.
+          Tap any cell to cross it off.
+        </caption>
+        <tbody>
+          {
+            grid.headers.map((text, i) => (
+              <tr>
+                <td class="cell cell--prep" colspan={grid.colCount} data-cell={`h${i}`}>
+                  {text}
+                </td>
+              </tr>
+            ))
+          }
+          {
+            grid.rows.map((row) => (
+              <tr>
+                {row.map((cell) =>
+                  cell.kind === 'blank' ? (
+                    <td class="cell cell--blank" rowspan={cell.rowSpan} colspan={cell.colSpan} />
+                  ) : (
+                    <td
+                      class={`cell cell--${cell.kind}`}
+                      rowspan={cell.rowSpan}
+                      colspan={cell.colSpan}
+                      data-cell={cell.id}
+                    >
+                      {cell.parts ? (
+                        <>
+                          <span class="qty">{cell.parts.quantity}</span>
+                          {cell.parts.note && <span class="note">({cell.parts.note})</span>}
+                          <span class="name">{cell.parts.name}</span>
+                        </>
+                      ) : (
+                        cell.text
+                      )}
+                    </td>
+                  ),
+                )}
+              </tr>
+            ))
+          }
+          {
+            grid.footers.map((text, i) => (
+              <tr>
+                <td class="cell cell--prep" colspan={grid.colCount} data-cell={`f${i}`}>
+                  {text}
+                </td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
   </div>
   <figcaption class="table-foot">
-    <span class="hint">Tap anything to cross it off.</span>
+    <span class="hint">
+      Tap anything to cross it off.
+      <span class="table-more" hidden>More to the right — drag the table across.</span>
+    </span>
     <button class="clay-button clay-button--soft reset" type="button" hidden>Clear the marks</button>
   </figcaption>
 </figure>
@@ -126,6 +136,41 @@ const { grid } = Astro.props;
         }
       });
     });
+
+    /*
+     * Say when the table continues past the edge — but only when it really does.
+     *
+     * A recipe wider than the screen looked exactly like a recipe that fits, so a seven-column
+     * recipe could read as a four-column one. The stylesheet cannot tell the difference: it
+     * knows the window, not how wide this particular table came out. So it is measured here,
+     * and what is measured drives both the words below the table and the shadow beside the
+     * pinned column.
+     *
+     * "More" means there is table to the RIGHT you have not seen, so it goes away once you
+     * reach the end. Watching the table as well as the scroller matters: a late font can make
+     * the table wider inside a box whose own size never changed.
+     */
+    const scroll = table.closest<HTMLElement>('.table-scroll');
+    const well = table.closest<HTMLElement>('.table-well');
+    const more = well?.querySelector<HTMLElement>('.table-more');
+
+    if (scroll && well) {
+      let said: boolean | null = null;
+      const measure = () => {
+        const room = scroll.scrollWidth - scroll.clientWidth;
+        const unseen = room > 1 && scroll.scrollLeft < room - 1;
+        if (unseen === said) return; // nothing to write, so no style recalc while a finger moves
+        said = unseen;
+        well.toggleAttribute('data-more', unseen);
+        if (more) more.hidden = !unseen;
+      };
+
+      measure();
+      scroll.addEventListener('scroll', measure, { passive: true });
+      const watch = new ResizeObserver(measure);
+      watch.observe(scroll);
+      watch.observe(table);
+    }
 
     reset?.addEventListener('click', () => {
       done.clear();
