@@ -11,7 +11,8 @@
  *
  * Wide, then snug, then narrow. Two numbers, and the whole site writes only these:
  *
- *   snug     max-width: 44rem   [in use]    the widest recipes have stopped fitting
+ *   snug     max-width: 44rem   [in use]    the widest recipes are close to not fitting,
+ *                                           and pinning the ingredients starts to pay
  *   narrow   max-width: 34rem   [in use]    the common recipe has stopped fitting,
  *                                           and the page furniture is cramped
  *
@@ -22,11 +23,23 @@
  *
  *   5 columns  294 recipes   ~30rem of table    fits at 34.1rem of viewport
  *   6 columns  179 recipes   ~35rem             fits at 39.6rem
- *   7 columns   23 recipes   ~39.5rem           fits at 44.5rem
+ *   7 columns   23 recipes   ~39.5rem           fits at 44.5rem  (predicted)
  *
- * So `narrow` is the width where the recipe you are most likely to open stops fitting,
- * and `snug` is where the first one does. Neither is a round number borrowed from a
- * phone; both are this site's own arithmetic.
+ * So `narrow` is the width where the recipe you are most likely to open stops fitting.
+ * Neither is a round number borrowed from a phone; both are this site's own arithmetic.
+ *
+ * The 7-column line is the one place the arithmetic and the browser disagree, and it is
+ * recorded here rather than quietly corrected. Measured in Chrome, miso-ramen and pastrami
+ * still scroll at 704px (27px and 22px) and first fit at **736px, about 46rem** — the
+ * predicted 39.5rem of table is 40.7rem in a real render. So between 705px and 735px the
+ * two widest recipes travel up to 14px with the ingredient column no longer pinned.
+ *
+ * `snug` was NOT moved to 46rem, and the reason is worth the sentence: it would recover
+ * 14px of scroll and, in exchange, hand the phone cell floor and the pinned column to a
+ * 736px window — restyling a 32px band nobody has read a recipe in. 14px cannot carry a
+ * 168px column off the screen, and the foot cue still fires there, so the band is honest
+ * about itself. It is written down in docs/gaps/mobile.md instead. T-004-06 measured this,
+ * after T-004-02 predicted it.
  *
  * Rules for anyone adding a width query:
  *
