@@ -523,6 +523,37 @@ kbd {
   vertical-align: 0.15em;
 }
 
+/*
+ * narrow — a phone, holding a 107-item menu.
+ *
+ * Two things, and deliberately not a third. The multicol needs nothing: `columns: 2 19rem` with a
+ * 2.5rem gap resolves to one column under about a 688px window, so it already carries its own
+ * narrow behaviour in its own units — measured as one column on Bakery, The Bowl Shop and Phở &
+ * Bánh Mì at 375px. And the menu stays as long as it is: the ingredient gloss under each name is
+ * what tells two similar breads apart, and a reader who opened The Bowl Shop asked for its 103
+ * items. Length here is the menu being honest, unlike the front door, where 21 counters are a
+ * choice among things rather than the things.
+ *
+ * The heading. `clamp(2.1rem, 6vw, 3.1rem)` rests on its 2.1rem floor below 560px, which makes a
+ * counter's name the largest type on any narrow page — bigger than the site's own title, which
+ * T-004-01 stepped down to 1.9rem. 6.2vw is the figure that makes the two clamps meet: at 544px it
+ * is 33.7px, above the 2.1rem ceiling, so both rules read 33.6px at the breakpoint and there is no
+ * step. At 375px it rests on the 1.7rem floor, 27.2px.
+ *
+ * The items. Seven of Bakery's 107 and three of The Bowl Shop's 103 draw at 42px — a short name,
+ * one line of ingredients, no second name — and a thumb wants 44. min-height moves those ten and
+ * nothing else; the median item is 81px. Not padding: inline padding would offset every item from
+ * the section heading it is filed under, which is the alignment the menu is drawn on.
+ */
+@media (max-width: 34rem) {
+  .menu-head h1 {
+    font-size: clamp(1.7rem, 6.2vw, 2.1rem);
+  }
+  .menu-section a {
+    min-height: 44px;
+  }
+}
+
 /* ---- the recipe page's trimmings ---------------------------------------- */
 
 .crumbs {
