@@ -1365,31 +1365,136 @@
       "sections": [
         {
           "title": "Grain bowls",
-          "items": []
+          "items": [
+            "harvest-bowl",
+            "teriyaki-chicken-bowl",
+            "crispy-rice-bowl",
+            "harissa-chicken-bowl",
+            "miso-salmon-bowl",
+            "bbq-tofu-bowl",
+            "burrito-bowl",
+            "poke-bowl",
+            "spicy-lamb-bowl",
+            "chicken-pesto-bowl",
+            "fish-taco-bowl",
+            "crispy-chickpea-bowl"
+          ]
         },
         {
           "title": "Leafy salads",
-          "items": []
+          "items": [
+            "kale-caesar",
+            "shaved-brussels-salad",
+            "italian-chopped-salad",
+            "chinese-chicken-salad",
+            "harvest-chopped-salad",
+            "cobb-salad",
+            "wedge-salad",
+            "greek-salad",
+            "panzanella",
+            "spinach-salad",
+            "salade-nicoise",
+            "roasted-beet-salad",
+            "fattoush",
+            "kachumber",
+            "som-tum",
+            "larb-gai"
+          ]
         },
         {
           "title": "What goes on top",
-          "items": []
+          "items": [
+            "pulled-roast-chicken",
+            "blackened-salmon",
+            "seven-minute-eggs",
+            "crisped-marinated-tofu",
+            "crispy-chickpeas",
+            "seared-halloumi",
+            "chicken-shawarma",
+            "shish-tawook",
+            "pollo-asado",
+            "carne-asada",
+            "chicken-tikka",
+            "smoked-chicken",
+            "gyro-meat",
+            "kafta",
+            "karaage",
+            "falafel",
+            "char-siu",
+            "chashu",
+            "carnitas",
+            "tinga-de-pollo",
+            "white-cut-chicken",
+            "soy-sauce-chicken",
+            "cha-lua",
+            "meatballs",
+            "paneer",
+            "queso-fresco",
+            "labneh",
+            "guacamole",
+            "ajitama",
+            "sumac-onions",
+            "do-chua",
+            "kabis",
+            "sauerkraut",
+            "menma",
+            "birista",
+            "dukkah"
+          ]
         },
         {
           "title": "Roasted vegetables",
-          "items": []
+          "items": [
+            "roasted-sweet-potatoes",
+            "charred-broccoli",
+            "roasted-cauliflower",
+            "roasted-brussels-sprouts",
+            "roasted-beets",
+            "crispy-roast-potatoes",
+            "batata-harra"
+          ]
         },
         {
           "title": "Dressings and drizzles",
-          "items": []
+          "items": [
+            "basic-vinaigrette",
+            "caesar-dressing",
+            "green-goddess-dressing",
+            "ranch-dressing",
+            "blue-cheese-dressing",
+            "honey-mustard-dressing",
+            "russian-dressing",
+            "miso-ginger-dressing",
+            "goma-dare",
+            "tahini-sauce",
+            "toum",
+            "tzatziki",
+            "raita",
+            "nuoc-cham",
+            "chimichurri",
+            "basil-pesto",
+            "romesco",
+            "muhammara",
+            "hummus",
+            "baba-ganoush",
+            "aioli",
+            "crema-mexicana",
+            "white-sauce",
+            "mint-chutney"
+          ]
         },
         {
           "title": "Soups",
-          "items": []
-        },
-        {
-          "title": "Also here",
-          "items": []
+          "items": [
+            "butternut-squash-soup",
+            "tomato-soup",
+            "potato-leek-soup",
+            "red-lentil-soup",
+            "corn-chowder",
+            "minestrone",
+            "black-bean-soup",
+            "caldo-verde"
+          ]
         }
       ]
     },
@@ -1401,27 +1506,53 @@
       "sections": [
         {
           "title": "Braises that took all afternoon",
-          "items": []
+          "items": [
+            "beef-stew-instant-pot",
+            "pot-roast-instant-pot",
+            "birria-de-res-instant-pot",
+            "carnitas-instant-pot",
+            "braised-short-ribs-instant-pot",
+            "oxtails-instant-pot",
+            "cachete-instant-pot",
+            "beef-bourguignon-instant-pot",
+            "chile-verde-instant-pot",
+            "chili-con-carne-instant-pot",
+            "hungarian-goulash-instant-pot",
+            "collard-greens-instant-pot",
+            "borscht-instant-pot"
+          ]
         },
         {
           "title": "Beans from dry",
-          "items": []
+          "items": [
+            "cuban-black-beans-instant-pot",
+            "refried-beans-instant-pot",
+            "ful-medames-instant-pot",
+            "boston-baked-beans-instant-pot",
+            "gigantes-plaki-instant-pot"
+          ]
         },
         {
           "title": "Stocks and broths",
-          "items": []
+          "items": [
+            "tonkotsu-broth-instant-pot",
+            "pho-broth-instant-pot",
+            "chintan-broth-instant-pot",
+            "chicken-broth-instant-pot",
+            "ham-hock-stock-instant-pot"
+          ]
         },
         {
           "title": "Rice, grains and porridge",
-          "items": []
+          "items": [
+            "congee-instant-pot"
+          ]
         },
         {
           "title": "Whole birds and big cuts",
-          "items": []
-        },
-        {
-          "title": "Also here",
-          "items": []
+          "items": [
+            "corned-beef-instant-pot"
+          ]
         }
       ]
     },
@@ -1433,23 +1564,95 @@
       "sections": [
         {
           "title": "Braises and stews",
-          "items": []
+          "items": [
+            "beef-stew",
+            "pot-roast",
+            "chicken-and-dumplings",
+            "chicken-cacciatore",
+            "new-england-boiled-dinner",
+            "sausage-and-peppers",
+            "ratatouille",
+            "chili-con-carne",
+            "beef-bourguignon",
+            "coq-au-vin",
+            "braised-short-ribs",
+            "osso-buco",
+            "oxtails",
+            "irish-stew",
+            "hungarian-goulash",
+            "brunswick-stew",
+            "carnitas",
+            "cachete",
+            "chile-verde",
+            "lamb-tagine",
+            "doro-wat",
+            "japanese-beef-curry",
+            "massaman-curry",
+            "thai-red-curry",
+            "thai-yellow-curry",
+            "panang-curry",
+            "rogan-josh",
+            "vindaloo",
+            "passanda",
+            "madras",
+            "dopiaza",
+            "bhuna",
+            "balti",
+            "jalfrezi",
+            "soy-sauce-chicken",
+            "white-cut-chicken"
+          ]
         },
         {
           "title": "Skillet dinners",
-          "items": []
+          "items": [
+            "shakshuka",
+            "tortilla-espanola",
+            "skillet-lasagna",
+            "one-pot-pasta",
+            "beef-stroganoff",
+            "smothered-pork-chops",
+            "country-fried-steak",
+            "chicken-adobo",
+            "tinga-de-pollo",
+            "xiu-mai",
+            "western-omelette",
+            "egg-foo-young",
+            "general-tsos-chicken",
+            "orange-chicken",
+            "sesame-chicken",
+            "sweet-and-sour-pork"
+          ]
         },
         {
           "title": "Rice and grains that cook in",
-          "items": []
+          "items": [
+            "arroz-con-pollo",
+            "paella",
+            "jambalaya",
+            "dirty-rice",
+            "hoppin-john",
+            "kitchari",
+            "risotto-alla-milanese",
+            "cuban-black-beans",
+            "black-eyed-peas",
+            "butter-beans",
+            "congee"
+          ]
         },
         {
           "title": "Soups that are the whole meal",
-          "items": []
-        },
-        {
-          "title": "Also here",
-          "items": []
+          "items": [
+            "gumbo",
+            "sancocho",
+            "minestrone",
+            "harira",
+            "split-pea-soup",
+            "new-england-clam-chowder",
+            "borscht",
+            "black-bean-soup",
+            "wonton-soup"
+          ]
         }
       ]
     },

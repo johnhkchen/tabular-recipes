@@ -1,124 +1,70 @@
 # One Pot — what is missing
 
-**0 recipes. The shelf was opened by T-002-01 and nothing is on it yet.** Like the Instant Pot,
-this is a vessel rather than a cuisine — but unlike the Instant Pot, most of what belongs here is
-already written *as* a one-pot recipe and simply has not been shelved that way.
+**72 recipes.** T-002-04 wrote fourteen; T-002-08 shelved fifty-eight that were already here and
+had never been counted as one pot. Like the Instant Pot, this is a vessel rather than a cuisine —
+but unlike the Instant Pot, most of what is on it was written as a one-pot recipe years ago and
+simply had not been shelved that way.
 
-The list below is grounded in the `cookware` line each file already declares, not in its title.
-When a recipe says `Dutch oven`, `heavy pot`, `cast-iron skillet`, `cazuela`, `stockpot` or `wok`
-and says nothing else, the claim is the file's own. **114 recipes already qualify** — which, with
-the Bowl Shop's 116, would make these two the largest shelves on the site before a single new word
-is written, ahead of the Bakery's 107. It is the reason six writers should read this page before
-starting anything.
+The earlier draft of this page ranked 114 candidates off the `cookware` line each file declares.
+That line turned out to be evidence rather than an answer: it counts what a recipe *names*, and
+the dishes that fail this shelf mostly fail by boiling something in water the file never bothers
+to call a pot. Every candidate was read against the test in T-002-04 — *at the end, how many
+things need washing?* — and the fifty-seven that came off are listed under
+*What it could not stock*, each with the reason.
 
 What is genuinely missing is smaller than it looks, and it is specific: the Louisiana line, the
-chicken-and-dumplings line, and the pans where the starch cooks in its own sauce.
+chicken-and-dumplings line is now written, and the pans where the starch cooks in its own sauce.
 
 ---
 
-## What is already here
+## What it has
 
-This heading is not `## What it has` yet, and that is deliberate: no recipe names this counter, so
-`scripts/menu-sections.mjs` would report every slug below as *listed but not shelved here*. These
-are shelved at the Diner, Meat and Three, the Taquería, the Curry House and elsewhere. **T-002-08
-renames this block to `## What it has`** once the `>> counters:` lines are written; the
-`**Title.** slug · slug` line shape is already correct, so that is the whole of the edit.
+**Braises and stews.** beef-stew · pot-roast · chicken-and-dumplings · chicken-cacciatore ·
+new-england-boiled-dinner · sausage-and-peppers · ratatouille · chili-con-carne ·
+beef-bourguignon · coq-au-vin · braised-short-ribs · osso-buco · oxtails · irish-stew ·
+hungarian-goulash · brunswick-stew · carnitas · cachete · chile-verde · lamb-tagine · doro-wat ·
+japanese-beef-curry · massaman-curry · thai-red-curry · thai-yellow-curry · panang-curry ·
+rogan-josh · vindaloo · passanda · madras · dopiaza · bhuna · balti · jalfrezi ·
+soy-sauce-chicken · white-cut-chicken
 
-**Braises and stews.** beef-stew · pot-roast · chili-con-carne · beef-bourguignon · coq-au-vin ·
-braised-short-ribs · osso-buco · carnitas · cachete · chile-verde · birria-de-res ·
-collard-greens · oxtails · irish-stew · hungarian-goulash · lamb-tagine · massaman-curry ·
-beef-rendang · rogan-josh · vindaloo · dansak · passanda · japanese-beef-curry · doro-wat ·
-brunswick-stew · red-braised-pork-belly · korma · balti · bhuna · jalfrezi · karahi · madras ·
-dopiaza · patia · palak-paneer · chana-masala · butter-chicken · chicken-tikka-masala ·
-thai-green-curry · thai-red-curry · thai-yellow-curry · panang-curry · suadero · lengua · tripas ·
-chashu · soy-sauce-chicken · white-cut-chicken
+**Skillet dinners.** shakshuka · tortilla-espanola · skillet-lasagna · one-pot-pasta ·
+beef-stroganoff · smothered-pork-chops · country-fried-steak · chicken-adobo · tinga-de-pollo ·
+xiu-mai · western-omelette · egg-foo-young · general-tsos-chicken · orange-chicken ·
+sesame-chicken · sweet-and-sour-pork
 
-**Skillet dinners.** smothered-pork-chops · chicken-adobo · tinga-de-pollo · xiu-mai ·
-corned-beef-hash · home-fries · hash-browns · western-omelette · egg-foo-young · pad-krapow ·
-country-fried-steak · breakfast-sausage-patties · creamed-chipped-beef · beef-with-broccoli ·
-general-tsos-chicken · orange-chicken · sesame-chicken · sweet-and-sour-pork · fried-okra ·
-stewed-squash · creamed-corn
+**Rice and grains that cook in.** arroz-con-pollo · paella · jambalaya · dirty-rice ·
+hoppin-john · kitchari · risotto-alla-milanese · cuban-black-beans · black-eyed-peas ·
+butter-beans · congee
 
-**Rice and grains that cook in.** jambalaya · dirty-rice · jollof-rice · mexican-red-rice ·
-hoppin-john · kitchari · mujaddara · biryani · mushroom-risotto · risotto-alla-milanese ·
-pilau-rice · rice-pilaf · lemon-rice · coconut-rice · yellow-rice · congee · polenta ·
-cheese-grits · cuban-black-beans · refried-beans · black-eyed-peas · butter-beans
-
-**Soups that are the whole meal.** minestrone · chicken-noodle-soup · caldo-verde · harira ·
-split-pea-soup · new-england-clam-chowder · corn-chowder · borscht · black-bean-soup ·
-hot-and-sour-soup · wonton-soup · matzo-ball-soup · tomato-soup · cream-of-mushroom-soup ·
-french-onion-soup · butternut-squash-soup · potato-leek-soup · red-lentil-soup · dal-tadka
-
-**Also here.** macaroni-and-cheese · tuna-noodle-casserole · meatballs · bolognese · green-beans
+**Soups that are the whole meal.** gumbo · sancocho · minestrone · harira · split-pea-soup ·
+new-england-clam-chowder · borscht · black-bean-soup · wonton-soup
 
 ---
 
 ## What it is missing
 
-Ranked, most conspicuous absence first.
+Fourteen of the twenty dishes this page ranked have been written by T-002-04 and are on the shelf
+above. Six are still out, renumbered, most conspicuous absence first.
 
-1. **Chicken and dumplings** — the single most obvious hole. It is *the* Dutch-oven dish in
-   American home cooking, it is on the Meat and Three board and the Diner board, and there is
-   nothing like it on the site. It also has the shape a table wants: one pot, four operations,
-   and a dough that goes in at the end.
+1. **Red beans and rice** — Monday, a ham hock, and `ham-hock-stock` already written. One of the
+   five Louisiana lines the README names. T-002-04 skipped it deliberately: the dish as a person
+   eats it needs a second pot of rice, which is this shelf's own colander case. It wants either a
+   version that cooks the rice in, or a home at the Meat and Three instead.
 
-2. **Gumbo** — and with it the roux. `docs/gaps/README.md` already lists "a dark roux and a
-   trinity base" as one of the next components to write, with five Louisiana lines waiting on it.
-   Gumbo is the dish that makes those two pay for themselves.
+2. **Étouffée** — the shallower roux, and the second Louisiana line. Skipped for the same reason
+   as red beans and rice, and it has the same two ways out.
 
-3. **Chicken and rice** (arroz con pollo) — rice cooked in the bird's own liquid, which is this
-   section's defining move and is currently represented only by `jambalaya` and `jollof-rice`.
+3. **Kedgeree** — rice, smoked fish, egg, one pan. `belly-lox` is the only cured fish here, so
+   this needs a component (below).
 
-4. **Shakshuka** — eggs poached in a pepper-and-tomato sauce in one skillet. The site has **two**
-   egg recipes in total (`eggs-benedict`, `western-omelette`), and this is the cheapest way to fix
-   that with a dish people actually order.
+4. **Chicken and biscuits** — the same pot as `chicken-and-dumplings`, now written, with
+   `buttermilk-biscuits`, which already exists, dropped on top.
 
-5. **Red beans and rice** — Monday, a ham hock, and `ham-hock-stock` already written. One of the
-   five Louisiana lines the README names.
+5. **Bigos** — recorded at the Deli as rank 8 and still unwritten. It is a one-pot dish and this
+   shelf is a second reason to write it.
 
-6. **Étouffée** — the shallower roux, and the second Louisiana line.
-
-7. **Paella** — the one place a crust on the bottom is the point rather than a mistake. See
-   *What it could not stock* for the honest limit.
-
-8. **One-pot pasta** — dry pasta cooked in the sauce until the starch thickens it. The site has
-   `baked-ziti` and `macaroni-and-cheese`, both of which use a second pot to boil in; this is the
-   version that does not.
-
-9. **Skillet lasagna** — the same argument with noodles broken in. A weeknight item on real
-   boards and a genuinely good table.
-
-10. **Tortilla española** — potato, onion, egg, one pan, flipped. The other egg dish worth having,
-    and it is a component of a sandwich too.
-
-11. **Chicken cacciatore** — the Pizzeria's secondi list has `osso-buco` and `meatballs` and
-    stops.
-
-12. **Beef stroganoff** — the Diner's blue plate that is missing, and the one dish here that is
-    finished with sour cream off the heat, which is worth one table saying out loud.
-
-13. **Sausage and peppers** — one skillet, three ingredients, and it belongs to both the Pizzeria
-    and the Deli.
-
-14. **New England boiled dinner** — corned beef with the vegetables in the same pot. `corned-beef`
-    is written; this is what the rest of it is for.
-
-15. **Sancocho** / **caldo de res** — the whole-meal soup with the vegetables left in big pieces.
-    Two boards, one shape.
-
-16. **Ratatouille** — the vegetable one-pot, and the shelf currently has none.
-
-17. **Kedgeree** — rice, smoked fish, egg, one pan. `belly-lox` is the only cured fish here, so
-    this needs a component (below).
-
-18. **Chicken and biscuits** — the same pot as chicken and dumplings with `buttermilk-biscuits`,
-    which already exists, dropped on top.
-
-19. **Bigos** — recorded at the Deli as rank 8 and still unwritten. It is a one-pot dish and this
-    shelf is a second reason to write it.
-
-20. **Congee with a thousand-year egg** — `congee` is here plain; the version people order is a
-    different item on the board.
+6. **Congee with a thousand-year egg** — `congee` is on the shelf plain; the version people order
+   is a different item on the board.
 
 ---
 
@@ -164,3 +110,46 @@ Ranked, most conspicuous absence first.
   assembled in.
 - **The cast-iron seasoning argument.** Whether tomato may go in a cast-iron pan is the single
   most common one-pot question and it is a property of the cook's pan, not of the recipe.
+
+### The fifty-seven that came off the candidate list
+
+Kept here so nobody re-derives them. Six groups, and only the first three are about the pot.
+
+**A second pot of water, drained — the colander case (8).** `chicken-noodle-soup` (noodles boiled
+in four quarts and drained) · `matzo-ball-soup` (the balls poached away from the broth, precisely
+so they do not fog it) · `biryani` (rice parboiled and drained before it is layered) ·
+`corned-beef-hash` (potatoes simmered and drained) · `beef-with-broccoli` (broccoli blanched and
+drained) · `mujaddara` (lentils simmered apart from the onion skillet) · `chana-masala` (chickpeas
+simmered apart from the masala) · `dal-tadka` (the tempering fried in a second pan). **Not one of
+these declares a second vessel in its `cookware` line.** They were found by reading the steps, and
+they are the reason this page no longer trusts that line on its own.
+
+**Two vessels, declared (10).** `birria-de-res` · `beef-rendang` · `dansak` ·
+`red-braised-pork-belly` · `palak-paneer` · `mushroom-risotto` · `suadero` · `lengua` · `tripas` ·
+`caldo-verde`.
+
+**A jug blender, food processor or mortar (8).** `jollof-rice` · `mexican-red-rice` · `korma` ·
+`patia` · `karahi` · `thai-green-curry` · `pad-krapow` · `corn-chowder`. Each makes a whole
+component outside the pot, and that is a second bowl to wash. This is the strictest line on the
+page and the one most open to argument — a hand tool that goes *into* the pot (a fork, a masher,
+an immersion blender) does not count, and neither does a plate or a dish, which is T-002-04's own
+carve-out.
+
+**The protein cooked off the pan the sauce is made in (2).** `butter-chicken` ·
+`chicken-tikka-masala`.
+
+**Not a dinner (18).** These pass the vessel test and come off because the shelf has four
+sections and none of them is for a side: `rice-pilaf` · `lemon-rice` · `coconut-rice` ·
+`yellow-rice` · `pilau-rice` · `polenta` · `cheese-grits` · `refried-beans` · `fried-okra` ·
+`stewed-squash` · `creamed-corn` · `green-beans` · `home-fries` · `hash-browns` ·
+`breakfast-sausage-patties` · `creamed-chipped-beef` · `collard-greens` · `chashu`. The same
+argument takes the first courses off *Soups that are the whole meal* — `hot-and-sour-soup`,
+`tomato-soup`, `butternut-squash-soup`, `potato-leek-soup`, `red-lentil-soup`,
+`cream-of-mushroom-soup`, `french-onion-soup` — seven more, none of which has a starch and a
+protein in it.
+
+**The old *Also here* line (4).** `macaroni-and-cheese` and `tuna-noodle-casserole` both boil
+pasta in separate water; `bolognese` is a sauce rather than a dinner; `meatballs` went to The Bowl
+Shop's protein list instead, which is where T-002-07 asked for it. This menu has no *Also here*
+section to sweep a stray into, and that is deliberate — a shelf whose items land in *Also here*
+has section titles that do not match what is on it.

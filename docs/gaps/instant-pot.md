@@ -1,57 +1,56 @@
 # Instant Pot — what is missing
 
-**0 recipes. The shelf was opened by T-002-01 and nothing is on it yet.** This is not a cuisine
-and not a storefront: it is a lid. Everything it will ever sell is already written here as a pot
-on a stove, and the job is the second table — the same dish, `>> kit: Instant Pot`, with the
-afternoon taken out of it.
+**25 recipes, every one of them a `kit: Instant Pot` variant of a dish already on the shelf.**
+T-002-02 wrote thirteen braises, T-002-03 twelve stocks, bean pots, a porridge and a beet soup.
+This is not a cuisine and not a storefront: it is a lid. Everything it sells was already written
+here as a pot on a stove, and the job was the second table — the same dish with the afternoon
+taken out of it.
 
-So the ranked list below is **not a wish list**. Every line names a recipe that already exists,
-with its slug, ranked by how much the pot actually helps — which is the length of the *wet* cook
-it collapses, not the length of the recipe. A dish whose long wait is a marinade, a cure, a rise
-or a chill gains nothing from a pressure cooker and is not on the list, however long it takes.
+The shelf is the one counter on the site that needed no shelving work at all: a `kit` variant
+names its counter in the file it is written in, so all 25 were members the day they landed.
 
-Ranks 1 to 12 are the ones worth writing first: each is two or three hours of covered simmer that
-comes back in forty minutes. Ranks 13 to 31 are real but smaller wins. Everything after that is
-the pot showing off.
+The ranked list below is **not a wish list**. Every line names a recipe that already exists, with
+its slug, ranked by how much the pot actually helps — which is the length of the *wet* cook it
+collapses, not the length of the recipe. A dish whose long wait is a marinade, a cure, a rise or
+a chill gains nothing from a pressure cooker and is not on the list, however long it takes.
 
 The measurements come from `src/generated/recipes.json` — the longest unattended simmer, braise,
 stew or poach timer in each file.
 
 ---
 
-## What is already here
+## What it has
 
-This heading is not `## What it has` yet, and that is deliberate: no recipe names this counter, so
-`scripts/menu-sections.mjs` would report every slug below as *listed but not shelved here*. These
-are the plain versions, shelved at the Deli, the Taquería, the Curry House and elsewhere. **T-002-08
-renames this block to `## What it has` once the pot variants exist**; the `**Title.** slug · slug`
-line shape is already correct, so that is the whole of the edit.
+**Braises that took all afternoon.** beef-stew-instant-pot · pot-roast-instant-pot ·
+birria-de-res-instant-pot · carnitas-instant-pot · braised-short-ribs-instant-pot ·
+oxtails-instant-pot · cachete-instant-pot · beef-bourguignon-instant-pot ·
+chile-verde-instant-pot · chili-con-carne-instant-pot · hungarian-goulash-instant-pot ·
+collard-greens-instant-pot · borscht-instant-pot
 
-**Braises that took all afternoon.** birria-de-res · beef-bourguignon · braised-short-ribs ·
-cachete · carnitas · chashu · lengua · oxtails · pot-roast · corned-beef · beef-rendang ·
-chile-verde · chili-con-carne · collard-greens · hungarian-goulash · lamb-tagine · osso-buco ·
-suadero · tripas · beef-stew · irish-stew · japanese-beef-curry · massaman-curry ·
-red-braised-pork-belly · rogan-josh · baked-turkey-wings · coq-au-vin · dansak · vindaloo ·
-passanda · doro-wat · brunswick-stew · smothered-pork-chops · meatballs
+**Beans from dry.** cuban-black-beans-instant-pot · refried-beans-instant-pot ·
+ful-medames-instant-pot · boston-baked-beans-instant-pot · gigantes-plaki-instant-pot
 
-**Beans from dry.** cuban-black-beans · ful-medames · refried-beans · boston-baked-beans ·
-black-eyed-peas · butter-beans · gigantes-plaki · hoppin-john · split-pea-soup · chana-masala ·
-harira · black-bean-soup · hummus
+**Stocks and broths.** tonkotsu-broth-instant-pot · pho-broth-instant-pot ·
+chintan-broth-instant-pot · chicken-broth-instant-pot · ham-hock-stock-instant-pot
 
-**Stocks and broths.** tonkotsu-broth · pho-broth · chintan-broth · chicken-broth ·
-ham-hock-stock · consome-de-birria · dashi · pho-ga
+**Rice, grains and porridge.** congee-instant-pot
 
-**Rice, grains and porridge.** congee · biryani · kitchari · lo-mai-gai · red-bean-paste ·
-lotus-seed-paste · scrapple
+**Whole birds and big cuts.** corned-beef-instant-pot
 
-**Whole birds and big cuts.** soy-sauce-chicken · white-cut-chicken · chicken-feet · cha-lua ·
-pastrami · matzo-ball-soup
-
-**Also here.** bolognese · borscht · mole-poblano · mango-chutney · homemade-ketchup
+Two of these are not braises of meat and sit under *Braises that took all afternoon* anyway:
+`borscht-instant-pot` and `collard-greens-instant-pot` are cooked exactly like the rest — sauté,
+lid, pressure, release — and a sixth section would be a menu heading nobody opened.
 
 ---
 
 ## What it is missing
+
+**Twenty-five of the thirty-one ranks below are written** and are on the shelf above. The seven
+still out are ranks 8 (`chashu`), 13 (`lengua`), 19 (`osso-buco`), 20 (`lamb-tagine`), 22
+(`suadero`), 23 (`tripas`) and 29 (`red-braised-pork-belly`), plus everything under *Also worth a
+variant, lower down*. The reasons each was skipped are in `docs/active/work/T-002-02/progress.md`
+and `T-002-03/progress.md`, per dish, with its number — that is the file to read before writing
+one of them, not this page.
 
 Ranked by how much the pot helps. The minutes in brackets are the covered wet cook the pot
 replaces, taken from the existing file.
