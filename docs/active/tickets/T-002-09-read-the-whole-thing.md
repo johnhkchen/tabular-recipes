@@ -3,9 +3,9 @@ id: T-002-09
 story: S-002
 title: read-the-whole-thing
 type: task
-status: open
+status: done
 priority: high
-phase: ready
+phase: done
 depends_on: [T-002-08]
 ---
 
