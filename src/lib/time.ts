@@ -49,11 +49,18 @@ export function formatDuration(minutes: number): string {
  * release" (ajitama) and "until the mushrooms release their liquid" are hands doing work, which
  * is the trap NOT_A_VERB_IN_A_SENTENCE below exists for. Same for `seal`, which is twenty-two
  * dumpling and empanada edges.
+ *
+ * `parboil` is here although bare `boil` is withheld below, and the difference is that the word
+ * does not lead a double life. Every one of its seven appearances is a named timer or the verb
+ * opening its own step — "bring to a boil and ~parboil{10%min}, then drain and rinse" in three
+ * stocks and their pressure siblings, and the rice-water parboil in buri-daikon. Nobody stands
+ * over a pot of water waiting for it; that is what parboiling is, and it was reading as twenty
+ * minutes of a cook's attention.
  */
 const UNATTENDED = new Set([
   'rise', 'prove', 'proof', 'ferment', 'rest', 'chill', 'cool', 'freeze', 'set',
   'marinate', 'brine', 'soak', 'steep', 'bake', 'roast', 'braise', 'simmer', 'steam',
-  'boil', 'slowcook', 'infuse', 'dry', 'cure', 'age', 'refrigerate', 'overnight',
+  'boil', 'parboil', 'slowcook', 'infuse', 'dry', 'cure', 'age', 'refrigerate', 'overnight',
   'leave', 'stand', 'sit', 'blindbake', 'parbake', 'prebake', 'autolyse', 'retard',
   'thaw', 'defrost', 'macerate', 'wilt', 'drain', 'press', 'smoke', 'stew', 'poach',
   'pressure', 'pressurecook', 'pressurecooking', 'pressurerelease', 'naturalrelease',
