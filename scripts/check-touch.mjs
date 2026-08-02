@@ -291,8 +291,6 @@ try {
           );
         }
       }
-
-      if (checked % 100 === 0) console.error(`  …${checked} pages`);
     }
   }
 } catch (problem) {
