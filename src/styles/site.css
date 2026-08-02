@@ -373,6 +373,38 @@ kbd {
   box-shadow: var(--clay-shadow-raised);
 }
 
+/*
+ * narrow — a phone, where 21 counters are a column and not a row.
+ *
+ * Nothing here overflows and the grid collapses to one column on its own; what is wrong is
+ * length. Measured at 375px: the 21 cards are 4505px of a 4998px page, about seven screens of
+ * near-identical panels. So the card gets smaller rather than the grid getting rewritten.
+ *
+ * The teaser goes. A card's job is the name, the sentence saying what the counter is, and how
+ * much is on it — that is a label on a shelf. The four dish names are the fourth thing, they
+ * cost 840px of the 4505 (504px of text plus a 16px margin each), and they are one tap away on
+ * the menu itself. `display: none` takes them from a screen reader too, which is the point:
+ * hiding them from the eye while still reading them aloud would make the page longer for the
+ * reader least able to afford the length.
+ *
+ * With the padding and gaps, the column comes to about 3150px. The name and the count keep
+ * their size; they are what the card is for.
+ */
+@media (max-width: 34rem) {
+  .counters {
+    gap: 0.7rem;
+  }
+  .counter a {
+    padding: 1.05rem 1.15rem 0.95rem;
+  }
+  .counter .blurb {
+    margin-bottom: 0.55rem;
+  }
+  .counter .teaser {
+    display: none;
+  }
+}
+
 /* ---- one counter's menu -------------------------------------------------- */
 
 .menu-head {
