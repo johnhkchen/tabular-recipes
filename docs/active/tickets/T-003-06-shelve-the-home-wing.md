@@ -6,7 +6,7 @@ type: task
 status: open
 priority: high
 phase: ready
-depends_on: [T-002-08, T-003-03, T-003-04, T-003-05]
+depends_on: [T-002-08]
 ---
 
 ## Context
