@@ -1664,11 +1664,35 @@
       "sections": [
         {
           "title": "Old-fire soups (老火湯)",
-          "items": []
+          "items": [
+            "green-radish-carrot-pork-bone-soup",
+            "winter-melon-jobs-tears-soup",
+            "lotus-root-dried-octopus-soup",
+            "watercress-honey-date-soup",
+            "peanut-black-eyed-pea-chicken-feet-soup",
+            "overlord-flower-soup",
+            "corn-carrot-pork-bone-soup",
+            "chinese-yam-goji-black-chicken-soup",
+            "ching-bo-leung-soup",
+            "sha-shen-yu-zhu-soup",
+            "hairy-gourd-dried-scallop-soup",
+            "dried-bok-choy-pork-lung-soup",
+            "lotus-seed-lily-bulb-soup",
+            "old-cucumber-rice-bean-soup",
+            "green-papaya-peanut-trotter-soup",
+            "apple-pear-pork-bone-soup"
+          ]
         },
         {
           "title": "Quick daily soups (滾湯)",
-          "items": []
+          "items": [
+            "tomato-potato-beef-soup",
+            "seaweed-egg-drop-soup",
+            "mustard-greens-tofu-soup",
+            "crucian-carp-tofu-soup",
+            "century-egg-amaranth-soup",
+            "egg-drop-soup"
+          ]
         },
         {
           "title": "What each thing is for",
@@ -1676,11 +1700,10 @@
         },
         {
           "title": "Congee and rice soups",
-          "items": []
-        },
-        {
-          "title": "Also here",
-          "items": []
+          "items": [
+            "congee",
+            "congee-instant-pot"
+          ]
         }
       ]
     },
@@ -1692,31 +1715,71 @@
       "sections": [
         {
           "title": "The soup and the rice",
-          "items": []
+          "items": [
+            "dashi",
+            "miso-soup",
+            "sumashi-jiru",
+            "tonjiru",
+            "gohan",
+            "takikomi-gohan"
+          ]
         },
         {
           "title": "Simmered things (煮物)",
-          "items": []
+          "items": [
+            "nikujaga",
+            "buri-daikon",
+            "chikuzenni",
+            "saba-no-misoni",
+            "kabocha-no-nimono",
+            "kiriboshi-daikon"
+          ]
         },
         {
           "title": "Grilled and pan-fried mains",
-          "items": []
+          "items": [
+            "shogayaki",
+            "saba-shioyaki",
+            "buri-teriyaki",
+            "hambagu",
+            "gyoza",
+            "karaage"
+          ]
         },
         {
           "title": "Small sides (小鉢)",
-          "items": []
+          "items": [
+            "kinpira-gobo",
+            "hijiki-no-nimono",
+            "ohitashi",
+            "goma-ae",
+            "sunomono",
+            "tamagoyaki",
+            "chawanmushi"
+          ]
         },
         {
           "title": "Made ahead (作り置き)",
-          "items": []
+          "items": [
+            "nikumiso",
+            "nanbanzuke",
+            "mentsuyu",
+            "asazuke",
+            "teriyaki-sauce",
+            "goma-dare",
+            "shichimi-togarashi"
+          ]
         },
         {
           "title": "Rice bowls and one-plate suppers",
-          "items": []
-        },
-        {
-          "title": "Also here",
-          "items": []
+          "items": [
+            "oyakodon",
+            "gyudon",
+            "omurice",
+            "chahan",
+            "okonomiyaki",
+            "japanese-beef-curry"
+          ]
         }
       ]
     },
@@ -1728,11 +1791,32 @@
       "sections": [
         {
           "title": "Braises, left alone all day",
-          "items": []
+          "items": [
+            "pot-roast-slow-cooker",
+            "beef-stew-slow-cooker",
+            "chili-con-carne-slow-cooker",
+            "braised-short-ribs-slow-cooker",
+            "carnitas-slow-cooker",
+            "birria-de-res-slow-cooker",
+            "cachete-slow-cooker",
+            "oxtails-slow-cooker",
+            "chile-verde-slow-cooker",
+            "hungarian-goulash-slow-cooker",
+            "collard-greens-slow-cooker",
+            "corned-beef-slow-cooker",
+            "osso-buco-slow-cooker",
+            "lamb-tagine-slow-cooker",
+            "irish-stew-slow-cooker",
+            "baked-turkey-wings-slow-cooker",
+            "brunswick-stew-slow-cooker",
+            "new-england-boiled-dinner-slow-cooker"
+          ]
         },
         {
           "title": "Beans and pulses",
-          "items": []
+          "items": [
+            "boston-baked-beans-slow-cooker"
+          ]
         },
         {
           "title": "Stocks",
@@ -1740,11 +1824,9 @@
         },
         {
           "title": "Whole birds and big cuts",
-          "items": []
-        },
-        {
-          "title": "Also here",
-          "items": []
+          "items": [
+            "soy-sauce-chicken-slow-cooker"
+          ]
         }
       ]
     }
