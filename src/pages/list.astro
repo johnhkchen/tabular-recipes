@@ -447,10 +447,30 @@ import { url } from '../lib/url.ts';
   .list-page :global(.scale--smidge .pip--on) {
     background: color-mix(in srgb, var(--clay-primary) 55%, var(--clay-well));
   }
+  /* Wide enough for the whole phrase, so the short form stays out of the way. */
+  .list-page :global(.scale-short) {
+    display: none;
+  }
+
+  /* ---- narrow: a phone, held in one hand, in a shop ----------------------- */
+
   @media (max-width: 34rem) {
-    /* The words go; the pips and the title attribute keep the meaning. */
+    /*
+     * The long phrase does not fit beside a name worth reading, so the short one takes its
+     * place — "pack", "part", "smidge". The long one is not deleted, only put out of sight, so
+     * the button still reads "part of a pack" to a screen reader. Three dots and a hover
+     * tooltip, which is what this used to come to on a phone, is not a signal at all.
+     */
     .list-page :global(.scale-word) {
-      display: none;
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+    .list-page :global(.scale-short) {
+      display: inline;
     }
     /* A narrow badge needs a narrower reservation, or it eats the name's share of the line. */
     .list-page :global(.tick) {
@@ -464,6 +484,37 @@ import { url } from '../lib/url.ts';
      */
     .list-page :global(.aisle-note) {
       display: none;
+    }
+
+    /*
+     * 44px, everywhere something is pressed.
+     *
+     * This is the page you use standing up, one-handed, holding something else. A 36px row is a
+     * mouse target; a thumb needs 44, and that is a floor rather than a goal. The padding is
+     * what does the work — a bare min-height on a baseline-aligned grid would leave the words
+     * pinned to the top of the extra space — and min-height stands behind it so the number does
+     * not depend on the font that loaded.
+     *
+     * It costs about 670px of scrolling over a list this long. There is no version of this that
+     * is both tappable and as short as it was.
+     */
+    .list-page :global(.tick) {
+      min-height: 44px;
+      padding: 0.8rem 0.5rem;
+    }
+    /*
+     * The other four are not in this ticket's criteria, and they are on the same page under the
+     * same thumb: the multiplier dial, "Take it off", "Take everything off", "Copy the list".
+     * A 24px button beside a 44px row is the same failure, one control over. Same shape
+     * site.css uses for .site-bar a and .back.
+     */
+    .list-page :global(.dial button),
+    .list-page :global(.drop),
+    .list-page :global(.small) {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
     }
   }
 
@@ -555,6 +606,20 @@ import { url } from '../lib/url.ts';
     }
     .list-page :global(.tick) {
       padding: 0.2rem 0;
+      min-height: 0;
+    }
+    /*
+     * A phone printing to PDF matches the narrow query too, and paper has no hover to recover
+     * the meaning from a title attribute. So on paper it is always the whole phrase.
+     */
+    .list-page :global(.scale-word) {
+      position: static;
+      width: auto;
+      height: auto;
+      clip-path: none;
+    }
+    .list-page :global(.scale-short) {
+      display: none;
     }
     /* On paper the box is ticked with a pen, so give it an edge to tick inside. */
     .list-page :global(.tick .box) {
@@ -600,7 +665,22 @@ import { url } from '../lib/url.ts';
     soldAs,
     walkOrder,
     type Purchase,
+    type Scale,
   } from '../lib/shopping.ts';
+
+  /*
+   * The badge's word, cut down to fit a phone. At 375px the long labels — "part of a pack" — do
+   * not fit beside a name worth reading, and the alternative was what this page used to do:
+   * hide the word and leave three dots and a hover tooltip on a device with no hover.
+   *
+   * These belong beside SCALE_WORDS in src/lib/shopping.ts. They are here because this ticket
+   * may change one file, and this is it.
+   */
+  const SHORT_SCALE: Record<Scale, string> = {
+    pack: 'pack',
+    part: 'part',
+    smidge: 'smidge',
+  };
 
   const page = document.querySelector<HTMLElement>('.list-page');
   if (page) {
@@ -963,7 +1043,15 @@ import { url } from '../lib/url.ts';
         const pips = el('span', 'pips');
         pips.setAttribute('aria-hidden', 'true');
         for (let i = 0; i < 3; i++) pips.append(el('span', i < filled ? 'pip pip--on' : 'pip'));
-        scaleEl.append(pips, el('span', 'scale-word', SCALE_WORDS[scale].label));
+        /*
+         * Both words are always in the markup and CSS decides which one is shown. The long one
+         * is never removed, only taken out of sight, so the button reads the same to a screen
+         * reader at every width; the short one is hidden from the accessibility tree so the two
+         * are never announced together.
+         */
+        const short = el('span', 'scale-short', SHORT_SCALE[scale]);
+        short.setAttribute('aria-hidden', 'true');
+        scaleEl.append(pips, el('span', 'scale-word', SCALE_WORDS[scale].label), short);
         scaleEl.title = `${SCALE_WORDS[scale].hint} — ${as}`;
         button.append(scaleEl);
       }
