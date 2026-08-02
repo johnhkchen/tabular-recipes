@@ -60,11 +60,24 @@ main {
   margin: 0 auto;
 }
 
+/*
+ * Hidden the same way .visually-hidden is, rather than parked at left: -9999px. Both are
+ * invisible and both keep the link reachable by keyboard, but the parked version puts a
+ * ten-thousand-pixel element on every page, and anything measuring the page for things that
+ * stick out has to learn to ignore it first. See scripts/check-overflow.mjs.
+ */
 .skip {
   position: absolute;
-  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
 }
 .skip:focus {
+  width: auto;
+  height: auto;
+  overflow: visible;
+  clip-path: none;
   left: 1rem;
   top: 1rem;
   z-index: 2;
@@ -72,6 +85,12 @@ main {
   background: var(--clay-surface-raised);
   border-radius: var(--clay-radius-sm);
   box-shadow: var(--clay-shadow-raised);
+  /*
+   * Not narrow-only. A label too long for the window overflows at every width or none, so a
+   * media query is the wrong place for it. Against the viewport, not main — body is not
+   * positioned, so this cap is the window. At today's label it binds nothing.
+   */
+  max-width: calc(100% - 2rem);
 }
 
 .visually-hidden {
@@ -121,6 +140,31 @@ main {
   font-variant-numeric: tabular-nums;
 }
 
+/*
+ * narrow — a phone.
+ *
+ * The side padding is already at its 1rem floor by 400px, so the 4vw in the clamp above never
+ * gets to help here; taking it to 0.75rem is the only way to give the table back the last of
+ * the window. And both links in the shell were drawn for a pointer: "Your list" is 24px tall
+ * and the skip link 43px, where a thumb wants 44.
+ */
+@media (max-width: 34rem) {
+  body {
+    padding: 1rem 0.75rem 4rem;
+  }
+  .site-bar a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0.15rem 0.35rem;
+  }
+  .skip:focus {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+}
+
 /* ---- page furniture ------------------------------------------------------- */
 
 .masthead {
@@ -163,6 +207,29 @@ main {
 .chips b {
   color: var(--clay-ink);
   font-weight: 600;
+}
+
+/*
+ * narrow — a phone.
+ *
+ * The heading is the only type that steps down. Body text stays at 16px: below that a phone
+ * layout stops being compact and starts being unreadable, and iOS zooms a form field whose
+ * font is under 16px the moment it is tapped — which would take the search box with it.
+ *
+ * The two clamps meet: at 544px this one is capped at 1.9rem and the one above it floors at
+ * 1.9rem, so there is no step at the breakpoint. break-word is insurance for a dish nobody has
+ * written yet; nothing in the collection currently needs it.
+ */
+@media (max-width: 34rem) {
+  .masthead h1 {
+    font-size: clamp(1.6rem, 7vw, 1.9rem);
+    overflow-wrap: break-word;
+  }
+  .back {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
 }
 
 /* ---- the finder ---------------------------------------------------------- */
