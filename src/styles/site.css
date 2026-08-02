@@ -7,6 +7,46 @@
  * the cells you act on.
  */
 
+/* ---- the two widths this site changes at ---------------------------------
+ *
+ * Wide, then snug, then narrow. Two numbers, and the whole site writes only these:
+ *
+ *   snug     max-width: 44rem   [reserved]  the widest recipes have stopped fitting
+ *   narrow   max-width: 34rem   [in use]    the common recipe has stopped fitting,
+ *                                           and the page furniture is cramped
+ *
+ * 44rem is 704px and 34rem is 544px, if you are holding a device rather than a stylesheet.
+ *
+ * Where they come from. A table fits when the viewport minus the body's side padding
+ * minus the well's padding is at least the table's own minimum:
+ *
+ *   5 columns  294 recipes   ~30rem of table    fits at 34.1rem of viewport
+ *   6 columns  179 recipes   ~35rem             fits at 39.6rem
+ *   7 columns   23 recipes   ~39.5rem           fits at 44.5rem
+ *
+ * So `narrow` is the width where the recipe you are most likely to open stops fitting,
+ * and `snug` is where the first one does. Neither is a round number borrowed from a
+ * phone; both are this site's own arithmetic.
+ *
+ * Rules for anyone adding a width query:
+ *
+ *   - [reserved] means the number is decided but nothing writes it yet. `snug` is there
+ *     so the table and the clock have a middle step ready instead of inventing one.
+ *     When you write the first `snug` query, change its tag to [in use] — the test in
+ *     src/styles/breakpoints.test.ts checks that every [in use] name really is.
+ *   - Use one of these two literals. A media query cannot read a custom property
+ *     (`@media (max-width: var(--x))` is not CSS), so the number is written out at
+ *     each use site and this block is what makes them one number rather than five.
+ *   - Put the query beside the rules it changes, at the end of that section, not in
+ *     one shared block at the bottom of the file. The sections here are how work is
+ *     divided; a shared block is where two people edit the same lines.
+ *   - `max-width` on a *property* is not a breakpoint. `.masthead p` is capped at
+ *     34rem so a line of prose stays trackable, which is a measure, and it binds on a
+ *     desktop where the breakpoint never fires. Leave those alone.
+ *   - If the site is finished and nothing uses `snug`, delete it from this block. An
+ *     unused name is worse than no name.
+ */
+
 * { box-sizing: border-box; }
 
 body {
