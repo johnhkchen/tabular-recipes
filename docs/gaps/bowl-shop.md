@@ -102,6 +102,37 @@ renumbered, most conspicuous absence first. Named the way the boards name them.
 
 ---
 
+## What reading the whole shelf found
+
+T-002-09 read all 658 recipes as one collection. Three things about this counter that no single
+writer ticket could have seen:
+
+- **Every pairing on the shelf resolves and is mutual.** 760 edges across the collection, zero
+  dangling, zero one-way, zero self-pairings — `src/lib/collection.test.ts` pins all three. The
+  bowls point at `basil-pesto`, `goma-dare`, `tahini-sauce`, `crema-mexicana`, `hummus`,
+  `harissa`, `tzatziki` and `teriyaki-sauce`, and the drawer points back.
+
+- **The bowls do not lean on `pairs-with` harder than anything else, and they should.** The
+  twelve grain bowls average 2.3 pairings each — exactly the collection average. But this counter
+  is the one place where the pairing *is* the dish: the page for a bowl is a base plus a protein
+  plus a dressing, and *What it could not stock* below says outright that the honest form of a
+  bowl is components plus `pairs-with`. `chicken-pesto-bowl`, `crispy-rice-bowl` and
+  `harvest-bowl` name a single partner each. Every one of the twelve could name its base grain,
+  its roasted vegetable and its dressing, and then the counter page really would be the bowl.
+  This is the cheapest remaining improvement to the shelf and it is a metadata job, not a
+  writing one.
+
+- **The generic aliases collide by design and it costs the search box.** *grain bowl* is an `aka`
+  on 10 of the 12 bowls, *power bowl* on 8, *rice bowl* on 6, *buddha bowl* and *farro bowl* on
+  2 each. Nothing is broken — these are not two files describing one dish, and the whole-shelf
+  duplicate check (by `dish:` key, by normalised title, and by ingredient overlap at Jaccard
+  ≥ 0.60) found none here. But a searcher typing *grain bowl* gets ten identical-looking hits,
+  which is the same result as no hits. The fix is a search that ranks a title match above an
+  `aka` match, not a smaller `aka` list — someone who orders a "power bowl" really is asking for
+  any of the eight.
+
+---
+
 ## What it could not stock
 
 - **The bowl itself.** A bowl is an assembly: a base, a protein, three sides, a dressing. Every

@@ -45,8 +45,9 @@ lid, pressure, release — and a sixth section would be a menu heading nobody op
 
 ## What it is missing
 
-**Twenty-five of the thirty-one ranks below are written** and are on the shelf above. The seven
-still out are ranks 8 (`chashu`), 13 (`lengua`), 19 (`osso-buco`), 20 (`lamb-tagine`), 22
+**Twenty-four of the thirty-one ranks below are written** and are on the shelf above; the
+twenty-fifth variant, `gigantes-plaki-instant-pot`, was written off the lower list instead. The
+seven ranks still out are 8 (`chashu`), 13 (`lengua`), 19 (`osso-buco`), 20 (`lamb-tagine`), 22
 (`suadero`), 23 (`tripas`) and 29 (`red-braised-pork-belly`), plus everything under *Also worth a
 variant, lower down*. The reasons each was skipped are in `docs/active/work/T-002-02/progress.md`
 and `T-002-03/progress.md`, per dish, with its number — that is the file to read before writing
@@ -124,13 +125,57 @@ replaces, taken from the existing file.
 ### Also worth a variant, lower down
 
 `irish-stew`, `japanese-beef-curry`, `massaman-curry`, `rogan-josh`, `dansak`, `passanda`,
-`vindaloo`, `beef-rendang`, `chana-masala`, `black-eyed-peas`, `butter-beans`, `gigantes-plaki`,
-`hoppin-john`, `split-pea-soup`, `harira`, `black-bean-soup`, `soy-sauce-chicken`,
-`white-cut-chicken`, `baked-turkey-wings`, `coq-au-vin`, `brunswick-stew`, `matzo-ball-soup`,
-`biryani`, `lo-mai-gai`, `chicken-feet`, `hummus` (a 45-minute chickpea simmer becomes 15).
+`vindaloo`, `beef-rendang`, `chana-masala`, `black-eyed-peas`, `butter-beans`, `hoppin-john`,
+`split-pea-soup`, `harira`, `black-bean-soup`, `soy-sauce-chicken`, `white-cut-chicken`,
+`baked-turkey-wings`, `coq-au-vin`, `brunswick-stew`, `matzo-ball-soup`, `biryani`, `lo-mai-gai`,
+`chicken-feet`, `hummus` (a 45-minute chickpea simmer becomes 15).
 
-That is **58 existing dishes** named above, every one with a slug, and none of them needing a new
-recipe written from nothing.
+`gigantes-plaki` was on this list and came off it: T-002-03 wrote the variant, which is why the
+ranked list accounts for twenty-four of the twenty-five files on the shelf and this line accounts
+for the twenty-fifth.
+
+That is **56 existing dishes** still named above, every one with a slug, and none of them needing
+a new recipe written from nothing.
+
+---
+
+## What the clock now reads
+
+T-002-01 taught `src/lib/time.ts` that pressure cooking is walk-away time before a single recipe
+existed to test it against. Twenty-five now do. Reading every timer in all 25 variants through
+`src/lib/schedule.ts`:
+
+- The writers used four timer names — `~pressure cook` (29 uses), `~natural release` (25),
+  `~come to pressure` (13), `~quick release` (4). `time.ts` normalises a name by lowercasing and
+  stripping spaces, so all four land in `UNATTENDED`.
+- **42 pressure-and-release tasks across the 25 files. Not one reads as hands-on**, and every one
+  carries `confidence: stated` — the author saying so by naming the timer, not an inference off
+  the sentence around it.
+- Five worked examples, elapsed against the plain sibling:
+
+  | Variant | Pressure + release | Elapsed | Plain sibling elapsed |
+  | --- | --- | --: | --: |
+  | `beef-stew-instant-pot` | 35 min high pressure + 15 min natural release, both unattended | 88 min | 135 min |
+  | `pot-roast-instant-pot` | 75 min + 20 min natural release, both unattended | 136 min | 240 min |
+  | `tonkotsu-broth-instant-pot` | 90 min + 30 min natural release, both unattended | 170 min | **570 min** |
+  | `congee-instant-pot` | 30 min + 20 min natural release, both unattended | 50 min | 95 min |
+  | `carnitas-instant-pot` | 45 min + 15 min natural release, both unattended | 94 min | 190 min |
+
+**One thing the numbers cannot show, and it is not a fault in the clock.** Most plain siblings
+report **zero** hands-on minutes — `beef-stew`, `pot-roast`, `beef-bourguignon`, `carnitas` and
+a dozen more. Not because they are effortless, but because their brown / soften / deglaze steps
+carry **no timer at all**. `schedule.ts` gives an untimed operation 0 minutes and `timed: false`
+on purpose and counts it in `untimedCount`, rather than filling the gap with a plausible number.
+The Instant Pot files time those steps because their writers timed everything; the plain files
+predate the convention.
+
+So "hands-on under pressure is a fraction of hands-on on the stove" is not readable off this
+collection, and the honest fix is **not** to write times into the plain files to make the
+comparison come out — that is the fabricated number this story forbids. It is to time the
+hands-on steps of a plain braise *when someone next has cause to open that file*, one at a time,
+with the number that dish actually takes. `beef-stew` has four untimed operations,
+`beef-bourguignon` five, `pot-roast` three. Until then, elapsed time is the comparison that means
+something, and it is the column above.
 
 ---
 

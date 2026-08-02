@@ -15,11 +15,20 @@ titles free of an em-dash aside — the parser cuts a title at ` — `.
 
 ## Build state
 
-`npm run verify` passes end to end: 514 files draw a table, 514 recipes parse, 666 tests green, the site
-builds. 514 recipes, 27 categories, 623 counter assignments, 558 pairings made mutual, timers in 491
-files, 0 orphans, 0 counters inferred from category, 0 parser warnings, 0 duplicate slugs.
+`npm run verify` passes end to end: **658 files draw a table, 658 recipes parse, 825 tests green in 8
+files, 682 pages build.** 658 recipes, 27 categories, 888 counter assignments, 760 pairings made mutual,
+timers in 635 files, 0 orphans, 0 counters inferred from category, 0 parser warnings, 0 duplicate slugs.
+45 files declare a `kit:` — 25 `Instant Pot`, 20 `Slow Cooker` — and every one resolves to exactly one
+plain sibling.
 
-Three things needed repairing, and none of them was visible from inside one folder:
+**The tally below, and the three sections after it, still describe the fifteen-counter shelf.** S-002
+added The Bowl Shop, Instant Pot and One Pot; S-003 is adding three more. Rewriting eighteen rows twice
+would waste the second pass, so the whole board is left for T-003-07, which reads it all after the S-003
+shelves land. Until then the three new counters are described only in their own pages —
+[bowl-shop.md](bowl-shop.md), [instant-pot.md](instant-pot.md), [one-pot.md](one-pot.md) — each of which
+is current.
+
+At 514 recipes, three things needed repairing, and none of them was visible from inside one folder:
 
 - **`ginger-garlic-paste` wrote its shelf life as a timer** (`~chill{3%weeks}` on a fifteen-minute paste),
   which put a 21-day edge on the critical path and made it the third-longest recipe on the site.

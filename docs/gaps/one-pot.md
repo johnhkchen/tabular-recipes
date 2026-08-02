@@ -1,6 +1,6 @@
 # One Pot — what is missing
 
-**72 recipes.** T-002-04 wrote fourteen; T-002-08 shelved fifty-eight that were already here and
+**68 recipes.** T-002-04 wrote fourteen; T-002-08 shelved fifty-four that were already here and
 had never been counted as one pot. Like the Instant Pot, this is a vessel rather than a cuisine —
 but unlike the Instant Pot, most of what is on it was written as a one-pot recipe years ago and
 simply had not been shelved that way.
@@ -9,8 +9,15 @@ The earlier draft of this page ranked 114 candidates off the `cookware` line eac
 That line turned out to be evidence rather than an answer: it counts what a recipe *names*, and
 the dishes that fail this shelf mostly fail by boiling something in water the file never bothers
 to call a pot. Every candidate was read against the test in T-002-04 — *at the end, how many
-things need washing?* — and the fifty-seven that came off are listed under
+things need washing?* — and the sixty-one that came off are listed under
 *What it could not stock*, each with the reason.
+
+**Four of those sixty-one came off after the shelf was built**, when T-002-09 read this page as a
+menu rather than as a list. `general-tsos-chicken`, `orange-chicken`, `sesame-chicken` and
+`sweet-and-sour-pork` each declare one `#wok{}` and nothing else, and each is four cups of peanut
+oil double-fried in two batches. They are the same evasion the paragraph above describes, one
+rung further along: not a pot the file forgot to name, but a quart of frying oil, a dredging
+bowl, a draining rack and a second bowl for the glaze, all of them invisible to `cookware`.
 
 What is genuinely missing is smaller than it looks, and it is specific: the Louisiana line, the
 chicken-and-dumplings line is now written, and the pans where the starch cooks in its own sauce.
@@ -29,8 +36,7 @@ soy-sauce-chicken · white-cut-chicken
 
 **Skillet dinners.** shakshuka · tortilla-espanola · skillet-lasagna · one-pot-pasta ·
 beef-stroganoff · smothered-pork-chops · country-fried-steak · chicken-adobo · tinga-de-pollo ·
-xiu-mai · western-omelette · egg-foo-young · general-tsos-chicken · orange-chicken ·
-sesame-chicken · sweet-and-sour-pork
+xiu-mai · western-omelette · egg-foo-young
 
 **Rice and grains that cook in.** arroz-con-pollo · paella · jambalaya · dirty-rice ·
 hoppin-john · kitchari · risotto-alla-milanese · cuban-black-beans · black-eyed-peas ·
@@ -97,6 +103,12 @@ above. Six are still out, renumbered, most conspicuous absence first.
   in a Dutch oven, or boil pasta separately. A table shows every operation, so the shelf is
   honest about this by construction — but it means the *promise* of the counter is a claim about
   the washing-up, and washing-up is not a row in a table.
+- **The deep fry.** `general-tsos-chicken`, `orange-chicken`, `sesame-chicken` and
+  `sweet-and-sour-pork` are one wok on paper and four things to wash in a kitchen: a bowl to
+  velvet in, a shallow one to dredge in, a rack to drain on, and a third bowl for the glaze that
+  goes into the wok after the oil comes out of it. Nobody browsing *everything goes in one pan*
+  on a Tuesday expects to heat, strain and store a quart of peanut oil. They sit at the Takeout
+  Counter, which is where all four already were.
 - **The oven-and-stove dish.** `boston-baked-beans`, `gigantes-plaki` and `baked-ziti` use one
   vessel across two appliances. It is one pot by the pot's own count and two by the cook's.
   Shelving them here is defensible and should be argued in the file, not assumed.
@@ -111,9 +123,14 @@ above. Six are still out, renumbered, most conspicuous absence first.
 - **The cast-iron seasoning argument.** Whether tomato may go in a cast-iron pan is the single
   most common one-pot question and it is a property of the cook's pan, not of the recipe.
 
-### The fifty-seven that came off the candidate list
+### The sixty-one that came off the candidate list
 
-Kept here so nobody re-derives them. Six groups, and only the first three are about the pot.
+Kept here so nobody re-derives them. Seven groups, and only the first four are about the pot.
+
+**A quart of frying oil (4).** `general-tsos-chicken` · `orange-chicken` · `sesame-chicken` ·
+`sweet-and-sour-pork`. Added by T-002-09, which read the built menu rather than the candidate
+list. All four were shelved here by T-002-08 and all four declare one `#wok{}`, which is why they
+got through; the reason they come off is in *What it could not stock* above.
 
 **A second pot of water, drained — the colander case (8).** `chicken-noodle-soup` (noodles boiled
 in four quarts and drained) · `matzo-ball-soup` (the balls poached away from the broth, precisely
@@ -153,3 +170,23 @@ pasta in separate water; `bolognese` is a sauce rather than a dinner; `meatballs
 Shop's protein list instead, which is where T-002-07 asked for it. This menu has no *Also here*
 section to sweep a stray into, and that is deliberate — a shelf whose items land in *Also here*
 has section titles that do not match what is on it.
+
+---
+
+## Left open, for whoever reads this next
+
+- **The broiler argument.** `carnitas` and `chile-verde` are both on the shelf and both declare a
+  `#broiler{}` next to their Dutch oven. Carnitas puts its own pot under the broiler to crisp the
+  shreds in their own fat — one vessel, two appliances, which this page already permits under
+  *The oven-and-stove dish*. Chile-verde chars its chiles under the broiler **before** the pot,
+  on a sheet the file never names, which is the shape that kept `birria-de-res` off. T-002-09
+  left both on rather than split them on an undeclared pan, and says so here instead of deciding
+  it quietly. Settling it means either writing the sheet into `chile-verde`'s `cookware` or
+  agreeing that a preliminary char is a step and not a second washing-up.
+
+- **`src/data/counters.json` still lists the four fried dishes** under *Skillet dinners*. They
+  render nowhere — `menuFor()` intersects a section's slugs with the recipes that actually name
+  the counter, so a slug that no longer names One Pot is dropped, and the built page shows 68
+  items in four sections. T-002-09 left the file alone because T-003-06 owns it and was live at
+  the time. Removing the four inert slugs, or re-running `node scripts/menu-sections.mjs --write`
+  against this page, is a one-line job for T-003-07.
