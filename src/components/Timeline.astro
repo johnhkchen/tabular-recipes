@@ -812,6 +812,11 @@ const headingId = `clock-${recipe.slug}`;
     .swatch {
       border: 1px solid CanvasText;
     }
+    /* The bar keeps its dashed edge here on specificity alone; the key has to ask for it, or
+       the legend would show a solid swatch beside dashed bars and stop being a key. */
+    .swatch--ours {
+      border-style: dashed;
+    }
     .bar[data-attention='hands-on'],
     .swatch--hands {
       background: CanvasText;
