@@ -600,6 +600,24 @@
             "mint-chutney",
             "raita",
             "kachumber"
+          ],
+          "notes": [
+            {
+              "of": "papadom",
+              "note": "These arrive before you have ordered: the tray is mango chutney, lime pickle, mint sauce and raw onion."
+            },
+            {
+              "of": "kachumber",
+              "note": "The plate of raw onion that comes with the papadoms: cold sharp and crunchy against ten sauces that are none of those."
+            },
+            {
+              "of": "mango-chutney",
+              "note": "The sweet corner of the tray and the one that goes on the papadom first. Better after a fortnight."
+            },
+            {
+              "of": "raita",
+              "note": "What you reach for when a vindaloo has gone wrong, and half the meal beside a biryani."
+            }
           ]
         },
         {
@@ -608,6 +626,12 @@
             "tandoori-marinade",
             "chicken-tikka",
             "seekh-kabab"
+          ],
+          "notes": [
+            {
+              "of": "chicken-tikka",
+              "note": "What the tandoori marinade was written for. The same skewers dropped into a makhani gravy are butter chicken."
+            }
           ]
         },
         {
@@ -628,6 +652,32 @@
             "patia",
             "rogan-josh",
             "vindaloo"
+          ],
+          "notes": [
+            {
+              "of": "balti",
+              "note": "The only line here finished with fresh mint, and the only one cooked fast in a thin steel bowl."
+            },
+            {
+              "of": "bhuna",
+              "note": "The driest line here and the one to order if you are eating with bread rather than rice."
+            },
+            {
+              "of": "jalfrezi",
+              "note": "The only line here that is a stir-fry and not a simmer, and the vinegar at the end is why it tastes sharper."
+            },
+            {
+              "of": "korma",
+              "note": "The mildest line here and the one to order when you cannot judge a kitchen yet."
+            },
+            {
+              "of": "madras",
+              "note": "The second-hottest line here: hotter than a bhuna and below a vindaloo, and sour with tamarind as well as hot."
+            },
+            {
+              "of": "passanda",
+              "note": "The other mild line beside korma, told apart by almonds ground and stirred in rather than blended to a cream."
+            }
           ]
         },
         {
@@ -644,6 +694,16 @@
             "lemon-rice",
             "biryani",
             "pilau-rice"
+          ],
+          "notes": [
+            {
+              "of": "biryani",
+              "note": "Not a stirred rice — rice mixed into curry is a pulao, and the difference is exactly this lid."
+            },
+            {
+              "of": "pilau-rice",
+              "note": "The rice that comes with everything, and not the tiffin counter's lemon rice up the page."
+            }
           ]
         },
         {
@@ -673,6 +733,16 @@
             "onion-tomato-masala",
             "birista",
             "paneer"
+          ],
+          "notes": [
+            {
+              "of": "makhani-gravy",
+              "note": "The same tomato and cashews as the tikka masala gravy; the difference is the butter in cold at the end."
+            },
+            {
+              "of": "onion-tomato-masala",
+              "note": "Nine lines on the sauce list start here: bhuna dopiaza jalfrezi madras vindaloo karahi balti dansak patia."
+            }
           ]
         },
         {
@@ -866,6 +936,16 @@
             "white-pizza",
             "grandma-pie",
             "sicilian-pizza"
+          ],
+          "notes": [
+            {
+              "of": "grandma-pie",
+              "note": "A grandma bakes flat and crisp in twenty minutes; a Sicilian is a wetter dough proofed in the pan to an inch."
+            },
+            {
+              "of": "white-pizza",
+              "note": "No tomato anywhere on it, so the garlic the pepper and the salt are all heavier than they look."
+            }
           ]
         },
         {
@@ -1399,6 +1479,12 @@
             "kachumber",
             "som-tum",
             "larb-gai"
+          ],
+          "notes": [
+            {
+              "of": "panzanella",
+              "note": "Fattoush throws its fried bread in at the last second; panzanella wants the bread to drink first."
+            }
           ]
         },
         {
@@ -1681,6 +1767,43 @@
             "old-cucumber-rice-bean-soup",
             "green-papaya-peanut-trotter-soup",
             "apple-pear-pork-bone-soup"
+          ],
+          "notes": [
+            {
+              "note": "The broth is the dish here. The solids — 湯渣 — are spent by the end and go out on a side plate with soy sauce, or not."
+            },
+            {
+              "of": "ching-bo-leung-soup",
+              "note": "The one here built on dried goods rather than a vegetable, so every item in the packet carries its own reason."
+            },
+            {
+              "of": "corn-carrot-pork-bone-soup",
+              "note": "The one here that needs no explaining at the table: sweet, mild, and made all year round."
+            },
+            {
+              "of": "dried-bok-choy-pork-lung-soup",
+              "note": "The one that asks the most of you, and all of it is at the sink: washing the lung white can take an hour."
+            },
+            {
+              "of": "green-papaya-peanut-trotter-soup",
+              "note": "The rich one, and the pot made for a new mother."
+            },
+            {
+              "of": "green-radish-carrot-pork-bone-soup",
+              "note": "The one a house makes when nobody has decided: green radish cooling, carrot neutral, so it suits any season."
+            },
+            {
+              "of": "hairy-gourd-dried-scallop-soup",
+              "note": "The light one, and quick for the shelf: an hour and a half rather than three."
+            },
+            {
+              "of": "peanut-black-eyed-pea-chicken-feet-soup",
+              "note": "The clearest case here of a pot organised entirely by what its parts are for."
+            },
+            {
+              "of": "sha-shen-yu-zhu-soup",
+              "note": "Proof that a 老火湯 does not have to be big. Four things in the pot and that is all."
+            }
           ]
         },
         {
@@ -1692,6 +1815,24 @@
             "crucian-carp-tofu-soup",
             "century-egg-amaranth-soup",
             "egg-drop-soup"
+          ],
+          "notes": [
+            {
+              "of": "century-egg-amaranth-soup",
+              "note": "The weeknight one, and the colour is why: ten minutes and the amaranth turns the whole pot pink."
+            },
+            {
+              "of": "crucian-carp-tofu-soup",
+              "note": "The one pot here where a hard boil is correct: on the old-fire side it is the failure every time."
+            },
+            {
+              "of": "seaweed-egg-drop-soup",
+              "note": "Not the thickened egg drop off a takeout menu: no cornstarch, and laver rather than stock for the body."
+            },
+            {
+              "of": "tomato-potato-beef-soup",
+              "note": "What a household actually drinks most evenings — the three-hour pot up the page is the Sunday one."
+            }
           ]
         },
         {
@@ -1722,6 +1863,12 @@
             "tonjiru",
             "gohan",
             "takikomi-gohan"
+          ],
+          "notes": [
+            {
+              "of": "sumashi-jiru",
+              "note": "The other half of 汁物: the clear one, and the one a miso soup is not."
+            }
           ]
         },
         {
@@ -1822,6 +1969,26 @@
             {
               "of": "new-england-boiled-dinner-slow-cooker",
               "note": "The one here that is not leave-it-and-go — you are home for the last two hours, adding the vegetables in order."
+            },
+            {
+              "of": "cachete-slow-cooker",
+              "note": "The one here with the most room in it: a pot that tops out at a simmer cannot overcook a cheek."
+            },
+            {
+              "of": "collard-greens-slow-cooker",
+              "note": "All day with a hock is how greens are actually cooked, so the machine matches the method rather than shortening it."
+            },
+            {
+              "of": "corned-beef-slow-cooker",
+              "note": "The pot cannot exceed a bare shiver, which is what this cut wants — pressure shreds a brisket before the cabbage."
+            },
+            {
+              "of": "irish-stew-slow-cooker",
+              "note": "The easiest one here: nothing is browned, nothing goes in late, and there is no pan to wash."
+            },
+            {
+              "of": "osso-buco-slow-cooker",
+              "note": "The shortest braise here at six hours, and the one where longer is actively worse."
             }
           ]
         },
