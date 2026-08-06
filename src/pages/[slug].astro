@@ -39,7 +39,10 @@ const home = counterByName.get(recipe.counters[0]);
 
 const facts = [
   recipe.metadata.servings && { label: 'serves', value: recipe.metadata.servings },
-  recipe.metadata.time && { label: 'about', value: recipe.metadata.time },
+  // The label is the whole attribution: the value is the author's own `>> time:`, quoted, and
+  // this says so. It read "about", which was the site hedging a number it had not worked out —
+  // and put that word on the page twice, meaning something else again in the clock's "Needs you".
+  recipe.metadata.time && { label: 'recipe says', value: recipe.metadata.time },
   { label: '', value: recipe.category },
 ].filter(Boolean) as { label: string; value: string }[];
 ---
