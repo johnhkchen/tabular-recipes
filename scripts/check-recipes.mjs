@@ -58,13 +58,16 @@ const CAPS = {
 };
 
 /*
- * Reported, not enforced. T-005-04 through T-005-06 are the tickets that bring the
- * collection under these caps, and each of them runs `npm run verify` — which starts with
- * this script. A checker that failed the day the caps landed would block its own fix.
+ * Enforced. For one story this line read false, because the caps landed before the files
+ * that had to come under them: T-005-04 took the 304 slack reasons, T-005-05 the 232 prose
+ * rows, T-005-06 the 656 step bodies, and T-005-07 the 17 ingredient notes nobody had
+ * claimed. A checker that failed on the first day would have blocked its own fix.
  *
- * T-005-07 flips this line to true once the collection is clean. It is the only change.
+ * The collection is clean, so it fails now. Nothing is exempt and no file has a waiver —
+ * there is no skip list in measure() and there should not be one. If a cap is wrong, move
+ * the cap and say what you measured; do not carve out the file that disagrees with it.
  */
-const CAPS_FAIL_BUILD = false;
+const CAPS_FAIL_BUILD = true;
 
 /*
  * Everything one file has to say, measured against the caps. Pure: takes the parsed recipe
@@ -235,7 +238,9 @@ if (overCap.length) {
 
   console.log(
     CAPS_FAIL_BUILD
-      ? '\nCaps are enforced: this run fails.'
+      ? '\nCaps are enforced: this run fails.\n' +
+          'Shorten the lines above, or move the cap in scripts/check-recipes.mjs and say what\n' +
+          'you measured. docs/knowledge/voice.md says what each field is for.'
       : '\nCaps are reported, not enforced: this run exits 0.\n' +
           'Set CAPS_FAIL_BUILD = true in scripts/check-recipes.mjs once the collection is clean.',
   );
