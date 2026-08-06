@@ -15,16 +15,18 @@
  *    for its own label goes unlabelled on the axis rather than lying about its width — its
  *    duration is printed beside its row either way, so no number lives only in a width.
  *
- * 2. NOTHING IS INVENTED. An operation the recipe never timed has no bar — it gets a mark at
- *    the moment it happens and the words "not timed", and the count of them sits under the
- *    headline so the two big numbers are read as floors rather than facts. A recipe that
- *    times nothing at all gets a sentence instead of a chart.
+ * 2. NOTHING IS INVENTED, AND THE DOUBT RIDES ON THE NUMBER. An operation the recipe never
+ *    timed has no bar — it gets a mark at the moment it happens and the words "not timed".
+ *    Where that leaves a figure short, the figure says "at least" and the count of untimed
+ *    steps sits under it as a fact about the recipe; where a figure is our reading rather than
+ *    the author's, it says "about". No paragraph explains either: a cook needs to know the
+ *    number is approximate, not why. A recipe that times nothing at all says so in one line.
  *
  * 3. THE PICTURE NEVER CARRIES ANYTHING ALONE. Hands-on and unattended differ by fill
  *    (solid vs. hatched), by height, by icon and by the words next to them, so colour is the
- *    fourth signal and never the first. `confidence` — which is about the ATTENTION, not the
- *    minutes; the minutes are always the author's own — is drawn as the bar's edge, solid to
- *    dashed to dotted, and also written out as "read off the step" or "assumed".
+ *    fourth signal and never the first. Whether the attention was the author's word or our
+ *    reading — the minutes are always the author's own — is drawn as the bar's edge, solid or
+ *    dashed, written beside every bar as "(we think)", and named in the legend.
  *
  * Every task row carries `data-cell`, which is the same id its operation cell has in
  * layout.ts, so a page that wants to light up the table when you touch a bar can, without
@@ -32,7 +34,7 @@
  */
 import { formatDuration } from '../lib/time.ts';
 import { iconForOperation, iconSvg, type IconName } from '../lib/icons.ts';
-import { buildSchedule, type Schedule, type Task } from '../lib/schedule.ts';
+import { attentionIsOurs, buildSchedule, type Schedule, type Task } from '../lib/schedule.ts';
 import { slackWord } from '../lib/slack.ts';
 import { buildTree, type RawRecipe, type RecipeTree } from '../lib/tree.ts';
 
@@ -127,12 +129,12 @@ const ATTENTION: Record<string, { word: string; icon: IconName }> = {
   unattended: { word: 'walk away', icon: 'hourglass' },
 };
 
-/** What we are allowed to claim about the attention, in the author's absence. */
-const HEDGE: Record<string, string> = {
-  stated: '',
-  inferred: 'read off the step',
-  unknown: 'assumed',
-};
+/*
+ * What we are allowed to claim about the attention, in the author's absence — two words, on the
+ * claim itself, rather than a paragraph under the chart explaining how we came by it. It is the
+ * same phrase the cook pane uses, and the same thing the dashed edge and the legend say.
+ */
+const OUR_READING = 'we think';
 
 interface Row {
   task: Task;
@@ -162,106 +164,99 @@ const rows: Row[] = [...schedule.tasks]
       duration: formatDuration(task.minutes) || (task.timed ? 'no length given' : 'not timed'),
       when: task.start > 0 ? `${formatDuration(task.start)} in` : 'from the start',
       attention: ATTENTION[task.attention] ?? null,
-      hedge: task.minutes > 0 ? HEDGE[task.confidence] ?? '' : '',
+      hedge: task.minutes > 0 && attentionIsOurs(task) ? OUR_READING : '',
     };
   });
 
-// Two things genuinely running at once — the one thing a numbered list of steps hides.
-const overlaps = rows.some((row) =>
-  rows.some(
-    (other) =>
-      other !== row &&
-      row.spans &&
-      other.spans &&
-      row.task.start < other.task.end &&
-      other.task.start < row.task.end,
-  ),
-);
+/*
+ * How many operations are genuinely running at once — the one thing a numbered list of steps
+ * hides, and the reason a dish can hold more work than clock. Counted rather than merely
+ * spotted, because on the pages where those two numbers disagree the count is what says why.
+ */
+const overlapping = rows.filter(
+  (row) =>
+    row.spans &&
+    rows.some(
+      (other) =>
+        other !== row &&
+        other.spans &&
+        row.task.start < other.task.end &&
+        other.task.start < row.task.end,
+    ),
+).length;
 
 /* ----------------------------------------------------------- the headline */
 
 const stepCount = schedule.tasks.length;
 const untimed = schedule.untimedCount;
+const allTimed = untimed === 0;
 const timesNothing = schedule.totalMinutes === 0;
-const authorText =
-  schedule.authorMinutes && schedule.authorMinutes > 0
-    ? formatDuration(schedule.authorMinutes)
-    : '';
 
 /*
- * What the "needs you" figure may claim under itself.
- *
- * "The rest you can walk away from" is only true when every step is timed. Blondies time the
- * bake and nothing else, so hands-on comes to zero — and "Needs you: none of it / the rest you
- * can walk away from" tells a cook they may leave the room through four steps nobody put a
- * number on. Only three recipes in the collection time every step; for the rest the line says
- * what the figure is a total OF, and speaks for nothing else. The note underneath already says
- * how many steps went unmeasured, so it is not said twice.
+ * The author's own `>> time:` is deliberately NOT printed here. It is already on the page, as
+ * an "about 3 hr 30 min" chip under the title, where the servings and the category are — which
+ * is where a claim of the author's belongs. Repeating it inside a panel of worked-out numbers
+ * made it look like a third worked-out number, and on pizzelle, where the author says 45 min
+ * and the timers add up to 45 sec, that reads as the panel contradicting itself.
  */
-const allTimed = untimed === 0;
-const handsOnText = formatDuration(schedule.handsOnMinutes) || (allTimed ? 'none of it' : 'none given');
-const handsOnSub = allTimed
-  ? 'the rest you can walk away from'
-  : 'of the steps that give a time';
+
+/** Any bar whose hands-on / walk-away reading is ours rather than the recipe's own word. */
+const anyOurReading = rows.some((row) => row.spans && attentionIsOurs(row.task));
 
 /*
  * An operation nobody timed ends the moment it starts, so start-to-finish is the sum of what
  * WAS timed and nothing else — a floor, not a total. Pizzelle times the 45 seconds in the iron
  * and none of the four steps around it, and a bare "45 sec" in display type over a recipe
- * whose own header says 45 min is not an understatement, it is the wrong answer. So the number
- * says out loud that it is a floor, where a small grey line under it would not be read in time.
+ * whose own header says 45 min is not an understatement, it is the wrong answer. "About" would
+ * be no better there: it would claim the truth is near 45 seconds. A floor is the one thing we
+ * honestly know, so the number says so, and the count of what is missing sits under it.
  */
 const totalText = `${allTimed ? '' : 'at least '}${formatDuration(schedule.totalMinutes)}`;
+const totalSub = allTimed
+  ? ''
+  : `${untimed} of ${stepCount} ${untimed === 1 ? 'steps gives' : 'steps give'} no time`;
 
-const notes: string[] = [];
-if (untimed > 0) {
-  notes.push(
-    untimed === 1
-      ? `One of the ${stepCount} steps never says how long it takes, so both numbers are floors.`
-      : `${untimed} of the ${stepCount} steps never say how long they take, so both numbers are floors.`,
-  );
-}
 /*
- * Hands-on is the fallback when a step says nothing about whether you can leave, so the
- * "needs you" figure quietly collects minutes nobody claimed — french onion soup's 50-minute
- * caramelise is there on our say-so alone. Printed plainly it reads as the recipe's word, so
- * the part that is ours is named.
+ * The hands-on figure is fuzzy rather than short, so it takes the other word.
+ *
+ * It is wrong in both directions at once: untimed steps leave minutes out of it, and hands-on
+ * is the fallback whenever a step says nothing about whether you can leave — french onion
+ * soup's 50-minute caramelise is in there on our say-so alone. A floor word would claim a
+ * direction we do not have; "about" is the honest shape of the number, and it is the word the
+ * page already uses for the author's own time in the chips above.
  */
-if (schedule.assumedHandsOnMinutes > 0) {
-  const assumed = formatDuration(schedule.assumedHandsOnMinutes);
-  notes.push(
-    schedule.assumedHandsOnMinutes >= schedule.handsOnMinutes
-      ? `Nothing here says whether you can walk away, so all ${assumed} of it is counted as time you are standing over it.`
-      : `${assumed} of that is counted as needing you only because the step never said otherwise.`,
-  );
-}
+const handsOnText = formatDuration(schedule.handsOnMinutes) || (allTimed ? 'none of it' : 'none given');
+const handsOnFigure =
+  schedule.handsOnMinutes > 0 && (!allTimed || anyOurReading)
+    ? `about ${handsOnText}`
+    : handsOnText;
+
 /*
+ * What the "needs you" figure may say under itself.
+ *
  * Two branches at once is more work than there is clock, which is arithmetic rather than a
- * mistake — but "needs you 34 min" printed beside "start to finish 24 min" reads as one of
- * them being wrong unless the page says which hands it is counting.
+ * mistake — but "needs you 34 min" printed beside "start to finish 24 min" reads as one of them
+ * being wrong. The count of operations sharing the clock is the fact that makes it ordinary,
+ * and it is a fact about the recipe rather than about our sums.
+ *
+ * "The rest you can walk away from" is only true when every step is timed. Blondies time the
+ * bake and nothing else, so hands-on comes to zero — and "none of it / the rest you can walk
+ * away from" tells a cook they may leave the room through four steps nobody put a number on.
+ * Where neither holds, the line under the clock already says how many steps gave no time, so
+ * there is nothing left to add.
  */
-if (schedule.handsOnMinutes > schedule.totalMinutes) {
-  notes.push(
-    'It adds up to more hands-on time than the whole dish takes because two branches run at once — which needs someone free to run both.',
-  );
-}
-if (authorText) notes.push(`The recipe itself says ${authorText}.`);
-
-/* Built here rather than in the markup so an empty note leaves no empty paragraph. */
-const note = [
-  stretches.length > 1 &&
-    'Drawn to scale, so a long wait really does take up the room it takes. The shortest stretches keep a sliver so they stay visible; their times are printed beside them.',
-  overlaps && 'Bars that line up are happening at the same time.',
-  rows.some((row) => row.spans && row.task.confidence !== 'stated') &&
-    'The minutes are always the recipe’s own; a dashed edge means we worked out from the step whether you have to be there, and a dotted one means nothing was said, so we assumed you are standing over it.',
-]
-  .filter(Boolean)
-  .join(' ');
+const needsYouSub =
+  schedule.handsOnMinutes > schedule.totalMinutes
+    ? `${overlapping} steps run at once`
+    : allTimed && schedule.unattendedMinutes > 0
+      ? 'the rest you can walk away from'
+      : '';
 
 const legend = {
   hands: rows.some((row) => row.spans && row.task.attention === 'hands-on'),
   wait: rows.some((row) => row.spans && row.task.attention === 'unattended'),
   mark: rows.some((row) => !row.spans),
+  ours: anyOurReading,
 };
 
 /*
@@ -280,32 +275,26 @@ const headingId = `clock-${recipe.slug}`;
 
   {
     timesNothing ? (
-      <p class="verdict">
-        This one never puts a number on anything — not one of its {stepCount} steps is timed, so
-        how long it takes is honestly unknown.
-        {authorText && ` The recipe itself says ${authorText} altogether, but it does not say where that time goes.`}
-      </p>
+      <p class="verdict">Not one of its {stepCount} steps is timed.</p>
     ) : (
       <dl class="stats">
         <div class="stat">
           <dt>Start to finish</dt>
           <dd>
             <b>{totalText}</b>
-            <span class="sub">two waits that overlap count once</span>
+            {totalSub && <span class="sub">{totalSub}</span>}
           </dd>
         </div>
         <div class="stat">
           <dt>Needs you</dt>
           <dd>
-            <b>{handsOnText}</b>
-            <span class="sub">{handsOnSub}</span>
+            <b>{handsOnFigure}</b>
+            {needsYouSub && <span class="sub">{needsYouSub}</span>}
           </dd>
         </div>
       </dl>
     )
   }
-
-  {notes.length > 0 && !timesNothing && <p class="notes">{notes.join(' ')}</p>}
 
   {
     slack && (
@@ -349,7 +338,7 @@ const headingId = `clock-${recipe.slug}`;
           <p class="facts">
             <span class:list={['dur', !row.spans && 'dur--none']}>{row.duration}</span>
             {row.attention && (
-              <span class="tag" data-attention={row.task.attention} data-confidence={row.task.confidence}>
+              <span class="tag" data-attention={row.task.attention}>
                 <span class="tag-icon" set:html={iconSvg(row.attention.icon, { size: 13 })} />
                 {row.attention.word}
                 {row.hedge && <i class="hedge">({row.hedge})</i>}
@@ -367,7 +356,7 @@ const headingId = `clock-${recipe.slug}`;
                 <span
                   class="bar"
                   data-attention={row.task.attention}
-                  data-confidence={row.task.confidence}
+                  data-reading={attentionIsOurs(row.task) ? 'ours' : undefined}
                   style={`grid-column: ${row.from + 1} / ${row.to + 1}`}
                 />
               ) : (
@@ -405,9 +394,19 @@ const headingId = `clock-${recipe.slug}`;
         </li>
       )
     }
+    {/*
+      The dashed edge, named where a key belongs rather than in a paragraph under the chart.
+      Two words, and the same two words print beside every bar that wears it, so a reader who
+      never looks down here still finds out from the row.
+    */}
+    {
+      legend.ours && (
+        <li>
+          <span class="swatch swatch--ours" aria-hidden="true" /> we think
+        </li>
+      )
+    }
   </ul>
-
-  {note && <p class="note">{note}</p>}
 </section>
 
 <style>
@@ -481,13 +480,6 @@ const headingId = `clock-${recipe.slug}`;
     box-shadow: var(--clay-shadow-well);
     font-size: 0.92rem;
     line-height: 1.5;
-  }
-
-  .notes {
-    margin: 0.55rem 0 0;
-    font-size: 0.78rem;
-    line-height: 1.45;
-    color: var(--clay-ink-soft);
   }
 
   /* --- what happens if you get it wrong -------------------------------- */
@@ -727,13 +719,14 @@ const headingId = `clock-${recipe.slug}`;
     );
   }
 
-  /* How sure we are about that reading, drawn as the edge. */
-  .bar[data-confidence='inferred'] {
+  /*
+   * Whose reading it is, drawn as the edge — solid for the author's own word, dashed for ours.
+   * It was three edges: dashed for a reading taken off the step, dotted for one assumed because
+   * nothing was said. Those are two ways WE arrived at an answer, which is not a difference a
+   * cook can do anything with, and a code with three levels needs three lines of key to explain.
+   */
+  .bar[data-reading='ours'] {
     border-style: dashed;
-  }
-
-  .bar[data-confidence='unknown'] {
-    border-style: dotted;
   }
 
   /* No duration to draw, so a moment rather than a length. */
@@ -805,15 +798,12 @@ const headingId = `clock-${recipe.slug}`;
     transform: rotate(45deg);
   }
 
-  .note {
-    margin: 0.5rem 0 0;
-    font-size: 0.72rem;
-    line-height: 1.5;
-    color: var(--clay-ink-soft);
-  }
-
-  .note:empty {
-    display: none;
+  /* The edge on its own, so it reads as the edge and not as a third kind of bar. */
+  .swatch--ours {
+    height: 0.8rem;
+    background: transparent;
+    border-style: dashed;
+    border-color: color-mix(in srgb, var(--clay-ink) 45%, transparent);
   }
 
   /* Windows high contrast: the fills are dropped, so keep the outlines. */
