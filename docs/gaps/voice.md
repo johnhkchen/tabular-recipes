@@ -132,10 +132,11 @@ who opens it — the curious one, the one the site was built for — gets the `.
 Sigils, braces, percent signs and reference indices. It is the one place on the site that answers
 *how does this work*, and it answers in a language nobody was taught.
 
-**Measured.** `src/pages/[slug].astro:132-135`, on **all 658** recipe pages. It is also the
-single largest block of text on most of them, which is why every figure in this file and in the
-story excludes it — the story's own counting method drops `<details class="source">` before
-measuring, because counting it would measure the recipe twice.
+**Measured.** `src/pages/[slug].astro:132-135`, on **all 658** recipe pages, mean **1292
+characters** of raw source — 46% again on top of the 2823 characters a reader otherwise meets.
+Every figure in this file and in the story excludes it, because counting it would measure the
+recipe twice: the story's own method drops `<details class="source">` before measuring, and so
+does `scripts/measure-pages.mjs`.
 
 No ticket in S-005 owned it. It is the last place the two voices the story was about still meet:
 the recipe, and the machinery that renders it.

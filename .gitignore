@@ -9,3 +9,4 @@ src/generated/
 # The reviewable record of the work is in docs/active/work/, which is committed.
 .lisa/
 .lisa-layout.kdl
+.DS_Store
