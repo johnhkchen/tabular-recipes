@@ -22,7 +22,7 @@
  * panes say that it says nothing.
  */
 import { buildTree, type RawRecipe, type RecipeTree } from '../lib/tree.ts';
-import { buildSchedule, type Task } from '../lib/schedule.ts';
+import { attentionIsOurs, buildSchedule, type Task } from '../lib/schedule.ts';
 import { iconForAttention, iconForOperation, iconSvg, matchOperation } from '../lib/icons.ts';
 import { formatDuration } from '../lib/time.ts';
 import { canonicalUnit, formatTotal, type Amount } from '../lib/units.ts';
@@ -242,48 +242,9 @@ const prepGroups = opRows.filter((row) => row.items.length > 0);
 const prepCount =
   recipe.cookware.length + tree.headers.length + prepGroups.reduce((n, g) => n + g.items.length, 0);
 
-/*
- * The facts about the clock, each one traceable to something the recipe said. `totalMinutes`
- * is elapsed time along the longest chain; the hands-on and waiting figures are how much WORK
- * is of each kind, which is a different sum whenever two branches overlap.
- */
 /* A hand for time you have to be there for, an hourglass for time you can walk away from. */
 const handIcon = iconSvg(iconForAttention('hands-on'), { size: 16 });
 const waitIcon = iconSvg(iconForAttention('unattended'), { size: 16 });
-
-const workMinutes = schedule.handsOnMinutes + schedule.unattendedMinutes;
-const anyTiming = schedule.totalMinutes > 0 || workMinutes > 0;
-/* When branches overlap, the waits add up to more than the clock. Say so before it looks wrong. */
-const overlaps = workMinutes > schedule.totalMinutes;
-/*
- * A step nobody timed ends the moment it starts, so both sums are floors as soon as one of
- * them exists. "45 sec start to finish" on a recipe that times one step out of five is not a
- * short recipe, it is a mostly unmeasured one — and a chip is read as a fact unless it says.
- */
-const floor = schedule.untimedCount > 0 ? 'at least ' : '';
-const clockFacts = [
-  schedule.totalMinutes > 0 && {
-    icon: iconSvg('rest', { size: 16 }),
-    text: `${floor}${formatDuration(schedule.totalMinutes)} start to finish`,
-  },
-  schedule.handsOnMinutes > 0 && {
-    icon: handIcon,
-    text: `${floor}${formatDuration(schedule.handsOnMinutes)} needs you`,
-  },
-  schedule.unattendedMinutes > 0 && {
-    icon: waitIcon,
-    text: `${floor}${formatDuration(schedule.unattendedMinutes)} of waiting`,
-  },
-  schedule.untimedCount > 0 && {
-    icon: null,
-    text: `${schedule.untimedCount} ${schedule.untimedCount === 1 ? 'step gives' : 'steps give'} no time`,
-  },
-  /*
-   * The author's own `>> time:` is deliberately NOT repeated here. The page already prints it
-   * twice above — once as an "about 2 hr" chip under the title, once in the clock's own note —
-   * and a third copy in the same chip shape reads as three different claims rather than one.
-   */
-].filter(Boolean) as { icon: string | null; text: string }[];
 ---
 
 <section class="cookmodes" data-cookmodes data-slug={recipe.slug}>
@@ -410,29 +371,17 @@ const clockFacts = [
     <h3 class="pane-title" id={`${uid}-cook-t`}>Cooking it</h3>
 
     {/*
-      No clock chips here. The timeline sits outside the panes and stays on screen whichever
-      one is showing, so the same two numbers were being printed twice about 200px apart —
-      and printed twice on paper. One place to read them is enough.
+      No clock chips here, and no clock arithmetic either. The timeline sits outside the panes
+      and stays on screen whichever one is showing, so the same numbers were being printed twice
+      about 200px apart — and printed twice on paper. One place to read them is enough, and the
+      code that built them has gone with the markup.
+
+      The paragraph that used to stand here explained why the waits add up to more than the
+      clock. The waiting figure it was reconciling was one of those chips, so it had been
+      explaining a disagreement between two numbers, one of which this pane no longer shows.
+      Where the disagreement is genuinely on screen — hands-on work exceeding the whole dish —
+      the timeline says so under the figure itself.
     */}
-
-    {
-      !anyTiming && (
-        <p class="pane-note">
-          Not one step here is timed, so there is no clock to keep — only the order things
-          happen in.
-        </p>
-      )
-    }
-
-    {
-      overlaps && (
-        <p class="pane-note">
-          Start to finish is the longest chain through the table, so branches that overlap are
-          counted once. That is why the waits add up to more than the clock — and it only holds
-          if you get them going together.
-        </p>
-      )
-    }
 
     <ol class="steps" data-cook-list>
       {
@@ -487,10 +436,12 @@ const clockFacts = [
                             ? 'you can walk away'
                             : 'stay with it'}
                         </span>
-                        {/* The minutes are the author's; whether you can leave was our reading. */}
-                        {row.task.confidence === 'unknown' && (
-                          <span class="hedge">the recipe does not say whether you can leave</span>
-                        )}
+                        {/*
+                          The minutes are the author's; whether you can leave may be our reading,
+                          and where it is, the claim carries the doubt in the same two words the
+                          timeline prints beside its bars.
+                        */}
+                        {attentionIsOurs(row.task) && <span class="hedge">we think</span>}
                       </>
                     ) : (
                       <span class="kind">no time given</span>
@@ -746,27 +697,6 @@ const clockFacts = [
   }
 
   /* ---- cook ---------------------------------------------------------- */
-
-  .clock {
-    list-style: none;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin: 0 0 1.25rem;
-    padding: 0;
-  }
-  /* .clay-chip brings the clay; the padding is the page's own chip measure. */
-  .clock li {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    padding: 0.3rem 0.75rem;
-    font-size: 0.82rem;
-    color: var(--clay-ink-soft);
-  }
-  .clock li :global(svg) {
-    color: var(--clay-primary);
-  }
 
   .steps {
     list-style: none;
