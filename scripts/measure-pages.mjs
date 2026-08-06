@@ -82,7 +82,7 @@ const slugs = (parsed.recipes ?? parsed).map((r) => r.slug).sort();
  *                   characters per page and is what the story's own figures did.
  *   whitespace      HTML indentation is not something a reader reads.
  */
-export function visible(html) {
+function visible(html) {
   const main = html.match(/<main[^>]*>([\s\S]*?)<\/main>/i);
   if (!main) return null;
   return main[1]
