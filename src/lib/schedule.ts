@@ -194,6 +194,20 @@ function attentionOfTask(timers: Reading[]): TaskAttention {
   return timers.some((timer) => timer.attention === 'hands-on') ? 'hands-on' : 'unattended';
 }
 
+/**
+ * Whether the hands-on / walk-away reading is ours rather than the author's own word.
+ *
+ * `stated` is the author naming a timer we know. Everything else — read off the operation, or
+ * assumed because nothing was said — is us, and a page printing the reading should say so.
+ *
+ * The two ways we came to it are a fact about this module, not about the dish, so a page gets
+ * one answer here rather than two of its own. Asked in one place because it was being asked in
+ * two and answered differently: one pane hedged an inferred reading and the other did not.
+ */
+export function attentionIsOurs(task: Task): boolean {
+  return task.confidence !== 'stated';
+}
+
 /** The weakest reading wins: a step is only as well described as its vaguest timer. */
 function confidenceOfTask(timers: Reading[]): Confidence {
   if (timers.length === 0) return 'unknown';

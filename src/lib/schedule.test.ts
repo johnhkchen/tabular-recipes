@@ -1,7 +1,13 @@
 import { describe, expect, it } from 'vitest';
 import recipes from '../generated/recipes.json';
 import { layout } from './layout.ts';
-import { authorMinutesOf, buildSchedule, type Schedule, type Task } from './schedule.ts';
+import {
+  attentionIsOurs,
+  authorMinutesOf,
+  buildSchedule,
+  type Schedule,
+  type Task,
+} from './schedule.ts';
 import type { Attention, AttentionSource } from './time.ts';
 import { buildTree, type RawIngredient, type RawRecipe, type RawTimer } from './tree.ts';
 
@@ -210,6 +216,16 @@ describe('what a task says it knows', () => {
     // "warm through" was never called hands-on by anyone; we assumed it.
     expect(task(schedule, 's2').attention).toBe('hands-on');
     expect(task(schedule, 's2').confidence).toBe('unknown');
+  });
+
+  /*
+   * The page draws two edges, not three, because the difference between reading a word off the
+   * step and having no word to read is a fact about this module rather than about the dish. So
+   * the line between "the author said" and "we worked it out" is drawn here, once, and a fourth
+   * confidence added later cannot land on the wrong side of it by default.
+   */
+  it('tells a page which readings are ours', () => {
+    expect(schedule.tasks.map(attentionIsOurs)).toEqual([false, true, true]);
   });
 });
 
