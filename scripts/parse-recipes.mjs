@@ -85,6 +85,78 @@ if (homeless.length) {
   );
 }
 
+/* ---- shelf talk on the menus ---------------------------------------------- */
+
+/*
+ * A menu note is one sentence, the same sentence that came off a recipe page, so it gets the
+ * same ceiling: CAPS['prose row'] in scripts/check-recipes.mjs, written out in the caps table
+ * in docs/knowledge/voice.md. Half of that number's reasoning does not carry over — a prose
+ * row prints three times on a page and a note prints once — but the other half does, and it
+ * is the half that matters: 120 is where a sentence stops being one.
+ */
+const NOTE_CAP = 120;
+
+/*
+ * Checked here rather than in check-recipes.mjs for the same reason the counters are checked
+ * in both: this is the only place that sees the whole collection at once. check-recipes.mjs
+ * runs on whichever files you name, so on a partial run it cannot answer the question that
+ * matters — is the dish this note is about actually shelved at this counter. A note on a slug
+ * the section lists but the shelf does not carry is the quiet failure: menuFor drops the item
+ * (src/lib/counters.ts:81) and the note goes with it, silently.
+ */
+const shelvedAt = new Map(recipes.map((r) => [r.slug, r.counters]));
+
+for (const counter of COUNTERS) {
+  for (const section of counter.sections ?? []) {
+    const at = `src/data/counters.json: ${counter.name} / "${section.title}"`;
+    if (section.notes === undefined) continue;
+
+    if (!Array.isArray(section.notes)) {
+      throw new Error(`${at} has "notes" that is not a list. It is a list of { of?, note }.`);
+    }
+
+    for (const note of section.notes) {
+      if (typeof note?.note !== 'string' || !note.note.trim()) {
+        throw new Error(
+          `${at} has a note with no "note" text: ${JSON.stringify(note)}\n` +
+            `  a note is { "note": "one sentence" }, with an optional "of": "<slug>".`,
+        );
+      }
+
+      if (note.note.length > NOTE_CAP) {
+        throw new Error(
+          `${at} has a note of ${note.note.length}/${NOTE_CAP} characters:\n` +
+            `  ${note.note}\n` +
+            `  Shelf talk is one sentence. docs/knowledge/voice.md says why.`,
+        );
+      }
+
+      // No "of" is not a mistake: that note is about the section, and prints under its heading.
+      if (note.of === undefined) continue;
+
+      if (!section.items.includes(note.of)) {
+        throw new Error(
+          `${at} has a note on "${note.of}", which the section does not list.\n` +
+            `  the section lists: ${section.items.join(', ') || '(nothing)'}`,
+        );
+      }
+
+      const shelves = shelvedAt.get(note.of);
+      if (!shelves) {
+        throw new Error(`${at} has a note on "${note.of}", which is not a recipe here.`);
+      }
+      if (!shelves.includes(counter.name)) {
+        throw new Error(
+          `${at} has a note on "${note.of}", which is not shelved at this counter, so ` +
+            `neither the item nor its note ever renders.\n` +
+            `  ${note.of} is at: ${shelves.join(', ')}\n` +
+            `  Give it a >> counters: line naming ${counter.name}, or move the note.`,
+        );
+      }
+    }
+  }
+}
+
 /* ---- pairings, which are mutual whether or not both files say so ---------- */
 
 const pairs = new Map(recipes.map((r) => [r.slug, new Set(r.pairsWith)]));

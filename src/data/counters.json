@@ -1,5 +1,5 @@
 {
-  "//": "A counter is where you would get this if you were not making it at home — the kind of place a person recognises from their own street. A recipe can sit at several, because noodles are not only sold by the sushi-and-ramen place, so `counters` on a recipe is a list. `categories` here is a fallback only: a recipe that names no counter lands at whichever counters claim its category, so nothing is ever orphaned. The fallbacks are deliberately coarse — they exist so the build never drops a recipe, not because every brownie belongs at the same shelf — and they are meant to be replaced recipe by recipe with a `>> counters:` line. Counters with no fallback are filled in by hand; a counter with nothing on it simply does not render. The archetypes and the menu vocabulary behind them are recorded in docs/knowledge/counters.md.",
+  "//": "A counter is where you would get this if you were not making it at home — the kind of place a person recognises from their own street. A recipe can sit at several, because noodles are not only sold by the sushi-and-ramen place, so `counters` on a recipe is a list. `categories` here is a fallback only: a recipe that names no counter lands at whichever counters claim its category, so nothing is ever orphaned. The fallbacks are deliberately coarse — they exist so the build never drops a recipe, not because every brownie belongs at the same shelf — and they are meant to be replaced recipe by recipe with a `>> counters:` line. Counters with no fallback are filled in by hand; a counter with nothing on it simply does not render. The archetypes and the menu vocabulary behind them are recorded in docs/knowledge/counters.md. A section may also carry `notes`, which is shelf talk: a sentence comparing the things on this shelf, which is the one comparison a recipe page cannot make because it can only show you one of them. An entry with `of` is about that dish and prints beside it; one without is about the section and prints under its heading. Both are optional, both are one sentence, and scripts/parse-recipes.mjs will not let a note point at a slug this section does not shelve. They are the only thing in this file written by hand rather than derived, so scripts/menu-sections.mjs --write — which rebuilds `sections` from docs/gaps/*.md — will drop every one of them.",
   "counters": [
     {
       "name": "Bakery",
@@ -1810,12 +1810,31 @@
             "baked-turkey-wings-slow-cooker",
             "brunswick-stew-slow-cooker",
             "new-england-boiled-dinner-slow-cooker"
+          ],
+          "notes": [
+            {
+              "note": "Every one is written for low and six to eight hours. Nothing browns in a sealed crock, so colour comes before or after."
+            },
+            {
+              "of": "baked-turkey-wings-slow-cooker",
+              "note": "The only one here that browns before the pot: a wing is an awkward shape to turn in a pan, and a sheet tray does four."
+            },
+            {
+              "of": "new-england-boiled-dinner-slow-cooker",
+              "note": "The one here that is not leave-it-and-go — you are home for the last two hours, adding the vegetables in order."
+            }
           ]
         },
         {
           "title": "Beans and pulses",
           "items": [
             "boston-baked-beans-slow-cooker"
+          ],
+          "notes": [
+            {
+              "of": "boston-baked-beans-slow-cooker",
+              "note": "The one bean dish here where slow beats pressure outright — a crock is the closest vessel to a bean pot there is."
+            }
           ]
         },
         {
@@ -1826,6 +1845,12 @@
           "title": "Whole birds and big cuts",
           "items": [
             "soy-sauce-chicken-slow-cooker"
+          ],
+          "notes": [
+            {
+              "of": "soy-sauce-chicken-slow-cooker",
+              "note": "The shortest cook here, four hours, and the only one where longer is actively worse."
+            }
           ]
         }
       ]
