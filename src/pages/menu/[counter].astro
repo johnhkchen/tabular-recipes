@@ -19,6 +19,30 @@ export function getStaticPaths() {
 
 const { menu } = Astro.props;
 const { counter } = menu;
+
+/*
+ * Shelf talk. A recipe page can only ever show you one dish, so the sentence comparing it to
+ * the things beside it has nowhere honest to live there; it lives here, where both are on the
+ * page at once. A note with an `of` is about that dish, one without is about the section.
+ *
+ * Read off the raw counter rather than through the menu: menuFor works in RawRecipes and does
+ * not carry the counter's own words across, and the Counter interface in src/lib/counters.ts
+ * does not describe `notes` yet. Matched by title, not by position — menuFor drops empty
+ * sections and can append one of its own ("Also", which has no notes), so the two lists do
+ * not line up.
+ */
+interface ShelfNote {
+  of?: string;
+  note: string;
+}
+const notesByTitle = new Map<string, ShelfNote[]>(
+  ((counter.sections ?? []) as unknown as { title: string; notes?: ShelfNote[] }[]).map(
+    (section) => [section.title, section.notes ?? []],
+  ),
+);
+const aboutSection = (title: string) => (notesByTitle.get(title) ?? []).filter((n) => !n.of);
+const aboutItem = (title: string, slug: string) =>
+  (notesByTitle.get(title) ?? []).find((n) => n.of === slug);
 ---
 
 <Base title={`${counter.name} — One Table`} blurb={counter.blurb}>
@@ -37,6 +61,7 @@ const { counter } = menu;
       menu.sections.map((section) => (
         <section class="menu-section">
           <h2>{section.title}</h2>
+          {aboutSection(section.title).map((n) => <p class="menu-note">{n.note}</p>)}
           <ul>
             {section.items.map((recipe) => (
               <li>
@@ -56,6 +81,16 @@ const { counter } = menu;
                     one would show on every item on every menu with no script running.
                   */}
                 </a>
+                {/*
+                  Outside the anchor on purpose. A note is a sentence about the dish, not part
+                  of its name, and inside the link it would be read out as one — the item is
+                  already carrying a title, a kit, its ingredients and its other names. It
+                  would also grow the tap target that T-004-03 measured at 44px, which is a
+                  size, not a floor to pad out.
+                */}
+                {aboutItem(section.title, recipe.slug) && (
+                  <p class="item-note">{aboutItem(section.title, recipe.slug)!.note}</p>
+                )}
               </li>
             ))}
           </ul>
@@ -94,3 +129,33 @@ const { counter } = menu;
     paint();
   }
 </script>
+
+<style is:global>
+  /*
+   * A note is words, not a widget. Both of these speak in the voice .item-of and .item-aka
+   * already use — soft ink, 0.84rem, the same measure — so shelf talk reads as part of the
+   * menu rather than as something stuck onto it. No border, no background, no marker.
+   *
+   * Global, and here rather than in site.css, for what each costs: a scoped block makes
+   * Astro stamp data-astro-cid-* onto every element on every menu, and site.css rehashes
+   * the shared bundle, which changes the stylesheet link on all 682 pages. This inlines
+   * into <head> on the 21 menu pages and leaves the body of a menu with no notes alone.
+   */
+  .menu-note {
+    margin: -0.35rem 0 0.9rem;
+    color: var(--clay-ink-soft);
+    font-size: 0.84rem;
+    line-height: 1.45;
+  }
+  /*
+   * Tight under the item it is about, and flush left with it: the menu is drawn on the left
+   * edge of its items, which is why .item-onlist is not indented either.
+   */
+  .item-note {
+    margin: 0.2rem 0 0;
+    color: var(--clay-ink-soft);
+    font-size: 0.84rem;
+    font-style: italic;
+    line-height: 1.45;
+  }
+</style>
