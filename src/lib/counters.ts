@@ -69,18 +69,51 @@ export interface Menu {
  * menu's order is part of what it says. Where it does not, we fall back to grouping by
  * category with the biggest group first — which reads like a directory, not a menu, and is
  * only ever a stopgap.
+ *
+ * **A section orders what a shelf already holds; it cannot put a recipe on one.** Membership
+ * is the recipe's own `>> counters:` line and nothing else, so a slug listed here whose file
+ * does not name this counter is a mistake in one of the two, and this throws with the slug
+ * named. It used to be dropped instead — quietly, with the page still adding up, which is how
+ * nine of them survived two stories.
  */
 export function menuFor(counter: Counter, all: RawRecipe[]): Menu {
   const mine = all.filter((r) => r.counters.includes(counter.name));
   const bySlug = new Map(mine.map((r) => [r.slug, r]));
 
   if (counter.sections?.length) {
+    /*
+     * Two lookups, deliberately not one. Membership is decided against `mine`; the diagnostic
+     * for a slug that fails is read off `all`, because "shelved at Takeout Counter" is the
+     * sentence that tells someone which of the two files to fix.
+     */
+    const missing: string[] = [];
     const sections = counter.sections
       .map(({ title, items }) => ({
         title,
-        items: items.map((slug) => bySlug.get(slug)).filter(Boolean) as RawRecipe[],
+        items: items.flatMap((slug) => {
+          const recipe = bySlug.get(slug);
+          if (recipe) return [recipe];
+          const elsewhere = all.find((r) => r.slug === slug);
+          missing.push(
+            `  "${title}" — ${slug} ` +
+              (elsewhere
+                ? `(shelved at ${elsewhere.counters.join(', ')})`
+                : '(no recipe has that slug)'),
+          );
+          return [];
+        }),
       }))
       .filter((section) => section.items.length > 0);
+
+    if (missing.length) {
+      throw new Error(
+        `${counter.name} lists ${missing.length} recipe(s) that do not name this counter:\n` +
+          `${missing.join('\n')}\n` +
+          'A section orders what a shelf already holds; it cannot put a recipe on one.\n' +
+          `Either add "${counter.name}" to that file's >> counters: line, or drop the slug\n` +
+          'from src/data/counters.json. docs/knowledge/counters.md#sections says why.',
+      );
+    }
 
     // Anything the sections forgot still has to appear, or the menu quietly loses a dish.
     const placed = new Set(sections.flatMap((s) => s.items.map((r) => r.slug)));
