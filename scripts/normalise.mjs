@@ -6,6 +6,7 @@
 import { Parser } from '@cooklang/cooklang';
 import { splitList } from '../src/lib/meta.ts';
 import { readSlack } from '../src/lib/slack.ts';
+import { readWashingUp } from '../src/lib/washing-up.ts';
 import { minutesOf, readTimers } from '../src/lib/time.ts';
 
 /* ---- quantity formatting -------------------------------------------------- */
@@ -211,9 +212,19 @@ export function normalise(source, { slug, path: relPath, folder }) {
    */
   const { slack, problem: slackProblem } = readSlack(metadata.slack);
 
+  /*
+   * What goes in the sink at the end. Authored, never worked out from the cookware below it —
+   * that list counts what a file NAMES, and general-tsos-chicken names one wok and is five
+   * things to wash. Read before PROMOTED deletes the key, and the raw value is passed through
+   * undefined-or-not, because a line that is absent and a line that is there and empty are
+   * two different answers. See src/lib/washing-up.ts.
+   */
+  const { washingUp, problem: washingUpProblem } = readWashingUp(metadata['washing-up']);
+
   // Authoring directives and anything promoted to its own field are not recipe facts.
   const PROMOTED = new Set([
     'title', 'category', 'tags', 'counters', 'dish', 'kit', 'aka', 'pairs-with', 'slack',
+    'washing-up',
   ]);
   for (const key of Object.keys(metadata)) {
     if (/^step\.\d+$/.test(key) || PROMOTED.has(key)) delete metadata[key];
@@ -232,6 +243,9 @@ export function normalise(source, { slug, path: relPath, folder }) {
     /** `>> slack: forgiving — an extra hour in the pot changes little`, or null. */
     slack,
     slackProblem,
+    /** `>> washing-up: the wok, a rack to drain on`, `>> washing-up: nothing`, or null. */
+    washingUp,
+    washingUpProblem,
     /*
      * What people call it when they order it. A cook looking for the pâté in their bánh mì
      * does not know to search for "pork liver pâté", so the menu vocabulary has to be

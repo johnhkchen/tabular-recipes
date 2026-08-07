@@ -7,6 +7,7 @@
  */
 import { cleanLabel } from './label.ts';
 import type { Slack } from './slack.ts';
+import type { WashingUp } from './washing-up.ts';
 
 
 export interface RawIngredient {
@@ -61,11 +62,26 @@ export interface RawRecipe {
   slack: Slack | null;
   /** What is wrong with a `>> slack:` line that is there but not whole. A diagnostic, not a fact. */
   slackProblem?: string | null;
+  /**
+   * What is in the sink when the food is on the table. Authored, never derived — `cookware`
+   * below counts what a recipe NAMES, and a quart of frying oil names one wok. `null` is a
+   * recipe that never declared one, which is most of them; `{ items: [], count: 0 }` is a
+   * recipe that genuinely washes nothing. The two are different answers, so they are
+   * different values.
+   */
+  washingUp: WashingUp | null;
+  /** What is wrong with a `>> washing-up:` line that is there but not whole. A diagnostic. */
+  washingUpProblem?: string | null;
   /** What people call it when they order it. */
   aka: string[];
   /** Slugs of recipes that go with this one. Made mutual at build time. */
   pairsWith: string[];
-  variants: { slug: string; title: string; kit: string | null }[];
+  /**
+   * The other files that cook this dish, and — when every one of them has declared it — how
+   * many things each leaves in the sink. Null on a variant that never declared: one number
+   * beside a silent sibling reads as a claim that the silent one washes nothing.
+   */
+  variants: { slug: string; title: string; kit: string | null; washingUpCount: number | null }[];
   /** Lowercased ingredient names, for searching. */
   ingredientNames: string[];
   /** Every #pan{} and #stand mixer{} the recipe asks for. */
