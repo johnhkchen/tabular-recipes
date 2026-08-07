@@ -1,53 +1,76 @@
 # The Air Fryer & the Pot — what is missing
 
-**0 recipes, and the zero is the finding.** This counter is a gate rather than a genre: a dish is
-on it only if it washes two things or fewer, is cooked by one plug-in machine, and is on the table
-in forty-five minutes. The gate was applied to every recipe on the three shelves that already
-promise less work — One Pot's 73, Instant Pot's 25, The Slow Cooker's 20, a pool of 118 with no
-overlap between them — and **it admitted none of them**.
+**21 recipes, and the twenty-one is the finding.** This counter is a gate rather than a genre: a
+dish is on it only if it washes two things or fewer, is cooked by one plug-in machine, and is on
+the table in forty-five minutes. S-008 said in advance that if fewer than about twenty-five clear
+it once the pool is annotated, the finding is *the gate is wrong* or *the shelf is thin*. It is
+twenty-one. **The shelf is thin, the gate is not wrong, and no bar moves on this page.**
 
-That is not the failure this counter was braced for. S-008 worried the shelf would turn out to be
-*"a filter wearing a shelf's clothes"*, 90% borrowed from Instant Pot. Measured, the borrowing is
-**0%**. Every item here has to be written, which makes this page a commissioning list rather than a
-shelving plan, and makes T-008-04 the whole counter rather than a top-up.
+The bar doing the excluding is **bar 2, and it is not close.** Of the collection's 685 recipes, 642
+fail *one plug-in machine does the cooking*, and **22 fail that and nothing else** — quick,
+low-sink dinners kept off by a bar that has nothing to do with either, because a hob is not plugged
+in. Bar 3 alone excludes 13. **Bar 1 alone excludes nobody at all**: not one recipe anywhere in the
+collection is kept off this shelf by its washing-up. That is a finding about a bar and it is
+written up below as a recommendation rather than acted on here.
 
-The site has no air fryer at all. No `.cook` file declares `kit: Air Fryer`, no recipe names the
-machine, no tag mentions it. The only trace anywhere is `src/lib/icons.ts:319`, where `air fry`
-already maps to an oven icon — an icon written for a verb nothing uses.
+**The borrowing is still 0%, and now it is 0% of a shelf that exists.** The gate was applied to the
+three shelves that already promise less work — One Pot's 73, Instant Pot's 25, The Slow Cooker's 20
+— and it admitted none of them, exactly as this page said before any of them had declared what it
+washed. All 21 items are air fryer recipes written by T-008-04 for this counter. S-008 worried the
+shelf would turn out to be *"a filter wearing a shelf's clothes"*, 90% borrowed from Instant Pot.
+It is the opposite: 100% written, 0% borrowed.
+
+**The pot half of the counter is empty**, and it is empty for a reason no amount of shelving fixes.
+Every Instant Pot recipe on the site is a long braise, because that is what T-002-02 and T-002-03
+were asked for; the shortest is 46 minutes on the critical path and 60 by its own claim. Ranks 21
+to 26 below are the pot's short repertoire — eggs, rice, lentils, polenta — and not one of them has
+been written. **A section title with nothing under it is not a placeholder, it is a lie about a
+menu**, so the title came off and this paragraph is where the absence lives instead.
+
+Before T-008-04 the site had no air fryer at all: no `.cook` file declared `kit: Air Fryer`, no
+recipe named the machine, no tag mentioned it, and the only trace anywhere was
+`src/lib/icons.ts:319`, where `air fry` already mapped to an oven icon — an icon written for a verb
+nothing used. Something uses it now.
 
 ---
 
 ## What it has
 
-Nothing yet. The five section titles below are the shape T-008-05 will fill; every list is
-deliberately empty, and `node scripts/menu-sections.mjs` reads that as `0 sections, 0/0 placed`
-rather than as a fault.
+Twenty-one, in four sections. Every one of them cleared all three bars under
+`docs/active/work/T-008-05/gate.mjs`, and the table proving it, one row per item, is in
+*The shelf, item by item* below.
 
-There is no *Also here* section, and that is deliberate. Panadería and Deli both have one and in
-both it holds borrows from other counters. This shelf cannot borrow — the measurement below is that
-nothing on the site clears its gate — so an *Also here* here would be a bucket built before there
-is anything to put in it. [one-pot.md](one-pot.md) already says why that is the wrong shape: *"a
-shelf whose items land in Also here has section titles that do not match what is on it."*
+Two of the five titles this page opened with are gone. *Start to finish in the pot* had nothing to
+put under it and the paragraph above says why. *Sheet-pan-shaped, in the basket* described the
+vegetables, which have their own title, so it was a second name for one shelf. *Reheats that beat
+the microwave* is new and holds one item, which is a normal size on this board — Smokehouse's
+*Dessert*, Instant Pot's *Rice, grains and porridge* and two of The Slow Cooker's four are also
+one. Padding it to look fuller is the move this shelf exists to refuse.
 
-Do not run `node scripts/menu-sections.mjs --write` against this page while the lists are empty. It
-would replace all five titles with `[]` and drop the shelf-talk note in `counters.json` along with
-the eleven others it already drops. The dry run is safe and is the one to use.
+There is no *Also here* section, and that is a measurement rather than a preference: `menuFor()`
+appends one automatically for anything this counter shelves that the lists below forget, so the
+absence of one means all 21 are placed. `node scripts/menu-sections.mjs` says
+`4 sections, 21/21 placed` and that is the check. [one-pot.md](one-pot.md) says why it matters:
+*"a shelf whose items land in Also here has section titles that do not match what is on it."*
 
-No `---` rule closes this section and nothing follows the last title, which is not an oversight
-either. The parser reads everything between `## What it has` and the next `##` as the block, splits
-it at each bold lead-in, and reports whatever is left over. While the item lists are empty there is
-no slug to swallow a trailing rule, so one would print `unparsed: Frozen things, done properly: ---`
-on every run. Put it back once the lists have slugs in them.
+Do not run `node scripts/menu-sections.mjs --write` against this page casually. It rewrites **every**
+counter, not this one, and drops the shelf-talk note in `counters.json` along with the eleven others
+it already drops. The dry run is safe and is the one to use.
 
-**Straight out of the basket.**
+**Straight out of the basket.** air-fryer-chicken-wings · air-fryer-chicken-thighs ·
+air-fryer-salmon · air-fryer-saba-shioyaki · air-fryer-halloumi · air-fryer-tofu ·
+air-fryer-chicken-tikka · air-fryer-shish-tawook
 
-**Start to finish in the pot.**
+**Vegetables that go crisp.** air-fryer-brussels-sprouts · air-fryer-broccoli ·
+air-fryer-cauliflower · air-fryer-sweet-potatoes · air-fryer-chips · air-fryer-batata-harra ·
+air-fryer-chickpeas · air-fryer-corn-ribs · air-fryer-padron-peppers
 
-**Sheet-pan-shaped, in the basket.**
+**Frozen things, done properly.** air-fryer-frozen-chips · air-fryer-frozen-spring-rolls ·
+air-fryer-frozen-prawns
 
-**Vegetables that go crisp.**
+**Reheats that beat the microwave.** air-fryer-reheated-pizza
 
-**Frozen things, done properly.**
+---
 
 ## The gate, measured
 
@@ -59,8 +82,135 @@ The three bars, exactly as S-008 wrote them and not adjusted anywhere on this pa
    machine; not a machine and then a grill.
 3. **On the table in 45 minutes**, wall-clock, pressurising and resting included.
 
-Everything below was measured against `src/generated/recipes.json` — the built collection, 664
-recipes — read through `src/lib/schedule.ts`. Nothing is estimated.
+Everything below was measured against `src/generated/recipes.json` — the built collection, **685
+recipes** — read through `src/lib/schedule.ts`. Nothing is estimated.
+
+**The gate is applied by a script and the script is the record.** It is
+`docs/active/work/T-008-05/gate.mjs`; its whole output is `gate-output.md` beside it; every number
+in this section is pasted from that file rather than retyped. It reads all 685 recipes, not the
+118-recipe pool this page opened with, because a pool defined before the air fryer existed cannot
+find the air fryer.
+
+### The three bars, over the whole collection
+
+| bar | pass | fail | not declared |
+| --- | --: | --: | --: |
+| 1 — `washing-up` ≤ 2 | 118 | 59 | **508** |
+| 2 — one plug-in machine cooks | 45 | 640 | 0 |
+| 3 — 45 min, claimed **and** elapsed | 260 | 425 | 0 |
+
+**Clearing all three: 21.**
+
+Bar 3 is read on **both** clocks and passes only on both. `>> time:` is a person's claim about the
+whole dish; `buildSchedule().totalMinutes` is a floor, because an untimed operation is given zero
+minutes rather than a plausible guess. Neither is called the truth here, and requiring both keeps
+the shelf honest in the direction that matters — a recipe whose author says fifty minutes is not
+admitted because its merge tree adds up to forty.
+
+### Which bar is doing the excluding
+
+Every recipe that failed, by which bars it failed:
+
+| bars failed | recipes |
+| --- | --: |
+| 1 + 2 + 3 | 340 |
+| 1 + 2 | 217 |
+| 2 + 3 | 61 |
+| 2 only | **22** |
+| 3 only | 14 |
+| 1 + 3 | 10 |
+
+**Bar 2 excludes the most, and bar 1 excludes nobody.** The *only* column is the one that answers
+the question, because a recipe that fails two bars would still be off the shelf if one of them
+moved:
+
+- **Bar 2 alone: 22 recipes.** `seven-minute-eggs`, `shakshuka`, `western-omelette`,
+  `seared-halloumi`, `one-pot-pasta`, `beef-stroganoff`, `risotto-alla-milanese`, `saba-shioyaki`,
+  `roasted-cauliflower`, `red-lentil-soup`, `xiu-mai`, `egg-foo-young`, `balti`, `jalfrezi`,
+  `panang-curry`, `thai-red-curry`, `memphis-dry-rub`, and the five S-007 soups
+  (`century-egg-amaranth-soup`, `crucian-carp-tofu-soup`, `mustard-greens-tofu-soup`,
+  `seaweed-egg-drop-soup`, `tomato-potato-beef-soup`). Quick, low-sink dinners, every one of them
+  cooked on a hob. **This is correct and it is the shelf's whole promise**: *plug one in*, and a
+  skillet is not plugged in.
+- **Bar 3 alone: 14 recipes**, twelve Instant Pot and two slow cooker. The nearest miss on the site
+  is `collard-greens-instant-pot` at 60 minutes claimed and 46 elapsed — **one minute over on the
+  optimistic reading, fifteen over on the author's.** `congee-instant-pot` is next at 75/50.
+  Everything else is half an hour or more past the bar, and the two slow cooker rows are eight and
+  ten hours over.
+- **Bar 1 alone: zero.** Not one recipe in 685 is excluded by washing-up and nothing else. See
+  *Bar 1 measures the wrong thing* below.
+
+### The shelves the gate was braced against
+
+| shelf | recipes | clear bar 1 | clear bar 2 | clear bar 3 | clear all three |
+| --- | --: | --: | --: | --: | --: |
+| One Pot | 73 | 65 | **0** | 17 | **0** |
+| Instant Pot | 25 | 13 | 21 | **0** | **0** |
+| The Slow Cooker | 20 | 6 | **3** | **0** | **0** |
+| The Air Fryer & the Pot | 21 | 21 | 21 | 21 | **21** |
+
+**Two rows correct what this page said before the pool was annotated.**
+
+**The Slow Cooker does not clear bar 2 outright.** This page said *"The Slow Cooker clears bar 2
+outright and loses bar 3 by six hours"*, written when no slow cooker file had declared what it
+washed. Read off step prose, **3 of 20 clear it** — `irish-stew-slow-cooker`,
+`corned-beef-slow-cooker` and `new-england-boiled-dinner-slow-cooker`, the three that say in their
+own first row that nothing is browned. Of the other seventeen, fifteen brown or sweat in a skillet
+before the crock (which is T-008-03's count), `baked-turkey-wings-slow-cooker` roasts in an oven
+first, and `boston-baked-beans-slow-cooker` parboils in a saucepan. It changes no outcome, because
+every one of the twenty loses bar 3 by hours, and it is corrected here rather than left standing.
+
+**Instant Pot's bar 1 is now readable and it is worse than the shelf's reputation.** 13 of 25
+clear it. The pot browns in the pot, but it also strains: broths cost four to six things whatever
+appliance makes them.
+
+### Where the script was overruled, and by whom
+
+**Bar 2 is the one a script cannot decide alone, and this is where it did not.** The lexicon reads
+each file's `>> step:` labels and bodies — never its metadata lines, and never a step carrying no
+ingredient, cookware or timer, because those are this collection's full-width note rows and are
+where the comparisons to ovens and grills live. Left in, they failed **eighteen of the twenty-one**
+air fryer files on their own filing and their own argument: `>> category: Fried & Crispy` is not a
+frying pan, `>> keeps: the basket brings the skin round better than an oven or a microwave will` is
+not an oven, and *"a sheet tray takes 35 minutes and half of them stay soft"* is not a sheet tray.
+
+A second class of word came out after the first run: **`simmer`, `boil`, `sauté`, `sear` and
+`fry`.** A slow cooker simmers and an Instant Pot sautés, so a step labelled *simmer on low, 9 hr*
+in a `#slow cooker{}` is the machine doing its job. Left in, they failed
+`corned-beef-slow-cooker` and `new-england-boiled-dinner-slow-cooker`, both of which say in their
+own first row that **nothing is browned and nothing should be**. A second pan is now caught by
+name — `#skillet{}`, `#saucepan{}`, `#oven{}` — which is the signal that does not lie in either
+direction.
+
+**On the Instant Pot shelf the lexicon is not trusted at all.** The machine's selling point is that
+it browns on its own Sauté, and no word list separates *"sauté the onions"* in a pot from the same
+words in a skillet. T-008-03 §3 read all 25 files by hand and found exactly four that cook outside
+the pot; the script takes that verdict wholesale and **nine verdicts moved**, all the same way:
+
+| slug | the lexicon said | the reading says |
+| --- | --- | --- |
+| `cuban-black-beans-instant-pot` | fail — pot plus hob | the pot's own Sauté |
+| `gigantes-plaki-instant-pot` | fail — pot plus hob | the pot's own Sauté |
+| `refried-beans-instant-pot` | fail — pot plus hob | the pot's own Sauté |
+| `borscht-instant-pot` | fail — pot plus hob | the pot's own Sauté |
+| `chicken-broth-instant-pot` | fail — pot plus hob | the pot's own Sauté |
+| `chintan-broth-instant-pot` | fail — pot plus hob | the pot's own Sauté |
+| `tonkotsu-broth-instant-pot` | fail — pot plus hob | the pot's own Sauté |
+| `braised-short-ribs-instant-pot` | fail — pot plus hob | the pot's own Sauté |
+| `pot-roast-instant-pot` | fail — pot plus hob | the pot's own Sauté |
+
+The result — **21 of 25 clearing bar 2** — reproduces the figure this page published before any of
+it was scripted, which is the point of doing it twice.
+
+One further override, kept from this page and named in the script: `birria-de-res-instant-pot` uses
+a jug blender and still clears bar 2, because a blender is plugged in and cooks nothing. Its jug
+and sieve are a bar 1 cost instead, and it washes four.
+
+**The Slow Cooker was not overruled**, because there is nothing to overrule it with: T-008-03
+published a count and not a slug list. Its seventeen failures are the lexicon's reading, and all
+seventeen name the second vessel in their own `cookware` line, so they are checkable rather than
+asserted. Each is listed in `gate-output.md` so a person can disagree with a line rather than with a
+total.
 
 ### All twenty-five Instant Pot recipes, bar by bar
 
@@ -72,38 +222,44 @@ floor rather than a clock.
 
 | Recipe | `>> time:` | elapsed | untimed ops | bar 1 | bar 2 | bar 3 |
 | --- | --: | --: | --: | --- | --- | --- |
-| `collard-greens-instant-pot` | 1 hr | 46 min | 2 | not declared | yes | no |
-| `congee-instant-pot` | 1 hr 15 min | 50 min | 2 | not declared | yes | no |
-| `ful-medames-instant-pot` | 1 hr 35 min | 65 min | 3 | not declared | yes | no |
-| `ham-hock-stock-instant-pot` | 1 hr 30 min | 65 min | 2 | not declared | yes | no |
-| `refried-beans-instant-pot` | 1 hr 40 min | 70 min | 1 | not declared | yes | no |
-| `cuban-black-beans-instant-pot` | 1 hr 35 min | 71 min | 0 | not declared | yes | no |
-| `birria-de-res-instant-pot` | 1 hr 50 min | 79 min | 3 | not declared | yes | no |
-| `cachete-instant-pot` | 1 hr 40 min | 82 min | 2 | not declared | yes | no |
-| `chili-con-carne-instant-pot` | 1 hr 35 min | 82 min | 2 | not declared | yes | no |
-| `hungarian-goulash-instant-pot` | 1 hr 35 min | 83 min | 2 | not declared | yes | no |
-| `chile-verde-instant-pot` | 1 hr 45 min | 84 min | 1 | not declared | **no** — the broiler, before the pot | no |
-| `boston-baked-beans-instant-pot` | 1 hr 55 min | 85 min | 0 | not declared | yes | no |
-| `borscht-instant-pot` | 2 hr | 85 min | 1 | not declared | yes | no |
-| `beef-stew-instant-pot` | 1 hr 45 min | 88 min | 2 | not declared | yes | no |
-| `chicken-broth-instant-pot` | 1 hr 50 min | 90 min | 1 | not declared | yes | no |
-| `carnitas-instant-pot` | 1 hr 45 min | 94 min | 1 | not declared | **no** — the broiler for the crust | no |
-| `braised-short-ribs-instant-pot` | 1 hr 50 min | 97 min | 2 | not declared | yes | no |
+| `collard-greens-instant-pot` | 1 hr | 46 min | 2 | yes (2) | yes | no |
+| `congee-instant-pot` | 1 hr 15 min | 50 min | 2 | yes (1) | yes | no |
+| `ful-medames-instant-pot` | 1 hr 35 min | 65 min | 3 | yes (1) | yes | no |
+| `ham-hock-stock-instant-pot` | 1 hr 30 min | 65 min | 2 | **no** (3) | yes | no |
+| `refried-beans-instant-pot` | 1 hr 40 min | 70 min | 1 | **no** (3) | yes | no |
+| `cuban-black-beans-instant-pot` | 1 hr 35 min | 71 min | 0 | yes (1) | yes | no |
+| `birria-de-res-instant-pot` | 1 hr 50 min | 79 min | 3 | **no** (4) | yes | no |
+| `cachete-instant-pot` | 1 hr 40 min | 82 min | 2 | yes (1) | yes | no |
+| `chili-con-carne-instant-pot` | 1 hr 35 min | 82 min | 2 | yes (1) | yes | no |
+| `hungarian-goulash-instant-pot` | 1 hr 35 min | 83 min | 2 | yes (1) | yes | no |
+| `chile-verde-instant-pot` | 1 hr 45 min | 84 min | 1 | **no** (4) | **no** — the broiler, before the pot | no |
+| `boston-baked-beans-instant-pot` | 1 hr 55 min | 85 min | 0 | yes (1) | yes | no |
+| `borscht-instant-pot` | 2 hr | 85 min | 1 | yes (2) | yes | no |
+| `beef-stew-instant-pot` | 1 hr 45 min | 88 min | 2 | yes (2) | yes | no |
+| `chicken-broth-instant-pot` | 1 hr 50 min | 90 min | 1 | **no** (3) | yes | no |
+| `carnitas-instant-pot` | 1 hr 45 min | 94 min | 1 | yes (2) | **no** — the broiler for the crust | no |
+| `braised-short-ribs-instant-pot` | 1 hr 50 min | 97 min | 2 | yes (2) | yes | no |
 | `pho-broth-instant-pot` | 2 hr 30 min | 100 min | 1 | **no** (4) | **no** — a dry skillet for the spices | no |
 | `beef-bourguignon-instant-pot` | 2 hr | 100 min | 1 | **no** (3) | **no** — a skillet for the garnish | no |
-| `oxtails-instant-pot` | 1 hr 50 min | 100 min | 1 | not declared | yes | no |
-| `pot-roast-instant-pot` | 2 hr 30 min | 136 min | 2 | not declared | yes | no |
-| `chintan-broth-instant-pot` | 3 hr | 150 min | 0 | not declared | yes | no |
-| `tonkotsu-broth-instant-pot` | 3 hr 30 min | 170 min | 1 | not declared | yes | no |
-| `gigantes-plaki-instant-pot` | 13 hr 30 min | 775 min | 0 | not declared | yes | no |
-| `corned-beef-instant-pot` | 5 days 4 hr 30 min | 7470 min | 1 | not declared | yes | no |
+| `oxtails-instant-pot` | 1 hr 50 min | 100 min | 1 | yes (2) | yes | no |
+| `pot-roast-instant-pot` | 2 hr 30 min | 136 min | 2 | **no** (3) | yes | no |
+| `chintan-broth-instant-pot` | 3 hr | 150 min | 0 | **no** (6) | yes | no |
+| `tonkotsu-broth-instant-pot` | 3 hr 30 min | 170 min | 1 | **no** (3) | yes | no |
+| `gigantes-plaki-instant-pot` | 13 hr 30 min | 775 min | 0 | **no** (3) | yes | no |
+| `corned-beef-instant-pot` | 5 days 4 hr 30 min | 7470 min | 1 | **no** (3) | yes | no |
 
-**Bar 1: 0 clear it, 2 fail it, 23 cannot be measured.** Only eleven files in the whole 664 declare
-`washing-up`, and only two of them are here. `pho-broth-instant-pot` declares four — *the Instant
-Pot, a skillet for the spices, a fine sieve, the spice sachet* — and
-`beef-bourguignon-instant-pot` declares three. The other twenty-three have never been asked. That
-is T-008-03's job and this page does not guess it; guessing is the exact failure the property was
-built to end.
+**Bar 1: 13 clear it, 12 fail it, 0 cannot be measured.** When this table was first printed, only
+two of the twenty-five had ever been asked; T-008-03 asked the other twenty-three and the column
+above is their answers. **The shelf's reputation was better than its sink.** The twelve that fail
+are the broths and the beans that come out of the pot into something else:
+`chintan-broth-instant-pot` washes **six** — pot, colander, sieve, cloth, settling jug, fat jar —
+and nothing about the appliance changes that, because straining is not a thing a lid can do.
+`pho-broth-instant-pot` washes four, `chile-verde-instant-pot` and `birria-de-res-instant-pot` four
+each.
+
+**And bar 1 becoming readable moved nothing**, which is the whole finding about this bar. The zero
+this page published rested on bars 2 and 3 while bar 1 was unknown on twenty-three files. It is
+known on all of them now, and the zero is unchanged.
 
 **Bar 2: 21 of 25 clear it.** The four that do not are named in the table and each says so in its
 own step text — not inferred from `cookware`, which [one-pot.md](one-pot.md) established counts
@@ -148,16 +304,10 @@ The two readings disagree on the length of every recipe and **agree on the only 
 asked**: nothing here is a forty-five-minute dinner. That agreement is what makes the zero worth
 trusting.
 
-### Where One Pot and Instant Pot actually fail, which is not where anyone guessed
+### Where each shelf actually fails, which is not where anyone guessed
 
-| Shelf | Recipes | Clear bar 1 | Clear bar 2 | Clear bar 3 | Clear all three |
-| --- | --: | --- | --: | --- | --: |
-| One Pot | 73 | 4 declared, all ≤ 2 | **0** | 31 by elapsed, 17 by `>> time:` | **0** |
-| Instant Pot | 25 | 0 declared, 2 fail | 21 | **0** | **0** |
-| The Slow Cooker | 20 | none declared | 20 | **0** — shortest is 4 hr 40 min | **0** |
-
-The three shelves do not overlap: Instant Pot ∩ One Pot is empty and The Slow Cooker ∩ One Pot is
-empty, so the pool is 118 distinct recipes and the gate admits none.
+The three older shelves do not overlap: Instant Pot ∩ One Pot is empty and The Slow Cooker ∩ One Pot
+is empty, so that pool is 118 distinct recipes and the gate still admits none of them.
 
 **One Pot dies on bar 2, and it dies there at its fastest end.** Its 73 recipes are hob and oven
 dishes; not one of them names a plug-in machine that cooks. The casualties are the quick ones —
@@ -168,9 +318,10 @@ the shelf's promise is *plug one in*, and a skillet is not plugged in. At the ot
 is the one S-008 already told — `vindaloo` at 14 hours, `pot-roast` at 4 hr 30 min, `carnitas` at
 4 hr, `braised-short-ribs` at 4 hr.
 
-The four One Pot files that have declared a `washing-up` line are `one-pot-pasta` (1),
-`shakshuka` (1), `ratatouille` (1) and `beef-bourguignon` (3). The first three are the only recipes
-on the site that have proved a one-pot claim rather than asserted it.
+**One Pot's own promise now holds, and this page can say so for the first time.** When this table
+was first printed, four of its 73 files had declared a `washing-up` line. All 73 have now:
+**65 of 73 wash one or two things and 40 wash exactly one.** The eight that wash three or more are
+listed in [one-pot.md](one-pot.md), which is the page that should carry them.
 
 **Instant Pot dies on bar 3, unanimously**, and four of its files fail bar 2 as well.
 `chile-verde-instant-pot` chars its chiles under the broiler *before* the pot; `carnitas-instant-pot`
@@ -178,43 +329,170 @@ finishes under the broiler; `beef-bourguignon-instant-pot` glazes its garnish in
 in the file why — *"a separate pan, because the pot is full"*; `pho-broth-instant-pot` toasts its
 spices in a dry skillet. All four are honest recipes and all four are two appliances.
 
-**The Slow Cooker clears bar 2 outright and loses bar 3 by six hours.** Its shortest,
-`soy-sauce-chicken-slow-cooker`, is 4 hr 40 min. The shelf is a different promise — *fill it before
-you leave* — and the two shelves are not in competition at any point.
+**The Slow Cooker loses bar 2 as well as bar 3, and this page had that wrong** — see the correction
+above. Three of twenty brown nothing; seventeen use a skillet, an oven or a saucepan first. It
+still loses bar 3 by hours: its shortest, `soy-sauce-chicken-slow-cooker`, is 4 hr 40 min. The
+shelf is a different promise — *fill it before you leave* — and the two shelves are not in
+competition at any point.
 
-### Fewer than ten clear it. It is zero, and the bars do not move
+### It is twenty-one, which is under twenty-five, and the bars do not move
 
-The acceptance test for this ticket was that if fewer than ten existing recipes clear all three
-bars, the page says so plainly and says what that means. It is zero, so:
+S-008 named this number in advance and named what to do with it:
 
-**The gate as written admits nothing that exists.** The counter is not a re-cut of the shelves
-beside it. It is a new shelf whose entire stock must be written, and the twenty-six ranks below —
-twenty for the basket, six for the pot — are that stock rather than a wish list on top of one.
+> If fewer than about twenty-five recipes clear it once the pool is annotated, the finding is *the
+> gate is wrong* or *the shelf is thin*, and T-008-05 reports it. It does not loosen the bars
+> quietly to fill a page.
 
-**What that means, in the order it will bite:**
+**It is twenty-one. The shelf is thin. The gate is not wrong.** The evidence for that division, in
+the order it will bite:
 
-- **T-008-04 is the whole counter, not a top-up.** Its recipes are not additions to a shelf that
-  already has something on it; until it lands, `/menu/air-fryer-and-pot` does not build at all,
-  because `src/pages/menu/[counter].astro` filters on `menu.count > 0`.
-- **T-008-03's annotation still pays, and it pays somewhere else.** Twenty-three Instant Pot files
-  and sixty-nine One Pot files have never declared what is in the sink. Not one of them will clear
-  this gate whatever the answer turns out to be — bar 3 and bar 2 have already settled that — but
-  One Pot's own promise has never been checked, and that is the claim the property was built for.
-  The gate is not the reason to do that work; it is the reason the work was noticed.
-- **The gate is not too tight, and this is the evidence.** A bar that admits zero looks broken. It
-  is not: the pool it was applied to is 118 recipes written for pots, ovens and crocks, and the
-  machine the counter is named after does not appear in a single one of them. A gate cannot admit
-  recipes for an appliance the collection has never owned. **The number to re-read this against is
-  the one T-008-05 measures after T-008-04 has written for it.** If that number is also small, the
-  gate is the problem. Today the empty cupboard is.
-- **Under no reading does a bar move to improve the count.** Bar 3 at 90 minutes would admit 21 of
-  the 25 Instant Pot recipes overnight and the shelf would look healthy by Friday. S-008 forbids
-  exactly that, twice, and it is worth restating where the temptation actually lands: it lands
-  here, on this page, on the day someone reads a zero.
+- **All twenty-one are air fryer recipes and all twenty-one are new.** Nothing was borrowed, because
+  nothing on the three older shelves clears the gate and — since T-011-05 — a section list cannot
+  shelve a recipe whose own `>> counters:` line does not name the counter. This shelf's stock is
+  exactly what was written for it.
+- **The four short of twenty-five are four recipes, not four bars.** Three of them are already
+  ranked and argued below and were **ranked out for cause, not for quality**: bacon (rank 13) clears
+  all three bars and cannot be written, because one ingredient and two operations gives a table with
+  one row and `check-recipes.mjs:199` refuses it; seekh kabab (17) and crispy roast potatoes (20)
+  fail bar 1 as the ranks describe them. **Seekh kabab is now writable** — see *the drawer* below —
+  which is one of the four found by settling a sentence rather than by moving a bar.
+- **The pot half is the other three and more.** Ranks 21 to 26 are six dishes, none written, all of
+  them plausible passes: hard-boiled eggs at roughly 25 minutes and two things, a pot of plain rice
+  at under 30 and one thing, red lentil soup at under 30 and one. **The fastest route to twenty-five
+  is `kit: Instant Pot` variants of things already here**, and it is a commission rather than a
+  measurement problem.
+- **Bar 2 is the bar that excludes, and it is the bar that must not move.** Dropping *one plug-in
+  machine* would admit 22 recipes overnight and the shelf would read healthy by Friday — and it
+  would no longer be this shelf. Its blurb is *plug one in*. A hob dish on this counter makes the
+  blurb a lie, and [one-pot.md](one-pot.md) is the record of what happens to a shelf whose promise
+  and whose contents disagree.
+- **Bar 1 is the bar that measures the wrong thing, and it is written up rather than moved.** See
+  below. Changing a bar in the same ticket that first measures it is how a gate becomes decoration.
+
+### Bar 1 measures the wrong thing, and this is a recommendation, not a change
+
+**Bar 1 has never excluded a single recipe on its own** — 0 of 685 fail it and nothing else. It is
+doing no work at the gate. Three separate readings say the same thing:
+
+1. **It is unreadable on three-quarters of the collection.** 508 of 685 recipes have never declared
+   a `washing-up` line, and an undeclared line is not a pass. So bar 1 is mostly a coverage measure
+   wearing a rule's clothes.
+2. **Where it is readable, it agrees with bar 2 and bar 3 almost everywhere.** 118 clear it; the
+   ones that fail it fail something else too, in every case.
+3. **It reads looser than the sentence that defined it.** T-008-03's convention rule 6 — the
+   README's, not the ticket's — does not count the knife and chopping board at all, so S-008's own
+   illustration of two-or-fewer, *"The pot and a chopping board"*, scores **1** rather than 2.
+   T-008-01 flagged this in its review §4.2, T-008-03 flagged it again in `findings.md` §7, and
+   nobody has ruled on it.
+
+**What a later story should consider, and what this page will not do:** either tighten bar 1 to
+something that bites (**≤ 1 admits three of the current twenty-one** — chicken thighs, halloumi and
+padrón peppers — which is a different and much smaller shelf, and worth knowing before anyone
+proposes it), or rule on the chopping board so the bar means what the story's sentence says, or drop
+bar 1
+from the gate and keep `washing-up` as the thing every item on this shelf prints. **All three are
+counter decisions and none of them is this ticket's.** What bar 1 unquestionably *did* earn is the
+annotation: 177 recipes now say what is in the sink where 11 did before, One Pot's promise has been
+checked against all 73 of its files, and the kit axis turned out not to be about washing up at all.
+The bar found nothing; the work of building it found everything.
+
+---
+
+## The shelf, item by item
+
+**Every item, its washing-up, its machine and its clock, in one table.** Pasted from
+`docs/active/work/T-008-05/gate.mjs`. There are no exceptions on this shelf and no item without a
+`washing-up` line, and this is where that is checkable rather than asserted.
+
+**untimed ops** is how many operations in a file carry no timer at all. `schedule.ts` gives those
+zero minutes on purpose, so **elapsed** is a floor and not a clock — which is why bar 3 is required
+on the author's number as well.
+
+| slug | washing-up | count | machine | `>> time:` | elapsed | untimed ops |
+| --- | --- | --: | --- | --: | --: | --: |
+| `air-fryer-batata-harra` | the basket, the bowl | 2 | air fryer | 35 min | 18 min | 3 |
+| `air-fryer-broccoli` | the basket, the bowl | 2 | air fryer | 25 min | 10 min | 3 |
+| `air-fryer-brussels-sprouts` | the basket, the bowl | 2 | air fryer | 35 min | 22 min | 3 |
+| `air-fryer-cauliflower` | the basket, the bowl | 2 | air fryer | 30 min | 15 min | 3 |
+| `air-fryer-chicken-thighs` | the basket | 1 | air fryer | 40 min | 28 min | 2 |
+| `air-fryer-chicken-tikka` | the marinating bowl, the basket | 2 | air fryer | 45 min | 33 min | 2 |
+| `air-fryer-chicken-wings` | the basket, the bowl | 2 | air fryer | 35 min | 21 min | 3 |
+| `air-fryer-chickpeas` | the basket, the bowl | 2 | air fryer | 25 min | 13 min | 3 |
+| `air-fryer-chips` | the basket, the bowl | 2 | air fryer | 35 min | 22 min | 3 |
+| `air-fryer-corn-ribs` | the basket, the bowl | 2 | air fryer | 30 min | 13 min | 3 |
+| `air-fryer-frozen-chips` | the basket, the bowl | 2 | air fryer | 25 min | 15 min | 3 |
+| `air-fryer-frozen-prawns` | the basket, the bowl | 2 | air fryer | 20 min | 9 min | 3 |
+| `air-fryer-frozen-spring-rolls` | the basket, the bowl | 2 | air fryer | 20 min | 11 min | 3 |
+| `air-fryer-halloumi` | the basket | 1 | air fryer | 15 min | 9 min | 3 |
+| `air-fryer-padron-peppers` | the basket | 1 | air fryer | 15 min | 7 min | 3 |
+| `air-fryer-reheated-pizza` | the basket, a small bowl | 2 | air fryer | 12 min | 5 min | 3 |
+| `air-fryer-saba-shioyaki` | the basket, the plate the fish salted on | 2 | air fryer | 40 min | 31 min | 3 |
+| `air-fryer-salmon` | the basket, the plate the spice was pressed on | 2 | air fryer | 25 min | 12 min | 4 |
+| `air-fryer-shish-tawook` | the marinating bowl, the basket | 2 | air fryer | 45 min | 33 min | 2 |
+| `air-fryer-sweet-potatoes` | the basket, the bowl | 2 | air fryer | 30 min | 17 min | 3 |
+| `air-fryer-tofu` | the basket, the bowl | 2 | air fryer | 40 min | 27 min | 3 |
+
+### Does the blurb survive its own shelf?
+
+The counter's blurb is **"Plug one in, eat, and wash two things."** Checked against the twenty-one
+rows above rather than asserted:
+
+- **Plug one in** — 21 of 21. Every machine cell reads *air fryer* and no row names a second one.
+  The blurb says *one*, and the shelf has exactly one machine on it, which is a smaller claim than
+  the counter's name makes. **The name is the thing that is now slightly ahead of the contents**,
+  and the honest fix is the pot half, not a shorter name.
+- **Eat** — the longest is 45 minutes (`air-fryer-chicken-tikka`, `air-fryer-shish-tawook`), the
+  shortest 12. The median claim is 30 minutes and the median critical path 15.
+- **Wash two things** — 18 rows wash two, 3 rows wash one, **nothing washes three**. The blurb
+  reads as a ceiling and the shelf meets it as a ceiling, which is the right way round: a reader who
+  turns up expecting two and washes one is not disappointed.
+
+**Nothing on the shelf contradicts the blurb**, so neither was changed. The one sentence that
+*did* have to change is on this page and not on the counter: *"The Slow Cooker clears bar 2
+outright"*, corrected above.
+
+### The drawer, settled
+
+T-008-04 left one call here, and it is worth settling because it decides whether a dish can be
+written at all. This page counts the basket as one thing everywhere except seekh kabab (rank 17),
+where *"the fat renders out and drips, so this is the one dish on the page where the drawer under
+the basket is part of the washing-up and should be counted."* T-008-04's objection is correct:
+**wings render fat too, and so do thighs and prawns**, and they are on the shelf at two.
+
+**The rule, from here on: the basket assembly — basket, drawer and crisper plate — is one thing,
+because it is washed in one action.** That is T-008-03 convention rule 9 (*a lid is part of its
+vessel*) applied to the machine this shelf is named after; rule 4 reserves separate counting for
+parts washed on a *different schedule*, and nobody washes a drawer on a different evening from its
+basket.
+
+**It changes nothing on the shelf today** — no item counts a drawer — and it changes exactly one
+thing about tomorrow: **`air-fryer-seekh-kabab` is writable at two things**, mince bowl and basket,
+and it comes off the ranked-out list. It is a recommendation to whoever writes it, not a
+re-ranking done here, because the dish does not exist yet.
 
 ---
 
 ## What it is missing
+
+**Seventeen of the twenty-six ranks below are written and are on the shelf above. Nine are still
+out**, and the ranks are left in place rather than struck through, because what each one argues —
+why it is where it is, what it costs the sink, whose number its time is — is the reason the next
+writer will not have to re-derive it.
+
+| still out | rank | why |
+| --- | --: | --- |
+| **Bacon** | 13 | clears all three bars and **cannot be written**: one ingredient and two operations gives a one-row table, which `check-recipes.mjs:199` refuses. The answer is the one the frozen block took — build a dish *around* it — and it is a different commission |
+| **Seekh kabab** | 17 | ranked out at three things on the drawer reading. **The drawer is settled above and it is now two.** This is the readiest of the nine |
+| **Crispy roast potatoes** | 20 | the parboil is a pot, a colander and a hob. Dropping it produces `air-fryer-chips` under another name and loses the roughed starchy surface. Still out, still argued |
+| **Hard-boiled eggs** | 21 | `kit: Instant Pot`. Roughly 25 minutes, two things. The fastest clear pass on the page |
+| **A pot of plain rice** | 22 | `kit: Instant Pot` of `gohan`. Under 30 minutes, one thing |
+| **Red lentil soup** | 23 | `kit: Instant Pot`. Under 30 minutes, one thing if the stick blender goes into the pot |
+| **Kitchari** | 24 | `kit: Instant Pot`. Roughly 25 against the plain file's 50 |
+| **Mujaddara** | 25 | `kit: Instant Pot`. The one dish where the appliance version is genuinely *fewer* vessels than the plain one |
+| **Polenta** | 26 | `kit: Instant Pot`. Nine minutes at pressure against forty-five of stirring |
+
+**Six of the nine are the pot half**, and writing them is what takes this shelf past the
+twenty-five S-008 asked for. None of them needs a bar to move.
 
 ### How this list is ranked
 
@@ -542,22 +820,29 @@ cannot be trusted:
   How much of a thing fits a small (3.5 L) and a large (5.7 L) basket in one layer, by weight, for
   wings, chips, florets, cubes and fillets. Without it every writer invents a serving size and they
   will not agree.
-- **A preheat convention.** Some machines have a preheat button and some do not, and a recipe that
-  assumes one is wrong for half its readers. Two lines, decided once: whether the stated time
-  assumes a cold or a hot basket, and what to add if it is the other one. ATK writes its ranges
-  wide enough to cover both, which is one legitimate answer and should be the one adopted or
-  explicitly rejected.
+- **A preheat convention, written down once.** T-008-04 **decided** it and every one of the 21 files
+  carries it in the same words — *written for a preheated 5.7 L basket; from cold add three minutes;
+  a 3.5 L basket is two batches, not more minutes.* It is therefore not an open question any more;
+  it is twenty-one copies of a sentence with no home. It belongs in `docs/knowledge/`, and until it
+  is there the twenty-second writer will invent a twenty-second version of it.
 - **`~air fry` as a timer name**, added to `src/lib/time.ts` the way T-002-01 added
   `~pressure cook`, `~natural release`, `~come to pressure` and `~quick release`. Without it the
   clock reads a basket cook as hands-on time a cook is standing over, which is wrong — a basket is
   as walk-away as a pressure cooker, minus one shake. **`src/lib/icons.ts:319` already maps
   `air fry` to an oven icon, so the vocabulary is half there and nothing reads the other half.**
-- **A shake convention.** Almost every dish on this list is shaken once halfway, and it should be
-  one operation written the same way everywhere rather than a sentence twenty writers each invent.
-  It is also the only hands-on moment in most of these recipes, so it is where the honest hands-on
-  minute goes.
-- **`washing-up` on every file this shelf touches.** Not a component so much as a precondition: the
-  gate's first bar is unreadable on 92 of the 118 recipes in the candidate pool. T-008-03 owns it.
+  **This is now a live defect rather than a nicety.** `air fry` is in neither `UNATTENDED` nor
+  `HANDS_ON`, so the reading falls through to the words of the step, and *fry* is `HANDS_ON`. All
+  twenty-one files read correctly today only because every basket cell happens to open with `roast`,
+  which `readWords` reaches first. **Reorder any basket cell so `roast` falls after the clock and
+  that recipe silently becomes twenty minutes of standing at a machine you can walk away from.**
+  The fix is one line and `src/lib/**` is not this ticket's to edit.
+- **A shake convention, and the word for it.** Almost every dish on this list is shaken once halfway,
+  and it should be one operation written the same way everywhere rather than a sentence twenty
+  writers each invent. It is also the only hands-on moment in most of these recipes, so it is where
+  the honest hands-on minute goes. **The machine's own verb is currently unusable**: `shake` has no
+  entry in `VERB_ICONS` and `src/lib/icons.test.ts:273` fails the build on an unrecognised opening
+  verb, so ten cells that wanted to say *shake* say *toss the basket* instead. One line in
+  `src/lib/icons.ts` gives the shelf its own word back.
 - **A `kit: Air Fryer` sibling badge that means something.** `scripts/parse-recipes.mjs:216` already
   carries `washingUpCount` onto each variant so a page can print it. The page where a deep-fried
   original sits beside its basket version, with **five things** against **two**, is the single
@@ -617,10 +902,24 @@ machine is bad at or a fact about it that no cell can carry.
   a ticket about one shelf. It is a real gap and it is somebody's next job — and the shape of this
   entry is the template, because it is the one that had to solve *what does a counter with no board
   put in its vocabulary table*.
-- **`src/lib/icons.ts:319` maps `air fry` to an oven icon.** It is the right icon and nothing uses
-  it yet. When T-008-04 lands, check whether a basket deserves its own.
-- **The One Pot drift is still there.** `node scripts/menu-sections.mjs` still names One Pot and
-  Cha Chaan Teng every run. Neither is this counter's doing and neither moved.
+- **`src/lib/icons.ts:319` maps `air fry` to an oven icon.** Twenty-one recipes use it now, so the
+  question is live rather than hypothetical: an oven drawn beside a basket dish is not wrong, and it
+  is not the picture either. A basket icon is a small job and it is nobody's yet.
+- **The One Pot drift is still there and it is now the only one.** `node scripts/menu-sections.mjs`
+  named One Pot and Cha Chaan Teng every run when this page was written; Cha Chaan Teng was settled
+  by T-007-06, this counter came off the list when its sections were filled, and **One Pot's five
+  S-007 soups are the last unplaced slugs on the board**. Not this counter's doing and not fixed
+  here — re-sectioning One Pot is a counter decision.
+- **Three things this shelf needs that live in `src/lib/**` and could not be touched from here.**
+  `'airfry'` in `UNATTENDED` (a live defect — see *Components*), `shake` in `VERB_ICONS`, and a
+  `NEVER_WASHED` entry for utensils, which would silence the seven permanent `unaccountedCookware`
+  advisories T-008-03 left behind. All three are one line each.
+- **The board is 22 counters, not 23.** T-008-05's ticket expected 23; the difference is The Soup
+  Pot, which came down under S-007 and is recorded in [README.md](README.md). Every one of the 22
+  has something on it and every one is fully sectioned.
+- **`docs/knowledge/counters.md` has no entry for the pot half.** This counter's entry describes a
+  gate applied to a basket. The six Instant Pot ranks, when someone writes them, will need the
+  vocabulary table to say something about pressure that it currently does not.
 
 ---
 
@@ -677,8 +976,19 @@ The air fryer literature is mostly recipe sites rather than test kitchens, which
   which states the widely repeated *drop 25°F, cut 20%*. It is recorded here as the thing not to
   write a recipe from.
 
-**Measured rather than sourced.** Every figure in *The gate, measured* comes from this repository:
-`src/generated/recipes.json` at 664 recipes, read through `buildSchedule()` in
-`src/lib/schedule.ts`, with bar 2 read off each file's step prose rather than its `cookware` line,
-for the reason [one-pot.md](one-pot.md) gives. The script is in
-`docs/active/work/T-008-02/plan.md` §7 and the numbers can be reproduced by running it.
+**Measured rather than sourced.** Every figure in *The gate, measured* and *The shelf, item by item*
+comes from this repository: `src/generated/recipes.json` at **685 recipes**, read through
+`buildSchedule()` in `src/lib/schedule.ts`, with bar 2 read off each file's step prose rather than
+its `cookware` line, for the reason [one-pot.md](one-pot.md) gives. **The script is
+`docs/active/work/T-008-05/gate.mjs`** and its full output is `gate-output.md` beside it; run
+
+```
+node docs/active/work/T-008-05/gate.mjs
+```
+
+from the repository root after `npm run recipes` and every number on this page comes back. The
+earlier, smaller measurement it replaces is in `docs/active/work/T-008-02/plan.md` §7.
+
+**Where the script is not the authority**, said once so it is not buried: bar 2 on the Instant Pot
+shelf is T-008-03's hand reading, not the lexicon's, and nine verdicts differ. That is recorded in
+*Where the script was overruled, and by whom* with every slug named.

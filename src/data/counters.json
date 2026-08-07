@@ -1990,7 +1990,16 @@
       "sections": [
         {
           "title": "Straight out of the basket",
-          "items": [],
+          "items": [
+            "air-fryer-chicken-wings",
+            "air-fryer-chicken-thighs",
+            "air-fryer-salmon",
+            "air-fryer-saba-shioyaki",
+            "air-fryer-halloumi",
+            "air-fryer-tofu",
+            "air-fryer-chicken-tikka",
+            "air-fryer-shish-tawook"
+          ],
           "notes": [
             {
               "note": "Everything here washes two things or fewer, cooks in one plug-in machine, and is on the table in 45 minutes."
@@ -1998,20 +2007,32 @@
           ]
         },
         {
-          "title": "Start to finish in the pot",
-          "items": []
-        },
-        {
-          "title": "Sheet-pan-shaped, in the basket",
-          "items": []
-        },
-        {
           "title": "Vegetables that go crisp",
-          "items": []
+          "items": [
+            "air-fryer-brussels-sprouts",
+            "air-fryer-broccoli",
+            "air-fryer-cauliflower",
+            "air-fryer-sweet-potatoes",
+            "air-fryer-chips",
+            "air-fryer-batata-harra",
+            "air-fryer-chickpeas",
+            "air-fryer-corn-ribs",
+            "air-fryer-padron-peppers"
+          ]
         },
         {
           "title": "Frozen things, done properly",
-          "items": []
+          "items": [
+            "air-fryer-frozen-chips",
+            "air-fryer-frozen-spring-rolls",
+            "air-fryer-frozen-prawns"
+          ]
+        },
+        {
+          "title": "Reheats that beat the microwave",
+          "items": [
+            "air-fryer-reheated-pizza"
+          ]
         }
       ]
     }
