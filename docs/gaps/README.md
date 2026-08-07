@@ -105,8 +105,7 @@ ranked. Like [soup-pot.md](soup-pot.md) it is a file in this directory that is n
 
 Counts of *assignments*, so a recipe at two counters is counted twice. "Only here" is how many of a
 counter's recipes are not also shelved somewhere else — the number that says whether a counter has a
-menu of its own or is borrowing one. The **was** columns are the state this story started from, which is
-the tree at `096b1d4`, rebuilt from source rather than remembered.
+menu of its own or is borrowing one.
 
 **All twenty-two counters, including The Air Fryer & the Pot**, which S-008 opened and filled. The
 version before this one had twenty-one rows and the one before that fifteen.
@@ -115,7 +114,8 @@ version before this one had twenty-one rows and the one before that fifteen.
 table that silently mixes a re-derived number with a remembered one is worse than one that admits it:
 
 - **Recipes** and **Only here** are re-derived for every row from `src/generated/recipes.json` at 685
-  recipes, by `docs/active/work/T-008-05/tally.mjs`. Run it and the two columns come back.
+  recipes, by the twenty-line script printed in `docs/active/work/T-008-05/progress.md`. Run it and the
+  two columns come back.
 - **Missing dishes** and **Missing components** are **carried forward** from the previous version for
   the twenty-one rows that had one, and derived for the new row the same way it was derived for them:
   the length of each page's ranked `## What it is missing` list, and the count of its

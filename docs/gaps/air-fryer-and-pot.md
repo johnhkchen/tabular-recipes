@@ -37,7 +37,7 @@ nothing used. Something uses it now.
 ## What it has
 
 Twenty-one, in four sections. Every one of them cleared all three bars under
-`docs/active/work/T-008-05/gate.mjs`, and the table proving it, one row per item, is in
+the gate script in `docs/active/work/T-008-05/progress.md`, and the table proving it, one row per item, is in
 *The shelf, item by item* below.
 
 Two of the five titles this page opened with are gone. *Start to finish in the pot* had nothing to
@@ -86,7 +86,7 @@ Everything below was measured against `src/generated/recipes.json` — the built
 recipes** — read through `src/lib/schedule.ts`. Nothing is estimated.
 
 **The gate is applied by a script and the script is the record.** It is
-`docs/active/work/T-008-05/gate.mjs`; its whole output is `gate-output.md` beside it; every number
+printed in full in `docs/active/work/T-008-05/progress.md`, along with its whole output; every number
 in this section is pasted from that file rather than retyped. It reads all 685 recipes, not the
 118-recipe pool this page opened with, because a pool defined before the air fryer existed cannot
 find the air fryer.
@@ -209,7 +209,8 @@ and sieve are a bar 1 cost instead, and it washes four.
 **The Slow Cooker was not overruled**, because there is nothing to overrule it with: T-008-03
 published a count and not a slug list. Its seventeen failures are the lexicon's reading, and all
 seventeen name the second vessel in their own `cookware` line, so they are checkable rather than
-asserted. Each is listed in `gate-output.md` so a person can disagree with a line rather than with a
+asserted. Each is listed in the script's output in `docs/active/work/T-008-05/progress.md` so a person
+can disagree with a line rather than with a
 total.
 
 ### All twenty-five Instant Pot recipes, bar by bar
@@ -401,7 +402,8 @@ The bar found nothing; the work of building it found everything.
 ## The shelf, item by item
 
 **Every item, its washing-up, its machine and its clock, in one table.** Pasted from
-`docs/active/work/T-008-05/gate.mjs`. There are no exceptions on this shelf and no item without a
+the gate script in `docs/active/work/T-008-05/progress.md`. There are no exceptions on this shelf and
+no item without a
 `washing-up` line, and this is where that is checkable rather than asserted.
 
 **untimed ops** is how many operations in a file carry no timer at all. `schedule.ts` gives those
@@ -979,14 +981,9 @@ The air fryer literature is mostly recipe sites rather than test kitchens, which
 **Measured rather than sourced.** Every figure in *The gate, measured* and *The shelf, item by item*
 comes from this repository: `src/generated/recipes.json` at **685 recipes**, read through
 `buildSchedule()` in `src/lib/schedule.ts`, with bar 2 read off each file's step prose rather than
-its `cookware` line, for the reason [one-pot.md](one-pot.md) gives. **The script is
-`docs/active/work/T-008-05/gate.mjs`** and its full output is `gate-output.md` beside it; run
-
-```
-node docs/active/work/T-008-05/gate.mjs
-```
-
-from the repository root after `npm run recipes` and every number on this page comes back. The
+its `cookware` line, for the reason [one-pot.md](one-pot.md) gives. **The script and its whole output
+are printed in `docs/active/work/T-008-05/progress.md`**; save the script to a file and run it from
+the repository root after `npm run recipes`, and every number on this page comes back. The
 earlier, smaller measurement it replaces is in `docs/active/work/T-008-02/plan.md` §7.
 
 **Where the script is not the authority**, said once so it is not buried: bar 2 on the Instant Pot
