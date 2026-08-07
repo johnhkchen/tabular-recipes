@@ -46,9 +46,9 @@ reader has to notice that the third number is the largest to understand what the
 
 S-010's own sentence: *a long day, cooking for two, under twenty minutes standing there.*
 
-**The filter can express one third of that.** There is no servings control. There is no *long day*
-control — the nearest is the clock, which the reader must think to set separately. And there is no
-twenty-minute stop: the standing dial stops at 5, 15 and 30.
+**One of those three reaches a dial, and not exactly.** There is no servings control at all. The
+*long day* is the closest the clock gets, and the clock is a separate dial the reader must think
+to set. And there is no twenty-minute stop: the standing dial stops at 5, 15 and 30.
 
 Run at `standing = 15`, the tightest stop that honours *under twenty*:
 
@@ -101,9 +101,9 @@ a wok and an ice-cream machine, and `maamoul` is not one without a maamoul mould
 **This is not a gap in the annotation. It is a gap in what nine keys were chosen.**
 `src/generated/recipes.json` carries a `cookware` line for **588 of 685 recipes** — `food
 processor` on 11, `blender` on 13, `spice grinder` on 10, `mortar` on 22, `slow cooker` on 20,
-`Instant Pot` on 24, `smoker` on 9, and one each of `mandoline`, `pasta roller`, `ice cream
-maker`, `baking steel` and `maamoul mould`. `src/pages/search.json.ts` ships nine keys and none of
-them is `cookware`.
+`Instant Pot` on 24, `smoker` on 9, `baking steel` on 6, and one each of `mandoline`,
+`pasta roller`, `ice cream maker` and `maamoul mould`. `src/pages/search.json.ts` ships nine keys
+and none of them is `cookware`.
 
 Eight of the twelve recipes this audit called borderline were called borderline for exactly this
 reason, and a reader cannot see any of it.
