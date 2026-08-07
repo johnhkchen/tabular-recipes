@@ -12,7 +12,8 @@ import {
   saysItBatches,
   servingsOf,
 } from './scaling.ts';
-import type { Attention, AttentionSource } from './time.ts';
+import { buildSchedule, handsOnEvidence } from './schedule.ts';
+import { type Attention, type AttentionSource, readTimers } from './time.ts';
 import type { RawIngredient, RawRecipe, RawTimer } from './tree.ts';
 
 const all = recipes as unknown as RawRecipe[];
@@ -519,5 +520,216 @@ describe('§8, the two situations', () => {
     const answer = cost(real('vindaloo'), 18);
     expect(answer.elapsed.written).toBe(793);
     expect(answer.elapsed.at).toBe(819);
+  });
+});
+
+/* ---- the five cases the acceptance criteria name --------------------------- */
+
+describe('what scaling does to each figure', () => {
+  /** A pot: a wait nothing bounds, and some work around it. */
+  const pot = fixture('pot', [
+    { label: 'chop the onions 10 min', timers: [timer(10, 'hands-on')] },
+    { label: 'simmer 60 min', refs: [0], timers: [timer(60)] },
+  ]);
+
+  /** The same recipe with a basket around the wait. */
+  const basket = fixture(
+    'basket',
+    [
+      { label: 'chop the onions 10 min', timers: [timer(10, 'hands-on')] },
+      { label: 'roast in the basket 60 min', refs: [0], timers: [timer(60)] },
+    ],
+    { capacity: capacity('4 — the basket, roast') },
+  );
+
+  it('an unbounded recipe at 3×: the clock does not move, the chopping triples', () => {
+    const answer = cost(pot, 12);
+    expect(answer.elapsed).toEqual({ written: 70, at: 90, factor: 1.29, flat: false });
+    expect(answer.standing).toEqual({ written: 10, at: 30, factor: 3, flat: false });
+    // The wait is untouched: 60 minutes of simmering is 60 minutes of simmering.
+    expect(answer.elapsed.at - answer.standing.at).toBe(60);
+    expect(answer.batches).toMatchObject({ written: 1, at: 1, ratio: 1, binds: false });
+  });
+
+  it('a bounded recipe at 3×: elapsed and standing both go up by the batch count', () => {
+    const answer = cost(basket, 12);
+    expect(answer.batches).toMatchObject({ written: 1, at: 3, ratio: 3, binds: true });
+    // Three loads of an hour, one after another, plus three times the chopping.
+    expect(answer.elapsed.at).toBe(210);
+    expect(answer.standing.at).toBe(30);
+    // What the vessel cost: two extra hours nobody had before.
+    expect(answer.batches.costMinutes).toBe(120);
+    expect(answer.elapsed.at - cost(pot, 12).elapsed.at).toBe(120);
+  });
+
+  it('a recipe at 0.5×: nothing batches and the hands-on figure halves', () => {
+    const answer = cost(basket, 2);
+    expect(answer.batches).toMatchObject({ written: 1, at: 1, ratio: 1, binds: false });
+    expect(answer.standing.at).toBe(5);
+    expect(answer.elapsed.at).toBe(65);
+  });
+
+  it('a recipe with no capacity declared says so, and prices the vessel at nothing', () => {
+    const answer = cost(pot, 12);
+    expect(answer.bounded).toBe(false);
+    expect(answer.batches.costMinutes).toBe(0);
+    // §6's row is "nobody has measured what the pan holds for this one" — a fact about the
+    // file, not a claim that nothing binds. `bounded` is what a page reads to say it.
+    expect(cost(basket, 12).bounded).toBe(true);
+  });
+
+  it('a recipe whose hands-on figure is entirely assumed carries the guess, multiplied', () => {
+    // Nothing in the step says whether you stand there, so time.ts falls back to hands-on:
+    // the minutes are real and the reading is ours.
+    const assumed = fixture('assumed', [
+      { label: 'do the thing 20 min', timers: [timer(20, 'hands-on', 'default')] },
+      { label: 'and then this', refs: [0] },
+    ]);
+    const answer = cost(assumed, 12);
+    expect(answer.evidence).toBe('unknown');
+    expect(answer.standing.at).toBe(60);
+    // The part nobody claimed grew exactly as fast as the figure it sits inside.
+    expect(answer.assumedStandingMinutes).toBe(60);
+  });
+
+  it('never lets a scaled figure look more certain than the one it scaled', () => {
+    const strong = { stated: 3, inferred: 2, unknown: 1 } as const;
+    for (const recipe of all) {
+      const schedule = buildSchedule(recipe);
+      const before = handsOnEvidence(schedule);
+      for (const wanted of [1, 2, 3, 12, 48]) {
+        const answer = costOf(recipe, wanted);
+        if (!answer) continue;
+        expect(strong[answer.evidence], `${recipe.slug} at ${wanted}`).toBeLessThanOrEqual(
+          strong[before],
+        );
+      }
+    }
+  });
+
+  it('grows the assumed part of the figure whenever the figure grows', () => {
+    for (const recipe of all) {
+      const schedule = buildSchedule(recipe);
+      if (schedule.assumedHandsOnMinutes === 0) continue;
+      const answer = costOf(recipe, servingsOf(recipe)! * 3);
+      expect(answer!.assumedStandingMinutes, recipe.slug).toBeGreaterThanOrEqual(
+        schedule.assumedHandsOnMinutes,
+      );
+    }
+  });
+
+  it('is null when there is no baseline to scale from, rather than inventing one', () => {
+    const vague = fixture('vague', [{ label: 'stir' }], { metadata: { servings: 'plenty' } });
+    expect(costOf(vague, 12)).toBeNull();
+    expect(costOf(pot, 0)).toBeNull();
+    expect(costOf(pot, -4)).toBeNull();
+    expect(costOf(pot, Number.NaN)).toBeNull();
+  });
+});
+
+/* ---- no notation escapes --------------------------------------------------- */
+
+describe('what a Cost is allowed to contain', () => {
+  const basketFixture = fixture(
+    'basket-contract',
+    [
+      { label: 'toss the wings in the rub 2 min', timers: [timer(2, 'hands-on')] },
+      { label: 'roast in the basket 20 min', refs: [0], timers: [timer(20)] },
+    ],
+    { capacity: capacity('4 — the basket, roast') },
+  );
+
+  const values = (value: unknown): unknown[] =>
+    value !== null && typeof value === 'object'
+      ? Object.values(value).flatMap(values)
+      : [value];
+
+  it('holds no string a page could print — only the confidence enum', () => {
+    const answers = [
+      cost(real('gumbo'), 24),
+      cost(withCapacity('beef-with-broccoli', '2 — the wok, sear'), 12),
+      cost(real('chili-con-carne'), 18),
+    ];
+    for (const answer of answers) {
+      for (const value of values(answer)) {
+        if (typeof value !== 'string') continue;
+        expect(['stated', 'inferred', 'unknown']).toContain(value);
+      }
+    }
+  });
+
+  it("never hands back the vessel's own words, which are the author's to print", () => {
+    const answer = cost(withCapacity('beef-with-broccoli', '2 — the wok, sear'), 12);
+    expect(JSON.stringify(answer)).not.toContain('wok');
+    expect(JSON.stringify(answer)).not.toContain('sear');
+  });
+
+  it('says nothing in notation and nothing in words', () => {
+    // The keys are this module's own names — `batches`, `elapsed` — and are not printed. It
+    // is the VALUES that would reach a card, so it is the values that are checked.
+    for (const answer of [cost(real('gumbo'), 24), cost(basketFixture, 12)]) {
+      for (const value of values(answer)) {
+        if (typeof value !== 'string') continue;
+        expect(value).not.toMatch(/O\(/);
+        expect(value).not.toMatch(/×|three times|costs you nothing|one load|batch/i);
+      }
+    }
+  });
+});
+
+/* ---- the whole collection -------------------------------------------------- */
+
+describe('every recipe in the collection', () => {
+  it('reads its timers exactly the way the schedule does', () => {
+    /*
+     * scaling.ts re-reads each step's timers to get the hands-on/unattended split PER TASK,
+     * which the schedule computes and does not publish. This is the guard on that
+     * duplication: sum the re-read split over every task and it has to reproduce the
+     * schedule's own two totals, on every recipe, or the two files have started disagreeing.
+     */
+    for (const recipe of all) {
+      const schedule = buildSchedule(recipe);
+      const steps = new Map(recipe.steps.map((step) => [step.index, step]));
+      let handsOn = 0;
+      let unattended = 0;
+      for (const task of schedule.tasks) {
+        const step = steps.get(Number(task.id.slice(1)));
+        const readings = readTimers(step?.timers ?? [], task.label);
+        for (const [i, t] of (step?.timers ?? []).entries()) {
+          if (t.minutes === null || !Number.isFinite(t.minutes)) continue;
+          if (readings[i].attention === 'unattended') unattended += t.minutes;
+          else handsOn += t.minutes;
+        }
+      }
+      expect(Math.round(handsOn * 100) / 100, recipe.slug).toBe(schedule.handsOnMinutes);
+      expect(Math.round(unattended * 100) / 100, recipe.slug).toBe(schedule.unattendedMinutes);
+    }
+  });
+
+  it('costs something finite at every multiplier the plan page offers', () => {
+    for (const recipe of all) {
+      const s = servingsOf(recipe)!;
+      for (const multiplier of [0.5, 1, 2, 3]) {
+        const answer = costOf(recipe, s * multiplier);
+        expect(answer, recipe.slug).not.toBeNull();
+        for (const value of Object.values(answer!.elapsed)) {
+          if (typeof value === 'number') expect(Number.isFinite(value), recipe.slug).toBe(true);
+        }
+        expect(answer!.elapsed.at, recipe.slug).toBeGreaterThanOrEqual(answer!.standing.at);
+        expect(answer!.longest.at, recipe.slug).toBeLessThanOrEqual(answer!.standing.at + 0.01);
+      }
+    }
+  });
+
+  it('leaves the written figures exactly as the schedule published them', () => {
+    for (const recipe of all) {
+      const schedule = buildSchedule(recipe);
+      const answer = costOf(recipe, servingsOf(recipe)!)!;
+      expect(answer.standing.written, recipe.slug).toBe(schedule.handsOnMinutes);
+      expect(answer.longest.written, recipe.slug).toBe(schedule.longestHandsOnMinutes);
+      // At the size it is written for, nothing has been scaled at all.
+      expect(answer.servings.multiplier, recipe.slug).toBe(1);
+      expect(answer.standing.at, recipe.slug).toBe(schedule.handsOnMinutes);
+    }
   });
 });

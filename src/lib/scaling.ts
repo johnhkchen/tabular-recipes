@@ -415,18 +415,24 @@ const growth = (written: number, at: number): Growth => ({
 /**
  * What the longest unbroken stretch grows by.
  *
- * `longestHandsOnMinutes` is made of hands-on minutes, and which of them — free or batched —
+ * `longestHandsOnMinutes` is made of hands-on minutes, and WHICH of them — free or batched —
  * is not recorded, so the honest answer is the larger of the two factors those minutes could
  * have grown by. `max(m, r)` and not `r`: `r < m` is possible (s=4, c=3, n=8 gives r=1.5 and
  * m=2), and a stretch must never be reported as growing more slowly than the work it is made
- * of.
+ * of. When the vessel bounds no hands-on work at all there is no batched work in the stretch
+ * to begin with, so it grows with the work: at half a recipe the stretch halves.
  *
  * Where it errs it errs towards a busier evening, which is schedule.ts:longestUnbroken()'s own
  * convention: it warns a tired cook rather than reassuring one. It is an ACCEPTED ERROR with a
  * stated direction — four loads of a basket put a twenty-minute wait between the hands-on
  * chunks, which is a break, so a real cook's stretch would not grow by the batch ratio at all.
+ *
+ * The one thing it may not do is exceed the standing figure, which is why costOf() caps it
+ * there: the stretch is made of those minutes, and a run longer than the work it is cut from
+ * is not a cautious answer but an incoherent one. The schedule keeps the same invariant.
  */
-const longestGrowth = (multiplier: number, ratio: number) => Math.max(multiplier, ratio);
+const longestGrowth = (multiplier: number, ratio: number, batchedWork: number) =>
+  batchedWork > 0 ? Math.max(multiplier, ratio) : multiplier;
 
 /**
  * What it costs to cook `wanted` servings of this recipe.
@@ -455,7 +461,7 @@ export function costOf(recipe: RawRecipe, wanted: number, schedule?: Schedule): 
 
   const elapsedAt = aFree + m * hFree + r * (aBatch + hBatch);
   const standingAt = m * hFree + r * hBatch;
-  const stretch = longestGrowth(m, r);
+  const stretch = longestGrowth(m, r, hBatch);
 
   /*
    * The whole of the vessel's contribution, which is almost always zero: subtract the
@@ -476,7 +482,10 @@ export function costOf(recipe: RawRecipe, wanted: number, schedule?: Schedule): 
     },
     elapsed: growth(a + h, elapsedAt),
     standing: growth(h, standingAt),
-    longest: growth(built.longestHandsOnMinutes, built.longestHandsOnMinutes * stretch),
+    longest: growth(
+      built.longestHandsOnMinutes,
+      Math.min(built.longestHandsOnMinutes * stretch, standingAt),
+    ),
     /*
      * The reading the schedule already publishes, passed through rather than recomputed. A
      * cost built on assumed minutes is a guess multiplied, and multiplying makes it worse —
