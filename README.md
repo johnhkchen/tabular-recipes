@@ -125,6 +125,39 @@ Then the optional lines, which are what the site is organised by:
   the honest strength for a guess. The failure that matters runs the other way: the bowls a
   recipe uses and never names, which no check can see. That is why a person writes this line.
 
+- **`capacity`** is how many servings the limiting vessel holds, which vessel, and what it
+  bounds — the one fact that decides whether cooking three times as much takes three times as
+  long. One line: a number of **servings**, then the vessel, then the operations it bounds.
+
+  ```cooklang
+  >> capacity: 2 — the wok, sear
+  >> capacity: 4 — the air fryer basket, roast
+  ```
+
+  **Leave it off, which is the common and correct answer.** Most recipes are not vessel-bound:
+  a pot does not care how much is in it, and a capacity on every file would mean somebody
+  guessed. A wrong one is worse than none — absent leaves the page saying what it says today,
+  and wrong makes it confidently wrong in a new way.
+
+  **It is what the vessel HOLDS, not what the recipe makes.** A recipe that simply serves four
+  has no capacity to declare. And it is never a count of batches: how many loads you need is
+  worked out from this number and `>> servings:`, so a line that states one is a build error —
+  the same rule that stops `washing-up` stating its own count.
+
+  **Say what it bounds, not just how much.** *"2 — the wok"* on a stir-fry charges the wok's
+  batches to the thirty-minute rest in the fridge, which turns a 42-minute answer into 102.
+  Naming the operation — `sear` — is what keeps the batches where they happen, so a line with
+  no operation is a build error too. Name it in the word your step uses.
+
+  **A capacity below `>> servings:` is a build error unless the recipe says where it batches.**
+  A file that serves 8 and holds 4 already goes in two loads; that is fine, and
+  `beef-with-broccoli` says so in the step itself — *"sear in two batches"*. Saying nothing is
+  the fault, and the message quotes both lines so you can see which one is wrong.
+
+  It is authored, never derived, and it is a fact about **your** kitchen: the same file is a
+  different number of batches in a different one, which is why the vessel is named out loud.
+  `docs/knowledge/scaling.md` is the whole model, worked by hand on five dishes.
+
 **Name your timers.** `~rise{90%min}`, `~chill{4%hr}`, `~bake{30%min}` — the name is what
 separates time you spend from time you merely wait out, which is the most useful thing a
 recipe page can tell a cook. An unnamed timer is read from the operation it sits in
@@ -210,6 +243,8 @@ $ node scripts/check-recipes.mjs --labels recipes/soups/new-england-clam-chowder
 | `src/lib/time.ts` | Timer durations in minutes, and whether a wait is hands-on or unattended. |
 | `src/lib/slack.ts` | The three slack levels, and the one reader that turns a `>> slack:` line into a level and a reason. |
 | `src/lib/washing-up.ts` | The one reader that turns a `>> washing-up:` line into a list and the count derived from it, plus the advisory cross-check against `cookware`. |
+| `src/lib/keeps.ts` | The one reader that turns a `>> keeps:` line into a span and the character that has to come with it. Refuses a bare number. |
+| `src/lib/scaling.ts` | The one reader that turns a `>> capacity:` line into a vessel, and the cost of cooking any number of servings of a recipe. Returns figures, never sentences. |
 | `src/lib/collection.test.ts` | The invariants no single file can be checked for: unique slugs, mutual pairings, one plain way per dish. |
 | `scripts/normalise.mjs` | The only place the WASM parser is touched. |
 | `scripts/parse-recipes.mjs` | Walks `recipes/`, emits `src/generated/recipes.json`. |
