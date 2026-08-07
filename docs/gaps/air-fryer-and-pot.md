@@ -188,8 +188,8 @@ The acceptance test for this ticket was that if fewer than ten existing recipes 
 bars, the page says so plainly and says what that means. It is zero, so:
 
 **The gate as written admits nothing that exists.** The counter is not a re-cut of the shelves
-beside it. It is a new shelf whose entire stock must be written, and the twenty ranks below are
-that stock rather than a wish list on top of one.
+beside it. It is a new shelf whose entire stock must be written, and the twenty-six ranks below —
+twenty for the basket, six for the pot — are that stock rather than a wish list on top of one.
 
 **What that means, in the order it will bite:**
 
@@ -237,7 +237,7 @@ line. A basket version of something already here is a second file carrying `>> d
 `>> kit: Air Fryer`. A basket dish with no plain counterpart carries neither line, and its `dish`
 defaults to its own slug (`scripts/normalise.mjs:230`).
 
-### The basket — ranks 1 to 14
+### The basket — ranks 1 to 20
 
 1. **Chicken wings** — **standalone.** Nothing here to be a variant of: there is no `wings`, no
    `buffalo-wings`, no `chicken-wings`. The single most-searched thing anyone does with the
@@ -311,40 +311,76 @@ defaults to its own slug (`scripts/normalise.mjs:230`).
     cooks. It exists because of the machine rather than despite it, and nothing on the site is a
     counterpart. 200°C, 12–14 minutes. Two things.
 
-### The pot — ranks 15 to 20
+15. **Chicken tikka** — **`kit: Air Fryer` variant of `chicken-tikka`.** The first of the tandoor
+    substitutes, and the best of them: the marinade is thick yoghurt that clings rather than a
+    batter that blows off, and a basket is the closest a home kitchen gets to a clay oven's dry
+    radiant heat. 200°C, 12–15 minutes, turned once. **Two things** — the marinating bowl and the
+    basket — and only if the skewers are dropped, which they can be here and cannot in a tandoor.
+
+16. **Shish tawook** — **`kit: Air Fryer` variant of `shish-tawook`.** The same argument one shelf
+    over, and the same two things. 200°C, 12–14 minutes. The plain file wants a grill, which is the
+    thing most of its readers do not have and the reason this variant is worth writing rather than
+    merely possible.
+
+17. **Seekh kabab** — **`kit: Air Fryer` variant of `seekh-kabab`.** Mince worked in one bowl,
+    moulded straight onto the basket's own bars, 200°C for 10–12 minutes. Two things. The caution
+    the file must carry is that the fat renders out and drips, so this is the one dish on the page
+    where the drawer under the basket is part of the washing-up and should be counted.
+
+18. **Padrón peppers** — **standalone.** Nothing here to be a variant of. No oil beyond a slick, no
+    prep beyond a rinse, 200°C for 6–8 minutes until they blister and collapse; salt in the bowl
+    you serve from. **One thing**, which puts it level with halloumi as the cleanest pass here,
+    and it is on the list at eighteen rather than three only because it is a snack and not a
+    dinner.
+
+19. **Crisped marinated tofu** — **`kit: Air Fryer` variant of `crisped-marinated-tofu`.** The
+    basket does what a skillet does to tofu without the sticking and without turning each face by
+    hand. 200°C, 15–18 minutes with a shake. **Flagged:** the marinade bowl is the whole question —
+    press, marinate and toss in the same bowl and it is two things; use a separate one for the
+    cornflour and it is three and it fails.
+
+20. **Crispy roast potatoes** — **`kit: Air Fryer` variant of `crispy-roast-potatoes`.**
+    **Flagged hardest on the page, and ranked last of the basket for it.** The plain file parboils,
+    and a pot plus a colander plus the basket is three things and two appliances — it fails bars 1
+    and 2 as written. The variant has to drop the parboil, which drops the roughed-up starchy
+    surface that makes the plain version worth cooking. That is a real loss and the table must
+    argue it rather than quietly omit it. Written honestly it is a good weeknight potato; written
+    as though nothing was given up it is the advertisement this shelf exists to avoid.
+
+### The pot — ranks 21 to 26
 
 The pot half of the counter is thinner than the basket half and this is the honest reason: **every
 Instant Pot recipe already written is a long braise**, because that is what T-002-02 and T-002-03
 were asked for. The pot's *short* repertoire — eggs, grains, pulses — has never been written here
 at all.
 
-15. **Hard-boiled eggs** — **`kit: Instant Pot` variant of `seven-minute-eggs`.** Five minutes to
+21. **Hard-boiled eggs** — **`kit: Instant Pot` variant of `seven-minute-eggs`.** Five minutes to
     pressure, five under, five in ice. Roughly 25 minutes end to end, **two things**, and the shell
     comes off in one piece, which is the actual reason anyone does it this way. The fastest clear
     pass on the whole page.
 
-16. **A pot of plain rice** — **`kit: Instant Pot` variant of `gohan`.** Rinse, water, three
+22. **A pot of plain rice** — **`kit: Instant Pot` variant of `gohan`.** Rinse, water, three
     minutes at pressure, ten of natural release. Under 30 minutes, one thing to wash. The plain
     file is a stovetop absorption method and the pressure one is genuinely a different technique,
     not a shortcut.
 
-17. **Red lentil soup** — **`kit: Instant Pot` variant of `red-lentil-soup`.** Dinner in under 30
+23. **Red lentil soup** — **`kit: Instant Pot` variant of `red-lentil-soup`.** Dinner in under 30
     minutes from a dry store cupboard, sautéed and pressured in the same pot. **One thing**, if the
     blending is done with a stick blender in the pot; two if it is not, and the file has to say
     which.
 
-18. **Kitchari** — **`kit: Instant Pot` variant of `kitchari`.** Rice and mung in one vessel is
+24. **Kitchari** — **`kit: Instant Pot` variant of `kitchari`.** Rice and mung in one vessel is
     what the dish already is; the pot only removes the watching. The plain file is 50 minutes and
     this is about 25.
 
-19. **Mujaddara** — **`kit: Instant Pot` variant of `mujaddara`.** This one is worth writing for a
+25. **Mujaddara** — **`kit: Instant Pot` variant of `mujaddara`.** This one is worth writing for a
     reason beyond speed. [one-pot.md](one-pot.md) threw `mujaddara` off the One Pot shelf because
     *"lentils simmered apart from the onion skillet"* — two vessels. In the pot the onions
     caramelise on sauté and the lentils and rice go in on top of them, so **the appliance version
     is genuinely one pot where the plain version is two.** That is a claim the plain file cannot
     make and the variant can.
 
-20. **Polenta** — **`kit: Instant Pot` variant of `polenta`.** Nine minutes at pressure against
+26. **Polenta** — **`kit: Instant Pot` variant of `polenta`.** Nine minutes at pressure against
     forty-five of stirring, and no skin, no catching, no arm. One thing. The plain file's whole
     difficulty is the stirring and pressure removes exactly that.
 
@@ -525,11 +561,14 @@ machine is bad at or a fact about it that no cell can carry.
 
 ## Recorded for whoever reads this next
 
-- **`docs/knowledge/counters.md` has entries for sixteen of the twenty-two counters, and all six it
-  is missing are the appliance-and-format shelves** — The Bowl Shop, Instant Pot, One Pot, Japanese
-  Home Cooking, The Slow Cooker, and until this ticket, this one. T-008-02 wrote the entry for this
-  counter and deliberately did not backfill the other five, which would have been five unreviewed
-  essays inside a ticket about one shelf. It is a real gap and it is somebody's next job.
+- **`docs/knowledge/counters.md` now has entries for seventeen of the twenty-two counters, and all
+  five it is still missing are the appliance-and-format shelves** — The Bowl Shop, Instant Pot, One
+  Pot, Japanese Home Cooking and The Slow Cooker. It was sixteen of twenty-one before this ticket,
+  and this counter's entry is the first appliance shelf the file has ever described. T-008-02
+  deliberately did not backfill the other five, which would have been five unreviewed essays inside
+  a ticket about one shelf. It is a real gap and it is somebody's next job — and the shape of this
+  entry is the template, because it is the one that had to solve *what does a counter with no board
+  put in its vocabulary table*.
 - **`src/lib/icons.ts:319` maps `air fry` to an oven icon.** It is the right icon and nothing uses
   it yet. When T-008-04 lands, check whether a basket deserves its own.
 - **The One Pot drift is still there.** `node scripts/menu-sections.mjs` still names One Pot and
