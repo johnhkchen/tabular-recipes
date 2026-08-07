@@ -27,6 +27,14 @@
  *    and are T-011-05's and T-011-06's to say. A function returning "O(n)" is how the
  *    notation ends up on a card.
  */
+import {
+  buildSchedule,
+  type Confidence,
+  handsOnEvidence,
+  type Schedule,
+  type Task,
+} from './schedule.ts';
+import { readTimers } from './time.ts';
 import type { RawRecipe, RawStep } from './tree.ts';
 
 /* ---- the property ---------------------------------------------------------- */
@@ -225,4 +233,260 @@ export function boundSteps(recipe: RawRecipe, capacity: Capacity): number[] {
 export function saysItBatches(recipe: RawRecipe, capacity: Capacity): boolean {
   const bound = new Set(boundSteps(recipe, capacity));
   return recipe.steps.some((step) => bound.has(step.index) && /\bbatch(es)?\b/i.test(textOf(step)));
+}
+
+/* ---- the cost function ----------------------------------------------------- */
+
+/**
+ * A figure at the size the recipe is written for, the same figure at the size you want, and
+ * how it got from one to the other.
+ *
+ * The growth is returned rather than left to the caller because the useful statement is about
+ * the curve — *three times as much costs you nothing extra* — and a caller re-deriving it is a
+ * second answer to one question.
+ */
+export interface Growth {
+  /** The figure at the servings the recipe is written for. */
+  written: number;
+  /** The same figure at the target. */
+  at: number;
+  /**
+   * `at / written`, or null when `written` is zero — chili-con-carne stands you at the pot for
+   * no minutes at all, and "zero grew by a factor of nothing" is a division a caller should
+   * not have to defend.
+   */
+  factor: number | null;
+  /** True when the figure did not move at all. */
+  flat: boolean;
+}
+
+/** How many loads the vessel makes of it, then and now. `scaling.md` §2's `b` and `r`. */
+export interface Batches {
+  /** `ceil(s/c)` — loads the recipe already needs as written. 1 when no capacity is declared. */
+  written: number;
+  /** `ceil(n/c)` — loads at the target. */
+  at: number;
+  /** `b(n)/b(s)`. A RATIO, because a recipe measured at `s` was measured with `b(s)` loads. */
+  ratio: number;
+  /** True when the target needs more loads than the written recipe does. */
+  binds: boolean;
+  /**
+   * Minutes the vessel costs over the same recipe with no capacity at all:
+   * `A_batch·(r − 1) + H_batch·(r − m)`. Usually zero, and that is the point — a vessel that
+   * binds a WAIT is expensive and a vessel that binds WORK is free, because the work was
+   * going to grow anyway. Searing in two goes costs nothing; three loads of a 20-minute
+   * basket costs forty minutes.
+   */
+  costMinutes: number;
+}
+
+export interface Cost {
+  /** False when no capacity was declared, which is nearly always. */
+  bounded: boolean;
+  /** `s`, `n` and `m = n/s`. */
+  servings: { written: number; at: number; multiplier: number };
+  batches: Batches;
+  /** Clock time for one cook: `A_free + m·H_free + r·(A_batch + H_batch)`. */
+  elapsed: Growth;
+  /** Time you are standing there: `m·H_free + r·H_batch`. */
+  standing: Growth;
+  /** The longest unbroken stretch of that, grown by `max(m, r)` — see longestGrowth(). */
+  longest: Growth;
+  /**
+   * How good the hands-on figure was BEFORE it was scaled, unchanged by the scaling. A
+   * multiplied guess is a bigger guess, so this may never read stronger than the figure it
+   * scaled — and the one place it could have been made to is here.
+   */
+  evidence: Confidence;
+  /** The part of `standing.at` that is there only because nothing was said. Grows with it. */
+  assumedStandingMinutes: number;
+  /** Operations the recipe never timed. The figure above is a floor by exactly this much. */
+  untimedCount: number;
+}
+
+/** Minutes are floats once seconds are involved; keep the arithmetic from drifting. */
+const round = (minutes: number) => Math.round(minutes * 100) / 100;
+
+/**
+ * One task's minutes, split hands-on from unattended.
+ *
+ * `Task.attention` is a whole-step label and deliberately cautious — a step with one hands-on
+ * timer among five is called hands-on entire — which is right for a table cell and wrong here:
+ * read that way karaage's `A` comes out 35 against the 40 the model computed by hand, because
+ * the five-minute rest inside "fry 90 sec, rest 5 min" disappears into a hands-on label.
+ *
+ * So the timers are read again, with the same call buildSchedule() makes on the same inputs —
+ * the step's own timers against the label off the tree. It is the same reading and not a
+ * second opinion, and a whole-collection test in scaling.test.ts holds it to that: summing
+ * this over every task reproduces the schedule's own two totals on every recipe.
+ */
+function splitAttention(
+  step: RawStep | undefined,
+  task: Task,
+  inVessel: (timerName: string | null) => boolean,
+): Split {
+  const all = step?.timers ?? [];
+  const readings = readTimers(all, task.label);
+  const split: Split = { handsOn: 0, unattended: 0, handsOnBound: 0, unattendedBound: 0 };
+
+  for (const [i, timer] of all.entries()) {
+    const minutes = timer.minutes;
+    if (minutes === null || !Number.isFinite(minutes)) continue;
+    const bound = inVessel(timer.name);
+    if (readings[i].attention === 'unattended') {
+      split.unattended += minutes;
+      if (bound) split.unattendedBound += minutes;
+    } else {
+      split.handsOn += minutes;
+      if (bound) split.handsOnBound += minutes;
+    }
+  }
+
+  return split;
+}
+
+interface Split {
+  handsOn: number;
+  unattended: number;
+  handsOnBound: number;
+  unattendedBound: number;
+}
+
+/**
+ * Which minutes of a bound step are actually inside the vessel.
+ *
+ * A capacity binds an OPERATION, and a step is often two of them in one sentence:
+ * karaage's `~fry{90%sec}, then lift it onto a rack and ~rest{5%min}` is ninety seconds in the
+ * oil and five minutes on a rack, and only the first is in the pot. Charging the rest to the
+ * vessel puts ten minutes on twelve portions that nobody waits — the same error at timer
+ * granularity that scaling.md §3's 102 minutes is at recipe granularity.
+ *
+ * A TIMER'S NAME is the author saying which operation the minutes belong to, which is the
+ * claim time.ts already leans on for the whole hands-on reading. So a named timer is in the
+ * vessel only if the capacity names it, and an unnamed one is in whenever its step is —
+ * because nothing distinguishes it, and charging it is the busier reading.
+ */
+const binderFor = (capacity: Capacity | null, bound: Set<number>) =>
+  (index: number) =>
+    (timerName: string | null): boolean => {
+      if (!capacity || !bound.has(index)) return false;
+      if (!timerName) return true;
+      return capacity.operations.some((entry) => entryMatches(entry, timerName));
+    };
+
+/** `scaling.md` §2's symbols, read off one recipe and its schedule. */
+function parts(recipe: RawRecipe, schedule: Schedule, capacity: Capacity | null, bound: Set<number>) {
+  const steps = new Map(recipe.steps.map((step) => [step.index, step]));
+  const onPath = new Set(schedule.criticalPath);
+  const binds = binderFor(capacity, bound);
+
+  /*
+   * A is a LENGTH OF CLOCK and unattendedMinutes is a branch sum, which is not the same
+   * number: gyoza reports 56 unattended minutes against a 49-minute recipe, because the
+   * cabbage salts while the dough rests. Only one of those two is time you wait through, so A
+   * is summed along the critical path. H is the branch sum as published, because every minute
+   * of work is a minute somebody stands there whichever branch it is on.
+   */
+  let a = 0;
+  let aBatch = 0;
+  let hBatch = 0;
+
+  for (const task of schedule.tasks) {
+    const index = Number(task.id.slice(1));
+    const split = splitAttention(steps.get(index), task, binds(index));
+    if (onPath.has(task.id)) {
+      a += split.unattended;
+      aBatch += split.unattendedBound;
+    }
+    hBatch += split.handsOnBound;
+  }
+
+  const h = schedule.handsOnMinutes;
+  return { a, h, aBatch, hBatch, aFree: a - aBatch, hFree: h - hBatch };
+}
+
+const growth = (written: number, at: number): Growth => ({
+  written: round(written),
+  at: round(at),
+  factor: written === 0 ? null : round(at / written),
+  flat: round(at) === round(written),
+});
+
+/**
+ * What the longest unbroken stretch grows by.
+ *
+ * `longestHandsOnMinutes` is made of hands-on minutes, and which of them — free or batched —
+ * is not recorded, so the honest answer is the larger of the two factors those minutes could
+ * have grown by. `max(m, r)` and not `r`: `r < m` is possible (s=4, c=3, n=8 gives r=1.5 and
+ * m=2), and a stretch must never be reported as growing more slowly than the work it is made
+ * of.
+ *
+ * Where it errs it errs towards a busier evening, which is schedule.ts:longestUnbroken()'s own
+ * convention: it warns a tired cook rather than reassuring one. It is an ACCEPTED ERROR with a
+ * stated direction — four loads of a basket put a twenty-minute wait between the hands-on
+ * chunks, which is a break, so a real cook's stretch would not grow by the batch ratio at all.
+ */
+const longestGrowth = (multiplier: number, ratio: number) => Math.max(multiplier, ratio);
+
+/**
+ * What it costs to cook `wanted` servings of this recipe.
+ *
+ * Null when the recipe has no readable `>> servings:` to scale from, or when `wanted` is not a
+ * positive number. There is no baseline to be relative to, and inventing one would be the
+ * plan page printing `serves 4 → 12` all over again.
+ *
+ * Pass the schedule if you already built one — a page has, and building it twice is waste.
+ */
+export function costOf(recipe: RawRecipe, wanted: number, schedule?: Schedule): Cost | null {
+  const s = servingsOf(recipe);
+  if (s === null || !Number.isFinite(wanted) || wanted <= 0) return null;
+
+  const built = schedule ?? buildSchedule(recipe);
+  const capacity = recipe.capacity ?? null;
+  const bound = new Set(capacity ? boundSteps(recipe, capacity) : []);
+  const { a, h, aBatch, hBatch, aFree, hFree } = parts(recipe, built, capacity, bound);
+
+  const m = wanted / s;
+  // b(k) = ceil(k/c), and 1 when nothing binds — every load is the only load.
+  const loads = (servings: number) => (capacity ? Math.ceil(servings / capacity.servings) : 1);
+  const bWritten = loads(s);
+  const bAt = loads(wanted);
+  const r = bAt / bWritten;
+
+  const elapsedAt = aFree + m * hFree + r * (aBatch + hBatch);
+  const standingAt = m * hFree + r * hBatch;
+  const stretch = longestGrowth(m, r);
+
+  /*
+   * The whole of the vessel's contribution, which is almost always zero: subtract the
+   * no-capacity answer from this one and everything else cancels. A_batch·(r−1) is a WAIT
+   * repeated, and it is the expensive term; H_batch·(r−m) is a part-full last load.
+   */
+  const costMinutes = aBatch * (r - 1) + hBatch * (r - m);
+
+  return {
+    bounded: capacity !== null,
+    servings: { written: s, at: wanted, multiplier: round(m) },
+    batches: {
+      written: bWritten,
+      at: bAt,
+      ratio: round(r),
+      binds: bAt > bWritten,
+      costMinutes: round(costMinutes),
+    },
+    elapsed: growth(a + h, elapsedAt),
+    standing: growth(h, standingAt),
+    longest: growth(built.longestHandsOnMinutes, built.longestHandsOnMinutes * stretch),
+    /*
+     * The reading the schedule already publishes, passed through rather than recomputed. A
+     * cost built on assumed minutes is a guess multiplied, and multiplying makes it worse —
+     * so the one thing this function may never do is hand back a figure that looks more
+     * certain than the figure it scaled.
+     */
+    evidence: handsOnEvidence(built),
+    assumedStandingMinutes: round(
+      built.assumedHandsOnMinutes * (h === 0 ? m : standingAt / h),
+    ),
+    untimedCount: built.untimedCount,
+  };
 }

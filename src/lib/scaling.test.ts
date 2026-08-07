@@ -7,6 +7,7 @@ import recipes from '../generated/recipes.json';
 import {
   boundSteps,
   type Capacity,
+  costOf,
   readCapacity,
   saysItBatches,
   servingsOf,
@@ -362,5 +363,161 @@ describe('the capacity check, run for real', () => {
     );
     expect(code).toBe(0);
     expect(out).toContain('is not a plain count of servings');
+  });
+});
+
+/* ---- the worked examples, which are the ones that matter ------------------- */
+
+/*
+ * docs/knowledge/scaling.md computed every figure below by hand, and the ticket says that
+ * where the code and that file disagree the file is right and the code is a bug. So these are
+ * the oracle: they are the model's own arithmetic, not this module's opinion of it.
+ */
+const withCapacity = (slug: string, line: string): RawRecipe => ({
+  ...real(slug),
+  capacity: capacity(line),
+});
+
+const cost = (recipe: RawRecipe, wanted: number) => {
+  const answer = costOf(recipe, wanted);
+  if (!answer) throw new Error(`no cost for ${recipe.slug} at ${wanted}`);
+  return answer;
+};
+
+const nearest = (minutes: number) => Math.round(minutes);
+
+describe('§7, the five dishes worked from the collection', () => {
+  it('1. chili-con-carne, 6 → 18: the pole where nothing binds', () => {
+    const answer = cost(real('chili-con-carne'), 18);
+    expect(answer.elapsed.at).toBe(120);
+    expect(answer.standing.at).toBe(0);
+    // "Cooking three times as much costs you nothing extra" is this, and only this.
+    expect(answer.elapsed.flat).toBe(true);
+    expect(answer.bounded).toBe(false);
+    // …with the caveat §4.6 exists for: four of its five operations are untimed.
+    expect(answer.evidence).toBe('unknown');
+    expect(answer.untimedCount).toBe(4);
+  });
+
+  it('2. karaage, 4 → 12: batches, and the oil costs nothing', () => {
+    const answer = cost(real('karaage'), 12);
+    expect(answer.elapsed.at).toBe(47.5);
+    expect(answer.standing.at).toBe(7.5);
+    // Declared or not, the answer is the same: what the pot bounds is 2.5 minutes of frying.
+    const bounded = cost(withCapacity('karaage', '4 — the oil, fry'), 12);
+    expect(bounded.elapsed.at).toBe(47.5);
+    expect(bounded.batches.costMinutes).toBe(0);
+  });
+
+  it('3. beef-with-broccoli, 4 → 12: the wok binds, and it costs nothing', () => {
+    const answer = cost(withCapacity('beef-with-broccoli', '2 — the wok, sear'), 12);
+    expect(answer.elapsed.at).toBe(42);
+    expect(answer.standing.at).toBe(12);
+    expect(answer.batches).toMatchObject({ written: 2, at: 6, ratio: 3, binds: true });
+    // §3's "what the capacity bought": the same 42 minutes with no capacity at all.
+    expect(answer.batches.costMinutes).toBe(0);
+    expect(cost(real('beef-with-broccoli'), 12).elapsed.at).toBe(42);
+  });
+
+  it('3b. and it is not 102 — the wrong reading puts the batches on the fridge', () => {
+    // r·A + m·H = 3·30 + 3·4. Nobody's fridge holds less because the wok does.
+    const answer = cost(withCapacity('beef-with-broccoli', '2 — the wok, sear'), 12);
+    expect(answer.elapsed.at).not.toBe(102);
+  });
+
+  it('4. gumbo, 8 → 24: nothing binds and it still scales worst', () => {
+    const answer = cost(real('gumbo'), 24);
+    expect(answer.elapsed.at).toBe(200);
+    expect(answer.standing.at).toBe(147);
+    // The best-evidenced recipe in the collection, and the model is still wrong about it
+    // (§4.3): three times the roux in a wider pan is not 105 minutes of stirring.
+    expect(answer.evidence).toBe('stated');
+    expect(answer.untimedCount).toBe(0);
+  });
+
+  it('5. gyoza, 4 → 12: the model prices it too cheaply, and says so', () => {
+    const answer = cost(real('gyoza'), 12);
+    expect(answer.elapsed.at).toBe(84);
+    expect(answer.standing.at).toBe(48);
+    // Rolling and pleating are untimed, so the figure is a floor by two whole operations.
+    expect(answer.untimedCount).toBe(2);
+  });
+});
+
+describe('§7, the air fryer pole', () => {
+  /*
+   * No .cook file yet — §7 builds it from the measured figures in docs/gaps/air-fryer-and-pot.md:
+   * a basket load is about 20 minutes of waiting, it holds about four servings, and the work
+   * around it is about two minutes.
+   */
+  const basket = fixture(
+    'basket',
+    [
+      { label: 'toss the wings in the rub 2 min', timers: [timer(2, 'hands-on')] },
+      { label: 'roast in the basket 20 min', refs: [0], timers: [timer(20, 'unattended')] },
+    ],
+    { metadata: { servings: '4' }, capacity: capacity('4 — the basket, roast') },
+  );
+
+  it('costs 66 minutes for twelve, against 26 with the capacity taken away', () => {
+    const answer = cost(basket, 12);
+    expect(answer.elapsed.at).toBe(66);
+    expect(answer.batches).toMatchObject({ written: 1, at: 3, ratio: 3 });
+
+    const unbounded = cost({ ...basket, capacity: null }, 12);
+    expect(unbounded.elapsed.at).toBe(26);
+    expect(answer.batches.costMinutes).toBe(40);
+  });
+
+  it('is the whole argument: a wait inside the batch costs, and frying does not', () => {
+    // §7: both batch, and only one of them costs anything.
+    expect(cost(basket, 12).batches.costMinutes).toBe(40);
+    expect(cost(withCapacity('karaage', '4 — the oil, fry'), 12).batches.costMinutes).toBe(0);
+  });
+});
+
+describe('§8, the two situations', () => {
+  const beef = withCapacity('beef-with-broccoli', '2 — the wok, sear');
+
+  it('"exhausted, two meals for one": every dish at n = 2', () => {
+    const table: [RawRecipe, number, number][] = [
+      [beef, 32, 2],
+      [real('karaage'), 41, 1],
+      [real('gyoza'), 44, 8],
+      [real('gumbo'), 65, 12],
+      [real('chili-con-carne'), 120, 0],
+    ];
+    for (const [recipe, elapsed, standing] of table) {
+      const answer = cost(recipe, 2);
+      expect(nearest(answer.elapsed.at), recipe.slug).toBe(elapsed);
+      expect(nearest(answer.standing.at), recipe.slug).toBe(standing);
+    }
+  });
+
+  it('scaling down takes a batch away without being told', () => {
+    // §3: b(2)/b(4) = 1/2, so the wok stops binding altogether.
+    const answer = cost(beef, 2);
+    expect(answer.batches).toMatchObject({ written: 2, at: 1, ratio: 0.5, binds: false });
+  });
+
+  it('"stressed, six people, over three days": every dish at n = 18', () => {
+    const table: [RawRecipe, number, number][] = [
+      [beef, 48, 18],
+      [real('chili-con-carne'), 120, 0],
+      [real('gyoza'), 108, 72],
+      [real('gumbo'), 163, 110],
+    ];
+    for (const [recipe, elapsed, standing] of table) {
+      const answer = cost(recipe, 18);
+      expect(nearest(answer.elapsed.at), recipe.slug).toBe(elapsed);
+      expect(nearest(answer.standing.at), recipe.slug).toBe(standing);
+    }
+  });
+
+  it('vindaloo is the shape chili is, more extreme: tripling adds 26 minutes', () => {
+    // §8: A = 780, H = 13, so 3× a fourteen-hour recipe costs 2·13 more minutes.
+    const answer = cost(real('vindaloo'), 18);
+    expect(answer.elapsed.written).toBe(793);
+    expect(answer.elapsed.at).toBe(819);
   });
 });
