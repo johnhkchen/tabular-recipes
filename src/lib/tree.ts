@@ -7,6 +7,7 @@
  */
 import { cleanLabel } from './label.ts';
 import type { Keeps } from './keeps.ts';
+import type { Capacity } from './scaling.ts';
 import type { Slack } from './slack.ts';
 import type { WashingUp } from './washing-up.ts';
 
@@ -83,6 +84,16 @@ export interface RawRecipe {
   keeps: Keeps | null;
   /** What is wrong with a `>> keeps:` line that is there but not whole. A diagnostic. */
   keepsProblem?: string | null;
+  /**
+   * How many servings the limiting vessel holds, which vessel, and the operations it bounds
+   * — the one fact the cost of cooking more of a thing cannot be worked out without.
+   * Authored, never derived: it is a fact about a kitchen, and the same file is a different
+   * number of batches in a different one. `null` is a recipe that is not vessel-bound, which
+   * is nearly all of them and is the correct answer. See src/lib/scaling.ts.
+   */
+  capacity?: Capacity | null;
+  /** What is wrong with a `>> capacity:` line that is there but not whole. A diagnostic. */
+  capacityProblem?: string | null;
   /** What people call it when they order it. */
   aka: string[];
   /** Slugs of recipes that go with this one. Made mutual at build time. */

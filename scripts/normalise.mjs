@@ -6,6 +6,7 @@
 import { Parser } from '@cooklang/cooklang';
 import { readKeeps } from '../src/lib/keeps.ts';
 import { splitList } from '../src/lib/meta.ts';
+import { readCapacity } from '../src/lib/scaling.ts';
 import { readSlack } from '../src/lib/slack.ts';
 import { readStepLabels } from '../src/lib/step-labels.ts';
 import { readStepRefs, refProblems } from '../src/lib/step-refs.ts';
@@ -271,10 +272,23 @@ export function normalise(source, { slug, path: relPath, folder }) {
    */
   const { keeps, problem: keepsProblem } = readKeeps(metadata.keeps);
 
+  /*
+   * How many servings the limiting vessel holds, which vessel, and what it bounds. Authored,
+   * never derived: no timer knows how big your pan is, and the same file is a different
+   * number of batches in a different kitchen. Read before PROMOTED deletes the key. The line
+   * has to name an operation as well as a number — a bare capacity charges its batches onto
+   * every wait in the recipe, including the thirty minutes in the fridge, which is
+   * docs/knowledge/scaling.md §3 turning 42 minutes into 102.
+   *
+   * `>> servings:` is deliberately NOT promoted, here or before this ticket: the cost
+   * function reads it off `metadata`, which is where every page already reads it.
+   */
+  const { capacity, problem: capacityProblem } = readCapacity(metadata.capacity);
+
   // Authoring directives and anything promoted to its own field are not recipe facts.
   const PROMOTED = new Set([
     'title', 'category', 'tags', 'counters', 'dish', 'kit', 'aka', 'pairs-with', 'slack',
-    'washing-up', 'keeps',
+    'washing-up', 'keeps', 'capacity',
   ]);
   for (const key of Object.keys(metadata)) {
     if (PROMOTED.has(key)) delete metadata[key];
@@ -299,6 +313,9 @@ export function normalise(source, { slug, path: relPath, folder }) {
     /** `>> keeps: 3 days — better on the second`, `>> keeps: not at all — …`, or null. */
     keeps,
     keepsProblem,
+    /** `>> capacity: 2 — the wok, sear`, or null — which is nearly every file. */
+    capacity,
+    capacityProblem,
     /** Labels written above a step that have no step to name. Empty for every other file. */
     stepLabelProblems,
     /** `@&(…)` references that point at no step, and so were read as ingredients instead. */
