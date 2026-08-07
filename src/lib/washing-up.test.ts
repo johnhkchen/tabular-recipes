@@ -1,4 +1,10 @@
-import { describe, expect, it } from 'vitest';
+import { execFileSync } from 'node:child_process';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import { afterAll, describe, expect, it } from 'vitest';
+import recipes from '../generated/recipes.json';
+import type { RawRecipe } from './tree.ts';
 import {
   NEVER_WASHED,
   pluralEntries,
@@ -33,10 +39,10 @@ describe('readWashingUp', () => {
     });
 
     expect(
-      readWashingUp('the Instant Pot, a skillet for the spices, a fine sieve, the sachet cloth')
+      readWashingUp('the Instant Pot, a skillet for the spices, a fine sieve, the spice sachet')
         .washingUp,
     ).toEqual({
-      items: ['the Instant Pot', 'a skillet for the spices', 'a fine sieve', 'the sachet cloth'],
+      items: ['the Instant Pot', 'a skillet for the spices', 'a fine sieve', 'the spice sachet'],
       count: 4,
     });
 
@@ -156,5 +162,156 @@ describe('pluralEntries', () => {
 
   it('says nothing about a recipe that never declared a line', () => {
     expect(pluralEntries(null)).toEqual([]);
+  });
+});
+
+/*
+ * The render is one guard over one value — `{washingUp && …}` in Timeline.astro — so these are
+ * what stand behind it, exactly as the slack tests stand behind theirs. A recipe is whole, or
+ * it washes nothing, or it never said; there is no fourth state for the component to draw an
+ * empty slot out of.
+ */
+describe('washing-up across the collection', () => {
+  const all = recipes as unknown as RawRecipe[];
+  const declared = all.filter((recipe) => recipe.washingUp !== null);
+
+  it('derives every count from the list it was written from', () => {
+    // The invariant the whole field rests on, asserted over real files rather than fixtures:
+    // no author writes a number, so no number can disagree with its list.
+    const disagreeing = declared
+      .filter((recipe) => recipe.washingUp!.count !== recipe.washingUp!.items.length)
+      .map((r) => `${r.slug}: ${r.washingUp!.count} vs ${r.washingUp!.items.length}`);
+    expect(disagreeing).toEqual([]);
+  });
+
+  it('leaves every declared line whole, never half-declared', () => {
+    const halfway = declared
+      .filter((recipe) => recipe.washingUp!.items.some((item) => !item.trim()))
+      .map((recipe) => recipe.slug);
+    expect(halfway).toEqual([]);
+  });
+
+  it('renders nothing for a recipe that never declared one', () => {
+    // Nothing to draw is the common case: 650-odd files predate the field.
+    const undeclared = all.filter((recipe) => recipe.washingUp === null);
+    expect(undeclared.length).toBeGreaterThan(0);
+    for (const recipe of undeclared) expect(recipe.washingUp, recipe.slug).toBeNull();
+  });
+
+  it('tells a recipe that washes nothing apart from one that never said', () => {
+    const nothing = declared.filter((recipe) => recipe.washingUp!.count === 0);
+    expect(nothing.length).toBeGreaterThan(0);
+    for (const recipe of nothing) {
+      expect(recipe.washingUp, recipe.slug).not.toBeNull();
+      expect(recipe.washingUp!.items, recipe.slug).toEqual([]);
+    }
+  });
+
+  it('re-reads every declared line without a complaint', () => {
+    const problems = declared
+      .map((recipe) => ({
+        slug: recipe.slug,
+        problem: readWashingUp(recipe.washingUp!.items.join(', ') || 'nothing').problem,
+      }))
+      .filter((entry) => entry.problem)
+      .map((entry) => `${entry.slug}: ${entry.problem}`);
+    expect(problems).toEqual([]);
+  });
+
+  it('has worked examples a later ticket can copy, at both ends of the range', () => {
+    expect(declared.length).toBeGreaterThanOrEqual(8);
+    expect(declared.some((recipe) => recipe.washingUp!.count === 0)).toBe(true);
+    expect(declared.some((recipe) => recipe.washingUp!.count === 1)).toBe(true);
+    // The four wok recipes are the reason this field exists: one #wok{}, five things to wash.
+    const tsos = declared.find((recipe) => recipe.slug === 'general-tsos-chicken');
+    expect(tsos?.washingUp?.count).toBe(5);
+    expect(tsos?.cookware).toEqual(['wok']);
+  });
+
+  it('shows the variant counts only when every side of a dish has declared', () => {
+    // The switcher's condition, asserted on the data it reads. A count beside a silent sibling
+    // would read as a claim that the silent one washes nothing.
+    for (const recipe of all) {
+      for (const variant of recipe.variants) {
+        const sibling = all.find((r) => r.slug === variant.slug);
+        expect(variant.washingUpCount, variant.slug).toBe(sibling?.washingUp?.count ?? null);
+      }
+    }
+  });
+});
+
+/*
+ * "Warns, does not fail" is a property of the checker's exit code, not of any function's return
+ * value, so the only honest way to test it is to run the checker. The fixture is written to a
+ * temp directory and never to recipes/, so the collection build never sees it.
+ */
+describe('the cookware cross-check, run for real', () => {
+  const root = path.resolve(import.meta.dirname, '../..');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'washing-up-'));
+  const folder = path.join(dir, 'stews-and-braises');
+  fs.mkdirSync(folder, { recursive: true });
+
+  afterAll(() => fs.rmSync(dir, { recursive: true, force: true }));
+
+  const write = (name: string, washingUp: string) => {
+    const file = path.join(folder, `${name}.cook`);
+    fs.writeFileSync(
+      file,
+      [
+        '>> title: Probe',
+        '>> category: Stews & Braises',
+        '>> tags: probe',
+        '>> servings: 4',
+        washingUp,
+        '',
+        'Fry @onion{1} and @garlic{2%cloves} in @olive oil{2%Tbs} in a #Dutch oven{}.',
+        '',
+        'Simmer @&(~1)base{} with @tomatoes{1%lb} and @stock{2%cups} for ~simmer{20%min}.',
+        '',
+        'Season @&(~1)stew{} with @salt{1%tsp} and @black pepper{1/2%tsp}.',
+        '',
+      ].join('\n'),
+    );
+    return file;
+  };
+
+  const run = (file: string) => {
+    try {
+      const out = execFileSync(process.execPath, ['scripts/check-recipes.mjs', file], {
+        cwd: root,
+        encoding: 'utf8',
+        stdio: ['ignore', 'pipe', 'ignore'],
+      });
+      return { code: 0, out };
+    } catch (error) {
+      const failure = error as { status: number; stdout: string };
+      return { code: failure.status, out: failure.stdout };
+    }
+  };
+
+  it('warns about cookware the line forgets, and still exits 0', () => {
+    const { code, out } = run(write('probe-warn', '>> washing-up: a chopping board'));
+    expect(code).toBe(0);
+    expect(out).toContain('  ok   ');
+    expect(out).toContain('washing-up: names #Dutch oven{}');
+  });
+
+  it('says nothing when the line accounts for what the file names', () => {
+    const { code, out } = run(write('probe-quiet', '>> washing-up: the Dutch oven'));
+    expect(code).toBe(0);
+    expect(out).not.toContain('washing-up:');
+  });
+
+  it('fails a line that states a number instead of the things', () => {
+    const { code, out } = run(write('probe-number', '>> washing-up: 2'));
+    expect(code).toBe(1);
+    expect(out).toContain('FAIL');
+    expect(out).toContain('which is a number rather than a thing');
+  });
+
+  it('fails a line that is there and empty rather than reading it as nothing', () => {
+    const { code, out } = run(write('probe-empty', '>> washing-up:'));
+    expect(code).toBe(1);
+    expect(out).toContain('washing-up is there but says nothing');
   });
 });
