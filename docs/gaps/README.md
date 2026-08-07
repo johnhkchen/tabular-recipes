@@ -32,6 +32,41 @@ promised: 658 at the start, minus the sixteen 老火湯 T-007-02 deleted, plus t
 the fourteen from T-007-04. The test and page counts move under other stories working the same branch
 and are the ones read at the time of writing; the recipe, counter and pairing counts are this story's.
 
+## What the three dials can answer for
+
+The front page's filter is only as good as what has been annotated, and its three dials have very
+different coverage. Each carries its own rule about whether the data can speak for a recipe at all, and
+a recipe it cannot speak for comes back *we can't say* rather than passing quietly.
+
+**Measured on 7 August 2026, against 685 recipes** — S-008 and S-011 have both been annotating on this
+branch, so the `Build state` figures above, which are S-007's, are stale by a good deal.
+
+| dial | what it measures | the rule | can answer for | share of 685 |
+| --- | --- | --- | --: | --: |
+| Time you're standing there | `handsOnMinutes` | `evidence !== 'unknown'` | 269 | **39.3%** |
+| On the table by | `elapsedMinutes` | `elapsedMinutes > 0` | 661 | **96.5%** |
+| Things to wash | `washingUpCount` | `washingUpCount !== null` | 177 | **25.8%** |
+
+Supporting annotation: timers in 661 files, `slack` in 416, `washing-up` in 177. The three confidence
+states behind the standing dial are **stated 46 · inferred 223 · unknown 416**.
+
+**What the filter looks like at that coverage.** A reader who turns the sink dial is putting
+three-quarters of the shelf into *we can't say* and choosing among the quarter S-008 has reached — they
+are mostly filtering by who got annotated. A reader who turns the standing dial is choosing among two
+fifths. Only the clock speaks for nearly everything, and it speaks for the axis S-010 argues is the
+wrong one. That is acceptable for now and it is not acceptable unsaid, which is why it is here.
+
+Run at the story's own scenario — *under twenty minutes standing there*, set at the nearest stop the
+dial has — the collection splits **227 pass · 42 fail · 416 we can't say**, and reading all 227 as a
+tired cook found 72 right for the evening, 12 borderline and 143 wrong.
+
+**[filter.md](filter.md) is the record of what the filter cannot say**, in the shape of these pages'
+*what it could not stock* sections: the equipment it cannot see, the marinade that started yesterday,
+the shopping, how tired the reader is, whether the result is even dinner, how many it feeds, and the
+twenty timer names `src/lib/time.ts` does not know. It ends with the five things that would close them,
+ranked. Like [soup-pot.md](soup-pot.md) it is a file in this directory that is not a counter page, so
+`node scripts/menu-sections.mjs` has no counter to match it to and it carries no `## What it has` block.
+
 ### Retired counters
 
 **The Soup Pot came down on 7 August 2026** under S-007, and is the first counter this collection has
