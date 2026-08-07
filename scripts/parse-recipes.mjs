@@ -47,11 +47,11 @@ for (const file of files) {
 
 const slugs = new Set(recipes.map((r) => r.slug));
 
-/* ---- slack, which is a controlled vocabulary like the counters ------------ */
+/* ---- the authored fields, which are whole or absent and never halfway ----- */
 
 for (const recipe of recipes) {
-  if (recipe.slackProblem) {
-    throw new Error(`${recipe.path}: ${recipe.slackProblem}`);
+  for (const problem of [recipe.slackProblem, recipe.washingUpProblem]) {
+    if (problem) throw new Error(`${recipe.path}: ${problem}`);
   }
 }
 
@@ -201,9 +201,16 @@ for (const [dish, group] of byDish) {
 
   // Each variant knows its siblings, so a page can offer the switch.
   for (const recipe of group) {
+    // The washing-up count travels with the variant, because the page where two ways of
+    // cooking one dish sit side by side is where that number decides anything.
     recipe.variants = group
       .filter((r) => r.slug !== recipe.slug)
-      .map((r) => ({ slug: r.slug, title: r.title, kit: r.kit }));
+      .map((r) => ({
+        slug: r.slug,
+        title: r.title,
+        kit: r.kit,
+        washingUpCount: r.washingUp?.count ?? null,
+      }));
   }
 }
 
@@ -216,11 +223,13 @@ fs.writeFileSync(OUT_FILE, `${JSON.stringify(recipes, null, 2)}\n`);
 
 const named = recipes.filter((r) => !r.countersInferred).length;
 const withTimers = recipes.filter((r) => r.steps.some((s) => s.timers.length)).length;
+const washed = recipes.filter((r) => r.washingUp).length;
 console.log(
   `parsed ${recipes.length} recipe(s) in ${new Set(recipes.map((r) => r.category)).size} categories ` +
     `-> ${path.relative(ROOT, OUT_FILE)}`,
 );
 console.log(
   `  counters: ${named} named, ${recipes.length - named} inferred from category · ` +
-    `timers in ${withTimers} · pairings ${recipes.reduce((n, r) => n + r.pairsWith.length, 0) / 2}`,
+    `timers in ${withTimers} · pairings ${recipes.reduce((n, r) => n + r.pairsWith.length, 0) / 2} · ` +
+    `washing-up in ${washed}`,
 );

@@ -18,6 +18,7 @@ import { findRecipes } from './find-recipes.mjs';
 import { cleanLabel } from '../src/lib/label.ts';
 import { buildTree } from '../src/lib/tree.ts';
 import { findTilingErrors, layout } from '../src/lib/layout.ts';
+import { pluralEntries, unaccountedCookware } from '../src/lib/washing-up.ts';
 
 const ROOT = path.resolve(import.meta.dirname, '..');
 const REQUIRED_META = ['title', 'category', 'tags', 'servings'];
@@ -152,6 +153,35 @@ for (const target of targets) {
     // A level nobody agreed on, or a level with no reason. The message names the legal
     // values, because the whole point of the field is that it can be read by a stranger.
     if (recipe.slackProblem) problems.push(recipe.slackProblem);
+
+    // A washing-up line that is there but not whole. Same treatment for the same reason.
+    if (recipe.washingUpProblem) problems.push(recipe.washingUpProblem);
+
+    /*
+     * The cross-check, and it WARNS. Every #thing{} a file names either goes in the sink or is
+     * something that is not washed, so a #Dutch oven{} missing from the line is worth saying —
+     * but a foil-lined tray is a real answer, so it is not automatically wrong. The interesting
+     * failure runs the other way and no check can catch it: the bowls a recipe uses and never
+     * names. That asymmetry is the whole reason this field is authored, and a checker that
+     * failed the build on the cheap half would have no credibility left for the expensive one.
+     */
+    const unaccounted = unaccountedCookware(recipe.cookware, recipe.washingUp);
+    if (unaccounted.length) {
+      notes.push(
+        `washing-up: names ${unaccounted.map((name) => `#${name}{}`).join(', ')} but the line ` +
+          `does not mention ${unaccounted.length === 1 ? 'it' : 'them'} — add ` +
+          `${unaccounted.length === 1 ? 'it' : 'them'}, or ${unaccounted.length === 1 ? 'it is' : 'they are'} ` +
+          `something that is not washed`,
+      );
+    }
+
+    // One entry is one thing, which is the rule the derived count rests on.
+    for (const entry of pluralEntries(recipe.washingUp)) {
+      notes.push(
+        `washing-up: "${entry}" counts as one thing — write it as one entry each, or the ` +
+          `count under-reports`,
+      );
+    }
 
     const tree = buildTree(recipe);
     const grid = layout(tree);
