@@ -50,7 +50,11 @@ const slugs = new Set(recipes.map((r) => r.slug));
 /* ---- the authored fields, which are whole or absent and never halfway ----- */
 
 for (const recipe of recipes) {
-  for (const problem of [recipe.slackProblem, recipe.washingUpProblem]) {
+  for (const problem of [
+    recipe.slackProblem,
+    recipe.washingUpProblem,
+    ...recipe.stepLabelProblems,
+  ]) {
     if (problem) throw new Error(`${recipe.path}: ${problem}`);
   }
 }

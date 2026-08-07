@@ -157,6 +157,10 @@ for (const target of targets) {
     // A washing-up line that is there but not whole. Same treatment for the same reason.
     if (recipe.washingUpProblem) problems.push(recipe.washingUpProblem);
 
+    // A `>> step:` line with no step under it. The label the author wrote would otherwise go
+    // nowhere at all, which is the one thing the older numbered form could never tell them.
+    problems.push(...recipe.stepLabelProblems);
+
     /*
      * The cross-check, and it WARNS. Every #thing{} a file names either goes in the sink or is
      * something that is not washed, so a #Dutch oven{} missing from the line is worth saying —
@@ -198,7 +202,7 @@ for (const target of targets) {
     if (unlabelled.length) {
       problems.push(
         `${unlabelled.length} operation cell(s) came out with no label — reword the step, ` +
-          `or set it with a >> step.N: line`,
+          `or name it with a >> step: line directly above it`,
       );
     }
 

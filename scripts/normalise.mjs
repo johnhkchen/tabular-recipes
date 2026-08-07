@@ -6,6 +6,7 @@
 import { Parser } from '@cooklang/cooklang';
 import { splitList } from '../src/lib/meta.ts';
 import { readSlack } from '../src/lib/slack.ts';
+import { readStepLabels } from '../src/lib/step-labels.ts';
 import { readWashingUp } from '../src/lib/washing-up.ts';
 import { minutesOf, readTimers } from '../src/lib/time.ts';
 
@@ -100,8 +101,17 @@ const titleCase = (slug) =>
  * @param {{slug: string, path: string, folder?: string}} where
  */
 export function normalise(source, { slug, path: relPath, folder }) {
+  /*
+   * A step's label can sit on the line directly above it (`>> step: rest it cold`), and where
+   * that line SAT is the one thing the parser throws away — it hoists any `>> key: value` into
+   * raw_metadata.map, where two of them collide. So the positions are read off the source
+   * first, and the parser is handed a copy with those lines blanked to comments. A file that
+   * writes the older `>> step.N:` form does not go near any of this: see src/lib/step-labels.ts.
+   */
+  const { source: cleaned, labels, stepCount, problems } = readStepLabels(source);
+
   const parser = new Parser();
-  const result = parser.parse_full(source, true);
+  const result = parser.parse_full(cleaned, true);
   const payload = typeof result === 'string' ? result : (result.value ?? result);
   const recipe = typeof payload === 'string' ? JSON.parse(payload) : payload;
 
@@ -130,7 +140,9 @@ export function normalise(source, { slug, path: relPath, folder }) {
        * each timer may only answer for its own half. See readTimers().
        */
       const rawLabel = stripIngredients(items, recipe);
-      const labelOverride = metadata[`step.${index + 1}`] ?? null;
+      // Two ways in, one field out: the line above the step, or the older `>> step.N:` line
+      // counted from the top of the file. Nothing downstream can tell which the file used.
+      const labelOverride = labels.get(index) ?? metadata[`step.${index + 1}`] ?? null;
       const operationLabel = labelOverride ?? rawLabel;
 
       for (const item of items) {
@@ -192,6 +204,20 @@ export function normalise(source, { slug, path: relPath, folder }) {
     }
   }
 
+  /*
+   * The pre-pass has to decide where the step blocks are without the parser's help, so it is
+   * held to the parser's own answer. This can only fire on a cooklang construct the scan does
+   * not understand, and when it does it is a bug in the scan rather than in the file — which
+   * is what the message says. A file with no inline label never reaches it.
+   */
+  const stepLabelProblems = [...problems];
+  if (labels.size && stepCount !== steps.length) {
+    stepLabelProblems.push(
+      `the inline label pre-pass counted ${stepCount} step(s) and the parser found ` +
+        `${steps.length} — that is a bug in readStepLabels(), not in this file`,
+    );
+  }
+
   const title = metadata.title ?? titleCase(slug);
   const category = metadata.category ?? (folder ? titleCase(folder) : 'Other');
   const tags = splitList(metadata.tags).map((t) => t.toLowerCase());
@@ -246,6 +272,8 @@ export function normalise(source, { slug, path: relPath, folder }) {
     /** `>> washing-up: the wok, a rack to drain on`, `>> washing-up: nothing`, or null. */
     washingUp,
     washingUpProblem,
+    /** Labels written above a step that have no step to name. Empty for every other file. */
+    stepLabelProblems,
     /*
      * What people call it when they order it. A cook looking for the pâté in their bánh mì
      * does not know to search for "pork liver pâté", so the menu vocabulary has to be
