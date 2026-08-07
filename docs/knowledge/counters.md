@@ -42,6 +42,7 @@ at all. It is coarse on purpose. Prefer a `>> counters:` line.
 | [Diner](#diner) | Griddle and breakfast all day | Separate |
 | [Smokehouse](#smokehouse) | Meat by the pound out of the pit | Separate |
 | [Meat and Three](#meat-and-three) | Cafeteria line: one meat, three sides | Separate from both the diner and the pit |
+| [Cha Chaan Teng](#cha-chaan-teng) | Hong Kong tea café: Western food re-made in Hong Kong, sold as a timed set with the drink in the price | Separate: never the same board as the dim sum trolley or the numbered takeout menu. The 冰室 is folded in |
 
 ---
 
@@ -789,6 +790,93 @@ often sold from a meat market counter — and that vocabulary is at the bottom h
 
 ---
 
+## Cha Chaan Teng
+
+**What it is.** The Hong Kong tea café, and the thing that makes it a counter rather than a
+restaurant is that **its menu is a grid of times of day, not a list of dishes**. 早餐 breakfast,
+常餐 the constant set that runs all day and is named for exactly that, 快餐 the fast set that only
+exists over lunch and comes out already cooked, 下午茶餐 the afternoon tea set, which is where the
+fried food lives. **The drink is in the price**: one Sydney board prints its whole set block as
+"Each includes Milk Tea or Coffee", and the Hong Kong convention is that the drink is hot unless you
+pay about $2 to $3 more to take it cold, and the bread is untoasted unless you pay about $5 to have
+it grilled. The trading day is long — roughly 5 or 6am to 1am — and split into five named services:
+早市, 午市, 下午茶, 晚市, 宵夜. The three big chains all print the afternoon tea window as 2pm to
+5pm; the general Hong Kong afternoon-tea hours are 2:30 to 5:30.
+
+The kitchen behind it is a griddle, a deep-fryer, a toaster, a pot of boiling water for macaroni and
+instant noodles, and a tea urn — which is why the food is **Western food re-made in Hong Kong**.
+Macaroni in ham broth, a pork chop baked under tomato sauce and cheese, spaghetti in the same red
+sauce, a club sandwich, borscht, French toast, an omelette. Reading three boards in three cities
+(Tsim Sha Tsui, Glebe in Sydney, and Sunset Park in Brooklyn) they printed the same five blocks in
+the same order: a toast-and-sandwich block, a rice-plate block, a noodles-in-soup block, a long
+drinks list, and the sets. The Brooklyn board is in English only and is the best evidence of what a
+reader will actually search: *Borsch Soup*, *Butter & Condensed Milk with Toast*, *Spam & Egg
+Sandwich*, *Satay Beef Sandwich*, *Coffee & Tea*, *Baked Pork Chop Over Rice / Spaghetti*.
+
+**Separate, and it is not close.** The comparison is with the two Chinese counters already here,
+and each fails on a different axis.
+
+Against the [Dim Sum Counter](#dim-sum-counter): that board states its combo as a rule you say out
+loud — *"any 3 items with white rice"* — and what is in the price is rice. This board states its
+combo as a time of day with a fixed shape, and what is in the price is a drink. Dim sum runs late
+morning to mid-afternoon; a cha chaan teng opens before six and closes after midnight. Dim sum is
+steamer and fryer; this is griddle, fryer, toaster and pasta pot. And the food is not the same food:
+nothing on a dim sum trolley is macaroni.
+
+Against the [Takeout Counter](#takeout-counter): that board's handle is a number, `C1`–`C16` and
+`L1`–`L16`, and the same number means a different dish at a different shop. This board's handle is
+a word — 常餐, 快餐 — and it means the same thing everywhere, because it names *when* rather than
+*what*. The takeout combo comes with pork fried rice and an egg roll; the cha chaan teng set comes
+with milk tea. The takeout board is Chinese-American and its centre of gravity is a brown sauce; the
+cha chaan teng board is Hong Kong-British and its centre of gravity is evaporated milk.
+
+**The overlaps are real and are not a problem.** 蛋撻 is sold at a bakery, off a dim sum trolley and
+over this counter, and 菠蘿包 at a bakery and here — both are already shelved at two counters each in
+this collection, which is the collection agreeing with the boards. 乾炒牛河 appears on the dim sum
+noodle line and on this one. 叉燒 turns up at all three. A recipe on two boards is normal; `counters`
+is a list for this reason.
+
+**The 冰室 is folded in.** A bing sutt is the older, narrower shop — drinks, toast, buns and ice
+desserts, no full rice plates — and at the extremes it is a different storefront. But every board
+read prints both vocabularies together: the Tsim Sha Tsui shop calls itself 冰室 and sells 湯飯,
+煲仔飯 and a curry section. One counter, and the bing sutt words are in the table below.
+
+| On the menu | Also called | Plainly |
+| --- | --- | --- |
+| Cha Chaan Teng | cha chan teng, chachanteng, cha chaan tang, 茶餐廳, tea restaurant, Hong Kong cafe, HK-style cafe | The shop itself, not a dish. A tea café that sells Western food re-made in Hong Kong on a grid of timed sets, from before six in the morning to after midnight. |
+| Bing Sutt | bing sat, bing sut, 冰室, ice house, ice room, ice chamber | The older, narrower version of the same shop: drinks, toast, buns and iced sweets, and historically no full rice plates. Most shops trading under the name now sell both. |
+| Constant Set | seung chaan, 常餐, all-day set, regular set, constant meal, Set A | The set that never changes and runs all day, which is where the name comes from. A main, an egg, bread with butter, and a drink. |
+| Breakfast Set | jou chaan, 早餐, breakfast set, morning set, Set 1 | The morning grid: a buttered roll or toast, two fried eggs, macaroni in soup with ham, and coffee or tea. |
+| Fast Set | faai chaan, 快餐, fast set, quick meal, express set, lunch special | Lunch hours only, and it is already cooked when you order — a rice plate plus a soup chosen from red (borscht), white (cream) or Chinese. |
+| Afternoon Tea Set | ha ng cha chaan, 下午茶餐, afternoon tea set, tea set, tea time, teatime special | The 2pm-to-5pm grid, and it is the fried one: chicken leg, wings, French toast, chips, with a drink. Smaller and cheaper than lunch. |
+| Nutritious Set | ying yeung chaan, 營養餐, nutritious set, nutrition meal | The breakfast set with a bottle of milk or chocolate milk in place of tea. All day. |
+| Hong Kong Milk Tea | naai cha, lai cha, nai cha, 奶茶, 港式奶茶, Hong Kong Style Tea, HK milk tea | Several grades of Ceylon black tea blended, brewed hard, poured back through a cloth bag onto the leaves repeatedly, and finished with evaporated milk. Strong enough to taste through the milk. |
+| Silk Stocking Milk Tea | si mat naai cha, sze mat nai cha, 絲襪奶茶, silk stocking tea, pantyhose milk tea, stocking tea | The same drink named for its filter: the cotton bag stains brown with use and starts to look like a stocking. No stocking is involved. |
+| Yuenyeung | yuen yeung, yuanyang, yin yong, 鴛鴦, Coffee & Tea, coffee with tea, tea-coffee mix | Milk tea and coffee in one cup, roughly two parts tea to one of coffee. Boards in the diaspora often print it only as "Coffee & Tea", which is why nobody finds it by searching. |
+| Iced Lemon Tea | dung ling cha, ling cha, 凍檸茶, iced lemon tea, lemon tea, LT | Black tea over ice with several slices of lemon and a long spoon to bruise them yourself. The sugar arrives separately and does not dissolve unless you work at it. |
+| Cha Jau | cha zau, chah jau, 茶走, tea with condensed milk, "tea gone" | Milk tea ordered with condensed milk instead of evaporated milk and sugar. 走 means "leave out" — what leaves is the sugar, because the condensed milk carries it. |
+| Horlicks / Ovaltine | 好立克, 阿華田, Horlicks, Holick, Ovaltine, malted milk | Malted milk powders, hot or iced, sold beside the tea and priced with it. One American board prints Horlicks as "Holick" and that is the spelling a searcher will have seen. |
+| Red Bean Ice | hung dau bing, hong dau bing, 紅豆冰, red bean ice, iced red bean | Sweetened red beans in a tall glass with evaporated milk, syrup and crushed ice, eaten with a spoon and a straw at once. |
+| Hong Kong French Toast | sai do si, sai dor si, 西多士, French toast, HK French toast, Western toast, thick toast | Two slices sandwiched around peanut butter, dipped in egg and **deep-fried**, then served with a slab of butter on top and golden syrup poured over. **It is not the griddled, custard-soaked French toast of a diner** — different fat, different method, and there is a filling. |
+| Thick Toast | hau do si, 厚多士, 奶醬多, thick toast, thick-cut butter toast, condensed milk toast | One very thick slice toasted and spread — butter and condensed milk, butter and jam, peanut butter and condensed milk. Printed on American boards as three or four separate rows, one per spread. |
+| Pineapple Bun with Butter | bo lo yau, boh loh yau, 菠蘿油, pineapple bun with butter, Pineapple Bun Cold Butter | The warm bun split and a cold slab of butter laid inside so it half melts. The bun has no pineapple in it; the crackled sugar lid is the "pineapple". |
+| Ham and Macaroni Soup | fo teui tung fan, 火腿通粉, macaroni in soup, ham macaroni soup, ham & macaroni soup | Elbow macaroni boiled separately and dropped into a light chicken broth with shredded ham. Breakfast food, and it is soup with pasta in it rather than pasta with sauce. |
+| Instant Noodles | gong jai min, gong zai mein, 公仔麵, instant noodles, ramen noodles, doll noodles | Packet noodles cooked to order and sold as a dish, under luncheon meat, a fried egg, or satay beef. 公仔 is the brand name that became the word. |
+| Lo Ding | lou ding, lo ding, 撈丁, dry instant noodles, tossed noodles, dry noodles | The same instant noodles served drained rather than in broth, tossed in sauce. "撈" means tossed dry, and it is the opposite of what "lo mein" means on an American takeout board. |
+| Satay Beef Noodles | sa de ngau yuk min, 沙嗲牛肉麵, 沙爹牛肉麵, satay beef noodles, sate beef noodle soup | Thin-sliced beef in a peanut-and-chile satay sauce, over instant noodles or rice vermicelli in broth. Also sold between two slices of toast as a sandwich. |
+| Borscht | lo song tong, lo sung tong, 羅宋湯, Borsch Soup, Russian soup, red soup, 紅湯 | A tomato-and-cabbage soup with onion, celery, potato and often oxtail, orange rather than red. **There is no beetroot in it and it is not the Ukrainian soup of the same name** — the name arrived through Shanghai from "Russian". |
+| Baked Pork Chop Rice | guk jyu paa faan, gukjyupafan, 焗豬扒飯, baked pork chop rice, baked pork chop over rice, baked pork chop over spaghetti | A fried pork chop laid on egg fried rice, flooded with a ketchup-and-tomato sauce, covered with cheese and baked until the top browns. The same treatment is sold over spaghetti. |
+| Curry Beef Brisket | ga lei ngau naam, 咖喱牛腩, curry brisket, curry beef brisket rice, beef stew with curry sauce | Brisket stewed soft in a mild yellow curry thickened with coconut milk. The same pot goes over rice, over noodles, and onto fish balls. |
+| Swiss Wings | seui si gai yik, sui see gai yick, 瑞士雞翼, Swiss chicken wings, Swiss sauce wings | Chicken wings poached in a sweet soy syrup rather than fried. Nothing Swiss about them: the story is that "sweet" was misheard, and the sauce is now printed as 瑞士汁 on its own. |
+| Club Sandwich | gung si saam man ji, 公司三文治, clubhouse sandwich, company sandwich, club house | Three slices of toast around ham, a fried egg, chicken or tuna, lettuce and tomato, cut into four on picks. 公司 is a literal translation of "club". |
+| Spam and Egg Sandwich | chaan daan ji, 餐蛋治, 蛋牛治, Spam & Egg Sandwich, luncheon meat and egg, corn beef & egg sandwich | Fried luncheon meat and a folded omelette between two slices, toasted if you ask. 蛋牛治 is the corned-beef version and both are printed on the same board. |
+| Omelette | am lit, 奄列, omelette, omelet, ham omelette, western omelette | A folded egg omelette with ham, or with onion and pepper. Part of the breakfast and constant sets rather than a dish of its own. |
+| Pork Chop Bun | jyu paa baau, 豬扒包, pork chop bun, Macau pork chop bun, Portuguese pork bun | A bone-in pork chop in a crusty roll and nothing else — no sauce, no salad. Macanese, and on every Hong Kong board. |
+| Soup of the Day | lai tong, 例湯, soup of the day, daily soup, Chinese soup, 中湯 | The third soup option in a fast set, beside red (borscht) and white (cream of something). Whatever the kitchen boiled that morning, and it changes daily. |
+| Ordering slang | 烘底, 走冰, 加底, 靚仔, hong dai, jau bing, ga dai, leng jai | Modifiers said at the counter, not printed as dishes: 烘底 toast the bread, 走冰 no ice, 加底 extra rice or noodles, 靚仔 a bowl of plain white rice. |
+
+---
+
 ## Sources
 
 The counters above were settled from six independent passes of menu reading. These are the
@@ -877,6 +965,19 @@ bobsclamhut.com · flosclamshacks.com · monahansri.com · theclamshack.net · n
 atlasobscura.com · mspmag.com · truejersey.com · padutchdictionary.com · stlmag.com ·
 chicagomag.com · Wikipedia (hot beef commercial, burnt ends, barbecue bologna, submarine
 sandwich, Sloppy joe (New Jersey), black and white cookie, mild sauce, appetizing store)
+
+**Cha Chaan Teng.** Added by S-007 from a seventh pass, and the full working with what each source
+established is in [docs/gaps/cha-chaan-teng.md](../gaps/cha-chaan-teng.md). Boards read end to end:
+openrice.com (極上冰室, Tsim Sha Tsui, takeaway menu) · thepeakhkcafe.com.au (Glebe, Sydney) ·
+yelp.com/menu/kowloon-cafe-brooklyn (Brooklyn, English-only board). Frame and vocabulary:
+zh-yue.wikipedia.org 茶餐廳 (the set-meal grid, hours, and the ordering slang) · zh.wikipedia.org
+下午茶 and 茶餐廳 (afternoon-tea hours, the cold-drink and toasting surcharges) · en.wikipedia.org
+Cha chaan teng · roasterpig.blogspot.com (current 大家樂 / 大快活 / 美心MX tea sets and their
+2pm–5pm window) · medium.com/@sixtybolts (dish-by-dish field guide). The tea: coffee-tea.hk, the
+Hong Kong Coffee and Tea Association, for the BOP / BOPF / DUST grading · hkichdb.gov.hk for the
+2017 intangible-heritage listing and its statement that there is no single standard ·
+brooklynsodaworks.com and food.ltn.com.tw for the conflicting pull counts and the one temperature
+and ratio anybody states.
 
 **Prevalence numbers, such as they are.** Two conflicting counts of San Francisco restaurants by
 cuisine: stacker.com (Yelp-derived, Jan 2024) and gosnappy.io (Google-derived). They disagree
