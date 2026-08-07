@@ -83,16 +83,25 @@ export function refProblems(written: string[][], resolved: number[][]): string[]
       if (target !== null) continue;
       /*
        * Three things, because the failure is invisible without all three: where it is, that
-       * the token quietly stopped being a reference, and what the two legal forms are. The
-       * middle one is the part nobody would guess — the page does not go missing, it grows
-       * an ingredient.
+       * the token quietly stopped being a reference, and where a reference is allowed to
+       * land. The middle one is the part nobody would guess — the page does not go missing,
+       * it grows an ingredient.
+       *
+       * Neither legal form is spelled with a number, because the number in an example can
+       * come out the same as the number that is wrong, and then the message reads as though
+       * it is suggesting what the author already wrote.
        */
+      const room =
+        index === 0
+          ? 'and step 1 has nothing above it — a step that consumes nothing starts a new branch, ' +
+            'and every branch has to merge before the end'
+          : `and either way it has to land on one of the ${index} step${index === 1 ? '' : 's'} ` +
+            'above it';
       problems.push(
         `${at} writes @&(${tokens[i]}), which points at no step — cooklang read it as an ` +
           `ingredient instead of a reference, so the table would draw a row that is not an ` +
-          `ingredient. A reference names a step from the top of the file (@&(3), counting ` +
-          `prep steps) or counts back from this one (@&(~1)), and either way it has to land ` +
-          `on one of the ${index} step(s) above it.`,
+          `ingredient. A reference names a step counted from the top of the file, prep steps ` +
+          `included, or counted back from this one with a ~, ${room}.`,
       );
     }
 

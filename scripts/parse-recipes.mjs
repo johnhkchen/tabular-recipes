@@ -54,6 +54,7 @@ for (const recipe of recipes) {
     recipe.slackProblem,
     recipe.washingUpProblem,
     ...recipe.stepLabelProblems,
+    ...recipe.stepRefProblems,
   ]) {
     if (problem) throw new Error(`${recipe.path}: ${problem}`);
   }

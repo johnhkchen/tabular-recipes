@@ -161,6 +161,12 @@ for (const target of targets) {
     // nowhere at all, which is the one thing the older numbered form could never tell them.
     problems.push(...recipe.stepLabelProblems);
 
+    // A reference that points at no step. cooklang does not refuse one — it reads it as an
+    // ingredient, so the table grows a row that is not an ingredient and draws perfectly
+    // well. tree.ts already refuses a reference to a step that MAKES nothing; this is the
+    // other half, the reference that names no step at all.
+    problems.push(...recipe.stepRefProblems);
+
     /*
      * The cross-check, and it WARNS. Every #thing{} a file names either goes in the sink or is
      * something that is not washed, so a #Dutch oven{} missing from the line is worth saying —

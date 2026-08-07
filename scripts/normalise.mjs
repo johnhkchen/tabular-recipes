@@ -7,6 +7,7 @@ import { Parser } from '@cooklang/cooklang';
 import { splitList } from '../src/lib/meta.ts';
 import { readSlack } from '../src/lib/slack.ts';
 import { readStepLabels } from '../src/lib/step-labels.ts';
+import { readStepRefs, refProblems } from '../src/lib/step-refs.ts';
 import { readWashingUp } from '../src/lib/washing-up.ts';
 import { minutesOf, readTimers } from '../src/lib/time.ts';
 
@@ -219,6 +220,18 @@ export function normalise(source, { slug, path: relPath, folder }) {
     );
   }
 
+  /*
+   * The references the file WROTE, against the ones the parser resolved. A reference that
+   * points at no step is not refused by cooklang — it comes back as a plain ingredient, so
+   * the table draws a row that is not an ingredient and nothing says a word. That can only
+   * be seen against the source, which is why it is read here and not off `steps`. The
+   * blanked copy, because that is the one the parser was handed.
+   */
+  const stepRefProblems = refProblems(
+    readStepRefs(cleaned),
+    steps.map((step) => step.refs),
+  );
+
   const title = metadata.title ?? titleCase(slug);
   const category = metadata.category ?? (folder ? titleCase(folder) : 'Other');
   const tags = splitList(metadata.tags).map((t) => t.toLowerCase());
@@ -275,6 +288,8 @@ export function normalise(source, { slug, path: relPath, folder }) {
     washingUpProblem,
     /** Labels written above a step that have no step to name. Empty for every other file. */
     stepLabelProblems,
+    /** `@&(…)` references that point at no step, and so were read as ingredients instead. */
+    stepRefProblems,
     /*
      * What people call it when they order it. A cook looking for the pâté in their bánh mì
      * does not know to search for "pork liver pâté", so the menu vocabulary has to be
