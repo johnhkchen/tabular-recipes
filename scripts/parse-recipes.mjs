@@ -53,6 +53,7 @@ for (const recipe of recipes) {
   for (const problem of [
     recipe.slackProblem,
     recipe.washingUpProblem,
+    recipe.keepsProblem,
     ...recipe.stepLabelProblems,
     ...recipe.stepRefProblems,
   ]) {

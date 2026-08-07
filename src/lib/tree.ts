@@ -6,6 +6,7 @@
  * parser resolves to step indices — so the tree is written in the .cook file, not guessed.
  */
 import { cleanLabel } from './label.ts';
+import type { Keeps } from './keeps.ts';
 import type { Slack } from './slack.ts';
 import type { WashingUp } from './washing-up.ts';
 
@@ -72,6 +73,16 @@ export interface RawRecipe {
   washingUp: WashingUp | null;
   /** What is wrong with a `>> washing-up:` line that is there but not whole. A diagnostic. */
   washingUpProblem?: string | null;
+  /**
+   * How long it stays good and what it is like when you come back to it — the half of
+   * *six people, over three days* that scaling cannot answer. Authored, never derived:
+   * nothing about a dish's second morning can be read off its steps. `null` is a recipe
+   * nobody has looked at, which is most of them, and `minutes: 0` is one that says outright
+   * it does not keep. The two are different answers, so they are different values.
+   */
+  keeps: Keeps | null;
+  /** What is wrong with a `>> keeps:` line that is there but not whole. A diagnostic. */
+  keepsProblem?: string | null;
   /** What people call it when they order it. */
   aka: string[];
   /** Slugs of recipes that go with this one. Made mutual at build time. */

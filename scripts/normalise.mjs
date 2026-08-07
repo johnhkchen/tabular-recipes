@@ -4,6 +4,7 @@
  * shared by the build (parse-recipes.mjs) and the checker (check-recipes.mjs).
  */
 import { Parser } from '@cooklang/cooklang';
+import { readKeeps } from '../src/lib/keeps.ts';
 import { splitList } from '../src/lib/meta.ts';
 import { readSlack } from '../src/lib/slack.ts';
 import { readStepLabels } from '../src/lib/step-labels.ts';
@@ -261,10 +262,19 @@ export function normalise(source, { slug, path: relPath, folder }) {
    */
   const { washingUp, problem: washingUpProblem } = readWashingUp(metadata['washing-up']);
 
+  /*
+   * Whether the dish is still worth eating tomorrow, and what it is like then. Authored, never
+   * derived — no timer, step or ingredient knows what a fridge does overnight, and a six-hour
+   * braise and a six-hour custard come out of the same fridge as two different mornings. Read
+   * before PROMOTED deletes the key. A duration with no character reads as no keeps at all and
+   * hands back why, because a bare number is a shelf life and this site does not make those.
+   */
+  const { keeps, problem: keepsProblem } = readKeeps(metadata.keeps);
+
   // Authoring directives and anything promoted to its own field are not recipe facts.
   const PROMOTED = new Set([
     'title', 'category', 'tags', 'counters', 'dish', 'kit', 'aka', 'pairs-with', 'slack',
-    'washing-up',
+    'washing-up', 'keeps',
   ]);
   for (const key of Object.keys(metadata)) {
     if (PROMOTED.has(key)) delete metadata[key];
@@ -286,6 +296,9 @@ export function normalise(source, { slug, path: relPath, folder }) {
     /** `>> washing-up: the wok, a rack to drain on`, `>> washing-up: nothing`, or null. */
     washingUp,
     washingUpProblem,
+    /** `>> keeps: 3 days — better on the second`, `>> keeps: not at all — …`, or null. */
+    keeps,
+    keepsProblem,
     /** Labels written above a step that have no step to name. Empty for every other file. */
     stepLabelProblems,
     /** `@&(…)` references that point at no step, and so were read as ingredients instead. */
