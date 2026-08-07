@@ -1,8 +1,10 @@
 # Cha Chaan Teng — what is missing
 
-**0 recipes.** The counter was opened by T-007-01 with seven ordered sections and empty item lists;
-T-007-03 and T-007-04 write the files and T-007-05 shelves them. This page is their work list, and
-it is the only one in this folder written *before* the shelf rather than after it.
+**22 recipes, and five more borrowed off other boards.** The counter was opened by T-007-01 with
+seven ordered sections and empty item lists; T-007-03 wrote the drinks and the toast, T-007-04 the
+plates, bowls and sandwiches, and T-007-05 shelved them. This page began as their work list — the
+only one in this folder written *before* the shelf rather than after it — and from here on it is
+what every other page in this folder is: the record of what landed.
 
 **Rank is by what a reader can cook tonight, not by what is most emblematic.** That is the whole
 argument of S-007: the shelf this one replaces failed because its ingredients came from a herbalist
@@ -26,26 +28,33 @@ slug.
 
 ## What it has
 
-Nothing yet, and the block below is deliberately empty. The seven headings are the seven section
-titles in `src/data/counters.json`, in the same order, so the two files cannot drift; a writer who
-shelves a file here adds its slug after the matching heading and the section becomes real. Until
-then `node scripts/menu-sections.mjs` reports this counter as `0 sections, 0/0 placed`, which is
-correct and is not an error — a heading with no slugs produces no section, and `menuFor()` hides a
-counter with no recipes, so nothing renders and nothing breaks.
+Five sections, in the order the counter prints them, and the same five in
+`src/data/counters.json` — `node scripts/menu-sections.mjs` reads this block back into that file.
+Two of T-007-01's seven headings are gone. *The set meals* could only ever be empty: 常餐 is a rule
+and not a dish, which is the first entry under [what a table cannot hold](#what-a-table-cannot-hold),
+and the set grid is recorded in `docs/knowledge/counters.md` where it belongs. *Also here* was the
+catch-all, and there is nothing left over to put in it.
 
-**The set meals (常餐 · 早餐 · 下午茶餐).**
+Five of the slugs below are borrowed — shelved at other counters, listed here because a diner at
+this one is sold them, and named one by one in
+[what this board borrows](#what-this-board-borrows-and-what-it-must-not). Read the caution there
+before adding a sixth: `menuFor()` builds its lookup from the recipes whose own `>> counters:` line
+names this counter, so a borrowed slug is recorded in this file and dropped from the page. The
+counter prints 22.
 
-**The drinks counter.**
+**The drinks counter.** hong-kong-milk-tea · yuenyeung · iced-lemon-tea · lemon-coke-with-ginger ·
+horlicks · red-bean-ice
 
-**Toast and the bun case.**
+**Toast and the bun case.** thick-toast · hong-kong-french-toast · pineapple-bun · egg-custard-tart
 
-**Macaroni, noodles and things in soup.**
+**Macaroni, noodles and things in soup.** ham-macaroni-soup · luncheon-meat-and-egg-noodles ·
+hong-kong-borscht · satay-beef-noodles · soy-sauce-pan-fried-noodles · beef-chow-fun · char-siu
 
-**Rice plates.**
+**Rice plates.** baked-pork-chop-rice · pork-chop-in-tomato-sauce · minced-beef-rice ·
+shrimp-and-egg-rice · curry-beef-brisket · swiss-wings
 
-**Sandwiches and buns.**
-
-**Also here.**
+**Sandwiches and buns.** luncheon-meat-and-egg-sandwich · hong-kong-egg-sandwich · pork-chop-bun ·
+club-sandwich
 
 ## What it is missing
 
