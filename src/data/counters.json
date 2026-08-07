@@ -1985,6 +1985,39 @@
           ]
         }
       ]
+    },
+    {
+      "name": "The Air Fryer & the Pot",
+      "slug": "air-fryer-and-pot",
+      "blurb": "Plug one in, eat, and wash two things.",
+      "categories": [],
+      "sections": [
+        {
+          "title": "Straight out of the basket",
+          "items": [],
+          "notes": [
+            {
+              "note": "Everything here washes two things or fewer, cooks in one plug-in machine, and is on the table in 45 minutes."
+            }
+          ]
+        },
+        {
+          "title": "Start to finish in the pot",
+          "items": []
+        },
+        {
+          "title": "Sheet-pan-shaped, in the basket",
+          "items": []
+        },
+        {
+          "title": "Vegetables that go crisp",
+          "items": []
+        },
+        {
+          "title": "Frozen things, done properly",
+          "items": []
+        }
+      ]
     }
   ]
 }
