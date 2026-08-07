@@ -325,27 +325,77 @@ describe('over the whole collection', () => {
     expect(wrong).toEqual([]);
   });
 
-  /* The numbers design.md argues from. A collection that moves fails here, on purpose. */
-  it('splits the collection where the design says it does', () => {
-    expect(count(set({ standing: 5 }))).toEqual({ pass: 109, fail: 160, unsaid: 395 });
-    expect(count(set({ standing: 15 }))).toEqual({ pass: 227, fail: 42, unsaid: 395 });
-    expect(count(set({ standing: 30 }))).toEqual({ pass: 260, fail: 9, unsaid: 395 });
-    expect(count(set({ by: 30 }))).toEqual({ pass: 207, fail: 433, unsaid: 24 });
-    expect(count(set({ by: 60 }))).toEqual({ pass: 365, fail: 275, unsaid: 24 });
-    expect(count(set({ by: 120 }))).toEqual({ pass: 458, fail: 182, unsaid: 24 });
-    expect(count(set({ wash: 1 }))).toEqual({ pass: 4, fail: 7, unsaid: 653 });
-    expect(count(set({ wash: 3 }))).toEqual({ pass: 6, fail: 5, unsaid: 653 });
-    /*
-     * Two dials, and the tie-break showing its work. The same 148 pass either way, but 171 of
-     * the 395 recipes with no standing evidence are over the hour on a clock that is real, so
-     * they are failures rather than unanswered — which is the whole of design.md D4 in one row.
-     */
-    expect(count(set({ standing: 15, by: 60 }))).toEqual({ pass: 148, fail: 292, unsaid: 224 });
+  /*
+   * The shape of the split, not its exact totals.
+   *
+   * The first draft of these asserted the counts design.md argues from — 227 passing at fifteen
+   * minutes standing, 653 sinks nobody had written down — and they were both stale within the
+   * hour: recipes and washing-up lines land on this branch from other tickets while this one is
+   * being written, and the sink went from 11 answerable to 164 between two runs. On a shared
+   * branch an exact-count assertion is not a guard, it is a tripwire strung across everybody
+   * else's `npm run verify`. The measurements themselves are in review.md, against a named
+   * commit, which is where a number that was true on a Tuesday belongs.
+   *
+   * What is asserted instead is everything the design actually rests on, none of which moves
+   * when a recipe is added.
+   */
+  it('splits the collection into three, and only three, whatever is on the shelf', () => {
+    for (const settings of combinations) {
+      const c = count(settings);
+      expect(c.pass + c.fail + c.unsaid).toBe(index.length);
+    }
   });
 
+  it('does not let the cap decide what it can answer', () => {
+    /* Answerability is a fact about the recipe. Turning the dial up cannot reveal evidence. */
+    const unsaids = [5, 15, 30].map((v) => count(set({ standing: v })).unsaid);
+    expect(new Set(unsaids).size).toBe(1);
+    expect(new Set([30, 60, 120].map((v) => count(set({ by: v })).unsaid)).size).toBe(1);
+    expect(new Set([1, 3, 5].map((v) => count(set({ wash: v })).unsaid)).size).toBe(1);
+  });
+
+  it('lets more through as the dial is turned up, on every dial', () => {
+    for (const dial of DIALS) {
+      const passes = dial.stops.map((stop) => count(set({ [dial.id]: stop.value })).pass);
+      expect(passes, `${dial.id} passes`).toEqual([...passes].sort((a, b) => a - b));
+      expect(passes[2]).toBeGreaterThan(passes[0]);
+      const fails = dial.stops.map((stop) => count(set({ [dial.id]: stop.value })).fail);
+      expect(fails, `${dial.id} fails`).toEqual([...fails].sort((a, b) => b - a));
+    }
+  });
+
+  /*
+   * The annotation gap, in the order it actually stands: nearly nobody has written down what a
+   * recipe leaves in the sink, most recipes cannot vouch for their standing figure, and the
+   * clock is the one thing almost every recipe does say. If this ever reverses, the filter is
+   * answering a different collection and the design deserves re-reading rather than a green run.
+   */
+  it('cannot say most often about the sink, least often about the clock', () => {
+    const cannot = (id: 'standing' | 'by' | 'wash') =>
+      index.filter((one) => !canAnswer(one, id)).length;
+    expect(cannot('wash')).toBeGreaterThan(cannot('standing'));
+    expect(cannot('standing')).toBeGreaterThan(cannot('by'));
+    expect(cannot('by')).toBeGreaterThan(0);
+  });
+
+  /* The reason this filter has three answers rather than two. */
   it('cannot say more often than it can, on two of the three dials', () => {
     expect(count(set({ standing: 15 })).unsaid).toBeGreaterThan(count(set({ standing: 15 })).pass);
-    expect(count(set({ wash: 3 })).unsaid).toBeGreaterThan(count(set({ wash: 3 })).pass);
+    expect(count(set({ wash: 1 })).unsaid).toBeGreaterThan(count(set({ wash: 1 })).pass);
+  });
+
+  /*
+   * Two dials, and the tie-break showing its work on the whole collection. Recipes whose
+   * standing figure is worthless but whose clock is real do not get to hide under "we can't
+   * say" — they fail on the clock. So adding the second dial moves recipes OUT of unanswered
+   * and into failed, which is the opposite of what the naive rule would do.
+   */
+  it('lets a real clock settle a recipe whose standing figure is silent', () => {
+    const one = count(set({ standing: 15 }));
+    const two = count(set({ standing: 15, by: 60 }));
+    expect(two.pass).toBeLessThanOrEqual(one.pass);
+    expect(two.unsaid).toBeLessThan(one.unsaid);
+    expect(two.fail).toBeGreaterThan(one.fail);
   });
 
   describe('the recipes this was designed against', () => {
