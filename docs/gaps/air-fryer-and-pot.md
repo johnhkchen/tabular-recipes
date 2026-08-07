@@ -237,65 +237,100 @@ line. A basket version of something already here is a second file carrying `>> d
 `>> kit: Air Fryer`. A basket dish with no plain counterpart carries neither line, and its `dish`
 defaults to its own slug (`scripts/normalise.mjs:230`).
 
+**Every time below carries a tag saying whose number it is, and the tags are not decoration.**
+
+- **[ATK]** — a test kitchen established it by testing, and the citation is in *Where this came
+  from*. **Four** of the twenty-six ranks have one: wings, brussels sprouts, salmon and broccoli.
+- **[to establish]** — a plausible starting range and **nothing more**. It is where the general
+  180–200°C basket envelope puts the dish; nobody has cooked it and measured it. **A writer must
+  not copy one of these into a recipe.** Cook it, in a stated machine at a stated load, and write
+  the number that came out — or find a source that did and cite it. **Nineteen** ranks are tagged
+  this way, which is an honest measure of how thin the literature is.
+
+The remaining three — batata harra, crispy roast potatoes and mujaddara — carry **no time at all**,
+because what is interesting about each of them is a washing-up or a vessel argument rather than a
+clock, and inventing a number to fill the column would be the same fault in a smaller font.
+
+That distinction is the whole of *Never fabricate a number* on this shelf. **The evidence that it
+matters is on this page**: the vegetable ranks below were first drafted at 200°C for 12–18 minutes,
+which is where every recipe site and every conversion chart points. America's Test Kitchen tested
+400°F on brussels sprouts, **rejected it**, and published 350°F for 20–25 minutes instead, because
+at the higher heat *"the exterior browned too quickly while the interior remained undercooked"*.
+The received number was hotter and shorter than the tested one, in both directions at once.
+
 ### The basket — ranks 1 to 20
 
 1. **Chicken wings** — **standalone.** Nothing here to be a variant of: there is no `wings`, no
    `buffalo-wings`, no `chicken-wings`. The single most-searched thing anyone does with the
    machine, and it clears the gate without redesigning anything — dry the wings, toss them with
    salt and baking powder in the bowl you will serve them from, basket, one flip. **Two things, and
-   arguably one.** 200°C/400°F, 18–24 minutes; see *what the basket times actually are* below,
-   where this dish is also where the sources disagree most sharply.
+   arguably one.** **[ATK]** 200°C/400°F, 18–24 minutes on 2½ lb. It is also where the sources
+   disagree most sharply, on the loading rather than the clock — see *what the basket times
+   actually are* below.
 
 2. **Brussels sprouts** — **`kit: Air Fryer` variant of `roasted-brussels-sprouts`.** The machine's
-   best vegetable and the cleanest gate pass on the page: halve, toss in one bowl, basket, 200°C
-   for 12–15 minutes with a shake. The loose outer leaves that burn on a sheet tray fall through
-   and crisp here. Two things.
+   best vegetable and the cleanest gate pass on the page: halve, toss in one bowl, basket, shake
+   once. The loose outer leaves that burn on a sheet tray fall through and crisp here. Two things.
+   **[ATK]** 175°C/350°F for **20–25 minutes**, 1 lb of sprouts to 1 Tbsp of oil — and note that
+   this is the number a test kitchen reached *after rejecting* the 200°C every recipe site prints,
+   because at that heat the outside browned before the inside softened. **This rank is the reason
+   the tags on this list exist.**
 
 3. **Halloumi** — **`kit: Air Fryer` variant of `seared-halloumi`.** Needs no oil at all, which is
-   the rarest thing on this list, so it is **one thing**: the basket. 200°C, 8–10 minutes, turned
-   once. The plain file's skillet is the only vessel it removes and the only one it had.
+   the rarest thing on this list, so it is **one thing**: the basket. **[to establish]** 200°C,
+   8–10 minutes, turned once. The plain file's skillet is the only vessel it removes and the only one it had.
 
 4. **Chips, from a raw potato** — **`kit: Air Fryer` variant of `french-fries`.** The dish the
    appliance is bought for. **Flagged, because bar 3 is genuinely in doubt:** the plain file soaks
    the cut potato in cold water to pull the starch, and thirty minutes of soaking is wall-clock
-   whether or not anyone is standing there. Soak included, this is 50–55 minutes and it **fails**.
+   whether or not anyone is standing there. **[to establish]** for the cook itself; soak included, this is 50–55 minutes and it **fails**.
    The writer has two honest ways out and must pick one in the file rather than leave it: soak the
    night before and declare the recipe as starting from soaked potato, or drop the soak and say in
    the table what is lost. **Do not simply omit the soak from the clock.**
 
-5. **Cauliflower** — **`kit: Air Fryer` variant of `roasted-cauliflower`.** Florets, one bowl,
-   200°C for 15–18 minutes. The steam that pools under cauliflower on a tray has somewhere to go
-   here, which is a real improvement and not only a shortcut. Two things.
+5. **Cauliflower** — **`kit: Air Fryer` variant of `roasted-cauliflower`.** Florets, one bowl, one
+   shake. The steam that pools under cauliflower on a tray has somewhere to go here, which is a
+   real improvement and not only a shortcut. Two things. **[to establish]** — and this one has no
+   test-kitchen number at all, which was checked rather than assumed. The nearest sourced anchor is
+   the broccoli-and-fennel method at rank 11; start there and expect to go longer, because a floret
+   of cauliflower is denser than one of broccoli.
 
 6. **Blackened salmon** — **`kit: Air Fryer` variant of `blackened-salmon`.** The argument for this
    one is not speed. Blackening is a smoking-hot dry cast-iron pan and a spice crust, and doing it
    indoors sets off the smoke alarm and coats the kitchen; the basket is the version a person can
-   actually cook on a Tuesday. 200°C, 8–12 minutes by thickness. Two things: the basket and the
-   plate the spice was pressed on. The finish temperature is contested and the disagreement is
-   recorded below.
+   actually cook on a Tuesday. Two things: the basket and the plate the spice was pressed on.
+   **[ATK]** 200°C/400°F for **10–14 minutes** on a 1½-inch fillet, pulled at 52°C/125°F. Time
+   tracks thickness rather than weight, and the finish temperature is genuinely contested — three
+   sources give three numbers and the disagreement is recorded below.
 
 7. **Crispy chickpeas** — **`kit: Air Fryer` variant of `crispy-chickpeas`.** A drained tin, dried
-   properly, one bowl of oil and spice, 200°C for 12–15 minutes with two shakes. Two things, and
+   properly, one bowl of oil and spice, two shakes. **[to establish]** 200°C, 12–15 minutes. Two things, and
    the machine beats the oven outright — a sheet tray takes 35 minutes and half of them stay soft.
 
 8. **Chicken thighs, bone-in and skin-on** — **standalone.** There is no plain chicken-thigh recipe
    here; `pulled-roast-chicken` is a whole bird and `smoked-chicken` is a pit. Skin-side up, no
-   turning, 190°C for 22–25 minutes to 74°C. One thing to wash if the seasoning goes on in the
+   turning. **[to establish]** 190°C, 22–25 minutes — but the finish is 74°C in the thickest part
+   and **that** number is not negotiable and not a guess. One thing to wash if the seasoning goes on in the
    basket, two if it does not.
 
 9. **Saba shioyaki** — **`kit: Air Fryer` variant of `saba-shioyaki`.** Salt-grilled mackerel
    without a grill, which is the single most common thing the machine is used for in a Japanese
    home kitchen and the reason it is here rather than lower. The plain file wants a fish grill most
-   people do not have. 200°C, 10–12 minutes, skin side up, no turning. Two things.
+   people do not have. **[to establish]** 200°C, 10–12 minutes, skin side up, no turning. Two
+   things.
 
 10. **Sweet potatoes** — **`kit: Air Fryer` variant of `roasted-sweet-potatoes`.** Cubes rather than
-    the oven's wedges, because the basket is short and a wedge stands up in it. 200°C, 15–18
-    minutes. Two things. The sugar that catches and burns on a tray behaves better in moving air,
+    the oven's wedges, because the basket is short and a wedge stands up in it. **[to establish]**
+    200°C, 15–18 minutes. Two things. The sugar that catches and burns on a tray behaves better in moving air,
     and the file should say so rather than only claiming it is faster.
 
 11. **Charred broccoli** — **`kit: Air Fryer` variant of `charred-broccoli`.** The one caution: the
     florets char and the stems do not, so this is a dish about cutting evenly, which is a judgement
-    and not a time. 200°C, 10–12 minutes. Two things.
+    and not a time. Two things. **[ATK]** 175°C/350°F for **8–12 minutes**, tossed halfway — and
+    tossed first with *equal parts water and oil*, which is a technique and not a garnish: the
+    water steams the floret soft, and once it has boiled off the oil browns it. That two-stage
+    trick is the sourced answer to the complaint that air-fried vegetables come out dry, and it
+    should be written into every vegetable rank on this page.
 
 12. **Batata harra** — **`kit: Air Fryer` variant of `batata-harra`.** The plain file deep-fries the
     cubes and then tosses them with garlic, coriander and chile. The basket does the cubes and the
@@ -303,39 +338,40 @@ defaults to its own slug (`scripts/normalise.mjs:230`).
     the clearest wins on the page and it is not a famous air fryer dish, which is the ranking rule
     doing its job.
 
-13. **Bacon** — **standalone.** No bacon recipe exists here. Flat, no oil, no splatter, no pan:
-    190°C for 8–10 minutes. It is a table of one ingredient and that is its problem, not its
+13. **Bacon** — **standalone.** No bacon recipe exists here. Flat, no oil, no splatter, no pan. **[to establish]**
+    190°C, 8–10 minutes. It is a table of one ingredient and that is its problem, not its
     virtue — see the note on the frozen section below, which is the same problem.
 
 14. **Corn ribs** — **standalone.** A cob quartered lengthways, which curls into a rib as it
     cooks. It exists because of the machine rather than despite it, and nothing on the site is a
-    counterpart. 200°C, 12–14 minutes. Two things.
+    counterpart. **[to establish]** 200°C, 12–14 minutes. Two things.
 
 15. **Chicken tikka** — **`kit: Air Fryer` variant of `chicken-tikka`.** The first of the tandoor
     substitutes, and the best of them: the marinade is thick yoghurt that clings rather than a
     batter that blows off, and a basket is the closest a home kitchen gets to a clay oven's dry
-    radiant heat. 200°C, 12–15 minutes, turned once. **Two things** — the marinating bowl and the
+    radiant heat. **[to establish]** 200°C, 12–15 minutes, turned once. **Two things** — the marinating bowl and the
     basket — and only if the skewers are dropped, which they can be here and cannot in a tandoor.
 
 16. **Shish tawook** — **`kit: Air Fryer` variant of `shish-tawook`.** The same argument one shelf
-    over, and the same two things. 200°C, 12–14 minutes. The plain file wants a grill, which is the
+    over, and the same two things. **[to establish]** 200°C, 12–14 minutes. The plain file wants a grill, which is the
     thing most of its readers do not have and the reason this variant is worth writing rather than
     merely possible.
 
 17. **Seekh kabab** — **`kit: Air Fryer` variant of `seekh-kabab`.** Mince worked in one bowl,
-    moulded straight onto the basket's own bars, 200°C for 10–12 minutes. Two things. The caution
+    moulded straight onto the basket's own bars. **[to establish]** 200°C, 10–12 minutes. Two
+    things. The caution
     the file must carry is that the fat renders out and drips, so this is the one dish on the page
     where the drawer under the basket is part of the washing-up and should be counted.
 
 18. **Padrón peppers** — **standalone.** Nothing here to be a variant of. No oil beyond a slick, no
-    prep beyond a rinse, 200°C for 6–8 minutes until they blister and collapse; salt in the bowl
+    prep beyond a rinse. **[to establish]** 200°C, 6–8 minutes, until they blister and collapse; salt in the bowl
     you serve from. **One thing**, which puts it level with halloumi as the cleanest pass here,
     and it is on the list at eighteen rather than three only because it is a snack and not a
     dinner.
 
 19. **Crisped marinated tofu** — **`kit: Air Fryer` variant of `crisped-marinated-tofu`.** The
     basket does what a skillet does to tofu without the sticking and without turning each face by
-    hand. 200°C, 15–18 minutes with a shake. **Flagged:** the marinade bowl is the whole question —
+    hand. **[to establish]** 200°C, 15–18 minutes with a shake. **Flagged:** the marinade bowl is the whole question —
     press, marinate and toss in the same bowl and it is two things; use a separate one for the
     cornflour and it is three and it fails.
 
@@ -355,23 +391,25 @@ were asked for. The pot's *short* repertoire — eggs, grains, pulses — has ne
 at all.
 
 21. **Hard-boiled eggs** — **`kit: Instant Pot` variant of `seven-minute-eggs`.** Five minutes to
-    pressure, five under, five in ice. Roughly 25 minutes end to end, **two things**, and the shell
+    pressure, five under, five in ice. **[to establish]** roughly 25 minutes end to end, **two
+    things**, and the shell
     comes off in one piece, which is the actual reason anyone does it this way. The fastest clear
     pass on the whole page.
 
 22. **A pot of plain rice** — **`kit: Instant Pot` variant of `gohan`.** Rinse, water, three
-    minutes at pressure, ten of natural release. Under 30 minutes, one thing to wash. The plain
+    minutes at pressure, ten of natural release. **[to establish]** under 30 minutes, one thing to
+    wash. The plain
     file is a stovetop absorption method and the pressure one is genuinely a different technique,
     not a shortcut.
 
 23. **Red lentil soup** — **`kit: Instant Pot` variant of `red-lentil-soup`.** Dinner in under 30
-    minutes from a dry store cupboard, sautéed and pressured in the same pot. **One thing**, if the
+    minutes from a dry store cupboard, sautéed and pressured in the same pot. **[to establish]** **One thing**, if the
     blending is done with a stick blender in the pot; two if it is not, and the file has to say
     which.
 
 24. **Kitchari** — **`kit: Instant Pot` variant of `kitchari`.** Rice and mung in one vessel is
-    what the dish already is; the pot only removes the watching. The plain file is 50 minutes and
-    this is about 25.
+    what the dish already is; the pot only removes the watching. The plain file's own `>> time:` is
+    50 minutes; **[to establish]** the pressure version at roughly 25.
 
 25. **Mujaddara** — **`kit: Instant Pot` variant of `mujaddara`.** This one is worth writing for a
     reason beyond speed. [one-pot.md](one-pot.md) threw `mujaddara` off the One Pot shelf because
@@ -380,7 +418,7 @@ at all.
     is genuinely one pot where the plain version is two.** That is a claim the plain file cannot
     make and the variant can.
 
-26. **Polenta** — **`kit: Instant Pot` variant of `polenta`.** Nine minutes at pressure against
+26. **Polenta** — **`kit: Instant Pot` variant of `polenta`.** **[to establish]** nine minutes at pressure against
     forty-five of stirring, and no skin, no catching, no arm. One thing. The plain file's whole
     difficulty is the stirring and pressure removes exactly that.
 
@@ -469,6 +507,16 @@ once."* A recipe written for one machine's full basket is a recipe for two batch
   (ATK, medium-rare), 130–135°F (several recipe sites, "buttery and not dry") and 145°F (the
   food-safety figure). That is not a rounding difference, it is three different opinions about what
   cooked salmon is, and a recipe here should name its number and say what it is.
+- **Vegetables, and the biggest gap between what is printed and what was tested.** Every recipe
+  site and every conversion chart puts a basket of vegetables at 200°C/400°F for 12–18 minutes.
+  **America's Test Kitchen tried 400°F on brussels sprouts and threw it out** — the outside browned
+  before the inside softened — and published **350°F for 20–25 minutes** on 1 lb with 1 Tbsp of oil
+  instead. Lower *and* longer, which is the opposite of the direction the received wisdom moves in.
+  Their broccoli is **350°F for 8–12 minutes**, tossed halfway and tossed first with **equal parts
+  water and oil**: the water steams the floret soft and, once it has boiled off, the oil browns it.
+  That two-stage toss is the sourced answer to *air-fried vegetables come out dry*, and no recipe
+  site on this shelf's evidence mentions it. They found no cauliflower number, and neither did this
+  page — that gap is marked in place rather than filled with the broccoli's.
 - **Everything, converted from an oven.** The rule in wide circulation is *drop the oven
   temperature by 25°F and cut the time by 20%*. **This is the rule that manufactures numbers** and
   it should not be used to write a single time on this shelf. It is a starting guess for a cook
@@ -601,6 +649,15 @@ The air fryer literature is mostly recipe sites rather than test kitchens, which
   10 × 10 inches and hold four cutlets or two 15-ounce bags of chips against a small machine's two
   and one, that stated capacities are unreliable, and that multi-rack models cook unevenly because
   the upper rack shades the lower.
+- **Vegetables, and the number a test kitchen reached by rejecting the popular one** —
+  [America's Test Kitchen, *Air-Fried Brussels Sprouts*](https://www.americastestkitchen.com/recipes/12466-air-fried-brussels-sprouts),
+  which establishes 350°F for 20–25 minutes on 1 lb with 1 Tbsp of oil **and says it got there by
+  testing 400°F and rejecting it**, because the exterior browned before the interior softened;
+  [*Air-Fryer Roasted Broccoli*](https://www.americastestkitchen.com/recipes/14763-air-fryer-roasted-broccoli)
+  for 350°F over 8–12 minutes tossed halfway; and
+  [*When Air-Frying Vegetables, Water and Oil Do Mix*](https://www.americastestkitchen.com/articles/4349-when-air-frying-vegetables-water-and-oil-do-mix),
+  which establishes the equal-parts water-and-oil toss and why it works — the water steams first,
+  the oil browns after it evaporates.
 - **The mechanism behind crowding, and that the machine is a convection oven** —
   [America's Test Kitchen, *A Case for Buying an Air Fryer*](https://www.americastestkitchen.com/articles/1649-a-case-for-buying-an-air-fryer-and-what-you-need-to-make-the-most-of-it)
   (*"a mini convection oven"*, and *"if the food was packed too tightly it steamed instead of
