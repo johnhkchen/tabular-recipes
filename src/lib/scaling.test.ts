@@ -1,4 +1,8 @@
-import { describe, expect, it } from 'vitest';
+import { execFileSync } from 'node:child_process';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import { afterAll, describe, expect, it } from 'vitest';
 import recipes from '../generated/recipes.json';
 import {
   boundSteps,
@@ -243,5 +247,120 @@ describe('saysItBatches', () => {
     ]);
     expect(saysItBatches(recipe, capacity('2 — the pot, simmer'))).toBe(false);
     expect(saysItBatches(recipe, capacity('2 — the pot, brown'))).toBe(true);
+  });
+});
+
+/*
+ * "Fails the build" is a property of the checker's exit code, not of any function's return
+ * value, so the only honest way to test it is to run the checker. The fixtures are written to
+ * a temp directory and never to recipes/, so the collection build never sees them — and no
+ * .cook file in this repository declares a capacity, which is T-011-03's work and not this
+ * ticket's. The pattern is washing-up.test.ts's.
+ */
+describe('the capacity check, run for real', () => {
+  const root = path.resolve(import.meta.dirname, '../..');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'capacity-'));
+  const folder = path.join(dir, 'stir-fries');
+  fs.mkdirSync(folder, { recursive: true });
+
+  afterAll(() => fs.rmSync(dir, { recursive: true, force: true }));
+
+  /** A four-step stir-fry that sears, with whatever capacity and servings the case wants. */
+  const write = (name: string, lines: { capacity: string; servings?: string; sear?: string }) => {
+    const file = path.join(folder, `${name}.cook`);
+    fs.writeFileSync(
+      file,
+      [
+        '>> title: Probe',
+        '>> category: Stir-Fries',
+        '>> tags: probe',
+        `>> servings: ${lines.servings ?? '4'}`,
+        lines.capacity,
+        '',
+        '>> step: velvet, rest 30 min',
+        'Toss @flank steak{1%lb} with @egg white{1} and ~rest{30%min} in the fridge.',
+        '',
+        `>> step: ${lines.sear ?? 'sear 3 min, lift out'}`,
+        'Sear @&(~1)velveted beef{} in @peanut oil{3%Tbs} in a very hot #wok{}, ~sear{3%min}.',
+        '',
+        '>> step: stir-fry the aromatics 1 min',
+        'Stir-fry @garlic{3%cloves} and @fresh ginger{1%Tbs} with @&(~1)seared beef{} ~stirfry{1%min}.',
+        '',
+      ].join('\n'),
+    );
+    return file;
+  };
+
+  const run = (file: string) => {
+    try {
+      const out = execFileSync(process.execPath, ['scripts/check-recipes.mjs', file], {
+        cwd: root,
+        encoding: 'utf8',
+        stdio: ['ignore', 'pipe', 'ignore'],
+      });
+      return { code: 0, out };
+    } catch (error) {
+      const failure = error as { status: number; stdout: string };
+      return { code: failure.status, out: failure.stdout };
+    }
+  };
+
+  it('fails a capacity below servings, naming both lines', () => {
+    const { code, out } = run(
+      write('probe-contradiction', { capacity: '>> capacity: 2 — the wok, sear', servings: '8' }),
+    );
+    expect(code).toBe(1);
+    expect(out).toContain('FAIL');
+    expect(out).toContain('capacity and servings disagree');
+    // Both lines, quoted as they were written. This is the criterion's "show it".
+    expect(out).toContain('>> capacity: 2 — the wok, sear');
+    expect(out).toContain('>> servings: 8');
+  });
+
+  it('allows a capacity below servings when the step says where it batches', () => {
+    // beef-with-broccoli's own case: s = 4, c = 2, and the label says "in two batches".
+    const { code, out } = run(
+      write('probe-batches', {
+        capacity: '>> capacity: 2 — the wok, sear',
+        sear: 'sear in two batches 3 min, lift out',
+      }),
+    );
+    expect(code).toBe(0);
+    expect(out).toContain('  ok   ');
+    expect(out).not.toContain('capacity and servings disagree');
+  });
+
+  it('says nothing at all when the vessel holds what the recipe makes', () => {
+    const { code, out } = run(write('probe-quiet', { capacity: '>> capacity: 4 — the wok, sear' }));
+    expect(code).toBe(0);
+    expect(out).toContain('  ok   ');
+    expect(out).not.toContain('capacity and servings disagree');
+    expect(out).not.toContain('is not a plain count');
+  });
+
+  it('fails a capacity that binds an operation the recipe does not have', () => {
+    const { code, out } = run(write('probe-unbound', { capacity: '>> capacity: 4 — the wok, deep-fry' }));
+    expect(code).toBe(1);
+    expect(out).toContain('not an operation in this recipe');
+    // The labels it tried, so the fix is a word the author can see.
+    expect(out).toContain('velvet, rest 30 min');
+  });
+
+  it('fails a line that is there but not whole', () => {
+    expect(run(write('probe-bare', { capacity: '>> capacity: 4' })).out).toContain('names no vessel');
+    expect(run(write('probe-vessel', { capacity: '>> capacity: 4 — the wok' })).out).toContain(
+      'not what it bounds',
+    );
+    expect(run(write('probe-batch-claim', { capacity: '>> capacity: 2 batches — the wok, sear' })).out)
+      .toContain('counts batches rather than servings');
+    expect(run(write('probe-bare', { capacity: '>> capacity: 4' })).code).toBe(1);
+  });
+
+  it('warns, and does not fail, when servings is not a number to compare against', () => {
+    const { code, out } = run(
+      write('probe-volume', { capacity: '>> capacity: 4 — the wok, sear', servings: '2 cups' }),
+    );
+    expect(code).toBe(0);
+    expect(out).toContain('is not a plain count of servings');
   });
 });

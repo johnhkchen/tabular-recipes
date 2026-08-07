@@ -17,6 +17,7 @@ import { normalise } from './normalise.mjs';
 import { findRecipes } from './find-recipes.mjs';
 import { mentionsFreezer } from '../src/lib/keeps.ts';
 import { cleanLabel } from '../src/lib/label.ts';
+import { boundSteps, saysItBatches, servingsOf } from '../src/lib/scaling.ts';
 import { buildTree } from '../src/lib/tree.ts';
 import { findTilingErrors, layout } from '../src/lib/layout.ts';
 import { pluralEntries, unaccountedCookware } from '../src/lib/washing-up.ts';
@@ -123,6 +124,75 @@ function measure(rel, recipe, tree) {
   return over;
 }
 
+/**
+ * The two ways a whole `>> capacity:` line can still be wrong about the recipe it sits in.
+ *
+ * 1. IT BINDS NOTHING. The operation the author named is not in this file, so the vessel
+ *    bounds no work and the cost function would price the recipe as though it had no
+ *    capacity at all — silently. The message prints the labels it tried, because the fix is
+ *    always a word the author can see in that list.
+ *
+ * 2. IT HOLDS LESS THAN THE RECIPE MAKES. `>> servings: 8` with a pan that holds 4 says the
+ *    recipe as written already needs two loads. That is either a wrong number or, in S-011's
+ *    words, a recipe that already batches and did not say — and a recipe that DID say is
+ *    neither, which is beef-with-broccoli's `sear in two batches 3 min` and the whole reason
+ *    docs/knowledge/scaling.md's ratio is b(n)/b(s) rather than b(n). So the fault is
+ *    batching in silence, and the message quotes BOTH LINES as the author wrote them.
+ *
+ * Takes the source as well as the parsed recipe so the two lines can be quoted verbatim: a
+ * message that paraphrases the lines it is complaining about makes the reader go and look.
+ */
+function checkCapacity(source, recipe) {
+  const problems = [];
+  const notes = [];
+  const capacity = recipe.capacity;
+  if (!capacity) return { problems, notes };
+
+  const lineOf = (key) =>
+    source.match(new RegExp(`^>>\\s*${key}\\s*:.*$`, 'mi'))?.[0].trim() ?? `>> ${key}: ?`;
+
+  const bound = boundSteps(recipe, capacity);
+  if (bound.length === 0) {
+    const labels = recipe.steps
+      .map((step) => `           step ${step.index + 1}: ${step.labelOverride ?? cleanLabel(step.rawLabel)}`)
+      .join('\n');
+    problems.push(
+      `capacity names ${capacity.operations.map((op) => `"${op}"`).join(', ')}, which is not an ` +
+        `operation in this recipe — the vessel would bound no work at all. The steps are:\n${labels}`,
+    );
+  }
+
+  /*
+   * The comparison below is servings against servings, so it needs a plain count on both
+   * sides. Six files in the collection yield a volume — `>> servings: 2 cups` — and comparing
+   * a pan's portions to a jar's cups compares nothing. Warned rather than failed: the fault
+   * is in what those files can say, not in the capacity line.
+   */
+  const servings = servingsOf(recipe);
+  const written = (recipe.metadata?.servings ?? '').trim();
+  if (servings === null || !/^\d+(?:\.\d+)?$/.test(written)) {
+    notes.push(
+      `capacity: >> servings: ${written || '?'} is not a plain count of servings, so nothing ` +
+        `can say whether the vessel holds more or less than this recipe makes`,
+    );
+    return { problems, notes };
+  }
+
+  if (capacity.servings < servings && !saysItBatches(recipe, capacity)) {
+    problems.push(
+      `capacity and servings disagree — one of these two lines is wrong:\n` +
+        `           ${lineOf('capacity')}\n` +
+        `           ${lineOf('servings')}\n` +
+        `         the vessel holds ${capacity.servings} and the recipe makes ${servings}, so it ` +
+        `already goes in more than one load. Either the number is wrong, or the recipe batches ` +
+        `and does not say so — say it where it happens ("in two batches"), the way ` +
+        `beef-with-broccoli does`,
+    );
+  }
+
+  return { problems, notes };
+}
+
 // --labels prints the operation cell each step came out as, which is the only way to see
 // whether a derived label reads like a cook's verb or like a mangled sentence fragment.
 const args = process.argv.slice(2).filter((a) => a !== '--labels');
@@ -171,6 +241,16 @@ for (const target of targets) {
     // not allowed to be: a number on its own is a shelf life, and a shelf life is a
     // food-safety claim this site does not make. Fails, so it can never reach a page.
     if (recipe.keepsProblem) problems.push(recipe.keepsProblem);
+
+    // A capacity line that is there but not whole: no number, no vessel, no operation, or a
+    // count of batches where a count of servings belongs.
+    if (recipe.capacityProblem) problems.push(recipe.capacityProblem);
+
+    // And the two ways a whole line can still be wrong: it binds an operation the recipe
+    // does not have, or it disagrees with `>> servings:`. See checkCapacity().
+    const vessel = checkCapacity(source, recipe);
+    problems.push(...vessel.problems);
+    notes.push(...vessel.notes);
 
     // A `>> step:` line with no step under it. The label the author wrote would otherwise go
     // nowhere at all, which is the one thing the older numbered form could never tell them.
