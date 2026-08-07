@@ -1284,6 +1284,9 @@ import { url } from '../lib/url.ts';
          * button nobody can see or reach, which drops focus to the body.
          */
         planned.replaceChildren();
+        // The same reason: an evening total for a list nobody is cooking any more.
+        evening.textContent = '';
+        evening.hidden = true;
         linesEl.replaceChildren();
         pantryLines.replaceChildren();
         shown = { buy: [], have: [] };
