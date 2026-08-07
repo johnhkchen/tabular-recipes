@@ -56,6 +56,7 @@ Then the optional lines, which are what the site is organised by:
 >> dish: beef-stew                  # what this and its equipment variants have in common
 >> kit: instant pot                 # the equipment that makes this variant different
 >> slack: forgiving — an extra half hour in the oven only softens the beef further
+>> washing-up: the Dutch oven, a plate for the browned beef
 ```
 
 - **`counters`** is a list, because a recipe can sit at more than one — noodles are not only
@@ -91,6 +92,38 @@ Then the optional lines, which are what the site is organised by:
   collection has no slack line, which is a legitimate answer and not a gap to fill in with
   filler. It is authored, never worked out from the timers: a five-minute custard is less
   forgiving than a six-hour braise.
+
+- **`washing-up`** is what is in the sink when the food is on the table, and it renders beside
+  the clock under `slack`. One line, listing the things, in the words you would use out loud:
+
+  ```cooklang
+  >> washing-up: the wok, a bowl to velvet in, a dish to dredge in, a rack to drain on
+  >> washing-up: nothing
+  ```
+
+  **The number is worked out from the list; you never write it.** *"Two"* followed by three
+  things is a recipe telling two different stories, so there is nowhere to write a number and
+  a line that states one is a build error. **One entry is one thing to wash** — that is the
+  whole contract between the list and the count, so *"two mixing bowls"* is two entries, not
+  one, and the checker says so.
+
+  **Count what holds food:** the pans, the pots, the bowls, the sieves, the racks, the machine
+  parts. **Do not count the plate you eat off**, the knife and board you prepped on, or the
+  spoon you stirred with. The test is the same for all four: *if every recipe on the site would
+  list it, it does not go in the line.* A number that is inflated by the same constant
+  everywhere has stopped comparing anything, and comparing is the entire job of this field.
+
+  **`nothing` is a real answer, and it is not the same as leaving the line off.** A dry rub
+  shaken together in the jar it is kept in genuinely washes nothing, and it says so. A recipe
+  that has not been looked at leaves the line off and the page prints nothing at all.
+
+  **It is authored, never derived, and this is the field where that matters most.** `cookware`
+  counts what a file *names*: `general-tsos-chicken` declares one `#wok{}` and is five things
+  to wash, and `docs/gaps/one-pot.md` threw 61 recipes off a shelf by hand after learning that.
+  `npm run check` **warns** — it does not fail — when a file names cookware its washing-up line
+  never mentions, because a foil-lined tray is a real answer and a warning you can overrule is
+  the honest strength for a guess. The failure that matters runs the other way: the bowls a
+  recipe uses and never names, which no check can see. That is why a person writes this line.
 
 **Name your timers.** `~rise{90%min}`, `~chill{4%hr}`, `~bake{30%min}` — the name is what
 separates time you spend from time you merely wait out, which is the most useful thing a
@@ -164,6 +197,7 @@ $ node scripts/check-recipes.mjs --labels recipes/soups/new-england-clam-chowder
 | `src/data/counters.json` | The counters, their blurbs, the sections each menu prints, and the category fallback that keeps every recipe on at least one. |
 | `src/lib/time.ts` | Timer durations in minutes, and whether a wait is hands-on or unattended. |
 | `src/lib/slack.ts` | The three slack levels, and the one reader that turns a `>> slack:` line into a level and a reason. |
+| `src/lib/washing-up.ts` | The one reader that turns a `>> washing-up:` line into a list and the count derived from it, plus the advisory cross-check against `cookware`. |
 | `src/lib/collection.test.ts` | The invariants no single file can be checked for: unique slugs, mutual pairings, one plain way per dish. |
 | `scripts/normalise.mjs` | The only place the WASM parser is touched. |
 | `scripts/parse-recipes.mjs` | Walks `recipes/`, emits `src/generated/recipes.json`. |
