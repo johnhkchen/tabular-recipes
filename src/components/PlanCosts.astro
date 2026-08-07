@@ -1,0 +1,33 @@
+---
+/*
+ * What every recipe costs at every multiplier the dial offers, worked out at build time.
+ *
+ * /list/ is drawn in the browser out of localStorage and one fetch of /plan.json, and the cost
+ * function needs the whole recipe tree — 4.2 MB of it — plus a schedule per recipe. So the work
+ * happens here, once, on the machine that already has the tree, and what reaches the page is a
+ * table of finished sentences and two minute figures per recipe per multiplier.
+ *
+ * That is not only cheaper, it is the safer shape: the page CANNOT work out a batch count for
+ * itself, because it never receives a capacity or a servings count to work one out from. The
+ * arithmetic lives in src/lib/scaling.ts and nowhere else, which is what T-011-05's criteria ask
+ * for and what stops a second answer to one question from growing in a script block.
+ *
+ * It renders one inert element and nothing else. See src/components/scaling-words.ts for the
+ * shape and for why the wording is what it is.
+ */
+import recipes from '../generated/recipes.json';
+import type { RawRecipe } from '../lib/tree.ts';
+import { buildCostTable } from './scaling-words.ts';
+
+const table = buildCostTable(recipes as unknown as RawRecipe[]);
+
+/*
+ * `</script` ends a script element whatever its type, and a vessel name or a recipe title is
+ * author-written text that could one day contain a `<`. Escaping every one of them as a JSON
+ * unicode escape parses back to the same character, so nothing is lost and the element cannot
+ * be closed from inside. Explicit here because this table is inline rather than fetched.
+ */
+const json = JSON.stringify(table).replace(/</g, '\\u003c');
+---
+
+<script type="application/json" data-plan-costs is:inline set:html={json}></script>

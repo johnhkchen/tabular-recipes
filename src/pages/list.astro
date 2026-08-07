@@ -18,6 +18,7 @@
  * elements the script made.
  */
 import Base from '../layouts/Base.astro';
+import PlanCosts from '../components/PlanCosts.astro';
 import { url } from '../lib/url.ts';
 ---
 
@@ -26,6 +27,12 @@ import { url } from '../lib/url.ts';
   blurb="The recipes you're cooking this week, added up into one shopping list."
 >
   <div class="list-page" data-plan-json={url('plan.json')} data-home={url()}>
+    {/*
+      What each recipe costs at each multiplier, worked out at build time. Inert JSON, read once
+      by the script below — see src/components/PlanCosts.astro for why it is not in /plan.json.
+    */}
+    <PlanCosts />
+
     <nav class="crumbs">
       <a href={url()}>All counters</a>
     </nav>
@@ -67,6 +74,11 @@ import { url } from '../lib/url.ts';
         </button>
       </div>
       <ul class="planned" data-planned></ul>
+      {/*
+        What the whole evening comes to. Hidden until there is more than one recipe with a clock
+        on it — with one, "the evening" is the dish, and the line above already said it.
+      */}
+      <p class="fine evening" data-evening hidden></p>
       <p class="fine">
         Doubling doubles every number. Anything the recipe puts no number on — salt to taste, a
         pinch of this — stays exactly as it is, because there is nothing to double.
@@ -226,6 +238,39 @@ import { url } from '../lib/url.ts';
   .list-page :global(.planned .gone) {
     color: var(--clay-ink);
     font-style: italic;
+  }
+
+  /*
+   * What the multiplier costs, under the title where the servings already are.
+   *
+   * The same size and colour as .meta directly above it, on purpose. This is a fact about the
+   * dish, not a warning — a batch note that reads as an alert would turn a shopping list into a
+   * form with an error on it, and it only has anything to say on some lines of some lists. It
+   * appears at no multiplier of one and on no recipe that cannot answer, so a page that has
+   * nothing to add looks exactly as it did before.
+   *
+   * 34rem is the page's one width, already declared at the top of this block.
+   */
+  .list-page :global(.planned .cost) {
+    margin: 0.35rem 0 0;
+    max-width: 34rem;
+    color: var(--clay-ink-soft);
+    font-size: 0.82rem;
+    line-height: 1.5;
+  }
+  /*
+   * "…plus three steps the recipe never times." — the phrasebook's tail, kept as its own element
+   * so the claim and the caveat are never one string, and drawn quieter than the claim it
+   * qualifies. The leading ellipsis is the phrasebook's, and it is what makes this read as a
+   * continuation rather than a second sentence.
+   */
+  .list-page :global(.cost .tail) {
+    opacity: 0.75;
+  }
+
+  /* The evening total, in the same quiet register as the note below it. */
+  .list-page :global(.evening) {
+    margin-top: 1rem;
   }
 
   /* The multiplier dial: a row of real buttons, one of them pressed. */
@@ -670,6 +715,13 @@ import { url } from '../lib/url.ts';
     type Amount,
   } from '../lib/units.ts';
   import {
+    eveningLine,
+    readCost,
+    type CostReading,
+    type CostTable,
+    type Words,
+  } from '../components/scaling-words.ts';
+  import {
     aisleFor,
     OTHER_AISLE,
     purchaseOf,
@@ -715,8 +767,35 @@ import { url } from '../lib/url.ts';
     const copyOut = q<HTMLLabelElement>('copy-out');
     const said = q('said');
     const clearButton = q<HTMLButtonElement>('clear');
+    const evening = q('evening');
 
     const home = page.dataset.home!;
+
+    /* ---- what the multiplier costs --------------------------------------- */
+
+    /*
+     * The build's answers, read out of the inert JSON PlanCosts.astro left in the markup. Read
+     * once — it does not change while the page is open — and read defensively: a table that is
+     * missing or unreadable leaves the page drawing exactly what it drew before this feature,
+     * which is the same posture loadTicks() takes two functions down.
+     *
+     * Nothing here computes anything. The batch counts, the minutes and the sentences were all
+     * settled by src/lib/scaling.ts at build time; this end looks them up.
+     */
+    const readTable = (): CostTable | null => {
+      const script = page.querySelector<HTMLScriptElement>('[data-plan-costs]');
+      if (!script?.textContent) return null;
+      try {
+        const parsed = JSON.parse(script.textContent) as CostTable;
+        return Array.isArray(parsed?.says) && Array.isArray(parsed?.multipliers) && parsed?.at
+          ? parsed
+          : null;
+      } catch {
+        return null;
+      }
+    };
+
+    const costs = readTable();
 
     /* ---- ticking a line off ---------------------------------------------- */
 
@@ -961,8 +1040,26 @@ import { url } from '../lib/url.ts';
       }
     };
 
+    /*
+     * The finding, and the tail that qualifies it, as two elements rather than one string.
+     *
+     * docs/knowledge/scaling.md §6 writes "…plus three steps the recipe never times" with a
+     * leading ellipsis because it is a continuation of the sentence before it, not a sentence.
+     * Kept apart, the claim can be drawn at full strength and the caveat quieter, and neither
+     * row has to be reworded to sit next to the other.
+     */
+    const costLine = (words: Words): HTMLParagraphElement => {
+      const p = el('p', 'cost');
+      p.append(el('span', undefined, words.said));
+      if (words.qualifier) p.append(' ', el('span', 'tail', words.qualifier));
+      return p;
+    };
+
     const drawPlanned = () => {
       const items = readPlan();
+      /* What each line resolved to, so the evening below is added up from the same readings. */
+      const readings: CostReading[] = [];
+
       planned.replaceChildren(
         ...items.map((item) => {
           const recipe = catalogue?.get(item.slug) ?? null;
@@ -990,6 +1087,18 @@ import { url } from '../lib/url.ts';
             meta.textContent = 'This recipe is not in the collection any more.';
           }
           what.append(meta);
+
+          /*
+           * Nothing at a multiplier of one, and nothing where the recipe cannot answer. Both
+           * come back as no words at all — they arrived at scaling-words.ts as different
+           * findings and only the phrasebook collapsed them, which is what keeps "cooking three
+           * times as much costs you nothing extra" and "nobody measured this" from ever being
+           * drawn the same way. The element is not created, so there is no empty box to see.
+           */
+          const cost = costs ? readCost(costs, item.slug, item.multiplier) : null;
+          if (cost) readings.push(cost);
+          if (cost?.words) what.append(costLine(cost.words));
+
           li.append(what);
 
           if (recipe) {
@@ -1024,6 +1133,17 @@ import { url } from '../lib/url.ts';
       );
 
       cookingCount.textContent = items.length === 1 ? '1 recipe' : `${items.length} recipes`;
+
+      /*
+       * What the evening comes to, from the same readings the lines above were drawn from.
+       * Hands-on work is summed and elapsed times are NOT — two two-hour braises are a two-hour
+       * evening — so what comes back is the longest single dish, said as a floor. Set here
+       * rather than in a pass of its own, so it is recomputed by exactly the events that already
+       * redraw the list: a multiplier press, a removal, a change in another tab.
+       */
+      const total = eveningLine(readings);
+      evening.textContent = total ?? '';
+      evening.hidden = total === null;
     };
 
     const drawLine = (line: Line, why?: string): HTMLLIElement => {
