@@ -1,5 +1,10 @@
 import { describe, expect, it } from 'vitest';
+import recipes from '../generated/recipes.json';
 import { NOT_AT_ALL, keepsWord, mentionsFreezer, readKeeps } from './keeps.ts';
+import type { RawRecipe } from './tree.ts';
+
+const all = recipes as unknown as RawRecipe[];
+const declared = all.filter((recipe) => recipe.keeps !== null);
 
 describe('readKeeps', () => {
   it('reads a span and keeps the character exactly as it was written', () => {
@@ -129,5 +134,82 @@ describe('mentionsFreezer', () => {
       false,
     );
     expect(mentionsFreezer(null)).toBe(false);
+  });
+});
+
+/*
+ * The render is one guard over one value — `{keeps && …}` in Timeline.astro — so these are
+ * what stand behind it. A recipe is either whole or null; there is no third state for the
+ * component to draw an empty slot out of.
+ */
+describe('keeps across the collection', () => {
+  it('leaves every recipe either whole or silent, never half-declared', () => {
+    const halfway = all
+      .filter((recipe) => recipe.keeps !== null && !recipe.keeps?.character?.trim())
+      .map((recipe) => recipe.slug);
+    expect(halfway).toEqual([]);
+  });
+
+  it('renders nothing for a recipe that never declared one', () => {
+    // Nothing to draw is the common case, and it is the honest answer rather than a gap:
+    // 500-odd files have never been read for this, and a guess would be worse than silence.
+    const undeclared = all.filter((recipe) => recipe.keeps === null);
+    expect(undeclared.length).toBeGreaterThan(0);
+    for (const recipe of undeclared) expect(recipe.keeps, recipe.slug).toBeNull();
+  });
+
+  it('re-reads every declared line without a complaint', () => {
+    const problems = declared
+      .map((recipe) => ({
+        slug: recipe.slug,
+        problem: readKeeps(`${recipe.keeps!.text} — ${recipe.keeps!.character}`).problem,
+      }))
+      .filter((entry) => entry.problem)
+      .map((entry) => `${entry.slug}: ${entry.problem}`);
+    expect(problems).toEqual([]);
+  });
+
+  /*
+   * The count the ticket asked for, asserted rather than claimed. It is a floor and not a
+   * target: a recipe whose answer could not be established honestly is left undeclared, and
+   * five that had been written were taken back out for exactly that reason. Raising this
+   * number by guessing at a file is the one failure this field cannot afford.
+   */
+  it('has been written on at least sixty recipes', () => {
+    expect(declared.length).toBeGreaterThanOrEqual(60);
+  });
+
+  it('has worked examples of both answers, so a writer has one of each to copy', () => {
+    const doesNot = declared.filter((recipe) => recipe.keeps!.minutes === 0);
+    const spans = declared.filter((recipe) => recipe.keeps!.minutes > 0);
+    expect(doesNot.length).toBeGreaterThanOrEqual(4);
+    expect(spans.length).toBeGreaterThanOrEqual(40);
+    for (const recipe of doesNot) expect(recipe.keeps!.text, recipe.slug).toBe(NOT_AT_ALL);
+  });
+
+  it('measures every span in hours at least, because nothing here is a matter of minutes', () => {
+    const odd = declared
+      .filter((recipe) => recipe.keeps!.minutes > 0 && recipe.keeps!.minutes < 60)
+      .map((recipe) => `${recipe.slug}: ${recipe.keeps!.text}`);
+    expect(odd).toEqual([]);
+  });
+
+  it('gives characters that say what you are eating rather than restating the span', () => {
+    const thin = declared
+      .filter((recipe) => recipe.keeps!.character.split(/\s+/).length < 5)
+      .map((recipe) => `${recipe.slug}: ${recipe.keeps!.character}`);
+    expect(thin).toEqual([]);
+  });
+
+  /*
+   * The checker only WARNS on this, because "unlike the frozen version, this one…" is a
+   * legitimate sentence and a guess about intent should not fail a build. Nothing written so
+   * far needed the exception, so the collection is held at zero here — one line did trip it
+   * (a frozen prawn going INTO the basket) and was reworded rather than waived. An author who
+   * needs the exception moves this test and says why, the way the caps are moved.
+   */
+  it('keeps the freezer out of it, which is a different question', () => {
+    const strayed = declared.filter((recipe) => mentionsFreezer(recipe.keeps)).map((r) => r.slug);
+    expect(strayed).toEqual([]);
   });
 });
