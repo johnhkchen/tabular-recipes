@@ -14,10 +14,17 @@ boards, because that is the way in.
 The `## What it has` block of each file is machine-read: `node scripts/menu-sections.mjs` parses it back
 into `src/data/counters.json` and reports what it found. Keep the `**Section title.** slug · slug` shape
 when you edit one, and keep the section titles free of an em-dash aside — the parser cuts a title at
-` — `. Twenty of the twenty-one counters round-trip exactly; One Pot does not, and the dry run says so
-every time it is run. Two things `--write` will do that a reader should know about before using it: it
-rewrites **every** counter, not the one being edited, and it drops the hand-written `notes` blocks on
-eleven sections, which are the only thing in `counters.json` not derived from these pages.
+` — `. **Twenty-one of the twenty-two counters round-trip exactly**; One Pot does not, and the dry run
+says so every time it is run. Two things `--write` will do that a reader should know about before using
+it: it rewrites **every** counter, not the one being edited, and it drops the hand-written `notes` blocks
+on **twelve** sections, which are the only thing in `counters.json` not derived from these pages. Run it
+against a copy and diff, rather than against the file.
+
+**Also worth knowing before you title a section: a section with no items cannot round-trip.** The parser
+only emits a section it found at least one slug for, so a title written ahead of its contents is deleted
+on the next `--write` and reported as nothing at all in the dry run. The Air Fryer & the Pot opened with
+five empty titles for exactly that reason and closed with four full ones; the fifth is discussed on
+[its page](air-fryer-and-pot.md) in prose, which is where an absence belongs.
 
 ## Build state
 
@@ -45,10 +52,11 @@ what happened to each of the twenty-four recipes, and what would have to be true
 again. Its dried-goods glossary and its four rules of the pot are intact. It has no `## What it has`
 block, because there is no counter for `menu-sections.mjs` to match it to.
 
-**The board is 21 counters and every one of them now has something on it.** Cha Chaan Teng was the
-empty one; T-007-03 and T-007-04 wrote 22 recipes for it and T-007-05 shelved them into five sections.
-The front page prints 21 cards, `/menu/soup-pot` no longer builds, and the grid needed no change to
-absorb either — `.counters` is `repeat(auto-fill, minmax(16.5rem, 1fr))` and has no fixed column count.
+**The board is 22 counters and every one of them has something on it.** It was 21 when S-007 closed —
+Cha Chaan Teng was the empty one and T-007-03, T-007-04 and T-007-06 wrote 27 recipes for it. **S-008
+opened the twenty-second, The Air Fryer & the Pot**, and filled it with 21. The front page prints 22
+cards, `/menu/soup-pot` no longer builds, and the grid has needed no change to absorb any of it —
+`.counters` is `repeat(auto-fill, minmax(16.5rem, 1fr))` and has no fixed column count.
 
 At 514 recipes, three things needed repairing, and none of them was visible from inside one folder:
 
@@ -100,61 +108,141 @@ counter's recipes are not also shelved somewhere else — the number that says w
 menu of its own or is borrowing one. The **was** columns are the state this story started from, which is
 the tree at `096b1d4`, rebuilt from source rather than remembered.
 
-**All twenty-one counters, for the first time.** The previous version of this table had fifteen rows and
-described the board before The Bowl Shop, Instant Pot, One Pot, The Slow Cooker and Japanese Home Cooking
-existed. Every column below is derived the same way for every row: **Recipes** and **Only here** off
-`src/generated/recipes.json`, **Missing dishes** off each page's ranked `## What it is missing` list,
-**Missing components** off its `## Components it would need` bullets. Run against the fifteen printed
-rows, that derivation reproduces the old Recipes, Missing-dishes and Missing-components figures exactly —
-which is what licenses using it for the six new ones. It does **not** reproduce the old *Only here*
-column, which was left at its 514-recipe values; those numbers are corrected here.
+**All twenty-two counters, including The Air Fryer & the Pot**, which S-008 opened and filled. The
+version before this one had twenty-one rows and the one before that fifteen.
 
-| Counter | Recipes | was | Only here | was | Missing dishes | was | Missing components | was |
-| --- | --: | --: | --: | --: | --: | --: | --: | --: |
-| [Bakery](bakery.md) | 107 | 107 | 63 | 63 | 18 | 18 | 11 | 11 |
-| [The Bowl Shop](bowl-shop.md) | 103 | 103 | 36 | 36 | 7 | 7 | 8 | 8 |
-| [Diner](diner.md) | 77 | 77 | 29 | 29 | 4 | 4 | 5 | 5 |
-| [One Pot](one-pot.md) | 73 | 68 | 19 | 14 | 6 | 6 | 7 | 7 |
-| [Deli](deli.md) | 62 | 62 | 17 | 17 | 13 | 13 | 10 | 10 |
-| [Meat and Three](meat-and-three.md) | 53 | 53 | 16 | 16 | 7 | 7 | 6 | 6 |
-| [Curry House](curry-house.md) | 47 | 47 | 31 | 31 | 10 | 10 | 8 | 8 |
-| [Shawarma Counter](shawarma-counter.md) | 44 | 44 | 17 | 17 | 9 | 9 | 10 | 10 |
-| [Japanese Home Cooking](japanese-home.md) | 38 | 38 | 28 | 28 | 41 | 41 | 6 | 6 |
-| [Taquería](taqueria.md) | 34 | 34 | 18 | 18 | 14 | 14 | 7 | 7 |
-| [Pizzeria](pizzeria.md) | 32 | 32 | 23 | 23 | 13 | 13 | 13 | 13 |
-| [Dim Sum Counter](dim-sum-counter.md) | 30 | 30 | 17 | 17 | 9 | 9 | 11 | 11 |
-| [Panadería](panaderia.md) | 30 | 30 | 17 | 17 | 8 | 8 | 6 | 6 |
-| [Ramen Shop](ramen-shop.md) | 27 | 27 | 13 | 13 | 9 | 9 | 10 | 10 |
-| [Instant Pot](instant-pot.md) | 25 | 25 | 25 | 24 | 31 | 31 | 5 | 5 |
-| [Cha Chaan Teng](cha-chaan-teng.md) | 22 | — | 22 | — | 5 | — | 2 | — |
-| [Smokehouse](smokehouse.md) | 21 | 21 | 12 | 12 | 4 | 4 | 8 | 8 |
-| [Thai Kitchen](thai-kitchen.md) | 21 | 21 | 15 | 15 | 13 | 13 | 10 | 10 |
-| [Takeout Counter](takeout-counter.md) | 20 | 20 | 13 | 12 | 9 | 9 | 9 | 9 |
-| [The Slow Cooker](slow-cooker.md) | 20 | 20 | 20 | 20 | 18 | 18 | 6 | 6 |
-| [Phở & Bánh Mì](pho-and-banh-mi.md) | 18 | 18 | 12 | 12 | 10 | 10 | 9 | 9 |
-| **Total** | **904** | **901** | **463** | **455** | **258** | **285** | **167** | **171** |
+**Two of the four columns are fresh and two are carried forward, and the table says which**, because a
+table that silently mixes a re-derived number with a remembered one is worse than one that admits it:
 
-**The Soup Pot's row is gone.** It was 24 recipes, 21 of them only there, 32 missing dishes and 6 missing
-components at `096b1d4`; the **was** total above still includes it, which is why 901 does not equal the
-sum of the twenty rows that have a was-value. What happened to each of its twenty-four files is in
+- **Recipes** and **Only here** are re-derived for every row from `src/generated/recipes.json` at 685
+  recipes, by `docs/active/work/T-008-05/tally.mjs`. Run it and the two columns come back.
+- **Missing dishes** and **Missing components** are **carried forward** from the previous version for
+  the twenty-one rows that had one, and derived for the new row the same way it was derived for them:
+  the length of each page's ranked `## What it is missing` list, and the count of its
+  `## Components it would need` bullets. Nobody re-read twenty-one work lists for this pass and it
+  would be dishonest to print numbers as though somebody had.
+
+**One thing that derivation gets wrong, said here rather than left for the next reader to trip over:**
+*Missing dishes* is the **length of the printed rank list**, not the count still unwritten, and two
+pages number every rank whether or not it has been written. **Instant Pot's 31 includes 24 that are
+written; The Air Fryer & the Pot's 26 includes 17.** One Pot renumbers as it writes, so its 6 is a true
+still-out count. Read those two rows as *the size of the work list*, and read the page for the rest.
+
+**The `was` columns changed meaning with this version and it is worth one line.** They used to hold the
+tree at `096b1d4`, the state S-007 started from. That baseline has been overtaken twice and is no longer
+the useful comparison, so **`was` is now the previous version of this table** — the board as S-007 left
+it. The two `was` columns for *Missing dishes* and *Missing components* are dropped rather than carried,
+because neither moved.
+
+| Counter | Recipes | was | Only here | was | Missing dishes | Missing components |
+| --- | --: | --: | --: | --: | --: | --: |
+| [Bakery](bakery.md) | 107 | 107 | 63 | 63 | 18 | 11 |
+| [The Bowl Shop](bowl-shop.md) | 103 | 103 | 36 | 36 | 7 | 8 |
+| [Diner](diner.md) | 77 | 77 | 29 | 29 | 4 | 5 |
+| [One Pot](one-pot.md) | 73 | 73 | 19 | 19 | 6 | 7 |
+| [Deli](deli.md) | 62 | 62 | 17 | 17 | 13 | 10 |
+| [Meat and Three](meat-and-three.md) | 53 | 53 | 16 | 16 | 7 | 6 |
+| [Curry House](curry-house.md) | 47 | 47 | 31 | 31 | 10 | 8 |
+| [Shawarma Counter](shawarma-counter.md) | 44 | 44 | 17 | 17 | 9 | 10 |
+| [Japanese Home Cooking](japanese-home.md) | 38 | 38 | 28 | 28 | 41 | 6 |
+| [Taquería](taqueria.md) | 34 | 34 | 18 | 18 | 14 | 7 |
+| [Pizzeria](pizzeria.md) | 32 | 32 | 23 | 23 | 13 | 13 |
+| [Dim Sum Counter](dim-sum-counter.md) | 30 | 30 | **16** | 17 | 9 | 11 |
+| [Panadería](panaderia.md) | 30 | 30 | 17 | 17 | 8 | 6 |
+| [Cha Chaan Teng](cha-chaan-teng.md) | **27** | 22 | **22** | 22 | 5 | 2 |
+| [Ramen Shop](ramen-shop.md) | 27 | 27 | 13 | 13 | 9 | 10 |
+| [Instant Pot](instant-pot.md) | 25 | 25 | 25 | 25 | 31 | 5 |
+| [Smokehouse](smokehouse.md) | 21 | 21 | 12 | 12 | 4 | 8 |
+| [Thai Kitchen](thai-kitchen.md) | 21 | 21 | 15 | 15 | 13 | 10 |
+| [**The Air Fryer & the Pot**](air-fryer-and-pot.md) | **21** | — | **21** | — | **26** | **5** |
+| [Takeout Counter](takeout-counter.md) | 20 | 20 | 13 | 13 | 9 | 9 |
+| [The Slow Cooker](slow-cooker.md) | 20 | 20 | 20 | 20 | 18 | 6 |
+| [Phở & Bánh Mì](pho-and-banh-mi.md) | 18 | 18 | 12 | 12 | 10 | 9 |
+| **Total** | **930** | **904** | **483** | **463** | **284** | **172** |
+
+**Three rows moved and each has a reason.**
+
+- **The Air Fryer & the Pot arrived with 21**, all of them only there, and it is the first counter on
+  the board whose membership is a *rule* rather than a kind of food. Every item passes a three-bar
+  gate; [air-fryer-and-pot.md](air-fryer-and-pot.md) is the measurement and the number came in under
+  the twenty-five S-008 asked for, which that page reports rather than fixes.
+- **Cha Chaan Teng finished at 27, not 22.** T-007-06 landed five more after the previous version of
+  this table was written.
+- **Dim Sum Counter's *only here* is 16, not 17.** One of its recipes gained a second counter; the old
+  value was carried forward from before that happened and is corrected by the re-derivation.
+
+**The Soup Pot is not in either column now.** It came down under S-007 and was already absent from the
+previous table, so under the new `was` definition its 24 recipes are gone from both sides and the two
+totals reconcile without a footnote: **904 → 930 is exactly the 5 Cha Chaan Teng gained plus the 21 this
+counter arrived with.** What happened to each of its twenty-four files is in
 [soup-pot.md](soup-pot.md).
 
-**Cha Chaan Teng has no was-value** because it did not exist at `096b1d4` — T-007-01 opened it inside
-this story. Its work list opened at 24 missing dishes and 7 missing components; nineteen ranks were
-written or shelved and five components landed inside a dish, which is how it reads 5 and 2 now.
+**The Air Fryer & the Pot has no was-value** because it did not exist when the previous table was
+written — S-008 opened it in T-008-02, with five section titles and nothing under them, and T-008-05
+filled four of the five. **The fifth, *Start to finish in the pot*, was removed rather than left
+empty**: no Instant Pot recipe on the site clears the gate's 45-minute bar and none of the six ranked
+pressure dishes has been written, so the title had nothing to hold. A section title with nothing under
+it is a claim about a menu that the menu does not keep.
 
-**Only four rows moved at all**, and each is S-007: One Pot took five of The Soup Pot's soups
-(68 → 73), Instant Pot and Takeout Counter each gained an *only here* when `congee-instant-pot` and
-`egg-drop-soup` lost their second counter, and Cha Chaan Teng arrived with 22.
+Also recorded: **158 items across the twenty-two counters that a single table cannot express** — 150 of
+them counted at the previous pass, plus the eight on the new counter's page, which are the sharpest set
+on the board because a basket is a machine and most of what goes wrong with it is a fact about the
+reader's kitchen: how much fits in one layer, whether it needs two batches, how loud it is. Each carries
+the reason it cannot be a cell. The figure before that was 107 across fifteen; nothing about what a table
+can hold has changed, the counters missing from the tally were simply never counted.
 
-Also recorded: **150 items across the twenty-one counters that a single table cannot express**, and the
-reason in each case. The old figure was 107 across fifteen; nothing about what a table can hold changed,
-the six counters missing from the tally were simply never counted.
+Every counter is **fully sectioned**: all 930 assignments print under a heading its board would use, and
+**no menu on the site renders an *Also here* section.** That is a live check rather than a habit —
+`menuFor()` appends one automatically for anything a counter shelves that its section list forgets, so an
+empty *Also* means every slug is placed on purpose. `node scripts/check-menus.mjs` says
+`22 counter(s): 930 slug(s) listed, 930 printed.`
 
-Every counter is **fully sectioned**: all 904 assignments print under a heading its board would use.
-Two counters list a slug they do not shelve — Cha Chaan Teng's five deliberate borrows, and One Pot's
-four, which are a drift between `src/data/counters.json` and [one-pot.md](one-pot.md) dating from
-`88ca990`. `node scripts/menu-sections.mjs` names both every run.
+**One drift is left on the whole board, and it is the reverse of the old one.**
+[one-pot.md](one-pot.md)'s `## What it has` block does not list the five soups S-007 moved there, so
+`node scripts/menu-sections.mjs` reports `One Pot: 68/73 placed` every run. They print correctly on the
+menu, because `src/data/counters.json` has them under *Quick soups that go with dinner* — which is the
+wrong way round, since these pages are supposed to be the source the JSON is folded from. Adding five
+slugs to that block closes the last one. The older drifts are gone: Cha Chaan Teng's five borrows were
+settled by T-007-06, and One Pot's four inert fried slugs came out under T-003-07. Since T-011-05,
+`menuFor()` **throws with the slug named** rather than dropping a slug it cannot place, so a drift of
+that shape can no longer hide.
+
+### What the kit axis says about the sink
+
+**Recorded here because this is where the next pass looks, and because it is not what the `kit:` badge
+was sold on.** S-008 annotated `>> washing-up:` across 145 files and could then compare, for the first
+time, every `dish` that has both a plain file and an appliance one — 45 pairs, measured by T-008-03.
+
+| kit | pairs | washes **more** than plain | the same | **fewer** |
+| --- | --: | --: | --: | --: |
+| The Slow Cooker | 20 | **16** | 4 | **0** |
+| Instant Pot | 25 | 5 | **16** | 4 |
+| Air Fryer | 13 | 0 | 3 | **10** |
+
+- **The slow cooker is the most expensive machine in the kitchen and never the cheapest.** Sixteen of
+  twenty wash more than the plain version and **not one washes fewer**. The reason is structural: the
+  crock browns nothing, so a skillet joins it. `pot-roast` goes 1 → 4, `braised-short-ribs` 1 → 4,
+  `baked-turkey-wings` 1 → 4. The four that break even are the four that brown nothing at all.
+- **The Instant Pot is a dead heat, sixteen times out of twenty-five.** Sauté means it browns in the
+  pot, so it lands exactly level with a Dutch oven. **For the largest kit family on the site, the sink
+  is usually identical**, and the *fewer things to wash* claim is not one that shelf can make. It still
+  says something true about time and attention — that is what `>> time:` and the standing dial are for.
+- **Where the pot does win it wins big, always for one reason**: dried pulses cooked from dry, with no
+  soak bowl and no parboiling pan. `boston-baked-beans` 4 → **1**, `ful-medames` 3 → **1**,
+  `cuban-black-beans` 2 → **1**.
+- **The basket is the only kit that reliably removes a vessel** — ten of thirteen — because what it
+  replaces is a pan of frying oil or a parboiling pot. `batata-harra` 5 → 2 is the largest single drop
+  on the site.
+
+**What a later pass should do with this:** nothing on any page currently promises that a `kit:` variant
+washes less, so nothing is wrong today. What is missing is the opposite — the one page where a
+deep-fried original sits beside its basket version with **five things against two** is the clearest
+argument S-008 can make and nothing renders it. `scripts/parse-recipes.mjs` already carries
+`washingUpCount` onto each variant, so it needs no new data, only a place to show it.
+
+**Coverage, so the table above is read at its true weight:** 177 of 685 recipes declare a
+`>> washing-up:` line — 11 before S-008 and 177 after. The 508 that do not are most of the collection,
+and every number on this page about the sink is a statement about the quarter that has been asked.
 
 ## What no single classifier could see
 

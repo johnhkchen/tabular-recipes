@@ -177,6 +177,61 @@ with the number that dish actually takes. `beef-stew` has four untimed operation
 `beef-bourguignon` five, `pot-roast` three. Until then, elapsed time is the comparison that means
 something, and it is the column above.
 
+### What browns outside the pot
+
+**Four of twenty-five.** The pot's whole claim is that it browns in the vessel it braises in, on
+Sauté, and twenty-one of these files do exactly that. Four do not, and each says so in its own step
+text — read off the prose by T-008-03, not inferred from the `cookware` line, which
+[one-pot.md](one-pot.md) established counts only what a recipe *names*.
+
+| slug | what happens outside the pot | when |
+| --- | --- | --- |
+| `chile-verde-instant-pot` | *"Char tomatillos, poblano chiles… under a broiler for 12 min"* | **before** the pot |
+| `carnitas-instant-pot` | *"spread it on a sheet… and crisp it under the broiler"* | **after** the pot |
+| `beef-bourguignon-instant-pot` | *"Glaze pearl onions, cremini mushrooms… in a skillet — a separate pan, because the pot is full"* | during |
+| `pho-broth-instant-pot` | *"Toast star anise, cinnamon stick… in a dry skillet"* | before |
+
+**All four are honest recipes and all four are two appliances.** None of them is a fault; each is a
+file saying what it actually does, which is the behaviour a table exists to produce. What they are
+is the answer to a question this shelf could not previously ask — *"which of my braises brown in a
+separate pan first?"* — and S-008 named that question as one of the reasons `washing-up` was worth
+building.
+
+**`birria-de-res-instant-pot` is not on this list and it is worth saying why.** It uses a jug
+blender, which is plugged in and cooks nothing, so the pot is still the only thing cooking. Its jug
+and its sieve are a washing-up cost instead: it declares **4**.
+
+**This answers T-008-01's open concern.** That ticket looked for *"an Instant Pot recipe that browns
+in a separate pan first"* and could only find `pho-broth-instant-pot`'s dry spice skillet.
+`chile-verde-instant-pot` is the browning-first case it wanted, and the shelf has exactly one.
+
+**Where the pattern is not rare at all is next door.** [The Slow Cooker](slow-cooker.md) has
+**seventeen of twenty** using a second appliance — fifteen brown or sweat in a skillet, one roasts
+in an oven, one parboils in a saucepan — because a crock browns nothing, so a pan joins it. That
+shelf's mean washing-up is **3.05** against this one's **2.44** and One Pot's **1.59**: the
+appliance that looks like the bigger shortcut is the most expensive one at the sink.
+
+### What the sink says, now that it has been asked
+
+Every one of the 25 declares a `>> washing-up:` line. **13 wash two things or fewer; 12 wash three
+or more**, and the twelve are the broths and the drained beans: `chintan-broth-instant-pot` at
+**six** — pot, colander, sieve, cloth, settling jug, fat jar — `pho-broth-instant-pot` and
+`chile-verde-instant-pot` at four each.
+
+**Against the plain siblings it is a dead heat, sixteen times out of twenty-five**, and that is the
+deflating result rather than the reassuring one: Sauté means the pot lands exactly level with a
+Dutch oven. `beef-bourguignon` 3 = 3, `chintan-broth` 6 = 6, `congee` 1 = 1, `corned-beef` 3 = 3,
+`ham-hock-stock` 3 = 3, `pho-broth` 4 = 4, `tonkotsu-broth` 3 = 3, and nine more. Five wash *more*
+than the plain version and four wash fewer.
+
+**Where the pot does win, it wins big and always for the same reason** — it cooks dried pulses from
+dry, with no soak bowl and no parboiling pan: `boston-baked-beans` 4 → **1**, `ful-medames` 3 → **1**,
+`cuban-black-beans` 2 → **1**, `gigantes-plaki` 4 → 3.
+
+So **the `kit:` badge on this shelf is not a claim about washing up** and no page should let a reader
+read it as one. It is a claim about time and about attention, which is what `>> time:` and the
+standing dial are for, and the table above is where it is made.
+
 ---
 
 ## Components it would need

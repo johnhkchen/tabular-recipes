@@ -1,9 +1,18 @@
 # One Pot — what is missing
 
-**68 recipes.** T-002-04 wrote fourteen; T-002-08 shelved fifty-four that were already here and
-had never been counted as one pot. Like the Instant Pot, this is a vessel rather than a cuisine —
-but unlike the Instant Pot, most of what is on it was written as a one-pot recipe years ago and
-simply had not been shelved that way.
+**73 recipes.** T-002-04 wrote fourteen; T-002-08 shelved fifty-four that were already here and
+had never been counted as one pot; S-007 added five more when The Soup Pot came down —
+`century-egg-amaranth-soup`, `crucian-carp-tofu-soup`, `mustard-greens-tofu-soup`,
+`seaweed-egg-drop-soup` and `tomato-potato-beef-soup`, which the menu prints under *Quick soups
+that go with dinner* and the `## What it has` block below has never been updated to list. That is
+the drift `node scripts/menu-sections.mjs` reports every run, and it is now the only one left on
+the board. Like the Instant Pot, this is a vessel rather than a cuisine — but unlike the Instant
+Pot, most of what is on it was written as a one-pot recipe years ago and simply had not been
+shelved that way.
+
+**And the shelf's promise has now been checked.** For two stories this page said that washing-up
+could not be expressed and therefore could not be tested. It can. Every one of the 73 files
+declares what goes in the sink, and the answer is under *What the shelf actually washes* below.
 
 The earlier draft of this page ranked 114 candidates off the `cookware` line each file declares.
 That line turned out to be evidence rather than an answer: it counts what a recipe *names*, and
@@ -102,7 +111,19 @@ above. Six are still out, renumbered, most conspicuous absence first.
 - **A "one pot" claim that is really two.** Half the braises above brown in a skillet and braise
   in a Dutch oven, or boil pasta separately. A table shows every operation, so the shelf is
   honest about this by construction — but it means the *promise* of the counter is a claim about
-  the washing-up, and washing-up is not a row in a table.
+  the washing-up. **This page said for two stories that washing-up is not a row in a table. It is
+  one now**, and the sentence is corrected here rather than left standing.
+
+  `>> washing-up:` is a declared list of the things that go in the sink, authored and never derived
+  — S-008 built it and `src/lib/washing-up.ts` says why no formula over `cookware` could stand in:
+  it counts what a recipe *names*, which is exactly the failure the four wok dishes below are made
+  of. The count is the list's length, taken in one place, so a file cannot say *two* and then list
+  three things. **It is still not a thing a table can hold** — it does not go in a cell, it goes
+  under the table with the clock and `slack` — and that distinction is what this bullet should have
+  said in the first place. What has changed is that the claim is now checkable at all.
+
+  The measurement is in *What the shelf actually washes*, below. It is not on this shelf's side or
+  against it.
 - **The deep fry.** `general-tsos-chicken`, `orange-chicken`, `sesame-chicken` and
   `sweet-and-sour-pork` are one wok on paper and four things to wash in a kitchen: a bowl to
   velvet in, a shallow one to dredge in, a rack to drain on, and a third bowl for the glaze that
@@ -122,6 +143,74 @@ above. Six are still out, renumbered, most conspicuous absence first.
   assembled in.
 - **The cast-iron seasoning argument.** Whether tomato may go in a cast-iron pan is the single
   most common one-pot question and it is a property of the cook's pan, not of the recipe.
+
+### What the shelf actually washes
+
+**65 of 73 wash one or two things, and 40 wash exactly one.** Measured by T-008-03, which read
+every file on this shelf and wrote a `>> washing-up:` line into each; the distribution is
+**1 → 40 · 2 → 25 · 3 → 6 · 4 → 2**, mean 1.59. The convention it was read under is in
+`docs/active/work/T-008-03/` — fifteen rules, of which the three that decide the most rows are:
+the plate you eat off is never counted, the knife and chopping board are never counted, and a
+utensil dipped into the pot (a masher, a fork, an immersion blender) is not a vessel.
+
+**The promise mostly holds.** This page's own experiment — 114 candidates ranked off `cookware` and
+sixty-one thrown off by hand — expected worse, and so did the ticket that commissioned the
+measurement. Eight of 73 wash three or more:
+
+| count | slug | the line |
+| --: | --- | --- |
+| 4 | `chile-verde` | the Dutch oven, a tray to char the chiles on, a bowl to steam the skins loose in, the blender jug |
+| 4 | `country-fried-steak` | the cast-iron skillet, a dish for the seasoned flour, a bowl for the egg wash, a rack to rest the breaded steaks on |
+| 3 | `beef-bourguignon` | the Dutch oven, a skillet for the garnish, a plate for the lardons |
+| 3 | `soy-sauce-chicken` | the stockpot, a sieve to strain the lou sui, a jar to keep it in |
+| 3 | `tinga-de-pollo` | the wide skillet, a pot to poach the chicken in, the blender jug |
+| 3 | `tortilla-espanola` | the nonstick skillet, a bowl to beat the eggs in, a plate to turn it on |
+| 3 | `white-cut-chicken` | the stockpot, a bowl for the ice bath, a rack to rest the chicken on |
+| 3 | `wonton-soup` | the wonton pot, a pot for the broth, a bowl to mix the filling in |
+
+**They are not one list, they are three, and only one of them is a failure of this shelf.**
+
+- **Two are genuinely two-vessel dishes wearing a one-pot label**, the same shape as the four fried
+  dishes above: `chile-verde` chars under a broiler and finishes in a blender jug;
+  `tinga-de-pollo` poaches its chicken in a second pot and blends the sauce. `chile-verde` is the
+  one this page already left open under *The broiler argument*, and the measurement has now
+  answered it in the direction that page suspected.
+- **Two are honest one-*pan* dishes that need a bowl and a plate.** `tortilla-espanola` is cooked
+  in one skillet and turned onto a plate; `country-fried-steak` is one cast-iron pan and a dredging
+  station. The pan is genuinely one. The dish is not one *thing*.
+- **Three are one pot plus what happens at the end.** `soy-sauce-chicken` is three only because it
+  strains and keeps the master stock — read the closing note as optional and it is one, which
+  T-008-03 flags as the most arguable row it wrote. `white-cut-chicken` needs an ice bath and a
+  rack. `wonton-soup` is two pots because the wontons are poached away from the broth, for the same
+  reason `matzo-ball-soup` came off this shelf entirely.
+
+**And `beef-bourguignon` is the eighth**, at 3 — a Dutch oven, a skillet for the garnish and a
+plate for the lardons — which is the same reading its `kit: Instant Pot` sibling gets, because the
+pot is full in both.
+
+#### What should happen to them, which is a recommendation and not a move
+
+**Nothing has been re-shelved and nothing should be until one sentence is settled: does One Pot
+promise one pan or one sink?**
+
+- **If one sink**, the two-vessel pair (`chile-verde`, `tinga-de-pollo`) comes off, and a case can
+  be made for the other six. A shelf that ejected all eight would still be 65 recipes, which is
+  larger than it was two stories ago.
+- **If one pan**, only `tinga-de-pollo` and `wonton-soup` fail — both cook in two vessels — and the
+  other six stay, because a bowl and a plate are not a second pan.
+
+The recommendation from here is **one pan, said out loud on the counter's own page**, on the
+evidence that four of the eight are exactly the dishes a person would defend and the shelf's blurb
+already says *"everything goes in one pan, and that is the only pan to wash"* — which is a claim
+about a pan. But **re-shelving is a counter decision and it is a later story's**; this page records
+the eight and the argument, and moves nothing.
+
+**One thing worth doing that is smaller than any of that:** `general-tsos-chicken`,
+`orange-chicken`, `sesame-chicken` and `sweet-and-sour-pork` — the four this page threw off by hand
+and the origin of the whole idea — now wash **5, 5, 5 and 4** by their own declared lines, against
+the single `#wok{}` each declares. The first three read *the wok, a bowl to velvet in, a dish to
+dredge in, a rack to drain on, a bowl for the glaze*, which is this page's own sentence turned into
+a field. The hand reading was right, and it is now a number rather than an argument.
 
 ### The sixty-one that came off the candidate list
 
@@ -175,18 +264,24 @@ has section titles that do not match what is on it.
 
 ## Left open, for whoever reads this next
 
-- **The broiler argument.** `carnitas` and `chile-verde` are both on the shelf and both declare a
-  `#broiler{}` next to their Dutch oven. Carnitas puts its own pot under the broiler to crisp the
-  shreds in their own fat — one vessel, two appliances, which this page already permits under
-  *The oven-and-stove dish*. Chile-verde chars its chiles under the broiler **before** the pot,
-  on a sheet the file never names, which is the shape that kept `birria-de-res` off. T-002-09
-  left both on rather than split them on an undeclared pan, and says so here instead of deciding
-  it quietly. Settling it means either writing the sheet into `chile-verde`'s `cookware` or
-  agreeing that a preliminary char is a step and not a second washing-up.
+- **The broiler argument, now with numbers on both sides.** `carnitas` and `chile-verde` are both on
+  the shelf and both declare a `#broiler{}` next to their Dutch oven. Carnitas puts its own pot
+  under the broiler to crisp the shreds in their own fat — one vessel, two appliances, which this
+  page already permits under *The oven-and-stove dish* — and **it declares 1**. Chile-verde chars
+  its chiles under the broiler **before** the pot, on a sheet the file never names, which is the
+  shape that kept `birria-de-res` off — and **it declares 4**, the joint-highest on the shelf. The
+  measurement did not settle the argument, but it did separate the two cases that were being argued
+  as one: whatever a preliminary char is, these two are not the same dish. Settling it still means
+  either writing the sheet into `chile-verde`'s `cookware` or agreeing that a preliminary char is a
+  step and not a second washing-up. **No `.cook` file was edited to find this out and none should
+  be to act on it without a ticket.**
 
-- **`src/data/counters.json` still lists the four fried dishes** under *Skillet dinners*. They
-  render nowhere — `menuFor()` intersects a section's slugs with the recipes that actually name
-  the counter, so a slug that no longer names One Pot is dropped, and the built page shows 68
-  items in four sections. T-002-09 left the file alone because T-003-06 owns it and was live at
-  the time. Removing the four inert slugs, or re-running `node scripts/menu-sections.mjs --write`
-  against this page, is a one-line job for T-003-07.
+- **The four fried dishes are out of `src/data/counters.json`** — T-003-07 removed them, and
+  `menuFor()` no longer drops a stray slug quietly in any case: since T-011-05 it **throws with the
+  slug named**, so an inert slug is now a build failure rather than an invisible one. What is still
+  open on this page is the opposite drift: `## What it has` above does not list the five soups S-007
+  moved here, so `node scripts/menu-sections.mjs` reports `68/73 placed` every run. **They are on
+  the built menu** under *Quick soups that go with dinner*, because `counters.json` has them and
+  this page does not — which is exactly backwards, since this page is supposed to be the source.
+  Adding the five to the block above is a one-line job and it is not S-008's; it is the last
+  unplaced drift on the whole board.
