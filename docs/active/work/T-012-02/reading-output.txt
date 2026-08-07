@@ -1,0 +1,574 @@
+
+==============================================================================
+§0  CLASSIFICATION RESIDUE — every ingredient name no rule matched
+==============================================================================
+1081 distinct ingredient names; 0 unclassified
+
+
+==============================================================================
+§1  THE CATTLE CLAIM — plants, counted from ingredient lists
+==============================================================================
+
+--- distinct plants, by band ---
+band A: 76
+  apple, apricot, arugula, asian pear, avocado, bamboo shoot, banana, bean sprouts, beet, bell pepper, bok choy, broccoli, brussels sprout, burdock root, cabbage, carrot, cauliflower, celery, cherry, chile, fresh, coconut, collard greens, corn, cranberry, cucumber, daikon, date, eggplant, garlic, ginger, grape (raisin), green bean, green papaya, hijiki, jicama, kale, kombu, konjac, leek, lemon, lettuce, lily bud, lime, lotus root, mandarin, mango, mushroom, mustard greens, okra, olive, onion, orange, parsnip, pea, peach, pineapple, plantain, pomegranate, potato, radicchio, radish, raspberry, scallion, shallot, snow pea, spinach, summer squash, taro, tomatillo, tomato, turnip, wakame, winter squash, yuca, yuzu, zucchini
+band B: 18
+  avocado leaf, basil, bay, chive, cilantro/coriander leaf, curry leaf, dill, fenugreek leaf, galangal, lemongrass, mint, mitsuba, oregano, parsley, rosemary, sage, tarragon, thyme
+band C: 36
+  adzuki bean, almond, amaranth, barley, bean, unspecified, black bean, black-eyed pea, bulgur, cannellini bean, cashew, chickpea, farro, fava bean, gigante bean, hazelnut, hemp seed, lentil, lima bean, lotus seed, mung dal, navy bean, oat, peanut, pecan, pine nut, pinto bean, pistachio, quinoa, rice, sesame, soy bean (tofu), split pea, sunflower seed, toor dal, urad dal, walnut
+
+band A minus the heavy starches: 71 of 76
+  starches in band A: corn, plantain, potato, taro, yuca
+ALL BANDS, distinct plants: 130
+
+--- the sweets, re-derived from categories ---
+Cookies + Cakes & Loaves + Bars & Brownies + Custards & Puddings = 101
+
+--- built on a non-starch plant — CANDIDATES (machine, both tests, union) ---
+147 candidates
+  date-squares	[Bars & Brownies]	date	named+dominant(chopped pitted dates)
+  lemon-bars	[Bars & Brownies]	lemon	named
+  magic-cookie-bars	[Bars & Brownies]	coconut	named
+  raspberry-oat-bars	[Bars & Brownies]	raspberry	named
+  banana-bread	[Cakes & Loaves]	banana	named
+  carrot-cake	[Cakes & Loaves]	carrot	named+dominant(grated carrots)
+  french-apple-cake	[Cakes & Loaves]	apple	named
+  lemon-poppy-seed-loaf	[Cakes & Loaves]	lemon	named
+  pineapple-upside-down-cake	[Cakes & Loaves]	pineapple	named
+  zucchini-bread	[Cakes & Loaves]	zucchini	named+dominant(grated zucchini)
+  coconut-macaroons	[Cookies]	coconut	named+dominant(sweetened shredded coconut)
+  maamoul	[Cookies]	date	named
+  apple-pie	[Custards & Puddings]	apple	named+dominant(Granny Smith apples)
+  banana-pudding	[Custards & Puddings]	banana	named
+  cherry-clafoutis	[Custards & Puddings]	cherry	named+dominant(sweet cherries)
+  haupia	[Custards & Puddings]	coconut	named+dominant(coconut milk)
+  lemon-curd	[Custards & Puddings]	lemon	named
+  mango-pudding	[Custards & Puddings]	mango	named+dominant(ripe mango)
+  peach-cobbler	[Custards & Puddings]	peach	named+dominant(ripe peaches)
+  relleno-de-pina	[Custards & Puddings]	pineapple	named+dominant(fresh pineapple)
+  aioli	[Dressings & Dips]	lemon	dominant(lemon juice)
+  baba-ganoush	[Dressings & Dips]	eggplant	named+dominant(eggplants)
+  barbecue-slaw	[Dressings & Dips]	cabbage	dominant(green cabbage)
+  coleslaw	[Dressings & Dips]	cabbage	named+dominant(green cabbage)
+  do-chua	[Dressings & Dips]	carrot	named+dominant(daikon)
+  lime-pickle	[Dressings & Dips]	lime	named
+  mango-chutney	[Dressings & Dips]	mango	named+dominant(green mangoes)
+  mayonnaise	[Dressings & Dips]	lemon	dominant(lemon juice)
+  muhammara	[Dressings & Dips]	bell pepper	named+dominant(roasted red peppers)
+  raita	[Dressings & Dips]	cucumber	named
+  sour-dill-pickles	[Dressings & Dips]	cucumber	dominant(Kirby cucumbers)
+  tzatziki	[Dressings & Dips]	cucumber	named
+  iced-lemon-tea	[Drinks]	lemon	named
+  lemon-coke-with-ginger	[Drinks]	lemon	named
+  egg-rolls	[Dumplings & Rolls]	cabbage	dominant(napa cabbage)
+  fatayer	[Dumplings & Rolls]	spinach	named
+  gyoza	[Dumplings & Rolls]	cabbage	dominant(napa cabbage)
+  shakshuka	[Eggs]	tomato	named+dominant(canned whole tomatoes)
+  western-omelette	[Eggs]	bell pepper	dominant(green bell pepper)
+  banh-xeo	[Flatbreads & Pancakes]	bean sprouts	dominant(bean sprouts)
+  okonomiyaki	[Flatbreads & Pancakes]	cabbage	named+dominant(shredded cabbage)
+  turnip-cake	[Flatbreads & Pancakes]	daikon	named+dominant(daikon)
+  fried-okra	[Fried & Crispy]	okra	named+dominant(okra)
+  beef-chow-fun	[Noodles]	bean sprouts	dominant(bean sprouts)
+  lo-mein	[Noodles]	cabbage	dominant(napa cabbage)
+  pad-thai	[Noodles]	bean sprouts	dominant(bean sprouts)
+  singapore-mei-fun	[Noodles]	bean sprouts	dominant(bean sprouts)
+  soy-sauce-pan-fried-noodles	[Noodles]	bean sprouts	dominant(bean sprouts)
+  one-pot-pasta	[Pasta]	tomato	dominant(canned whole tomatoes)
+  skillet-lasagna	[Pasta]	tomato	dominant(canned crushed tomatoes)
+  grandma-pie	[Pizzas]	tomato	dominant(whole peeled tomatoes)
+  margherita	[Pizzas]	tomato	dominant(whole peeled tomatoes)
+  bbq-tofu-bowl	[Rice, Beans & Grains]	brussels sprout	dominant(Brussels sprouts)
+  chicken-pesto-bowl	[Rice, Beans & Grains]	spinach	dominant(baby spinach)
+  coconut-rice	[Rice, Beans & Grains]	coconut	named+dominant(coconut milk)
+  crispy-chickpea-bowl	[Rice, Beans & Grains]	kale	dominant(baby kale)
+  fish-taco-bowl	[Rice, Beans & Grains]	cabbage	dominant(red cabbage)
+  gigantes-plaki-instant-pot	[Rice, Beans & Grains]	tomato	dominant(canned crushed tomatoes)
+  gigantes-plaki	[Rice, Beans & Grains]	tomato	dominant(canned crushed tomatoes)
+  harvest-bowl	[Rice, Beans & Grains]	kale	dominant(baby kale)
+  lemon-rice	[Rice, Beans & Grains]	lemon	named
+  mushroom-risotto	[Rice, Beans & Grains]	mushroom	named
+  pork-chop-in-tomato-sauce	[Rice, Beans & Grains]	tomato	named
+  teriyaki-chicken-bowl	[Rice, Beans & Grains]	kale	named+dominant(kale)
+  chinese-chicken-salad	[Salads]	cabbage	dominant(napa cabbage)
+  greek-salad	[Salads]	tomato	named+dominant(ripe tomatoes)
+  harvest-chopped-salad	[Salads]	winter squash	named+dominant(delicata squash)
+  italian-chopped-salad	[Salads]	tomato	dominant(cherry tomatoes)
+  kale-caesar	[Salads]	kale	named
+  panzanella	[Salads]	tomato	named
+  roasted-beet-salad	[Salads]	beet	named+dominant(arugula)
+  shaved-brussels-salad	[Salads]	brussels sprout	named+dominant(Brussels sprouts)
+  som-tum	[Salads]	green papaya	named+dominant(green papaya)
+  spinach-salad	[Salads]	spinach	named+dominant(baby spinach)
+  sunomono	[Salads]	cucumber	named
+  wedge-salad	[Salads]	lettuce	named
+  blt	[Sandwiches & Rolls]	tomato	named
+  arrabbiata-sauce	[Sauces & Gravies]	tomato	named+dominant(whole peeled tomatoes)
+  bolognese	[Sauces & Gravies]	tomato	dominant(canned whole tomatoes)
+  cranberry-sauce	[Sauces & Gravies]	cranberry	named+dominant(fresh cranberries)
+  homemade-ketchup	[Sauces & Gravies]	tomato	named+dominant(canned whole tomatoes)
+  makhani-gravy	[Sauces & Gravies]	tomato	named+dominant(canned whole tomatoes)
+  marinara-sauce	[Sauces & Gravies]	tomato	named+dominant(whole peeled tomatoes)
+  onion-tomato-masala	[Sauces & Gravies]	tomato	named
+  pomegranate-molasses	[Sauces & Gravies]	pomegranate	named+dominant(unsweetened pomegranate juice)
+  puttanesca-sauce	[Sauces & Gravies]	tomato	dominant(whole peeled tomatoes)
+  salsa-roja	[Sauces & Gravies]	tomato	dominant(Roma tomatoes)
+  salsa-verde-cruda	[Sauces & Gravies]	tomatillo	dominant(tomatillos)
+  salsa-verde	[Sauces & Gravies]	tomatillo	named+dominant(tomatillos)
+  sweet-and-sour-sauce	[Sauces & Gravies]	pineapple	dominant(pineapple juice)
+  vodka-sauce	[Sauces & Gravies]	tomato	dominant(crushed tomatoes)
+  avgolemono	[Soups]	lemon	named
+  borscht-instant-pot	[Soups]	beet	named
+  borscht	[Soups]	beet	named
+  butternut-squash-soup	[Soups]	winter squash	named+dominant(butternut squash)
+  caldo-verde	[Soups]	collard greens	dominant(collard greens)
+  cream-of-mushroom-soup	[Soups]	mushroom	named+dominant(cremini mushrooms)
+  dashi	[Soups]	kombu	named
+  egg-drop-soup	[Soups]	pea	dominant(frozen peas)
+  hong-kong-borscht	[Soups]	cabbage	dominant(green cabbage)
+  minestrone	[Soups]	kale	dominant(lacinato kale)
+  mustard-greens-tofu-soup	[Soups]	mustard greens	named+dominant(mustard greens)
+  pho-bo	[Soups]	bean sprouts	dominant(bean sprouts)
+  potato-leek-soup	[Soups]	leek	named
+  tom-kha-gai	[Soups]	coconut	named
+  tomato-potato-beef-soup	[Soups]	tomato	named+dominant(tomatoes)
+  tomato-soup	[Soups]	tomato	named+dominant(canned whole tomatoes)
+  tonjiru	[Soups]	burdock root	named
+  adobo-para-al-pastor	[Spice Blends & Marinades]	pineapple	dominant(pineapple juice)
+  harissa	[Spice Blends & Marinades]	lemon	dominant(lemon juice)
+  mojo-marinade	[Spice Blends & Marinades]	orange	dominant(sour orange juice)
+  brunswick-stew-slow-cooker	[Stews & Braises]	tomato	dominant(crushed tomatoes)
+  brunswick-stew	[Stews & Braises]	tomato	dominant(crushed tomatoes)
+  buri-daikon	[Stews & Braises]	daikon	named+dominant(daikon)
+  chikuzenni	[Stews & Braises]	burdock root	named
+  collard-greens-instant-pot	[Stews & Braises]	collard greens	named+dominant(collard greens)
+  collard-greens-slow-cooker	[Stews & Braises]	collard greens	named+dominant(collard greens)
+  collard-greens	[Stews & Braises]	collard greens	named+dominant(collard greens)
+  new-england-boiled-dinner-slow-cooker	[Stews & Braises]	cabbage	named
+  new-england-boiled-dinner	[Stews & Braises]	cabbage	named
+  palak-paneer	[Stews & Braises]	spinach	named+dominant(spinach)
+  ratatouille	[Stews & Braises]	tomato	dominant(ripe tomatoes)
+  thai-red-curry	[Stews & Braises]	coconut	dominant(coconut milk)
+  thai-yellow-curry	[Stews & Braises]	coconut	dominant(coconut milk)
+  xiu-mai	[Stews & Braises]	tomato	named
+  beef-with-broccoli	[Stir-Fries]	broccoli	named
+  egg-foo-young	[Stir-Fries]	bean sprouts	dominant(bean sprouts)
+  orange-chicken	[Stir-Fries]	orange	named
+  shogayaki	[Stir-Fries]	cabbage	dominant(white cabbage)
+  asazuke	[Toppings & Pickles]	cabbage	dominant(napa cabbage)
+  kabis	[Toppings & Pickles]	turnip	dominant(turnips)
+  sauerkraut	[Toppings & Pickles]	cabbage	named+dominant(green cabbage)
+  air-fryer-broccoli	[Vegetables & Sides]	broccoli	named+dominant(broccoli)
+  air-fryer-brussels-sprouts	[Vegetables & Sides]	brussels sprout	named+dominant(Brussels sprouts)
+  air-fryer-cauliflower	[Vegetables & Sides]	cauliflower	named
+  charred-broccoli	[Vegetables & Sides]	broccoli	named+dominant(broccoli)
+  goma-ae	[Vegetables & Sides]	green bean	named
+  green-beans	[Vegetables & Sides]	green bean	named+dominant(green beans)
+  hijiki-no-nimono	[Vegetables & Sides]	hijiki	named
+  kabocha-no-nimono	[Vegetables & Sides]	winter squash	named+dominant(kabocha)
+  kinpira-gobo	[Vegetables & Sides]	burdock root	named+dominant(burdock root)
+  kiriboshi-daikon	[Vegetables & Sides]	daikon	named+dominant(kiriboshi daikon)
+  ohitashi	[Vegetables & Sides]	spinach	named
+  roasted-beets	[Vegetables & Sides]	beet	dominant(beets)
+  roasted-brussels-sprouts	[Vegetables & Sides]	brussels sprout	named+dominant(Brussels sprouts)
+  roasted-cauliflower	[Vegetables & Sides]	cauliflower	named
+  stewed-squash	[Vegetables & Sides]	summer squash	named+dominant(yellow summer squash)
+
+--- the same candidates, split three ways so the hand check has a shape ---
+  savoury dish: 93 — egg-rolls, fatayer, gyoza, shakshuka, western-omelette, banh-xeo, okonomiyaki, turnip-cake, fried-okra, beef-chow-fun, lo-mein, pad-thai, singapore-mei-fun, soy-sauce-pan-fried-noodles, one-pot-pasta, skillet-lasagna, grandma-pie, margherita, bbq-tofu-bowl, chicken-pesto-bowl, coconut-rice, crispy-chickpea-bowl, fish-taco-bowl, gigantes-plaki-instant-pot, gigantes-plaki, harvest-bowl, lemon-rice, mushroom-risotto, pork-chop-in-tomato-sauce, teriyaki-chicken-bowl, chinese-chicken-salad, greek-salad, harvest-chopped-salad, italian-chopped-salad, kale-caesar, panzanella, roasted-beet-salad, shaved-brussels-salad, som-tum, spinach-salad, sunomono, wedge-salad, blt, avgolemono, borscht-instant-pot, borscht, butternut-squash-soup, caldo-verde, cream-of-mushroom-soup, dashi, egg-drop-soup, hong-kong-borscht, minestrone, mustard-greens-tofu-soup, pho-bo, potato-leek-soup, tom-kha-gai, tomato-potato-beef-soup, tomato-soup, tonjiru, brunswick-stew-slow-cooker, brunswick-stew, buri-daikon, chikuzenni, collard-greens-instant-pot, collard-greens-slow-cooker, collard-greens, new-england-boiled-dinner-slow-cooker, new-england-boiled-dinner, palak-paneer, ratatouille, thai-red-curry, thai-yellow-curry, xiu-mai, beef-with-broccoli, egg-foo-young, orange-chicken, shogayaki, air-fryer-broccoli, air-fryer-brussels-sprouts, air-fryer-cauliflower, charred-broccoli, goma-ae, green-beans, hijiki-no-nimono, kabocha-no-nimono, kinpira-gobo, kiriboshi-daikon, ohitashi, roasted-beets, roasted-brussels-sprouts, roasted-cauliflower, stewed-squash
+  condiment: 34 — aioli, baba-ganoush, barbecue-slaw, coleslaw, do-chua, lime-pickle, mango-chutney, mayonnaise, muhammara, raita, sour-dill-pickles, tzatziki, iced-lemon-tea, lemon-coke-with-ginger, arrabbiata-sauce, bolognese, cranberry-sauce, homemade-ketchup, makhani-gravy, marinara-sauce, onion-tomato-masala, pomegranate-molasses, puttanesca-sauce, salsa-roja, salsa-verde-cruda, salsa-verde, sweet-and-sour-sauce, vodka-sauce, adobo-para-al-pastor, harissa, mojo-marinade, asazuke, kabis, sauerkraut
+  sweet: 20 — date-squares, lemon-bars, magic-cookie-bars, raspberry-oat-bars, banana-bread, carrot-cake, french-apple-cake, lemon-poppy-seed-loaf, pineapple-upside-down-cake, zucchini-bread, coconut-macaroons, maamoul, apple-pie, banana-pudding, cherry-clafoutis, haupia, lemon-curd, mango-pudding, peach-cobbler, relleno-de-pina
+
+--- the 24 in Vegetables & Sides, against the rule ---
+  RULE-YES air-fryer-broccoli
+  RULE-YES air-fryer-brussels-sprouts
+  RULE-YES air-fryer-cauliflower
+  RULE-NO  air-fryer-corn-ribs
+  RULE-NO  air-fryer-padron-peppers
+  RULE-NO  air-fryer-sweet-potatoes
+  RULE-NO  candied-yams
+  RULE-YES charred-broccoli
+  RULE-NO  cornbread-dressing
+  RULE-NO  creamed-corn
+  RULE-NO  crispy-roast-potatoes
+  RULE-YES goma-ae
+  RULE-YES green-beans
+  RULE-YES hijiki-no-nimono
+  RULE-YES kabocha-no-nimono
+  RULE-YES kinpira-gobo
+  RULE-YES kiriboshi-daikon
+  RULE-NO  mashed-potatoes
+  RULE-YES ohitashi
+  RULE-YES roasted-beets
+  RULE-YES roasted-brussels-sprouts
+  RULE-YES roasted-cauliflower
+  RULE-NO  roasted-sweet-potatoes
+  RULE-YES stewed-squash
+
+==============================================================================
+§2  THE BEANS CLAIM
+==============================================================================
+
+--- the ticket's 43: files mentioning a bean, lentil, chickpea or dal, any form ---
+72 files mention one, on the loosest reading
+  creme-anglaise, creme-brulee, french-vanilla-ice-cream, panna-cotta, pastry-cream, red-bean-paste, hummus, red-bean-ice, egg-rolls, samosa, sesame-balls, banh-xeo, dosa, papadom, socca, air-fryer-chickpeas, crispy-chickpeas, falafel, beef-chow-fun, miso-ramen, pad-kee-mao, pad-thai, singapore-mei-fun, soy-sauce-pan-fried-noodles, tuna-noodle-casserole, sweet-tart-shell, arroz-con-pollo, black-eyed-peas, boston-baked-beans-instant-pot, boston-baked-beans-slow-cooker, boston-baked-beans, burrito-bowl, butter-beans, crispy-chickpea-bowl, cuban-black-beans-instant-pot, cuban-black-beans, egg-fried-rice, ful-medames-instant-pot, ful-medames, gigantes-plaki-instant-pot, gigantes-plaki, hoppin-john, kitchari, lemon-rice, mexican-red-rice, minced-beef-rice, mujaddara, paella, refried-beans-instant-pot, refried-beans, italian-chopped-salad, salade-nicoise, som-tum, black-bean-soup, dal-tadka, egg-drop-soup, harira, minestrone, pho-bo, red-lentil-soup, split-pea-soup, brunswick-stew-slow-cooker, brunswick-stew, chana-masala, char-siu, chicken-feet, chikuzenni, dansak, nikujaga, egg-foo-young, goma-ae, green-beans
+
+--- gate 1 — a pulse is the main thing ---
+29 candidates through gate 1
+  red-bean-paste	[Custards & Puddings]	serves 16	dried adzuki beans	top=dried adzuki beans	dominant+named
+  hummus	[Dressings & Dips]	serves 8	dried chickpeas	top=dried chickpeas	dominant+named
+  red-bean-ice	[Drinks]	serves 4	dried adzuki beans	top=dried adzuki beans	dominant+named
+  air-fryer-chickpeas	[Fried & Crispy]	serves 4	cooked chickpeas	top=cooked chickpeas	dominant
+  crispy-chickpeas	[Fried & Crispy]	serves 6	cooked chickpeas	top=cooked chickpeas	dominant+named
+  falafel	[Fried & Crispy]	serves 6	dried chickpeas	top=dried chickpeas	dominant+named
+  sweet-tart-shell	[Pastry & Doughs]	serves 8	dried beans	top=dried beans	dominant
+  black-eyed-peas	[Rice, Beans & Grains]	serves 8	dried black-eyed peas	top=dried black-eyed peas	dominant
+  boston-baked-beans-instant-pot	[Rice, Beans & Grains]	serves 8	dried navy beans	top=dried navy beans	dominant+named
+  boston-baked-beans-slow-cooker	[Rice, Beans & Grains]	serves 8	dried navy beans	top=dried navy beans	dominant+named
+  boston-baked-beans	[Rice, Beans & Grains]	serves 8	dried navy beans	top=dried navy beans	dominant+named
+  butter-beans	[Rice, Beans & Grains]	serves 8	dried lima beans	top=dried lima beans	dominant+named
+  crispy-chickpea-bowl	[Rice, Beans & Grains]	serves 4	chickpeas	top=baby kale	named
+  cuban-black-beans-instant-pot	[Rice, Beans & Grains]	serves 6	dried black beans	top=dried black beans	dominant+named
+  cuban-black-beans	[Rice, Beans & Grains]	serves 6	dried black beans	top=dried black beans	dominant+named
+  ful-medames-instant-pot	[Rice, Beans & Grains]	serves 4	dried fava beans	top=dried fava beans	dominant+named
+  ful-medames	[Rice, Beans & Grains]	serves 4	dried fava beans	top=dried fava beans	dominant+named
+  gigantes-plaki-instant-pot	[Rice, Beans & Grains]	serves 6	dried gigante beans	top=canned crushed tomatoes	named
+  gigantes-plaki	[Rice, Beans & Grains]	serves 6	dried gigante beans	top=canned crushed tomatoes	named
+  kitchari	[Rice, Beans & Grains]	serves 4	split mung dal	top=basmati rice	named
+  mujaddara	[Rice, Beans & Grains]	serves 6	brown lentils	top=brown lentils	dominant
+  refried-beans-instant-pot	[Rice, Beans & Grains]	serves 8	dried pinto beans	top=dried pinto beans	dominant+named
+  refried-beans	[Rice, Beans & Grains]	serves 8	dried pinto beans	top=dried pinto beans	dominant+named
+  black-bean-soup	[Soups]	serves 6	black beans	top=vegetable stock	named
+  dal-tadka	[Soups]	serves 4	toor dal	top=toor dal	dominant+named
+  harira	[Soups]	serves 6	brown lentils/chickpeas	top=chicken stock	named
+  red-lentil-soup	[Soups]	serves 4	red lentils	top=vegetable stock	named
+  split-pea-soup	[Soups]	serves 6	green split peas	top=chicken stock	named
+  chana-masala	[Stews & Braises]	serves 6	dried chickpeas	top=dried chickpeas	dominant+named
+
+--- tofu and soy, reported separately and never folded in ---
+12 files: air-fryer-tofu, crisped-marinated-tofu, pad-thai, bbq-tofu-bowl, takikomi-gohan, crucian-carp-tofu-soup, hot-and-sour-soup, miso-soup, mustard-greens-tofu-soup, sumashi-jiru, hijiki-no-nimono, kiriboshi-daikon
+
+==============================================================================
+§3  COOKING FOR THE DAY — the query
+==============================================================================
+THE ASSUMED KITCHEN — staples.json's 31, plus:
+  cupboard (19): all-purpose flour, plain flour, flour, granulated sugar, sugar, light brown sugar, dark brown sugar, brown sugar, long-grain white rice, rice, rolled oats, canned whole tomatoes, crushed tomatoes, canned crushed tomatoes, tomato paste, white sandwich bread, breadcrumbs, chicken stock, vegetable stock
+  fridge   (23): eggs, egg, unsalted butter, butter, whole milk, milk, plain yogurt, whole-milk yogurt, sharp cheddar, yellow onion, onion, onions, garlic, fresh ginger, scallions, scallion, carrot, carrots, celery, lemon, lemon juice, flat-leaf parsley, cilantro
+
+recipes serving 1 or 2 as written: 50
+  of those, not a heavy starch: 27
+
+--- staples only — the doctrine as written, nothing added — 0 recipes ---
+
+
+--- staples + cupboard, no fridge — 0 recipes ---
+
+
+--- staples + cupboard + fridge  <<< THE ANSWER — 2 recipes ---
+  horlicks	[Drinks]	serves 2	boiling water, boiling water for the paste, evaporated milk, granulated sugar, malted milk powder
+  hong-kong-egg-sandwich	[Sandwiches & Rolls]	serves 1	eggs, evaporated milk, fine salt, salted butter, unsalted butter, white pepper, white sandwich bread
+
+--- staples + kitchen + tomato + potato (sensitivity) — 2 recipes ---
+  horlicks	[Drinks]	serves 2	boiling water, boiling water for the paste, evaporated milk, granulated sugar, malted milk powder
+  hong-kong-egg-sandwich	[Sandwiches & Rolls]	serves 1	eggs, evaporated milk, fine salt, salted butter, unsalted butter, white pepper, white sandwich bread
+
+--- how far off the rest are — serves <=2, not a starch, by number of missing ingredients ---
+  missing 0: 2
+      horlicks ()
+      hong-kong-egg-sandwich ()
+  missing 1: 5
+      lemon-coke-with-ginger (cola)
+      milkshake (french vanilla ice cream)
+      yuenyeung (ground dark roast coffee)
+      grilled-cheese (american cheese)
+      luncheon-meat-and-egg-sandwich (tinned luncheon meat)
+  missing 2: 4
+      ca-phe-sua-da (ice, vietnamese dark roast coffee)
+      egg-cream (chocolate syrup, cold seltzer)
+      iced-lemon-tea (ceylon tea bags, ice)
+      ham-macaroni-soup (elbow macaroni, sliced ham)
+  missing 3: 5
+  missing 4: 6
+  missing 5: 3
+  missing 6: 1
+  missing 8: 1
+
+--- the whole shelf, ignoring servings — how much of it needs no store run ---
+  missing 0: 33
+  missing 1: 97
+  missing 2: 153
+  missing 3: 120
+  missing 4: 86
+  missing 5: 78
+  missing 6+: 118
+  the 33 that need nothing:
+      lemon-bars [Bars & Brownies] serves 9
+      angel-food-cake [Cakes & Loaves] serves 12
+      chiffon-cake [Cakes & Loaves] serves 12
+      mantecadas [Cakes & Loaves] serves 12
+      pound-cake [Cakes & Loaves] serves 10
+      madeleines [Cookies] serves 18
+      peanut-butter-cookies [Cookies] serves 36
+      sable-cookies [Cookies] serves 30
+      shortbread-cookies [Cookies] serves 16
+      sugar-cookies [Cookies] serves 48
+      flan [Custards & Puddings] serves 8
+      lemon-curd [Custards & Puddings] serves 12
+      aioli [Dressings & Dips] serves 8
+      chimichurri [Dressings & Dips] serves 8
+      mayonnaise [Dressings & Dips] serves 8
+      toum [Dressings & Dips] serves 12
+      horlicks [Drinks] serves 2
+      seven-minute-eggs [Eggs] serves 6
+      crepes [Flatbreads & Pancakes] serves 12
+      dutch-baby [Flatbreads & Pancakes] serves 4
+      all-butter-pie-crust [Pastry & Doughs] serves 8
+      hojaldre [Pastry & Doughs] serves 24
+      gohan [Rice, Beans & Grains] serves 4
+      yellow-rice [Rice, Beans & Grains] serves 6
+      hong-kong-egg-sandwich [Sandwiches & Rolls] serves 1
+      bechamel [Sauces & Gravies] serves 8
+      cheddar-cheese-sauce [Sauces & Gravies] serves 6
+      hollandaise [Sauces & Gravies] serves 4
+      homemade-ketchup [Sauces & Gravies] serves 16
+      cajun-seasoning [Spice Blends & Marinades] serves 16
+      chermoula [Spice Blends & Marinades] serves 6
+      ginger-garlic-paste [Spice Blends & Marinades] serves 1 cup
+      memphis-dry-rub [Spice Blends & Marinades] serves 12
+
+==============================================================================
+§4  THE FAMILY ROTATION — protein and cuisine matrix
+==============================================================================
+
+--- TIGHT — a meal on its own ---
+recipes that could be a dinner for four or more: 248
+protein combinations, by count:
+  53	beef
+  46	chicken
+  30	pork
+  26	(none)
+  17	pulse
+  14	egg
+  8	fish
+  8	lamb
+  7	pork+pulse
+  5	chicken+egg
+  3	tofu
+  3	chicken+pork
+  3	turkey
+  2	egg+shellfish
+  2	beef+lamb
+  2	lamb+pulse
+  2	pork+shellfish
+  2	shellfish
+  2	beef+pork
+  2	chicken+pork+pulse
+single proteins across those dinners:
+  60	chicken
+  59	beef
+  51	pork
+  29	pulse
+  25	egg
+  12	lamb
+  9	fish
+  8	shellfish
+  7	tofu
+  3	turkey
+  1	dairy
+counters (the nearest thing to a cuisine) across those dinners:
+  71	One Pot
+  39	The Bowl Shop
+  25	Instant Pot
+  24	Curry House
+  21	Meat and Three
+  20	Diner
+  20	The Slow Cooker
+  16	Taquería
+  14	Shawarma Counter
+  13	Takeout Counter
+  12	Japanese Home Cooking
+  12	Deli
+  10	Smokehouse
+  9	Thai Kitchen
+  9	Dim Sum Counter
+  8	Pizzeria
+  8	Phở & Bánh Mì
+  7	Ramen Shop
+  3	The Air Fryer & the Pot
+  3	Cha Chaan Teng
+  1	Bakery
+
+--- the longest streak, by maximum matching over (protein × counter) ---
+proteins available: 11; counters available: 21
+LONGEST STREAK = 11 nights
+  egg        @ The Bowl Shop            e.g. seven-minute-eggs
+  chicken    @ One Pot                  e.g. arroz-con-pollo
+  shellfish  @ Takeout Counter          e.g. singapore-mei-fun
+  fish       @ Diner                    e.g. tuna-noodle-casserole
+  beef       @ Smokehouse               e.g. burnt-ends
+  pork       @ Instant Pot              e.g. boston-baked-beans-instant-pot
+  dairy      @ Curry House              e.g. palak-paneer
+  pulse      @ Meat and Three           e.g. black-eyed-peas
+  tofu       @ Japanese Home Cooking    e.g. takikomi-gohan
+  lamb       @ Shawarma Counter         e.g. gyro-meat
+  turkey     @ The Slow Cooker          e.g. baked-turkey-wings-slow-cooker
+proteins left over: (none)
+how many counters each protein can reach — the thinner the protein, the sooner it binds:
+   1	dairy	Curry House
+   3	turkey	Smokehouse, The Slow Cooker, Meat and Three
+   5	shellfish	Takeout Counter, One Pot, Diner, Thai Kitchen, Curry House
+   5	fish	Diner, The Bowl Shop, The Air Fryer & the Pot, One Pot, Japanese Home Cooking
+   5	tofu	The Bowl Shop, Japanese Home Cooking, One Pot, Takeout Counter, Ramen Shop
+   6	lamb	The Bowl Shop, Shawarma Counter, Curry House, One Pot, The Slow Cooker, Diner
+  11	egg	The Bowl Shop, One Pot, Japanese Home Cooking, Meat and Three, Takeout Counter, Pizzeria, Dim Sum Counter, Shawarma Counter, Diner, Deli, Curry House
+  12	pulse	Meat and Three, One Pot, Instant Pot, The Slow Cooker, Smokehouse, The Bowl Shop, Taquería, Shawarma Counter, Curry House, Diner, Pizzeria, Deli
+  16	beef	One Pot, Smokehouse, Shawarma Counter, The Bowl Shop, Deli, Instant Pot, Cha Chaan Teng, Phở & Bánh Mì, Meat and Three, Thai Kitchen, The Slow Cooker, Diner, Taquería, Ramen Shop, Japanese Home Cooking, Pizzeria
+  16	pork	One Pot, Instant Pot, The Slow Cooker, Smokehouse, Meat and Three, Phở & Bánh Mì, Taquería, Diner, The Bowl Shop, Pizzeria, Deli, Japanese Home Cooking, Ramen Shop, Takeout Counter, Dim Sum Counter, Curry House
+  19	chicken	One Pot, Curry House, The Bowl Shop, Meat and Three, Dim Sum Counter, Japanese Home Cooking, The Air Fryer & the Pot, Shawarma Counter, Taquería, Smokehouse, Diner, Instant Pot, Deli, Ramen Shop, Phở & Bánh Mì, Thai Kitchen, The Slow Cooker, Cha Chaan Teng, Takeout Counter
+
+--- LOOSE — anything a menu might serve at seven ---
+recipes that could be a dinner for four or more: 339
+protein combinations, by count:
+  70	(none)
+  54	beef
+  52	chicken
+  37	pork
+  21	pulse
+  18	egg
+  11	fish
+  10	lamb
+  7	tofu
+  7	chicken+egg
+  7	pork+pulse
+  5	shellfish
+  5	pork+shellfish
+  4	chicken+pork
+  3	dairy
+  3	beef+egg+pork
+  3	turkey
+  2	egg+shellfish
+  2	egg+pork
+  2	beef+lamb
+single proteins across those dinners:
+  70	chicken
+  65	pork
+  62	beef
+  36	egg
+  33	pulse
+  14	shellfish
+  14	lamb
+  13	fish
+  11	tofu
+  3	dairy
+  3	turkey
+counters (the nearest thing to a cuisine) across those dinners:
+  72	One Pot
+  66	The Bowl Shop
+  32	Meat and Three
+  31	Diner
+  26	Curry House
+  25	Instant Pot
+  23	Japanese Home Cooking
+  20	Shawarma Counter
+  20	The Slow Cooker
+  19	The Air Fryer & the Pot
+  19	Deli
+  17	Dim Sum Counter
+  16	Taquería
+  15	Takeout Counter
+  10	Smokehouse
+  10	Thai Kitchen
+  9	Ramen Shop
+  9	Pizzeria
+  8	Phở & Bánh Mì
+  3	Cha Chaan Teng
+  1	Bakery
+
+--- the longest streak, by maximum matching over (protein × counter) ---
+proteins available: 11; counters available: 21
+LONGEST STREAK = 11 nights
+  chicken    @ Dim Sum Counter          e.g. xiao-long-bao
+  shellfish  @ Takeout Counter          e.g. crab-rangoon
+  egg        @ Deli                     e.g. potato-knish
+  pulse      @ Shawarma Counter         e.g. falafel
+  pork       @ Ramen Shop               e.g. gyoza
+  tofu       @ The Air Fryer & the Pot  e.g. air-fryer-tofu
+  dairy      @ The Bowl Shop            e.g. seared-halloumi
+  lamb       @ Curry House              e.g. seekh-kabab
+  beef       @ Diner                    e.g. corned-beef-hash
+  fish       @ Japanese Home Cooking    e.g. nanbanzuke
+  turkey     @ Smokehouse               e.g. smoked-turkey-breast
+proteins left over: (none)
+how many counters each protein can reach — the thinner the protein, the sooner it binds:
+   3	dairy	The Air Fryer & the Pot, The Bowl Shop, Curry House
+   3	turkey	Smokehouse, The Slow Cooker, Meat and Three
+   6	lamb	Shawarma Counter, The Bowl Shop, Curry House, One Pot, The Slow Cooker, Diner
+   6	tofu	The Air Fryer & the Pot, The Bowl Shop, Japanese Home Cooking, One Pot, Takeout Counter, Ramen Shop
+   6	fish	Japanese Home Cooking, Diner, The Bowl Shop, Deli, The Air Fryer & the Pot, One Pot
+   7	shellfish	Dim Sum Counter, Takeout Counter, The Air Fryer & the Pot, One Pot, Diner, Thai Kitchen, Curry House
+  12	egg	Deli, The Bowl Shop, One Pot, Japanese Home Cooking, Pizzeria, Meat and Three, Diner, Ramen Shop, Takeout Counter, Dim Sum Counter, Shawarma Counter, Curry House
+  13	pulse	The Air Fryer & the Pot, The Bowl Shop, Shawarma Counter, Meat and Three, One Pot, Instant Pot, The Slow Cooker, Smokehouse, Taquería, Curry House, Diner, Pizzeria, Deli
+  16	pork	Takeout Counter, Ramen Shop, Japanese Home Cooking, Dim Sum Counter, Diner, One Pot, Instant Pot, The Slow Cooker, Smokehouse, Meat and Three, Phở & Bánh Mì, The Bowl Shop, Taquería, Pizzeria, Deli, Curry House
+  16	beef	Diner, Meat and Three, One Pot, Japanese Home Cooking, Smokehouse, Shawarma Counter, The Bowl Shop, Deli, Instant Pot, Cha Chaan Teng, Phở & Bánh Mì, Thai Kitchen, The Slow Cooker, Taquería, Ramen Shop, Pizzeria
+  20	chicken	Dim Sum Counter, The Air Fryer & the Pot, Pizzeria, Meat and Three, Diner, Ramen Shop, The Bowl Shop, Japanese Home Cooking, One Pot, Curry House, Deli, Thai Kitchen, Shawarma Counter, Taquería, Smokehouse, Instant Pot, Phở & Bánh Mì, The Slow Cooker, Cha Chaan Teng, Takeout Counter
+
+==============================================================================
+§5  HOLIDAY GUESTS — branches off buildSchedule
+==============================================================================
+BREAK_MINUTES = 5 (src/lib/schedule.ts, reused rather than reinvented)
+recipes scheduled: 685
+raw lane counts      1:485  2:163  3:35  4:1  5:1
+filtered branches    0:651  1:32  2:2
+
+raw: more than one lane        = 200
+filtered: >= 1 hand-off branch = 34
+filtered: >= 2 hand-off branch = 2
+no timers at all (cannot say)  = 275
+
+--- the recipes with a hand-off-able branch, most branches first ---
+  2	mole-poblano	lanes=3	handsOn=19	untimed=1	s1 | s2>s3
+  2	chicken-pesto-bowl	lanes=4	handsOn=17	untimed=2	s3 | s4
+  1	mujaddara	lanes=3	handsOn=52	untimed=0	s2
+  1	beef-bourguignon-instant-pot	lanes=2	handsOn=45	untimed=1	s5
+  1	chile-verde-slow-cooker	lanes=2	handsOn=42	untimed=1	s3
+  1	chopped-liver	lanes=3	handsOn=37	untimed=1	s2
+  1	borscht	lanes=2	handsOn=28	untimed=1	s2>s3
+  1	gigantes-plaki-instant-pot	lanes=2	handsOn=25	untimed=0	s3
+  1	chile-verde	lanes=2	handsOn=22	untimed=2	s2
+  1	potato-knish	lanes=3	handsOn=20	untimed=2	s2
+  1	borscht-instant-pot	lanes=2	handsOn=18	untimed=1	s1
+  1	refried-beans-instant-pot	lanes=2	handsOn=16	untimed=1	s2
+  1	refried-beans	lanes=2	handsOn=16	untimed=1	s1
+  1	chikuzenni	lanes=2	handsOn=16	untimed=1	s2
+  1	crispy-rice-bowl	lanes=3	handsOn=15	untimed=2	s3
+  1	teriyaki-chicken-bowl	lanes=3	handsOn=15	untimed=1	s2>s3
+  1	corned-beef-hash	lanes=2	handsOn=13	untimed=1	s1
+  1	kibbeh	lanes=2	handsOn=13	untimed=1	s1
+  1	pho-broth-instant-pot	lanes=3	handsOn=13	untimed=1	s1
+  1	pho-broth	lanes=3	handsOn=13	untimed=1	s1
+  1	jalfrezi	lanes=2	handsOn=12	untimed=0	s1>s2
+  1	passanda	lanes=2	handsOn=12	untimed=0	s1>s2
+  1	cuban-black-beans	lanes=2	handsOn=11	untimed=1	s1>s2
+  1	pork-liver-pate	lanes=2	handsOn=10	untimed=2	s2
+  1	gigantes-plaki	lanes=2	handsOn=10	untimed=1	s2>s3
+  1	spicy-lamb-bowl	lanes=3	handsOn=10	untimed=1	s2>s3
+  1	wu-gok	lanes=2	handsOn=9	untimed=1	s2
+  1	tinga-de-pollo	lanes=2	handsOn=8	untimed=1	s1>s2>s3
+  1	miso-salmon-bowl	lanes=3	handsOn=7	untimed=1	s2>s3
+  1	harvest-chopped-salad	lanes=3	handsOn=7	untimed=2	s2
+  1	dal-tadka	lanes=2	handsOn=7	untimed=1	s1>s2
+  1	fish-taco-bowl	lanes=3	handsOn=6	untimed=2	s3
+  1	panzanella	lanes=3	handsOn=6	untimed=1	s1
+  1	roasted-beet-salad	lanes=3	handsOn=6	untimed=2	s2
+
+==============================================================================
+§6  WHAT THE SHELF COULD SERVE ON DAY ONE
+==============================================================================
+slack declared     416 / 685
+washing-up declared177 / 685
+keeps declared     138 / 685  (T-011-04 mid-backfill)
+capacity declared  0 / 685  (T-011-02 not landed)
+timers present     661 / 685
+pairs-with         506 / 685
+serves >= 8        288
+serves <= 2        50
