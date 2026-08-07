@@ -319,6 +319,45 @@ main {
   margin: 0.9rem 0 0;
 }
 
+/*
+ * How many people, over how many days — one row, above the dials.
+ *
+ * ONE row and not two, which is the whole of what keeps this page a front door. The three dials
+ * already stack at 375px; two more stacked sets would put five control rows between the masthead
+ * and the counter shelf and push the shelf off the first screen entirely. Both sets are narrow
+ * enough to sit side by side on a phone (four stops of one or two characters, and three of
+ * five), so `flex` with a small floor rather than `.dials`' 14rem grid: the sets are shorter than
+ * a dial and should not be given a dial's width.
+ *
+ * It borrows .dial-set, .dial-name and .dial wholesale — the same recessed track, the same
+ * pressed stop, the same 44px thumb rule below. A second vocabulary for a second row of the same
+ * control is how a stylesheet ends up with two of everything.
+ */
+.situation {
+  display: grid;
+  gap: 0.5rem 1.2rem;
+  grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr));
+  margin: 0.9rem 0 0;
+}
+
+/*
+ * The name sits BESIDE its stops here rather than above them, which is the one place this row
+ * departs from .dial-set. Two more names on their own lines is 40px of a phone screen spent on
+ * two short phrases, and the counter shelf is what pays for it. Read across, it is a sentence
+ * with two blanks in it — how many people, over how many days — which is what the row is.
+ */
+.situation .dial-set {
+  flex-direction: row;
+  align-items: center;
+  gap: 0.6rem;
+}
+.situation .dial-name {
+  flex: 0 0 auto;
+}
+.situation .dial {
+  flex: 1 1 auto;
+}
+
 .dial-set {
   display: flex;
   flex-direction: column;
@@ -467,6 +506,23 @@ main {
  */
 .cannot-say {
   margin-top: 2.25rem;
+}
+
+/*
+ * The shelf for recipes the size dropped, between the matches and the unanswered.
+ *
+ * Same heading treatment, same reason for it, and the same refusal to dim or badge: these are
+ * still recipes you can pick up, and the one that is wrong for six people is often exactly the
+ * one somebody wants on a Tuesday. The marking is the heading and the sentence on each card.
+ */
+.wont-scale {
+  margin-top: 2.25rem;
+}
+
+/* Why the card is on the list it is on. The finding, above the figures it was read from. */
+.results .reason {
+  margin: 0 0 0.15rem;
+  font-size: 0.92rem;
 }
 
 /* The figures the reader asked about, on a card that passed. */

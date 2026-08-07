@@ -94,10 +94,17 @@ export const CONTROLS: readonly Control[] = [
     id: 'days',
     name: 'Over how many days',
     anySpoken: 'however many days',
+    /*
+     * Bare numbers under a name that already says "days", rather than "Today · 2 days · 3 days".
+     * The long labels made the two tracks wider than a 375px phone and wrapped one stop onto a
+     * line of its own, which reads as a broken control rather than a compact one. The words are
+     * still spoken — "eating it today" is what a screen reader gets — and the name above the row
+     * carries the unit for everybody else.
+     */
     stops: [
-      { value: 1, label: 'Today', spoken: 'eating it today' },
-      { value: 2, label: '2 days', spoken: 'over two days' },
-      { value: 3, label: '3 days', spoken: 'over three days' },
+      { value: 1, label: '1', spoken: 'eating it today' },
+      { value: 2, label: '2', spoken: 'over two days' },
+      { value: 3, label: '3', spoken: 'over three days' },
     ],
   },
 ];
