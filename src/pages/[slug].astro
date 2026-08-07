@@ -37,6 +37,19 @@ const { recipe, tree, grid, source } = Astro.props;
 // The counter you would most likely have bought it from leads the trail back.
 const home = counterByName.get(recipe.counters[0]);
 
+/*
+ * Whether the variant switcher may carry the washing-up counts.
+ *
+ * All of them or none of them. This sentence is where a reader chooses between the braise and
+ * the pressure-cooker version, so it is the one place the number decides an evening before the
+ * page is even opened — but a count beside one variant and silence beside another reads as a
+ * claim that the silent one washes nothing, and absent must never mean zero. Most of the
+ * collection has not been annotated yet, so this is false almost everywhere and the sentence
+ * renders exactly as it did before.
+ */
+const variantCounts =
+  recipe.washingUp !== null && recipe.variants.every((v) => v.washingUpCount !== null);
+
 const facts = [
   recipe.metadata.servings && { label: 'serves', value: recipe.metadata.servings },
   // The label is the whole attribution: the value is the author's own `>> time:`, quoted, and
@@ -88,6 +101,7 @@ const facts = [
           <>
             {i > 0 && ', '}
             <a href={url(`${variant.slug}/`)}>{variant.kit ?? 'the plain way'}</a>
+            {variantCounts && ` (${variant.washingUpCount} to wash)`}
           </>
         ))}
         .
