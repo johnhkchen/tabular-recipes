@@ -58,11 +58,12 @@ const CAPS = {
   'slack reason': 200,
   // It shares a table cell with an amount and a name. p99 is 63; past 80 it is a paragraph.
   'ingredient note': 80,
-  // The half of a keeps line that says what you are actually eating. Unlike slack, this field
-  // has no legacy to ratchet onto — every line under it was written at once — so it takes the
-  // number voice.md asks for rather than the one 304 pre-existing reasons forced.
-  // MEASURED-AT-STEP-9
-  'keeps character': 150,
+  // The half of a keeps line that says what you are actually eating. 138 lines written by
+  // T-011-04, mean 86, p95 94, max 101 — no legacy to ratchet onto, because the field and
+  // every line under it arrived together. So it takes voice.md's one-breath number rather
+  // than slack's 200, which 304 pre-existing reasons forced. Nothing is near it today, and
+  // that is the point: it is where a keeps line stops being one sentence.
+  'keeps character': 120,
 };
 
 /*
