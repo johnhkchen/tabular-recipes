@@ -1,4 +1,8 @@
-import { describe, expect, it } from 'vitest';
+import { execFileSync } from 'node:child_process';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import { afterAll, describe, expect, it } from 'vitest';
 import { readStepLabels } from './step-labels.ts';
 
 /**
@@ -185,5 +189,174 @@ describe('the step scan', () => {
 
   it('counts the steps a section header separates as two', () => {
     expect(indexes(MIX, '', '= Baking =', '', BAKE, '', '>> step: rest it cold', REST)).toEqual([2]);
+  });
+});
+
+/*
+ * "Fails" and "renders" are properties of a whole run, not of any function's return value, so
+ * the only honest way to test them is to run the checker — which is also the only way to reach
+ * the WASM parser, since it never runs inside Vite. Same shape as washing-up.test.ts: fixtures
+ * go to a temp directory and never to recipes/, so the collection build never sees them.
+ */
+describe('the checker, run for real', () => {
+  const root = path.resolve(import.meta.dirname, '../..');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'step-labels-'));
+
+  afterAll(() => fs.rmSync(dir, { recursive: true, force: true }));
+
+  const PREP = 'Preheat the #oven{} to 350°F.';
+  const FRY = 'Fry @onion{1} and @garlic{2%cloves} in @olive oil{2%Tbs} in a #Dutch oven{}.';
+  const SIMMER = 'Simmer @&(~1)base{} with @tomatoes{1%lb} and @stock{2%cups} for ~simmer{20%min}.';
+  const SEASON = 'Season @&(~1)stew{} with @salt{1%tsp} and @black pepper{1/2%tsp}.';
+
+  const file = (name: string, ...body: string[]) => {
+    const target = path.join(dir, `${name}.cook`);
+    fs.writeFileSync(
+      target,
+      ['>> title: Probe', '>> category: Stews & Braises', '>> tags: probe', '>> servings: 4', '', ...body, ''].join('\n'),
+    );
+    return target;
+  };
+
+  const run = (...targets: string[]) => {
+    try {
+      const out = execFileSync(process.execPath, ['scripts/check-recipes.mjs', '--labels', ...targets], {
+        cwd: root,
+        encoding: 'utf8',
+        stdio: ['ignore', 'pipe', 'ignore'],
+      });
+      return { code: 0, out };
+    } catch (error) {
+      const failure = error as { status: number; stdout: string };
+      return { code: failure.status, out: failure.stdout };
+    }
+  };
+
+  it('draws the label written above a step, and it wins over the derived one', () => {
+    const { code, out } = run(file('binds', PREP, '', FRY, '', '>> step: simmer it down 20 min', SIMMER, '', SEASON));
+    expect(code).toBe(0);
+    expect(out).toContain('simmer it down 20 min');
+    // The derived label for that step, which the override replaced.
+    expect(out).not.toContain('simmer with');
+  });
+
+  it('applies two labels in one file, which the parser’s metadata map cannot hold', () => {
+    const { code, out } = run(
+      file('two', PREP, '', '>> step: fry the aromatics', FRY, '', '>> step: simmer it down 20 min', SIMMER, '', SEASON),
+    );
+    expect(code).toBe(0);
+    expect(out).toContain('fry the aromatics');
+    expect(out).toContain('simmer it down 20 min');
+  });
+
+  it('labels a prep step, which is a full-width row and not a cell', () => {
+    const { code, out } = run(file('prep', '>> step: heat the oven early', PREP, '', FRY, '', SIMMER, '', SEASON));
+    expect(code).toBe(0);
+    // --labels prints a full-width row in brackets, with its sentence capital back.
+    expect(out).toContain('[ Heat the oven early ]');
+  });
+
+  it('still derives every label for a file that writes neither form', () => {
+    const { code, out } = run(file('derived', PREP, '', FRY, '', SIMMER, '', SEASON));
+    expect(code).toBe(0);
+    expect(out).toContain('[ Preheat the oven to 350°F ]');
+    // Derived from the step's own words, ingredients stripped out — see cleanLabel().
+    expect(out).toContain('fry and in in a Dutch oven');
+  });
+
+  it('fails a label with no step under it, naming the file and the line', () => {
+    for (const [name, body] of [
+      ['dangling-eof', [PREP, '', FRY, '', SIMMER, '', SEASON, '', '>> step: and then what']],
+      ['dangling-blank', [PREP, '', FRY, '', '>> step: simmer it down', '', SIMMER, '', SEASON]],
+      ['dangling-stacked', [PREP, '', '>> step: fry the aromatics', '>> step: simmer it down', FRY, '', SIMMER, '', SEASON]],
+    ] as [string, string[]][]) {
+      const target = file(name, ...body);
+      const { code, out } = run(target);
+      expect(code, name).toBe(1);
+      expect(out, name).toContain('FAIL');
+      expect(out, name).toContain(`${name}.cook`);
+      expect(out, name).toMatch(/line \d+: >> step:/);
+    }
+  });
+
+  it('fails a file that writes both forms rather than picking one', () => {
+    const target = path.join(dir, 'mixed.cook');
+    fs.writeFileSync(
+      target,
+      [
+        '>> title: Probe',
+        '>> category: Stews & Braises',
+        '>> tags: probe',
+        '>> servings: 4',
+        '>> step.2: fry the aromatics',
+        '',
+        PREP,
+        '',
+        FRY,
+        '',
+        '>> step: simmer it down 20 min',
+        SIMMER,
+        '',
+        SEASON,
+        '',
+      ].join('\n'),
+    );
+    const { code, out } = run(target);
+    expect(code).toBe(1);
+    expect(out).toContain('mixed.cook');
+    expect(out).toContain('both >> step:');
+    expect(out).toContain('>> step.2:');
+  });
+
+  /*
+   * The claim the whole ticket rests on, made on a real recipe rather than a fixture: the two
+   * forms are the same thing. Both files are built from the same recipe with its own overrides
+   * stripped, so this keeps working whichever form the collection is written in when it runs.
+   */
+  it('renders one real recipe identically written either way', () => {
+    const REAL = 'recipes/soups/new-england-clam-chowder.cook';
+    const source = fs.readFileSync(path.join(root, REAL), 'utf8');
+    const bare = source.split('\n').filter((line) => !/^>>[ \t]*step[.:]/i.test(line));
+
+    // Step blocks, found here rather than borrowed from the module under test.
+    const starts = bare
+      .map((line, i) => ({ line, i }))
+      .filter(({ line, i }) => {
+        const previous = bare[i - 1];
+        return line.trim() && !line.startsWith('>>') && (previous === undefined || !previous.trim() || previous.startsWith('>>'));
+      })
+      .map(({ i }) => i);
+    expect(starts.length).toBeGreaterThanOrEqual(5);
+
+    const labels = new Map([
+      [1, 'sweat them soft, 8 min'],
+      [3, 'simmer 15 min, potatoes tender'],
+      [starts.length - 1, 'season it last'],
+    ]);
+
+    const numbered = [
+      ...bare.slice(0, 1),
+      ...[...labels].map(([step, text]) => `>> step.${step + 1}: ${text}`),
+      ...bare.slice(1),
+    ].join('\n');
+
+    const inline = bare
+      .flatMap((line, i) => {
+        const step = starts.indexOf(i);
+        return step >= 0 && labels.has(step) ? [`>> step: ${labels.get(step)}`, line] : [line];
+      })
+      .join('\n');
+
+    fs.writeFileSync(path.join(dir, 'real-numbered.cook'), numbered);
+    fs.writeFileSync(path.join(dir, 'real-inline.cook'), inline);
+
+    const clean = (name: string) => run(path.join(dir, name)).out.split(path.join(dir, name)).join('<file>');
+    const fromNumbered = clean('real-numbered.cook');
+    const fromInline = clean('real-inline.cook');
+
+    // Not vacuously equal: the labels are in there, and the file really did draw a table.
+    for (const text of labels.values()) expect(fromInline).toContain(text);
+    expect(fromInline).toContain('  ok   ');
+    expect(fromInline).toBe(fromNumbered);
   });
 });
