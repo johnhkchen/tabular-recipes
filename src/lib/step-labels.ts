@@ -121,13 +121,21 @@ function classify(line: string): Shape {
 }
 
 /**
- * The line each step block starts on, in order. This duplicates a rule that properly belongs
- * to the parser, which is why normalise() checks the count against the parser's own before it
- * trusts a single label. Blank lines, metadata, section headers and text blocks close a block;
- * a comment is transparent; anything else opens one.
+ * The lines belonging to each step block, in order, as 0-based line indices. This duplicates
+ * a rule that properly belongs to the parser, which is why normalise() checks the count
+ * against the parser's own before it trusts a single label. Blank lines, metadata, section
+ * headers and text blocks close a block; a comment is transparent; anything else opens one.
+ *
+ * Exported because src/lib/step-refs.ts needs the lines a step CONTAINS — a step can run over
+ * several of them and each may carry a `@&(…)` — where the labels only need the line a step
+ * STARTS on. One walk serves both, on purpose: a reader that finds a step and a reader that
+ * finds its references must not be able to disagree about where a step is.
+ *
+ * A comment is transparent but is not part of the block, which is what keeps a reference
+ * written inside a `--` line out of the count. The parser drops those lines too.
  */
-function scanSteps(lines: string[]): number[] {
-  const starts: number[] = [];
+export function stepBlocks(lines: string[]): number[][] {
+  const blocks: number[][] = [];
   let open = false;
   for (const [i, line] of lines.entries()) {
     const shape = classify(line);
@@ -137,11 +145,17 @@ function scanSteps(lines: string[]): number[] {
       continue;
     }
     if (!open) {
-      starts.push(i);
+      blocks.push([]);
       open = true;
     }
+    blocks[blocks.length - 1].push(i);
   }
-  return starts;
+  return blocks;
+}
+
+/** The line each step block starts on, in order. */
+function scanSteps(lines: string[]): number[] {
+  return stepBlocks(lines).map((block) => block[0]);
 }
 
 /** The nearest line above `i` that is not blank and not a comment, or null at the top. */
