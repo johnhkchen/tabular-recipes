@@ -43,6 +43,7 @@ at all. It is coarse on purpose. Prefer a `>> counters:` line.
 | [Smokehouse](#smokehouse) | Meat by the pound out of the pit | Separate |
 | [Meat and Three](#meat-and-three) | Cafeteria line: one meat, three sides | Separate from both the diner and the pit |
 | [Cha Chaan Teng](#cha-chaan-teng) | Hong Kong tea café: Western food re-made in Hong Kong, sold as a timed set with the drink in the price | Separate: never the same board as the dim sum trolley or the numbered takeout menu. The 冰室 is folded in |
+| [The Air Fryer & the Pot](#the-air-fryer--the-pot) | Two countertop machines under one rule: two things in the sink, one machine, forty-five minutes | Separate, on the numbers: the gate admits 0 of One Pot's 73, 0 of Instant Pot's 25 and 0 of The Slow Cooker's 20 |
 
 ---
 
@@ -874,6 +875,86 @@ read prints both vocabularies together: the Tsim Sha Tsui shop calls itself 冰�
 | Pork Chop Bun | jyu paa baau, 豬扒包, pork chop bun, Macau pork chop bun, Portuguese pork bun | A bone-in pork chop in a crusty roll and nothing else — no sauce, no salad. Macanese, and on every Hong Kong board. |
 | Soup of the Day | lai tong, 例湯, soup of the day, daily soup, Chinese soup, 中湯 | The third soup option in a fast set, beside red (borscht) and white (cream of something). Whatever the kitchen boiled that morning, and it changes daily. |
 | Ordering slang | 烘底, 走冰, 加底, 靚仔, hong dai, jau bing, ga dai, leng jai | Modifiers said at the counter, not printed as dishes: 烘底 toast the bread, 走冰 no ice, 加底 extra rice or noodles, 靚仔 a bowl of plain white rice. |
+
+---
+
+## The Air Fryer & the Pot
+
+**What it is.** Two countertop machines — an air fryer and an Instant Pot — and a rule about the
+evening they give back. **This is the only counter here whose membership is a rule rather than a
+judgement**, which is why the rule is written down twice: once below and once in
+[docs/gaps/air-fryer-and-pot.md](../gaps/air-fryer-and-pot.md). A rule nobody can read becomes a
+judgement within a year, and then it is a genre with a machine in its name.
+
+It is also not a shop. Nobody sells air fryer food out of a window, so unlike the sixteen counters
+above this one was not settled by reading menus. It was settled by measuring, and the measurement
+is what the entry rests on.
+
+**The gate.** A recipe is admitted only if **all three** are true. Each bar says how it is measured,
+because a bar whose measurement is unstated is the judgement this file exists to prevent.
+
+1. **`washing-up` of two or fewer.** Read off the recipe's own `>> washing-up:` line, which is
+   authored and never derived — `src/lib/washing-up.ts` says at length why a count taken off the
+   `cookware` list cannot stand in for one. A recipe that has not declared the line has not been
+   measured against this bar, and is not admitted on the assumption that it would pass.
+2. **One plug-in machine does the cooking.** The air fryer or the Instant Pot, and only one of
+   them. Not a hob and then a machine; not a machine and then a grill. Read off the recipe's steps
+   rather than its `cookware` line, for the reason [one-pot.md](../gaps/one-pot.md) gives: that
+   line counts what a file *names*. A blender is a plug-in machine and does no cooking, so it does
+   not fail this bar — it costs a jug against bar 1 instead.
+3. **On the table in 45 minutes.** Wall-clock, with pressurising, natural release and resting
+   inside it. Both readings of the clock are checked and both must pass: the author's own
+   `>> time:` line, and the critical path `buildSchedule()` derives in `src/lib/schedule.ts`. The
+   derived figure is a **floor**, because an untimed operation is given zero minutes on purpose, so
+   a recipe that clears on the derived number and fails on `>> time:` has not cleared.
+
+**Separate, and separate on the numbers.** The obvious objection is that the site already has three
+shelves promising less work, so this one is a filter over them wearing a shelf's clothes. Measured
+against the built collection at 664 recipes, it is not:
+
+| Shelf | Recipes | Clear the gate | Where it fails |
+| --- | --: | --: | --- |
+| [One Pot](../gaps/one-pot.md) | 73 | **0** | Bar 2. Every one is a hob or oven dish; not one names a plug-in machine that cooks. Its *fastest* — `western-omelette` and `egg-foo-young` at 3 minutes, `jalfrezi` at 7 — are excluded by a bar that has nothing to do with speed. |
+| [Instant Pot](../gaps/instant-pot.md) | 25 | **0** | Bar 3, unanimously. The shortest is `collard-greens-instant-pot` at 60 minutes by `>> time:` and 46 derived. Four fail bar 2 as well, for a broiler or a second skillet. |
+| [The Slow Cooker](../gaps/slow-cooker.md) | 20 | **0** | Bar 3, by six hours. The shortest is `soy-sauce-chicken-slow-cooker` at 4 hr 40 min. |
+
+The three shelves do not overlap, so the pool is 118 distinct recipes and **the overlap with this
+counter is zero, not the ninety per cent the objection feared.** So it is separate — but for the
+opposite reason to the one anyone expected. It is not separate because it holds different things
+from its neighbours; it is separate because it holds **nothing they hold**, and its entire stock has
+to be written. The site owns no air fryer recipe at all: no `.cook` file declares `kit: Air Fryer`
+and the only trace of the machine anywhere is `src/lib/icons.ts:319`.
+
+**Do not loosen a bar to make the shelf look fuller.** Bar 3 at ninety minutes would admit 21 of
+the 25 Instant Pot recipes overnight. That is the failure the counter exists to prevent, and the
+temptation lands on whoever next reads a small number here.
+
+**There is no board, so there is no menu word.** Every other entry in this file carries a
+vocabulary table because a customer arrives holding what the board said. Nobody has ever ordered
+"the air fryer one". The table below is the nearest true equivalent — what the packet, the appliance
+box and the search bar call these things — and it is the `>> aka:` source for the writer ticket in
+the same way the others are. It records the machines and the handful of dish names that travel with
+them, and nothing that is not really said.
+
+| On the menu | Also called | Plainly |
+| --- | --- | --- |
+| Air Fryer | airfryer, air-fried, air fried, basket, the basket, hot air fryer, Actifry, halogen oven | A small convection oven with a fan over a perforated basket. It is not a fryer and there is no oil bath; it browns by moving hot air fast over a dry surface. |
+| Instant Pot | instant pot, IP, pressure cooker, electric pressure cooker, multicooker, multi-cooker, InstaPot | A sealed electric pot that cooks above the boil under pressure, with a sauté element in the same vessel so browning and braising happen without a second pan. |
+| Air Fryer Wings | air fryer chicken wings, airfryer wings, crispy wings, no-oil wings | Whole wings dried, tossed with salt and often baking powder, and cooked in one layer until the skin goes matt and pebbled. The most-cooked thing in the machine by a distance. |
+| Chips | fries, french fries, air fryer chips, skinny fries, homemade fries | Cut potato cooked in the basket rather than in oil. The raw-potato version and the frozen-bag version are two different dishes with two different methods, not one recipe at two starting points. |
+| Frozen Chips | oven chips, frozen fries, from frozen, bag chips | Straight from the freezer with no oil added, which is the machine's genuine best case and the thing most owners actually do with it. |
+| Basket | drawer, tray, crisper plate, rack | The perforated container the food sits in. Its **width** is what limits a recipe, because everything cooks in one layer — height buys nothing. |
+| Shake | toss, turn, flip halfway, agitate | Pulling the basket out mid-cook and shaking it. Usually the only hands-on moment in the whole recipe, and the point at which the cook judges the food rather than the clock. |
+| Preheat | pre-heat, warm up | Running the empty machine for a few minutes first. Some models have a button and some do not, so a stated time that assumes one is wrong for half of its readers. |
+| Natural Release | NR, natural pressure release, let the pin drop | Letting the pot come down from pressure on its own, which is cooking time and belongs in the clock. |
+| Quick Release | QR, vent, manual release | Opening the valve to drop the pressure at once. Beans split under it and a whole bird tightens, so it is not interchangeable with the above. |
+| Sauté | brown, sear, the sauté button | The pot's own element used with the lid off. It is what makes a one-vessel braise possible and it is why the pot clears bar 2 where a hob-then-pot recipe does not. |
+
+**What it does not admit, stated so the shelf stays honest.** Anything in a wet batter, because the
+fan lifts it off before it sets. Anything needing a bath of oil, which is a fryer and a different
+dish. Anything braised or saucy in the basket. Anything cooked in two batches and called one load.
+The reasoning, the sources and the times the machine can actually be given are in
+[air-fryer-and-pot.md](../gaps/air-fryer-and-pot.md).
 
 ---
 
