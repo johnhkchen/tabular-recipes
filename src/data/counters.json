@@ -1739,6 +1739,16 @@
             "black-bean-soup",
             "wonton-soup"
           ]
+        },
+        {
+          "title": "Quick soups that go with dinner",
+          "items": [
+            "tomato-potato-beef-soup",
+            "seaweed-egg-drop-soup",
+            "mustard-greens-tofu-soup",
+            "crucian-carp-tofu-soup",
+            "century-egg-amaranth-soup"
+          ]
         }
       ]
     },
