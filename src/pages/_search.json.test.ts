@@ -14,7 +14,9 @@
  */
 import { describe, expect, it } from 'vitest';
 import recipes from '../generated/recipes.json';
+import { TARGETS } from '../components/situation.ts';
 import { buildSchedule, handsOnEvidence } from '../lib/schedule.ts';
+import { costOf, servingsOf } from '../lib/scaling.ts';
 import type { RawRecipe } from '../lib/tree.ts';
 import { GET } from './search.json.ts';
 
@@ -28,6 +30,14 @@ interface Item {
   longestHandsOnMinutes: number;
   washingUpCount: number | null;
   evidence: string;
+  writtenServings: number | null;
+  waitMinutes: number;
+  untimedCount: number;
+  capacityServings?: number;
+  vessel?: string;
+  scaled?: number[][];
+  keepsText?: string;
+  keepsCharacter?: string;
 }
 
 const all = recipes as unknown as RawRecipe[];
@@ -60,13 +70,106 @@ describe('the endpoint itself', () => {
     expect(index.map((i) => i.title)).toEqual([...index.map((i) => i.title)].sort((a, b) => a.localeCompare(b)));
   });
 
-  it('gives every recipe the same nine keys and nothing else', () => {
-    const keys = [
+  /*
+   * Twelve keys on every recipe and four more that are there only where the recipe said
+   * something. Absent rather than null, so 639 entries with no vessel and 547 with nothing said
+   * about keeping cost the file nothing at all — JSON.stringify drops an undefined.
+   */
+  it('gives every recipe the same twelve keys, and the optional four only where earned', () => {
+    const always = [
       'slug', 'title', 'counters', 'find',
       'elapsedMinutes', 'handsOnMinutes', 'longestHandsOnMinutes', 'washingUpCount', 'evidence',
+      'writtenServings', 'waitMinutes', 'untimedCount',
     ].sort();
-    const wrong = index.filter((i) => Object.keys(i).sort().join() !== keys.join());
+    const sometimes = ['capacityServings', 'vessel', 'scaled', 'keepsText', 'keepsCharacter'];
+    const wrong = index.filter((i) => {
+      const keys = Object.keys(i);
+      return (
+        always.some((key) => !keys.includes(key)) ||
+        keys.some((key) => !always.includes(key) && !sometimes.includes(key))
+      );
+    });
     expect(wrong.map((i) => i.slug)).toEqual([]);
+  });
+});
+
+/*
+ * What it costs to cook more of the thing. Everything here is costOf()'s own answer written down
+ * — the test that the browser's arithmetic agrees with it lives in src/components/situation.test.ts,
+ * because that is the file doing the arithmetic.
+ */
+describe('the scaling numbers', () => {
+  it('says how much every recipe makes', () => {
+    const wrong = all.filter((recipe) => item(recipe.slug).writtenServings !== servingsOf(recipe));
+    expect(wrong.map((r) => r.slug)).toEqual([]);
+    expect(index.filter((i) => i.writtenServings === null)).toHaveLength(0);
+  });
+
+  /*
+   * `A` is the wait on the critical path and NOT elapsedMinutes: the timeline runs some hands-on
+   * work on a second pair of hands, so A + H sits at or above the drawn clock. gumbo is the
+   * worked example in scaling.md §2 — 53 and 49 against 94 — and this is where the two are kept
+   * from being read as the same number.
+   */
+  it('carries the wait, taken off costOf’s own written figures', () => {
+    const wrong: string[] = [];
+    for (const recipe of all) {
+      const servings = servingsOf(recipe);
+      if (servings === null) continue;
+      const cost = costOf(recipe, servings)!;
+      const wait = Math.round((cost.elapsed.written - cost.standing.written) * 100) / 100;
+      if (item(recipe.slug).waitMinutes !== wait) wrong.push(recipe.slug);
+    }
+    expect(wrong).toEqual([]);
+    expect(item('gumbo').waitMinutes).toBe(53);
+    expect(item('gumbo').handsOnMinutes).toBe(49);
+    expect(item('gumbo').elapsedMinutes).toBe(94);
+  });
+
+  it('names the vessel wherever it carries a capacity, and carries neither otherwise', () => {
+    for (const recipe of all) {
+      const entry = item(recipe.slug);
+      expect([recipe.slug, entry.capacityServings]).toEqual([
+        recipe.slug,
+        recipe.capacity?.servings,
+      ]);
+      expect([recipe.slug, entry.vessel]).toEqual([recipe.slug, recipe.capacity?.vessel]);
+    }
+    expect(index.filter((i) => i.capacityServings).length).toBeGreaterThan(20);
+  });
+
+  it('gives a bound recipe one row per size, and an unbound one none', () => {
+    for (const entry of index) {
+      if (entry.capacityServings) {
+        expect([entry.slug, entry.scaled?.length]).toEqual([entry.slug, TARGETS.length]);
+        for (const row of entry.scaled!) expect(row).toHaveLength(3);
+      } else {
+        expect([entry.slug, entry.scaled]).toEqual([entry.slug, undefined]);
+      }
+    }
+  });
+
+  it('reproduces the worked example in scaling.md §3', () => {
+    // beef-with-broccoli, four portions to twelve: 42 minutes, twelve of them standing.
+    const row = item('beef-with-broccoli').scaled![TARGETS.indexOf(12)];
+    expect(row[0]).toBe(42);
+    expect(row[1]).toBe(12);
+  });
+
+  it('carries the keeping span with what the dish is like, never one without the other', () => {
+    for (const recipe of all) {
+      const entry = item(recipe.slug);
+      expect([recipe.slug, entry.keepsText]).toEqual([recipe.slug, recipe.keeps?.text]);
+      expect(Boolean(entry.keepsText)).toBe(Boolean(entry.keepsCharacter));
+    }
+    expect(index.filter((i) => i.keepsText).length).toBeGreaterThan(100);
+  });
+
+  it('says how many operations the recipe never timed', () => {
+    const wrong = all.filter(
+      (recipe) => item(recipe.slug).untimedCount !== buildSchedule(recipe).untimedCount,
+    );
+    expect(wrong.map((r) => r.slug)).toEqual([]);
   });
 });
 

@@ -357,26 +357,37 @@ export function shelve(item: SituationItem, settings: Settings, situation: Situa
 /* ---- what the cards say ------------------------------------------------------ */
 
 const WORDS = [
-  'no',
-  'one',
-  'two',
-  'three',
-  'four',
-  'five',
-  'six',
-  'seven',
-  'eight',
-  'nine',
-  'ten',
-  'eleven',
-  'twelve',
+  'no', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten',
+  'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen',
+  'nineteen', 'twenty',
 ];
 
-/** Counts are words as far as the phrasebook writes them, and digits past that. */
+/**
+ * Counts are words, the way the phrasebook writes them — *three lots*, not *3 lots*.
+ *
+ * Twenty is far enough: the biggest number the controls can ask for is eighteen, and the most
+ * loads any recipe in the collection makes of that is eighteen too (a frying pan that holds one).
+ * Past that it is digits, which is a thing a card should not have to print and does not today.
+ */
 const count = (n: number): string => (Number.isInteger(n) && n < WORDS.length ? WORDS[n] : `${n}`);
 
 /** "Feeds six", "Feeds eighteen" — the reader's own number, said back. */
-const feeds = (n: number): string => `Feeds ${n <= 12 ? count(n) : n}`;
+const feeds = (n: number): string => `Feeds ${count(n)}`;
+
+/*
+ * scaling.md §6's last row: "…plus four steps the recipe never times."
+ *
+ * It is appended rather than substituted, and that is a decision worth naming. The row above it —
+ * "this one doesn't time enough of itself to say" — would fire on 228 of the 248 recipes that
+ * scale flat at eighteen servings, including every stew in the three-day list, because 267
+ * recipes report zero hands-on minutes and most of them are silence rather than freedom (§4.6).
+ * A list of six hundred cards all reading "we can't say" is the site explaining itself, which §6's
+ * second rule refuses. So the finding is said and the silence is said after it, in one line.
+ */
+const untimed = (item: SituationItem): string =>
+  item.untimedCount > 0
+    ? ` Plus ${count(item.untimedCount)} step${item.untimedCount === 1 ? '' : 's'} it never times.`
+    : '';
 
 /*
  * A wait inside the vessel, repeated, is the expensive term and the only one worth a sentence of
@@ -411,19 +422,18 @@ export function reason(item: SituationItem, situation: Situation): string {
     return "No times here at all, so there's nothing to work out.";
   }
   if (cost.asWritten) return `Makes ${count(cost.servings)} as written.`;
-  if (item.evidence === 'unknown') return "This one doesn't time enough of itself to say.";
 
   if (cost.loads > cost.loadsWritten) {
     const lots = count(cost.loads);
     const extra = vesselCost(item, cost);
     if (extra >= A_REAL_WAIT) {
       const opening = lots[0].toUpperCase() + lots.slice(1);
-      return `${opening} lots, one after another, and about ${formatDuration(extra)} longer for it.`;
+      return `${opening} lots, one after another, and about ${formatDuration(extra)} longer for it.${untimed(item)}`;
     }
     if (extra >= 1) {
-      return `It goes in ${lots} lots, and that costs you about ${formatDuration(extra)}.`;
+      return `It goes in ${lots} lots, and that costs you about ${formatDuration(extra)}.${untimed(item)}`;
     }
-    return `It goes in ${lots} lots, and that is the only difference.`;
+    return `It goes in ${lots} lots, and that is the only difference.${untimed(item)}`;
   }
 
   /*
@@ -434,12 +444,12 @@ export function reason(item: SituationItem, situation: Situation): string {
    */
   const grown = cost.standing - item.handsOnMinutes;
   if (cost.elapsed - round(item.waitMinutes + item.handsOnMinutes) < 1 && grown < 1) {
-    return `${feeds(cost.servings)} without taking any longer.`;
+    return `${feeds(cost.servings)} without taking any longer.${untimed(item)}`;
   }
   if (item.capacityServings) {
-    return `${feeds(cost.servings)}. It fits — one load either way — and it's the work that grows.`;
+    return `${feeds(cost.servings)}. It fits, one load either way — it's the work that grows.${untimed(item)}`;
   }
-  return `${feeds(cost.servings)}. The pot doesn't care; it's the work that grows.`;
+  return `${feeds(cost.servings)}. The pot doesn't care; it's the work that grows.${untimed(item)}`;
 }
 
 /** "3 days — better on the second". The span never goes out without what it is like. */
