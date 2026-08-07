@@ -105,10 +105,10 @@ export function normalise(source, { slug, path: relPath, folder }) {
    * A step's label can sit on the line directly above it (`>> step: rest it cold`), and where
    * that line SAT is the one thing the parser throws away — it hoists any `>> key: value` into
    * raw_metadata.map, where two of them collide. So the positions are read off the source
-   * first, and the parser is handed a copy with those lines blanked to comments. A file that
-   * writes the older `>> step.N:` form does not go near any of this: see src/lib/step-labels.ts.
+   * first, and the parser is handed a copy with those lines blanked to comments. The same pass
+   * refuses the numbered form this replaced: see src/lib/step-labels.ts.
    */
-  const { source: cleaned, labels, stepCount, problems } = readStepLabels(source);
+  const { source: cleaned, labels, stepLines, problems } = readStepLabels(source);
 
   const parser = new Parser();
   const result = parser.parse_full(cleaned, true);
@@ -140,9 +140,10 @@ export function normalise(source, { slug, path: relPath, folder }) {
        * each timer may only answer for its own half. See readTimers().
        */
       const rawLabel = stripIngredients(items, recipe);
-      // Two ways in, one field out: the line above the step, or the older `>> step.N:` line
-      // counted from the top of the file. Nothing downstream can tell which the file used.
-      const labelOverride = labels.get(index) ?? metadata[`step.${index + 1}`] ?? null;
+      // One way in: the `>> step:` line directly above this step. The numbered form that used to
+      // be read out of the metadata map here is refused by readStepLabels() before it gets a
+      // chance to name a step, so there is nothing left to prefer one over the other.
+      const labelOverride = labels.get(index) ?? null;
       const operationLabel = labelOverride ?? rawLabel;
 
       for (const item of items) {
@@ -211,9 +212,9 @@ export function normalise(source, { slug, path: relPath, folder }) {
    * is what the message says. A file with no inline label never reaches it.
    */
   const stepLabelProblems = [...problems];
-  if (labels.size && stepCount !== steps.length) {
+  if (labels.size && stepLines.length !== steps.length) {
     stepLabelProblems.push(
-      `the inline label pre-pass counted ${stepCount} step(s) and the parser found ` +
+      `the inline label pre-pass counted ${stepLines.length} step(s) and the parser found ` +
         `${steps.length} — that is a bug in readStepLabels(), not in this file`,
     );
   }
@@ -253,7 +254,7 @@ export function normalise(source, { slug, path: relPath, folder }) {
     'washing-up',
   ]);
   for (const key of Object.keys(metadata)) {
-    if (/^step\.\d+$/.test(key) || PROMOTED.has(key)) delete metadata[key];
+    if (PROMOTED.has(key)) delete metadata[key];
   }
 
   return {

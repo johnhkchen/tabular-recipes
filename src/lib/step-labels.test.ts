@@ -21,11 +21,18 @@ const PREHEAT = 'Preheat the #oven{} to 350°F.';
 
 describe('readStepLabels', () => {
   it('binds a label to the step on the very next line', () => {
-    const { labels, problems, stepCount } = readStepLabels(recipe(MIX, '', '>> step: rest it cold', REST));
+    const { labels, problems, stepLines } = readStepLabels(recipe(MIX, '', '>> step: rest it cold', REST));
     expect(problems).toEqual([]);
     // Step 0 is the mix; the label names step 1, the one under it.
     expect([...labels]).toEqual([[1, 'rest it cold']]);
-    expect(stepCount).toBe(2);
+    expect(stepLines.length).toBe(2);
+  });
+
+  it('hands back the line each step starts on, which is what the fixer inserts against', () => {
+    // Lines 0-3 are the metadata, 4 is blank. MIX opens step 0 at line 5; REST opens step 1 at
+    // line 8, under the label. These are positions in the file, not step indexes.
+    const { stepLines } = readStepLabels(recipe(MIX, '', '>> step: rest it cold', REST));
+    expect(stepLines).toEqual([5, 8]);
   });
 
   it('blanks the line to a comment rather than deleting it, so line numbers hold', () => {
@@ -75,14 +82,15 @@ describe('readStepLabels', () => {
     }
   });
 
-  it('hands back the source untouched when the file never writes one', () => {
-    const source = recipe('>> step.2: rest it cold', MIX, '', REST);
+  it('hands back the source untouched when the file writes no label at all', () => {
+    const source = recipe(MIX, '', REST);
     const reading = readStepLabels(source);
-    // By reference: the 643 files on the older form do not even get scanned.
+    // By reference: a file with neither form does not even get scanned.
     expect(reading.source).toBe(source);
     expect(reading.labels.size).toBe(0);
     expect(reading.problems).toEqual([]);
-    expect(reading.stepCount).toBe(0);
+    expect(reading.numbered).toEqual([]);
+    expect(reading.stepLines).toEqual([]);
   });
 });
 
@@ -146,14 +154,15 @@ describe('a label that does not bind fails, and says which line', () => {
     }
   });
 
-  it('refuses a file that writes both forms, naming a line of each', () => {
-    const { problems } = readStepLabels(
-      recipe('>> step.1: mix it rough', '', '>> step: rest it cold', REST),
+  it('refuses the numbered line in a file that writes both forms, and binds the inline one', () => {
+    const { problems, labels } = readStepLabels(
+      recipe('>> step.1: mix it rough', '', MIX, '', '>> step: rest it cold', REST),
     );
+    // One problem, about the one line that is wrong. The inline label is not collateral.
     expect(problems).toHaveLength(1);
-    expect(problems[0]).toContain('both >> step:');
-    expect(problems[0]).toContain('>> step.1:');
-    expect(problems[0]).toContain('line 6');
+    expect(problems[0]).toContain('line 6:');
+    expect(problems[0]).toContain('>> step.1: is the numbered form');
+    expect([...labels]).toEqual([[1, 'rest it cold']]);
   });
 
   it('reports every problem in one pass, in line order', () => {
@@ -161,6 +170,57 @@ describe('a label that does not bind fails, and says which line', () => {
       recipe('>> step:', '', MIX, '', '>> step: rest it cold', '', REST),
     );
     expect(problems.map((p) => p.split(':')[0])).toEqual(['line 6', 'line 10']);
+  });
+});
+
+/*
+ * The numbered form is gone, and a form that is gone has to be gone loudly. These tests are about
+ * the message as much as the refusal: it is what somebody typing the old line from muscle memory
+ * will read, and it is the only documentation of the change they are going to meet.
+ */
+describe('the numbered form is refused', () => {
+  it('refuses a numbered line and writes the same label back the new way', () => {
+    const { problems } = readStepLabels(recipe('>> step.2: fry the aromatics', '', MIX, '', REST));
+    expect(problems).toHaveLength(1);
+    expect(problems[0]).toContain('line 6:');
+    expect(problems[0]).toContain('>> step.2: is the numbered form, and it is gone');
+    // Their own words, rewritten so they can be copied straight out of the terminal.
+    expect(problems[0]).toContain('Write ">> step: fry the aromatics" on the line above step 2');
+    // And the way out, by name, with the flag that actually changes something.
+    expect(problems[0]).toContain('node scripts/inline-step-labels.mjs --write');
+  });
+
+  it('binds nothing by number, so the label cannot reach a page unnoticed', () => {
+    const { labels, numbered } = readStepLabels(recipe('>> step.1: mix it rough', '', MIX, '', REST));
+    expect(labels.size).toBe(0);
+    // The line is still reported structurally, which is what the fixer moves.
+    expect(numbered).toEqual([{ line: 5, n: 1, text: 'mix it rough' }]);
+  });
+
+  it('does not quote an empty label back, and asks for one instead', () => {
+    for (const line of ['>> step.1:', '>> step.1:   ']) {
+      const { problems } = readStepLabels(recipe(line, MIX, '', REST));
+      expect(problems, line).toHaveLength(1);
+      expect(problems[0], line).toContain('Write ">> step:" with the label after the colon');
+      expect(problems[0], line).not.toContain('">> step: "');
+    }
+  });
+
+  it('reports one problem per numbered line, in line order with the inline ones', () => {
+    const { problems, numbered } = readStepLabels(
+      recipe('>> step.1: mix it rough', '>> step.2: rest it cold', '', MIX, '', '>> step:', REST),
+    );
+    expect(problems.map((p) => p.split(':')[0])).toEqual(['line 6', 'line 7', 'line 11']);
+    expect(numbered.map((hit) => hit.n)).toEqual([1, 2]);
+    // The invariant the fixer leans on: one problem each, plus whatever else is wrong.
+    expect(problems.length).toBeGreaterThan(numbered.length);
+  });
+
+  it('does not mind how the numbered line was typed', () => {
+    for (const line of ['>> step.2: fry it', '>>step.2:fry it', '>> Step.2 :   fry it  ']) {
+      const { numbered } = readStepLabels(recipe(line, MIX, '', REST));
+      expect(numbered, line).toEqual([{ line: 5, n: 2, text: 'fry it' }]);
+    }
   });
 });
 
@@ -279,41 +339,45 @@ describe('the checker, run for real', () => {
     }
   });
 
-  it('fails a file that writes both forms rather than picking one', () => {
-    const target = path.join(dir, 'mixed.cook');
-    fs.writeFileSync(
-      target,
-      [
-        '>> title: Probe',
-        '>> category: Stews & Braises',
-        '>> tags: probe',
-        '>> servings: 4',
-        '>> step.2: fry the aromatics',
-        '',
-        PREP,
-        '',
-        FRY,
-        '',
-        '>> step: simmer it down 20 min',
-        SIMMER,
-        '',
-        SEASON,
-        '',
-      ].join('\n'),
-    );
+  it('fails a numbered line, and the message is the documentation of the change', () => {
+    const target = file('numbered', PREP, '', FRY, '', SIMMER, '', SEASON);
+    // Written into the metadata block, which is where the numbered form always sat.
+    const lines = fs.readFileSync(target, 'utf8').split('\n');
+    lines.splice(4, 0, '>> step.2: fry the aromatics');
+    fs.writeFileSync(target, lines.join('\n'));
+
+    const { code, out } = run(target);
+    expect(code).toBe(1);
+    expect(out).toContain('FAIL');
+    expect(out).toContain('numbered.cook');
+    expect(out).toContain('line 5: >> step.2: is the numbered form, and it is gone');
+    expect(out).toContain('Write ">> step: fry the aromatics" on the line above step 2');
+    expect(out).toContain('node scripts/inline-step-labels.mjs --write');
+    // And the label it named is nowhere on the page: refused, not quietly applied.
+    expect(out).not.toContain('  ok   ');
+  });
+
+  it('fails a file that writes both forms, on the numbered line only', () => {
+    const target = file('mixed', PREP, '', FRY, '', '>> step: simmer it down 20 min', SIMMER, '', SEASON);
+    const lines = fs.readFileSync(target, 'utf8').split('\n');
+    lines.splice(4, 0, '>> step.2: fry the aromatics');
+    fs.writeFileSync(target, lines.join('\n'));
+
     const { code, out } = run(target);
     expect(code).toBe(1);
     expect(out).toContain('mixed.cook');
-    expect(out).toContain('both >> step:');
-    expect(out).toContain('>> step.2:');
+    expect(out).toContain('>> step.2: is the numbered form');
+    // One complaint, about one line. The inline label in the same file is not also wrong.
+    expect(out.match(/^ +- /gm)).toHaveLength(1);
   });
 
   /*
-   * The claim the whole ticket rests on, made on a real recipe rather than a fixture: the two
-   * forms are the same thing. Both files are built from the same recipe with its own overrides
-   * stripped, so this keeps working whichever form the collection is written in when it runs.
+   * The two claims of this ticket, made on a real recipe rather than a fixture, from one source:
+   * the inline form still draws the table, and the numbered form no longer draws anything. The
+   * file is stripped of its own overrides first, so this keeps working however the collection is
+   * written when it runs.
    */
-  it('renders one real recipe identically written either way', () => {
+  it('draws one real recipe from the inline form and refuses the numbered one', () => {
     const REAL = 'recipes/soups/new-england-clam-chowder.cook';
     const source = fs.readFileSync(path.join(root, REAL), 'utf8');
     const bare = source.split('\n').filter((line) => !/^>>[ \t]*step[.:]/i.test(line));
@@ -350,13 +414,17 @@ describe('the checker, run for real', () => {
     fs.writeFileSync(path.join(dir, 'real-numbered.cook'), numbered);
     fs.writeFileSync(path.join(dir, 'real-inline.cook'), inline);
 
-    const clean = (name: string) => run(path.join(dir, name)).out.split(path.join(dir, name)).join('<file>');
-    const fromNumbered = clean('real-numbered.cook');
-    const fromInline = clean('real-inline.cook');
+    const fromInline = run(path.join(dir, 'real-inline.cook'));
+    expect(fromInline.code).toBe(0);
+    expect(fromInline.out).toContain('  ok   ');
+    for (const text of labels.values()) expect(fromInline.out).toContain(text);
 
-    // Not vacuously equal: the labels are in there, and the file really did draw a table.
-    for (const text of labels.values()) expect(fromInline).toContain(text);
-    expect(fromInline).toContain('  ok   ');
-    expect(fromInline).toBe(fromNumbered);
+    const fromNumbered = run(path.join(dir, 'real-numbered.cook'));
+    expect(fromNumbered.code).toBe(1);
+    // One refusal per label written, each naming the label back and the way out.
+    for (const text of labels.values()) {
+      expect(fromNumbered.out).toContain(`Write ">> step: ${text}" on the line above step `);
+    }
+    expect(fromNumbered.out).toContain('node scripts/inline-step-labels.mjs --write');
   });
 });

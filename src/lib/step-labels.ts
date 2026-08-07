@@ -6,12 +6,13 @@
  *     >> step: soak the flower 30 min, then rinse it hard
  *     Soak @dried overlord flower{2%oz}(60 g) in cold water, ~soak{30%min}.
  *
- * The older form, `>> step.4:`, names a step by counting to it, and the count is written
- * somewhere the step is not: insert an operation and every override below it labels the wrong
- * row, silently. This form has no number to get wrong. What it needs instead is to know WHERE
- * the line sat, and that is the one thing the parser throws away — a mid-file `>> key: value`
- * is hoisted into `raw_metadata.map`, where two `>> step:` lines in one file collide and the
- * last one wins.
+ * The form this replaced, `>> step.4:`, named a step by counting to it, and the count was
+ * written somewhere the step was not: insert an operation and every override below it labelled
+ * the wrong row, silently. T-009-03 removed it — a numbered line is now refused here, by name,
+ * with the same label written the new way. This form has no number to get wrong. What it needs
+ * instead is to know WHERE the line sat, and that is the one thing the parser throws away — a
+ * mid-file `>> key: value` is hoisted into `raw_metadata.map`, where two `>> step:` lines in one
+ * file collide and the last one wins.
  *
  * So the positions are read here, off the source, before the parser ever sees it. Three
  * things about cooklang 0.18.7 hold this up, all of them measured rather than assumed:
@@ -25,9 +26,19 @@
  *     file with the line removed, and every line number below it still points where it did.
  *
  * Pure — no parser, no filesystem — so all of it is testable directly. `scripts/normalise.mjs`
- * calls it, hands the blanked source to the parser, and reads `labels` where it used to read
- * `metadata['step.' + (index + 1)]`. Nothing downstream can tell which form a file used.
+ * calls it, hands the blanked source to the parser, and reads `labels`. There is one form, so
+ * nothing downstream has to ask which one a file used.
  */
+
+/** A `>> step.N:` line: the numbered form, which this project no longer reads. */
+export interface NumberedLabel {
+  /** 0-based line index, so a message can say `line ${line + 1}`. */
+  line: number;
+  /** The N that was written. Not resolved to a step — nothing resolves it any more. */
+  n: number;
+  /** What was written after the colon, trimmed. Empty when the line says nothing. */
+  text: string;
+}
 
 /** A recipe's inline step labels, read off the source before the parser sees it. */
 export interface StepLabels {
@@ -35,10 +46,20 @@ export interface StepLabels {
   source: string;
   /** Label text by 0-based step index — the same index normalise() counts steps with. */
   labels: Map<number, string>;
-  /** Step blocks this scan found. normalise() holds the parser to the same number. */
-  stepCount: number;
+  /**
+   * The line each step block starts on, in order. Its length is the step count normalise()
+   * holds the parser to; the positions are what scripts/inline-step-labels.mjs inserts against,
+   * so that the scan which finds a step and the scan which binds a label are the same one.
+   */
+  stepLines: number[];
   /** Every way the labels were written wrong, in line order. Each one names its line. */
   problems: string[];
+  /**
+   * Every `>> step.N:` line in the file. `problems` carries exactly one entry for each of these,
+   * which is how the fixer tells "only the numbered form is wrong here" from "and something
+   * else is too" without reading the messages.
+   */
+  numbered: NumberedLabel[];
 }
 
 /** `>> step: bake 30 min`. Cooklang only reads `>>` at the start of a line, so this does too. */
@@ -51,11 +72,37 @@ const INLINE = /^>>[ \t]*step[ \t]*:(.*)$/i;
  */
 const INDENTED = /^[ \t]+>>[ \t]*step[ \t]*:/i;
 
-/** `>> step.7:` — matched only to catch a file that writes both forms. */
-const NUMBERED = /^>>[ \t]*step\.(\d+)[ \t]*:/i;
+/** `>> step.7: simmer 15 min` — the numbered form, matched so that it can be refused. */
+const NUMBERED = /^>>[ \t]*step\.(\d+)[ \t]*:(.*)$/i;
 
 /** Either form of the inline line, anywhere in the file. The fast path turns on this. */
 const ANY_INLINE = /^[ \t]*>>[ \t]*step[ \t]*:/im;
+
+/** A numbered line anywhere in the file. The fast path has to see these too, or nothing does. */
+const ANY_NUMBERED = /^>>[ \t]*step\.\d+[ \t]*:/im;
+
+/** The script that moves a numbered label onto the line above its step. Named in the refusal. */
+const FIXER = 'node scripts/inline-step-labels.mjs --write';
+
+/*
+ * What a numbered line gets told. Somebody will type the old form from muscle memory, and this
+ * message is the only documentation they are going to read, so it does three things: it says the
+ * form is gone, it hands back THEIR OWN label rewritten so it can be copied out of the terminal,
+ * and it names the script that will do it for them. `--write` and not the bare command, because
+ * the bare command is a dry run and a reader who sees nothing change is worse off than before.
+ *
+ * The N is used to say WHICH step and then thrown away, which is the whole change in one line.
+ */
+function numberedRefusal({ n, text }: NumberedLabel): string {
+  const rewritten = text
+    ? `Write ">> step: ${text}" on the line above step ${n}`
+    : `Write ">> step:" with the label after the colon on the line above step ${n}`;
+  return (
+    `>> step.${n}: is the numbered form, and it is gone — the label goes on the line directly ` +
+    `above the step it names. ${rewritten}, or run ${FIXER} and it will move every one of them ` +
+    'for you.'
+  );
+}
 
 type Shape = 'blank' | 'metadata' | 'section' | 'text' | 'comment' | 'step';
 
@@ -130,18 +177,21 @@ function below(
 }
 
 /**
- * Reads the `>> step:` lines out of a recipe.
+ * Reads the `>> step:` lines out of a recipe, and refuses the numbered form.
  *
- * A file with none — every file that uses the older numbered form — comes straight back with
- * its own source object, unscanned and unchanged. Nothing below that line can reach it.
+ * A file that writes neither comes straight back with its own source object, unscanned and
+ * unchanged. Nothing below that line can reach it. A file that writes only `>> step.N:` used to
+ * take that same exit, which is why the fast path has to ask about both: a form nobody looks for
+ * is a form nobody can reject.
  */
 export function readStepLabels(source: string): StepLabels {
-  if (!ANY_INLINE.test(source)) {
-    return { source, labels: new Map(), stepCount: 0, problems: [] };
+  if (!ANY_INLINE.test(source) && !ANY_NUMBERED.test(source)) {
+    return { source, labels: new Map(), stepLines: [], problems: [], numbered: [] };
   }
 
   const lines = source.split('\n');
   const labels = new Map<number, string>();
+  const numbered: NumberedLabel[] = [];
   const found: { line: number; text: string }[] = [];
 
   // Blanked in place, not deleted, so a message can name the line the author is looking at.
@@ -150,9 +200,17 @@ export function readStepLabels(source: string): StepLabels {
 
   const say = (line: number, text: string) => found.push({ line, text });
 
-  let firstInline: number | null = null;
-
   for (const [i, line] of lines.entries()) {
+    // Before anything binds, because a numbered line binds to nothing. One message per line
+    // rather than one per file: four of them are four things to fix, in the order they appear.
+    const counted = line.match(NUMBERED);
+    if (counted) {
+      const hit = { line: i, n: Number(counted[1]), text: counted[2].trim() };
+      numbered.push(hit);
+      say(i, numberedRefusal(hit));
+      continue;
+    }
+
     if (INDENTED.test(line)) {
       say(
         i,
@@ -164,7 +222,6 @@ export function readStepLabels(source: string): StepLabels {
 
     const match = line.match(INLINE);
     if (!match) continue;
-    if (firstInline === null) firstInline = i;
 
     const value = match[1].trim();
     if (!value) {
@@ -219,23 +276,18 @@ export function readStepLabels(source: string): StepLabels {
     labels.set(index, value);
   }
 
-  // Both forms in one file is ambiguous about which wins, and a reader should not have to work
-  // that out. Reported once, at the first inline line, naming a line of each.
-  const numbered = lines.findIndex((line) => NUMBERED.test(line));
-  if (firstInline !== null && numbered >= 0) {
-    say(
-      firstInline,
-      `this file writes both >> step: and ${lines[numbered].trim().split(':')[0]}: (line ` +
-        `${numbered + 1}) — use one or the other, and the label above its step is the one to use`,
-    );
-  }
-
+  /*
+   * There used to be a "this file writes both forms" message here. There is one form now, so a
+   * file writing the other gets told that once per line it wrote, and being told twice about
+   * one line would be the second thing wrong with it.
+   */
   return {
     source: blanked.join('\n'),
     labels,
-    stepCount: stepOf.size,
+    stepLines: [...stepOf.keys()],
     problems: found
       .sort((a, b) => a.line - b.line)
       .map((problem) => `line ${problem.line + 1}: ${problem.text}`),
+    numbered,
   };
 }
