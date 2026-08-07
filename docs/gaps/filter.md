@@ -272,7 +272,7 @@ The twenty, by the minutes they carry:
 | `sweat` | 14 | 103 | hands-on | `HANDS_ON` |
 | `char` | 3 | 28 | hands-on | `HANDS_ON` |
 | `firm` | 1 | 20 | unattended | `UNATTENDED` |
-| `warm` `blanch` `cook` `rub` `rinse` `glaze` `cream` `blast` `heat` `caramel` `bloom` `draw` | 33 | ~95 | mixed | mostly `HANDS_ON`; `draw` and `heat` are waits |
+| `warm` `blanch` `cook` `rub` `rinse` `glaze` `cream` `blast` `heat` `caramel` `bloom` `draw` | 28 | ~110 | mixed | mostly `HANDS_ON`; `draw` and `heat` are waits |
 
 **`airfry` is right by accident, which is the most fragile row in the table.** All 21 air-fryer
 steps open with the verb *"Roast"*, which is in `UNATTENDED`, so the reading comes from the
@@ -316,8 +316,9 @@ argument.
 
 Eight of `HANDS_ON`'s 24 words and nineteen of `UNATTENDED`'s 53 are likewise never written as a
 name — `mix`, `roll`, `shape`, `deepfry`, `temper`, `flip`, `baste` and `churn` on one side;
-`infuse`, `overnight`, `blindbake`, `autolyse`, `retard`, `thaw` and thirteen more on the other. They act only in a sentence, which is worth knowing before anyone weighs a word by how many
-files it appears in.
+`infuse`, `overnight`, `blindbake`, `autolyse`, `retard`, `thaw` and thirteen more on the other.
+They act only in a sentence, which is worth knowing before anyone weighs a word by how many files
+it appears in.
 
 ### Two recipes where an interval is read as a duration
 
