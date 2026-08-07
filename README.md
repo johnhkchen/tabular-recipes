@@ -57,6 +57,7 @@ Then the optional lines, which are what the site is organised by:
 >> kit: instant pot                 # the equipment that makes this variant different
 >> slack: forgiving — an extra half hour in the oven only softens the beef further
 >> washing-up: the Dutch oven, a plate for the browned beef
+>> keeps: 4 days — better on the second, once the chile has settled into the fat
 ```
 
 - **`counters`** is a list, because a recipe can sit at more than one — noodles are not only
@@ -157,6 +158,44 @@ Then the optional lines, which are what the site is organised by:
   It is authored, never derived, and it is a fact about **your** kitchen: the same file is a
   different number of batches in a different one, which is why the vessel is named out loud.
   `docs/knowledge/scaling.md` is the whole model, worked by hand on five dishes.
+
+- **`keeps`** is how long the dish stays good and what it is like when you come back to it. It
+  renders under `washing-up`, beside the clock. One line: a span, then the character.
+
+  ```cooklang
+  >> keeps: 3 days — better on the second
+  >> keeps: 3 days — the crust is gone by morning; back in the oven, never the microwave
+  >> keeps: not at all — the wave is gone in twenty minutes and no stock brings it back
+  ```
+
+  **This is not a food-safety field, and it must not be read as one.** It is one cook's
+  judgement of whether a dish is still worth eating — not a claim that it is safe to eat, and
+  not a shelf life. Nothing on this site is a shelf life. If you are unsure whether something
+  is safe, this line cannot help you and was never trying to. **Where you are not sure, leave
+  it off**, which is the instruction that actually matters: a confident wrong number here is
+  the one thing on this site that could make somebody ill.
+
+  **The character is why the field is allowed to exist.** *"3 days"* and *"3 days — the crust
+  is gone by the next morning"* are the same number and two different dinners, and a number on
+  its own is exactly the shelf life above. So a span with nothing after it is a build error,
+  the same way a `slack` level with no reason is. Say what you would actually be eating: the
+  thing that goes soft, the thing that improves, the part to eat first.
+
+  **`not at all` is a real answer and often the more useful one.** A fried thing is not a fried
+  thing an hour later, and a cook planning three days of dinners needs to know that as much as
+  they need to know what improves. It still takes a character, because *does not keep* on its
+  own says nothing about whether the oven is the fix or whether there is no fix.
+
+  **Freezing is a different question and is deliberately not in this line.** Chili keeps four
+  days cold and three months frozen; bread is stale by Tuesday and perfect from the freezer.
+  There is no ordering between those two answers, so a line carrying both would sometimes carry
+  a contradiction — and one line that means two things has stopped comparing anything. `keeps`
+  is **the fridge, covered, as it is**. `npm run check` warns when a line wanders into the
+  freezer. What can be made now and eaten in March is a real question and a future `freezes:`,
+  not a corner of this one.
+
+  **Absent is the common answer.** Most of the collection has never been read for this, and
+  silence is honest rather than a gap: an undeclared recipe prints nothing at all.
 
 **Name your timers.** `~rise{90%min}`, `~chill{4%hr}`, `~bake{30%min}` — the name is what
 separates time you spend from time you merely wait out, which is the most useful thing a
