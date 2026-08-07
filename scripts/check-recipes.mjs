@@ -15,6 +15,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { normalise } from './normalise.mjs';
 import { findRecipes } from './find-recipes.mjs';
+import { mentionsFreezer } from '../src/lib/keeps.ts';
 import { cleanLabel } from '../src/lib/label.ts';
 import { buildTree } from '../src/lib/tree.ts';
 import { findTilingErrors, layout } from '../src/lib/layout.ts';
@@ -56,6 +57,11 @@ const CAPS = {
   'slack reason': 200,
   // It shares a table cell with an amount and a name. p99 is 63; past 80 it is a paragraph.
   'ingredient note': 80,
+  // The half of a keeps line that says what you are actually eating. Unlike slack, this field
+  // has no legacy to ratchet onto — every line under it was written at once — so it takes the
+  // number voice.md asks for rather than the one 304 pre-existing reasons forced.
+  // MEASURED-AT-STEP-9
+  'keeps character': 150,
 };
 
 /*
@@ -110,6 +116,10 @@ function measure(rel, recipe, tree) {
 
   if (recipe.slack) check('slack reason', recipe.slack.reason.length, 'slack:', recipe.slack.reason);
 
+  if (recipe.keeps) {
+    check('keeps character', recipe.keeps.character.length, 'keeps:', recipe.keeps.character);
+  }
+
   return over;
 }
 
@@ -157,6 +167,11 @@ for (const target of targets) {
     // A washing-up line that is there but not whole. Same treatment for the same reason.
     if (recipe.washingUpProblem) problems.push(recipe.washingUpProblem);
 
+    // A keeps line that is a duration and nothing else, which is the one thing that field is
+    // not allowed to be: a number on its own is a shelf life, and a shelf life is a
+    // food-safety claim this site does not make. Fails, so it can never reach a page.
+    if (recipe.keepsProblem) problems.push(recipe.keepsProblem);
+
     // A `>> step:` line with no step under it. The label the author wrote would otherwise go
     // nowhere at all, which is the one thing the older numbered form could never tell them.
     problems.push(...recipe.stepLabelProblems);
@@ -182,6 +197,22 @@ for (const target of targets) {
           `does not mention ${unaccounted.length === 1 ? 'it' : 'them'} — add ` +
           `${unaccounted.length === 1 ? 'it' : 'them'}, or ${unaccounted.length === 1 ? 'it is' : 'they are'} ` +
           `something that is not washed`,
+      );
+    }
+
+    /*
+     * A keeps line that has wandered into the freezer, and it WARNS. `keeps` is the fridge:
+     * chili keeps four days cold and three months frozen, bread is stale by Tuesday and
+     * perfect from frozen, and there is no ordering between those two answers — so a line
+     * carrying both would sometimes carry a contradiction. But "unlike the frozen version,
+     * this one…" is a legitimate sentence, and a checker that failed the build on a guess
+     * about what an author meant would only teach people to write around it.
+     */
+    if (mentionsFreezer(recipe.keeps)) {
+      notes.push(
+        'keeps: mentions freezing, which is a different question with a different answer — ' +
+          'this line is the fridge, covered, as it is. Say what it is like tomorrow, and ' +
+          'leave the freezer out of it',
       );
     }
 
