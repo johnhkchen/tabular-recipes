@@ -2,9 +2,17 @@
 /*
  * The front door: a row of counters, not a list of recipes. Search sits on top of it and
  * replaces the row with flat results, so there is no separate results page to design.
+ *
+ * The three dials sit in the same well as the box, because a query and a set of dials narrow
+ * one list rather than two. Turning a dial replaces the counter row exactly as typing does —
+ * "what can I cook tonight" is a real question with no search term in it, and a page that
+ * answers it with a row of shelf names has heard the question and declined to answer.
+ *
+ * Untouched by any of that: with no query and no dial set, this page is what it was.
  */
 import Base from '../layouts/Base.astro';
 import recipes from '../generated/recipes.json';
+import { DIALS } from '../components/dials.ts';
 import { menus } from '../lib/counters.ts';
 import type { RawRecipe } from '../lib/tree.ts';
 import { url } from '../lib/url.ts';
@@ -45,11 +53,56 @@ const teaser = (slugs: RawRecipe[]) =>
         data-index={url('search.json')}
       />
     </label>
+
+    <div class="dials">
+      {
+        DIALS.map((dial) => (
+          <div class="dial-set">
+            <span class="dial-name" id={`dial-${dial.id}`}>
+              {dial.name}
+            </span>
+            <div class="dial" role="group" aria-labelledby={`dial-${dial.id}`}>
+              <button
+                type="button"
+                data-dial={dial.id}
+                data-value=""
+                aria-label={dial.anySpoken}
+                aria-pressed="true"
+              >
+                Any
+              </button>
+              {dial.stops.map((stop) => (
+                <button
+                  type="button"
+                  data-dial={dial.id}
+                  data-value={String(stop.value)}
+                  aria-label={stop.spoken}
+                  aria-pressed="false"
+                >
+                  {stop.label}
+                </button>
+              ))}
+            </div>
+          </div>
+        ))
+      }
+    </div>
+
     <p class="tally" aria-live="polite">Press <kbd>/</kbd> to search {all.length} recipes</p>
   </div>
 
-  <ul class="results shelf" hidden></ul>
-  <p class="nothing" hidden>Nothing matches that. Try an ingredient, or what the menu called it.</p>
+  <ul class="results shelf" data-hits hidden></ul>
+
+  {/* Shown, and shown as unanswered — never silently included and never silently dropped. */}
+  <section class="cannot-say shelf-group" data-cannot hidden>
+    <h2>We can't say for these <span class="n" data-cannot-count></span></h2>
+    <p class="blurb">
+      Nobody wrote these down in enough detail to tell. They might still be what you want.
+    </p>
+    <ul class="results shelf" data-unsaid></ul>
+  </section>
+
+  <p class="nothing" hidden></p>
 
   <ul class="counters" data-counters>
     {
@@ -71,22 +124,42 @@ const teaser = (slugs: RawRecipe[]) =>
 
 <script>
   /*
-   * The index is fetched once, on the first keystroke. Until someone searches, this page
-   * carries no search data at all.
+   * The index is fetched once, on the first keystroke or the first dial press. Until somebody
+   * asks the page a question, this page carries no search data at all.
    */
-  type Item = { slug: string; title: string; counters: string[]; find: string };
+  import {
+    DIALS,
+    OFF,
+    SHOW_PASSES,
+    SHOW_UNSAID,
+    anySet,
+    carriesState,
+    figures,
+    readQuery,
+    readSettings,
+    searchString,
+    tallyLine,
+    unsaidLine,
+    verdict,
+  } from '../components/dials.ts';
+  import type { Item, Settings } from '../components/dials.ts';
 
   const input = document.querySelector<HTMLInputElement>('#finder-q');
-  const results = document.querySelector<HTMLUListElement>('.results');
+  const hits = document.querySelector<HTMLUListElement>('[data-hits]');
+  const cannot = document.querySelector<HTMLElement>('[data-cannot]');
+  const cannotCount = document.querySelector<HTMLElement>('[data-cannot-count]');
+  const unsaidList = document.querySelector<HTMLUListElement>('[data-unsaid]');
   const nothing = document.querySelector<HTMLElement>('.nothing');
   const shelf = document.querySelector<HTMLElement>('[data-counters]');
   const tally = document.querySelector<HTMLElement>('.tally');
+  const knobs = [...document.querySelectorAll<HTMLButtonElement>('[data-dial]')];
 
-  if (input && results && nothing && shelf && tally) {
+  if (input && hits && cannot && cannotCount && unsaidList && nothing && shelf && tally) {
     const base = input.dataset.index!;
     const home = base.replace(/search\.json$/, '');
     let index: Item[] | null = null;
     let loading: Promise<Item[]> | null = null;
+    let settings: Settings = { ...OFF };
 
     const load = () => {
       loading ??= fetch(base)
@@ -95,52 +168,153 @@ const teaser = (slugs: RawRecipe[]) =>
       return loading;
     };
 
-    const render = (query: string) => {
-      const words = query.toLowerCase().split(/\s+/).filter(Boolean);
+    /*
+     * The tally is the one thing on this page that speaks. A keystroke lets it settle first —
+     * typing "pasta" should announce once, not five times — and a dial press says so at once,
+     * because one deliberate action deserves one answer. 350ms sits above a fast typist's gap
+     * between keys and below the point where a number visibly lags the box it belongs to.
+     */
+    const QUIET = 350;
+    let pending: number | undefined;
+    const say = (text: string, now: boolean) => {
+      window.clearTimeout(pending);
+      if (now) tally.textContent = text;
+      else pending = window.setTimeout(() => (tally.textContent = text), QUIET);
+    };
 
-      if (!words.length || !index) {
-        results.hidden = true;
+    const card = (item: Item, line: string, cls: string) => {
+      const li = document.createElement('li');
+      li.className = 'clay-surface';
+      const a = document.createElement('a');
+      a.href = `${home}${item.slug}/`;
+      const h3 = document.createElement('h3');
+      h3.textContent = item.title;
+      const p = document.createElement('p');
+      // Left bare when no dial is set, so a plain search draws exactly the card it always did.
+      if (cls) p.className = cls;
+      p.textContent = line;
+      a.append(h3, p);
+      li.append(a);
+      return li;
+    };
+
+    const more = (text: string) => {
+      const li = document.createElement('li');
+      li.className = 'more';
+      li.textContent = text;
+      return li;
+    };
+
+    const paintDials = () => {
+      for (const knob of knobs) {
+        const id = knob.dataset.dial as keyof Settings;
+        const value = knob.dataset.value ? Number(knob.dataset.value) : null;
+        knob.setAttribute('aria-pressed', String(settings[id] === value));
+      }
+    };
+
+    /*
+     * The URL is either silent or it is the whole state. A pristine front page plus typing
+     * writes nothing, exactly as before; the first dial press takes the URL over and from then
+     * on it carries the query too, so a link a reader keeps for next Tuesday reproduces the
+     * list they kept it for. replaceState rather than pushState: a dial already has an "Any"
+     * stop, and thirteen history entries would bury the page they arrived from.
+     */
+    const syncUrl = () => {
+      if (!anySet(settings) && !carriesState(location.search)) return;
+      const next = `${location.pathname}${searchString(input.value, settings)}`;
+      history.replaceState(null, '', next);
+    };
+
+    const render = (announceNow: boolean) => {
+      const query = input.value;
+      const words = query.toLowerCase().split(/\s+/).filter(Boolean);
+      const dialsOn = anySet(settings);
+
+      if ((!words.length && !dialsOn) || !index) {
+        hits.hidden = true;
+        cannot.hidden = true;
         nothing.hidden = true;
         shelf.hidden = false;
         tally.innerHTML = `Press <kbd>/</kbd> to search`;
         return;
       }
 
-      const hits = index.filter((item) => words.every((word) => item.find.includes(word)));
-      shelf.hidden = true;
-      results.hidden = hits.length === 0;
-      nothing.hidden = hits.length > 0;
-      tally.textContent = `${hits.length} of ${index.length} recipes`;
+      const matched = words.length
+        ? index.filter((item) => words.every((word) => item.find.includes(word)))
+        : index;
 
-      results.replaceChildren(
-        ...hits.slice(0, 60).map((item) => {
-          const li = document.createElement('li');
-          li.className = 'clay-surface';
-          const a = document.createElement('a');
-          a.href = `${home}${item.slug}/`;
-          const h3 = document.createElement('h3');
-          h3.textContent = item.title;
-          const p = document.createElement('p');
-          p.textContent = item.counters.join(' · ');
-          a.append(h3, p);
-          li.append(a);
-          return li;
-        }),
-      );
-
-      if (hits.length > 60) {
-        const li = document.createElement('li');
-        li.className = 'more';
-        li.textContent = `and ${hits.length - 60} more — keep typing`;
-        results.append(li);
+      const passes: Item[] = [];
+      const unsaid: Item[] = [];
+      let failed = 0;
+      for (const item of matched) {
+        const answer = verdict(item, settings);
+        if (answer === 'pass') passes.push(item);
+        else if (answer === 'unsaid') unsaid.push(item);
+        else failed++;
       }
+
+      shelf.hidden = true;
+      hits.hidden = passes.length === 0;
+      cannot.hidden = unsaid.length === 0;
+      nothing.hidden = passes.length > 0 || unsaid.length > 0;
+      nothing.textContent = dialsOn
+        ? 'Nothing on the shelf fits that. Try a longer time, or fewer things to wash.'
+        : 'Nothing matches that. Try an ingredient, or what the menu called it.';
+
+      hits.replaceChildren(
+        ...passes.slice(0, SHOW_PASSES).map((item) =>
+          card(
+            item,
+            dialsOn ? figures(item, settings) : item.counters.join(' · '),
+            dialsOn ? 'figures' : '',
+          ),
+        ),
+      );
+      if (passes.length > SHOW_PASSES) {
+        const rest = passes.length - SHOW_PASSES;
+        hits.append(
+          more(
+            dialsOn
+              ? `and ${rest} more — turn a dial down, or search`
+              : `and ${rest} more — keep typing`,
+          ),
+        );
+      }
+
+      cannotCount.textContent = String(unsaid.length);
+      unsaidList.replaceChildren(
+        ...unsaid.slice(0, SHOW_UNSAID).map((item) => card(item, unsaidLine(item, settings), 'unsaid')),
+      );
+      if (unsaid.length > SHOW_UNSAID) {
+        unsaidList.append(more(`and ${unsaid.length - SHOW_UNSAID} more we can’t say for`));
+      }
+
+      say(
+        dialsOn
+          ? tallyLine({ pass: passes.length, fail: failed, unsaid: unsaid.length })
+          : `${passes.length} of ${index.length} recipes`,
+        announceNow,
+      );
     };
 
     input.addEventListener('input', async () => {
-      const query = input.value;
-      if (query.trim()) await load();
-      render(query);
+      if (input.value.trim() || anySet(settings)) await load();
+      render(false);
+      syncUrl();
     });
+
+    for (const knob of knobs) {
+      knob.addEventListener('click', async () => {
+        const id = knob.dataset.dial as keyof Settings;
+        const value = knob.dataset.value ? Number(knob.dataset.value) : null;
+        settings = { ...settings, [id]: value };
+        paintDials();
+        syncUrl();
+        if (anySet(settings) || input.value.trim()) await load();
+        render(true);
+      });
+    }
 
     document.addEventListener('keydown', (event) => {
       if (event.key === '/' && document.activeElement !== input) {
@@ -150,11 +324,14 @@ const teaser = (slugs: RawRecipe[]) =>
       }
     });
 
-    // A shared link should land on the same search.
-    const start = new URL(location.href).searchParams.get('q');
-    if (start) {
-      input.value = start;
-      load().then(() => render(start));
+    // A shared link should land on the same list — the query and the dials together.
+    const start = location.search;
+    const query = readQuery(start);
+    settings = readSettings(start);
+    if (query || anySet(settings)) {
+      input.value = query;
+      paintDials();
+      load().then(() => render(true));
     }
   }
 </script>
