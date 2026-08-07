@@ -257,5 +257,55 @@ an edit to a metadata line, which is why none of it happened here.
   `thai-green-curry`. Every newer file carries the other spelling in `aka`, so search works either way
   (T-001-03 §5).
 - **`naan` does not declare which one it is** — a tandoor naan or a home-oven one (T-001-09 §6).
-- **`>> step.N:` counts prose steps as well as operations**, which is undocumented, silently mislabels a
-  file rather than failing it, and cost three files a round trip (T-001-08 §5).
+
+## Recorded and closed
+
+Two entries S-009 finished with. They are here rather than above because the list above is where the next
+pass looks for work, and an item that is done but still listed costs somebody an afternoon finding out.
+One of these was fixed; the other was looked at and deliberately left, which is also an answer.
+
+### `>> step.N:` counts prose steps as well as operations — closed by removal
+
+Carried under *Recorded and not done* from T-001-08 §5, as:
+
+> **`>> step.N:` counts prose steps as well as operations**, which is undocumented, silently mislabels a
+> file rather than failing it, and cost three files a round trip.
+
+**Fixed by removing the form, not by repairing the count** (S-009: T-009-01 taught the build the inline
+`>> step:` label, T-009-02 moved all 2,771 of them across 643 files, T-009-03 took the numbered form
+away). There is nothing left to count from: the label sits on the line directly above the step it names,
+so what it counts is no longer a question anybody can get wrong. A file that still writes `>> step.N:`
+now fails `npm run check` with a message showing the same label written inline, and
+`node scripts/inline-step-labels.mjs --write` moves it.
+
+Repairing the count instead — making N skip prose steps — was possible and was not done. It would have
+renumbered every one of the 2,771 existing labels against a rule nobody had written down, to keep a form
+whose real defect was that the number is written somewhere the step is not.
+
+**Retiring the behaviour cost nothing, and that was measured rather than assumed.** 264 files contained
+both a prose step and a numbered label; each label was scored against the step the build gave it and
+against the step an operations-only numbering would give it. Files that fitted the operations-only
+numbering better: **0** (T-009-02 §"Screen A", `docs/active/work/T-009-02/review.md`). So although the
+behaviour cost three files a round trip historically, it had left no shifted file behind.
+
+### `@&(~N)`, the relative back-reference, is left as it is
+
+Not a defect being carried; a decision, recorded so the next person does not have to reach it again.
+
+| | Uses | Of those |
+| --- | --: | --- |
+| `@&(~N)` relative back-reference | **2,401** | **373** are `~2` or deeper |
+| `@&(N)` absolute back-reference | 33 | all of them S-009's business — see T-009-04 |
+
+S-009 was about references that are **wrong and silent**. `~1` means *the step before this one*, which is
+what the author actually means and stays true when a step is appended. It breaks only when something is
+inserted **between** a step and its target — and when that happens the tree usually stops merging, which
+is a build error and not a wrong page. Relative references fail loudly; positional ones failed quietly,
+and the quiet ones are what the story took.
+
+The 373 uses at `~2` or deeper are the ones worth a look one day: the further back a relative reference
+reaches, the more it behaves like a positional one. That is a reason to look, not a reason to have
+rewritten 2,401 lines alongside a migration that had to prove itself byte for byte.
+
+Counted with `grep -roh '@&(~[0-9]*)' recipes --include='*.cook' | wc -l` and its `~[2-9][0-9]*` variant,
+re-run at T-009-03: 2,401 and 373, unchanged from the numbers S-009 was written with.

@@ -37,8 +37,8 @@ page exists.
 
 | The line | Where it lands | What it is for | What does not go here |
 | --- | --- | --- | --- |
-| `>> step.N:` | the operation cell | The verb and its numbers. *"boil hard, lid off, 20 min"* | Why. Anything that is not doing. |
-| the step's own words | **nowhere**, once `step.N:` is set | Naming the ingredients and what you do with them. | Essays. Nobody will ever read them. |
+| `>> step:` | the operation cell | The verb and its numbers. *"boil hard, lid off, 20 min"* | Why. Anything that is not doing. |
+| the step's own words | **nowhere**, once a `>> step:` label is set | Naming the ingredients and what you do with them. | Essays. Nobody will ever read them. |
 | a step with no ingredients | a full-width row above or below the table, **printed three times** | The one thing you must know before you start. One sentence. | A headnote. A story. Anything the steps already say. |
 | `>> slack:` | under the timeline | What actually goes wrong, and whether it comes back. | How long it takes — that is the clock, two lines up. |
 | an ingredient `(note)` | inside the ingredient cell, beside the amount | Which one to buy, and how to cut it. *"scaled and gutted, then dried"* | What it does for the dish. Where the name comes from. |
@@ -49,7 +49,7 @@ Two things about this you cannot see from inside the file:
 hundred words there is three hundred words paid. It is the most expensive sentence on the page,
 so it had better be the most useful one.
 
-**A `>> step.N:` line throws your paragraph away.** Not shortens — throws away. The step's own
+**A `>> step:` line throws your paragraph away.** Not shortens — throws away. The step's own
 words stop being rendered anywhere except inside the collapsed *See how it is written* block,
 where they show up as raw cooklang with `@&(~1)scrubbed bones{}` in them. **There are 172,003
 characters in this collection that nobody has ever read**, spread over 2782 steps in 637 recipes.
@@ -79,22 +79,23 @@ is that a sealed pot can pull the bones apart but cannot turn the broth white.
 > the lid off at the end is the whole white of it, and a broth not boiled hard there stays thin
 > and grey; the parboil before it is the only scum you ever get to take out
 
-**`>> step.1:` — 132 characters, and this was the one that printed:**
+**`>> step:` — 132 characters, and this was the one that printed:**
 
 > The pot does the extraction. It cannot do the emulsion, and the last twenty minutes with the
 > lid off are where the white comes from.
 
 Three drafts of one sentence, filed in three places, and the reader met it twice on the page.
 Nobody wrote it three times on purpose. The paragraph came first; when it would not fit the
-cell, a `step.1:` was bolted on to rescue the table; the paragraph stayed, unread, and the same
-fact leaked into `slack:` because that was the next empty box. **That is the mechanism, and it
-is still the clearest thing on this page. What follows is what was actually done about it.**
+cell, a `>> step:` label was bolted on to rescue the table; the paragraph stayed, unread, and
+the same fact leaked into `slack:` because that was the next empty box. **That is the mechanism,
+and it is still the clearest thing on this page. What follows is what was actually done about
+it.**
 
 ### What the file says now
 
 | The line | Was | Is |
 | --- | ---: | --- |
-| `>> step.1:`, which prints as the row | 132 | *The pot does the extraction. It cannot do the emulsion.* (55) |
+| `>> step:`, which prints as the row | 132 | *The pot does the extraction. It cannot do the emulsion.* (55) |
 | `>> slack:` | 250 | *the twenty minutes with the lid off is the whole white of it, and a broth not boiled hard there stays thin and grey* (115) |
 | the step 1 paragraph | 472 | 72, and still rendered nowhere |
 
@@ -134,8 +135,8 @@ worst first. **The caps are the ceiling, not the aim.**
 
 | The line | Cap | Aim for |
 | --- | ---: | --- |
-| `>> step.N:` operation cell | 70 | 25 — a verb and its numbers |
-| the step's own words, once `step.N:` is set | 150 | one sentence that names the ingredients |
+| `>> step:` operation cell | 70 | 25 — a verb and its numbers |
+| the step's own words, once a `>> step:` label is set | 150 | one sentence that names the ingredients |
 | a full-width row | 120 | one sentence. It prints three times |
 | `>> slack:` reason | 200 | about 120 — one breath |
 | an ingredient `(note)` | 80 | 15 — which one, cut how |
@@ -165,6 +166,12 @@ This page was written by T-005-01 before any of the cutting happened. Four passa
 corrected because a ticket decided something different from what was written here. The rules
 themselves — who is reading, the five places words can go, the three house tests, the five caps —
 are unchanged, because nothing decided differently about those.
+
+**The label's syntax changed under S-009 and its argument did not.** It used to be written
+`>> step.4:` in the metadata block, naming a step by counting to it; it is now a `>> step:` line
+sitting directly above the step it names, and T-009-03 removed the numbered form. Every example
+on this page is written the new way. Nothing about what the label is *for*, what it costs you, or
+how long it may be, moved with it — the same words in the same cell, addressed differently.
 
 - **The unread-body count is 172,003, not 278,833.** T-005-06 cut 844 bodies across 358 files.
   The count of overridden steps did not move: 2782 in 637 recipes, before and after.

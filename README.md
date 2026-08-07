@@ -160,9 +160,9 @@ Then the rules, which are short:
    The line binds to the step on the very next line, with no blank line between. If it has
    no step under it — a blank line, another `>> step:` line, or the end of the file — the
    check fails and names the line, rather than dropping the label you wrote. A prep step is
-   a step, so a full-width row can carry one too. An older form, `>> step.7:`, sets the same
-   label by counting steps from the top of the file instead (prose rows included, which is
-   easy to get wrong); it still works, and a file uses one form or the other, never both.
+   a step, so a full-width row can carry one too. There was an older form, `>> step.7:`, which
+   named a step by counting to it from the top of the file; it is gone, the check refuses it,
+   and `node scripts/inline-step-labels.mjs --write` moves any you still have.
 
 Row order is not the order you wrote the ingredients: children sort deepest-first, which
 is what makes the staircase descend to the right and puts the long chain of operations
