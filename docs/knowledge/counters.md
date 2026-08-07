@@ -21,6 +21,32 @@ Two things follow from that, and they are the reason this file exists.
 The fallback in `src/data/counters.json` (`categories`) only catches recipes that name no counter
 at all. It is coarse on purpose. Prefer a `>> counters:` line.
 
+### Sections
+
+A counter also carries `sections` in `src/data/counters.json`: the headings its menu prints, in the
+order it prints them, each holding a list of recipe slugs. They are read out of the counter's page
+in `docs/gaps/` by `scripts/menu-sections.mjs`, which is why the headings are a real board's words
+rather than category names.
+
+**A section orders what a shelf already holds. It cannot put a recipe on one.** Which counters a
+recipe sits at is the `>> counters:` line in its own `.cook` file and nothing else — that one line
+is what the menu, the recipe page's counter links and the search index all read. To list a dish on
+a second shelf, add that counter to the dish's own line. One line, one file, one fact.
+
+So a slug listed in a section whose recipe does not name that counter is a mistake in one of the
+two files, and it stops the build: `menuFor` in `src/lib/counters.ts` throws with the counter, the
+heading and the slug named, plus where that recipe actually is shelved. After a build,
+`node scripts/check-menus.mjs` — the last step of `npm run verify` — reads the built pages back and
+reports, for all twenty-two counters, whether every listed slug printed under the heading it was
+listed under.
+
+That check exists because the failure it catches used to be invisible. A listed slug that named
+another counter was dropped on the floor with no warning, and the count at the top of the page was
+computed the same way, so the page always agreed with itself. Nine slugs across two counters were
+listed and printed nowhere for two whole stories, and one of those pages was correct the entire
+time — being produced from data that was wrong. A bug that yields the right answer is the one
+nobody finds.
+
 ---
 
 ## Contents
