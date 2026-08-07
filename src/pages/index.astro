@@ -181,6 +181,11 @@ const teaser = (slugs: RawRecipe[]) =>
       if (now) tally.textContent = text;
       else pending = window.setTimeout(() => (tally.textContent = text), QUIET);
     };
+    /*
+     * Anything that writes the tally without going through say() has to cancel what say() has
+     * already scheduled, or a count from the query before last lands on top of it 350ms later.
+     */
+    const hush = () => window.clearTimeout(pending);
 
     const card = (item: Item, line: string, cls: string) => {
       const li = document.createElement('li');
@@ -236,6 +241,7 @@ const teaser = (slugs: RawRecipe[]) =>
         cannot.hidden = true;
         nothing.hidden = true;
         shelf.hidden = false;
+        hush();
         tally.innerHTML = `Press <kbd>/</kbd> to search`;
         return;
       }
