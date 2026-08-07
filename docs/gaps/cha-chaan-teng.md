@@ -32,7 +32,7 @@ slug.
 Five sections, in the order the counter prints them, and the same five in
 `src/data/counters.json` — `node scripts/menu-sections.mjs` reads this block back into that file.
 Two of T-007-01's seven headings are gone. *The set meals* could only ever be empty: 常餐 is a rule
-and not a dish, which is the first entry under [what a table cannot hold](#what-a-table-cannot-hold),
+and not a dish, which is the first entry under [what it could not stock](#what-it-could-not-stock),
 and the set grid is recorded in `docs/knowledge/counters.md` where it belongs. *Also here* was the
 catch-all, and there is nothing left over to put in it.
 
@@ -206,7 +206,7 @@ component.
 
 ---
 
-## What a table cannot hold
+## What it could not stock
 
 - **The set itself.** 常餐 is not a dish, it is a rule: a main, an egg, bread and a drink, chosen
   off four short lists, and which lists you get depends on what time it is. Four tables and a
