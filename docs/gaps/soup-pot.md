@@ -1,72 +1,131 @@
-# The Soup Pot — what is missing
+# The Soup Pot — a counter that came down
 
-**24 recipes: 16 老火湯, 6 滾湯 and the two congees.** T-003-03 wrote twenty-two of them and
-T-003-06 shelved the congees.
+**This is not a work list. It is the record of a shelf that was tried and taken down**, kept so
+nobody spends another afternoon deriving it from scratch and reaching the same wall.
 
-The finding this page opened with was that `recipes/soups/` held 44 files and **not one was a
-Cantonese 老火湯** — the pot of water, a piece of meat and a handful of dried things that sits for
-three hours untouched and is drunk before dinner rather than after it. No 淮山, no 蜜棗, no 南北杏,
-no 玉竹, no dried scallop, no dried octopus appeared anywhere in the collection. The genre was not
-thin here, it was absent. `recipes/soups/` now holds 66 files and twenty-two of them are this
-shelf's.
+The Soup Pot ran from S-003 to **7 August 2026**, when S-007 retired it and put a Hong Kong cha
+chaan teng in its place. At its widest it held twenty-four recipes: sixteen 老火湯, six 滾湯 and the
+two congees. Sixteen were deleted, eight moved to other shelves, and the research below was kept
+because most of it is still true — it was the shelf that was wrong, not the reading.
 
-It was also the best fit for this site's clock that exists, and that turned out to be exactly
-right. The sixteen old-fire pots run **2 hr to 3 hr 30 elapsed against 8 to 12 minutes of
-hands-on**, every one of them, and every one declares its slack — thirteen of the twenty-four are
-`forgiving`, which is the whole promise of the shelf written down where a cook can read it.
-
-**The hard part of this shelf is not the dish names.** These soups are organised around *what each
-ingredient is for* — why this dried thing goes with that meat, why the pot is not stirred, why the
-solids are thrown away. A list of soup names without that is a list of ingredients in hot water and
-the shelf reads as nothing. So this page carries the reasoning first and the ranked list second,
-and a writer should read it in that order.
-
-**How the reasoning is written, and how it is not.** These soups carry a traditional logic about
-what they do for a body, and that logic is *why the soup is made* — it belongs in the recipe. It is
-written here as what it is: the tradition's own reasoning. **"Made when someone in the house has
-been coughing" is honest. "Cures a cough" is not**, and it is not what the tradition says either.
-T-003-03 inherits that register; it is the single easiest thing to get wrong on this shelf.
+One caution carried over from the old version and it still holds: **the Cantonese romanisations
+below have no tone marks and were compiled from the sources at the bottom rather than checked
+against a dictionary.** They were written to save a lookup, not to be trusted blind.
 
 ---
 
-## What it has
+## Why it came down
 
-The heading was `## What is already here` while no recipe named the counter, so that
-`scripts/menu-sections.mjs` would not report every slug in it as *listed but not shelved here*.
-Twenty-four recipes now name it and the block below is the shelf itself.
+Five reasons, and they compound. The full argument is in
+`docs/active/stories/S-007-a-counter-you-can-shop-for.md`.
 
-**Old-fire soups (老火湯).** green-radish-carrot-pork-bone-soup · winter-melon-jobs-tears-soup ·
-lotus-root-dried-octopus-soup · watercress-honey-date-soup ·
-peanut-black-eyed-pea-chicken-feet-soup · overlord-flower-soup · corn-carrot-pork-bone-soup ·
-chinese-yam-goji-black-chicken-soup · ching-bo-leung-soup · sha-shen-yu-zhu-soup ·
-hairy-gourd-dried-scallop-soup · dried-bok-choy-pork-lung-soup · lotus-seed-lily-bulb-soup ·
-old-cucumber-rice-bean-soup · green-papaya-peanut-trotter-soup · apple-pear-pork-bone-soup
+1. **The ingredients were not for sale.** Twenty-four recipes rested on about eighteen dried goods —
+   霸王花, 菜乾, 玉竹, 沙參, 章魚乾, 淮山 — and the shopping list filed most of the ones spot-checked
+   into `World foods`, which is the aisle map shrugging. The honest answer is *a Chinese herbalist*,
+   and this site had no way to say that. Worse, this page's own rules ruled substitution out: *"If
+   the overlord flower cannot be got, the answer is not another flower — it is a different soup."*
+   Specialist-only sourcing plus no substitutions means a reader either lived near the right shop or
+   the whole shelf was shut to them.
 
-Sixteen of the eighteen ranked below, written in the order this page ranked them. The two left
-are ranks 17 and 18.
+2. **Three hours of clock bought a course, not a dinner.** All sixteen old-fire pots ran 2 hr to
+   3 hr 30 against 8 to 12 minutes hands-on, and rule 4 of the pot is that the solids are spent and
+   thrown away. The Instant Pot and One Pot shelves spend the same clock and put a meal on the
+   table. This one produced a bowl of broth drunk *before* dinner, in a household arrangement most
+   readers do not have.
 
-**Quick daily soups (滾湯).** tomato-potato-beef-soup · seaweed-egg-drop-soup ·
-mustard-greens-tofu-soup · crucian-carp-tofu-soup · century-egg-amaranth-soup · egg-drop-soup
+3. **It was not a counter.** `docs/knowledge/counters.md` opens with the definition: *"A counter is
+   where you would get this if you were not making it at home."* Nobody sells 老火湯 over a counter.
+   There was no window, no board, no menu word to be the way in. Every other shelf here is a
+   storefront a person can picture; this one was a domestic practice wearing a shop sign.
 
-Five written plus `egg-drop-soup`, which was here first. It is a Takeout Counter soup rather than
-a household one and it stays on both shelves, because it is genuinely a 滾湯 by method: the water
-boils first, the egg goes in last, it is done in fifteen minutes. `seaweed-egg-drop-soup` sits
-beside it and is not the same soup, which is what this page said it would be.
+4. **The frame was a medicine frame, and that is structural rather than tonal.** The shelf was
+   organised around 潤 / 祛濕 / 健脾, which the site then spent paragraphs holding at arm's length
+   (*"made when someone in the house has been coughing" is honest, "cures a cough" is not*). The
+   disclaiming was careful and it was not the problem. The problem was what the arrangement said:
+   the site's one Chinese shelf sold folk remedies while its American shelves sold sandwiches. No
+   individual file was at fault. The shelf was.
 
-**Congee and rice soups.** congee · congee-instant-pot
-
-Both were already written and both are shelved here as well as at the Dim Sum Counter — a
-shelving job, not a writing one, exactly as this page called it.
-
-The counter's own dried goods are now in the collection: 淮山, 蜜棗, 南北杏, 玉竹, 沙參, 薏米,
-瑤柱, 章魚乾, 霸王花, 菜乾 and the rest all appear in at least one file, and T-003-06 gave them an
-aisle. `wonton-soup`, `hot-and-sour-soup`, `chicken-feet` and `chicken-broth` are **not** shelved
-here and should not be: the first two are Takeout Counter items, `chicken-feet` is a Dim Sum
-dish, and `chicken-broth` is the Deli's and is not what these soups start from.
+5. **Twenty-four files, one recipe.** Sixteen shared the same four method rules and the same alias
+   *lo fo tong*. The variable between them was which dried thing went into a pot of water with pork
+   bones. High file count, narrow reader-usable range.
 
 ---
 
-## What each thing is for
+## What happened to the twenty-four
+
+**Sixteen 老火湯 were deleted.** Not re-shelved — deleted, because they failed on the bargain and on
+the framing rather than only on sourcing, and moving them would have moved the problem:
+
+```
+green-radish-carrot-pork-bone-soup      chinese-yam-goji-black-chicken-soup
+winter-melon-jobs-tears-soup            ching-bo-leung-soup
+lotus-root-dried-octopus-soup           sha-shen-yu-zhu-soup
+watercress-honey-date-soup              hairy-gourd-dried-scallop-soup
+peanut-black-eyed-pea-chicken-feet-soup dried-bok-choy-pork-lung-soup
+overlord-flower-soup                    lotus-seed-lily-bulb-soup
+corn-carrot-pork-bone-soup              old-cucumber-rice-bean-soup
+green-papaya-peanut-trotter-soup        apple-pear-pork-bone-soup
+```
+
+`corn-carrot-pork-bone-soup` and `green-radish-carrot-pork-bone-soup` look like they should have
+survived, because everything in them is supermarket produce. They went anyway. Keeping two files
+because their ingredients are easy would have kept the two least interesting members of a genre the
+shelf had just decided not to carry.
+
+**Eight stayed**, and none of them lost a line other than the counter they name:
+
+| Slug | Where it lives now |
+| --- | --- |
+| `tomato-potato-beef-soup` | One Pot |
+| `seaweed-egg-drop-soup` | One Pot |
+| `mustard-greens-tofu-soup` | One Pot |
+| `crucian-carp-tofu-soup` | One Pot |
+| `century-egg-amaranth-soup` | One Pot |
+| `egg-drop-soup` | Takeout Counter |
+| `congee` | Dim Sum Counter, One Pot |
+| `congee-instant-pot` | Instant Pot |
+
+The five that had been shelved nowhere else went to One Pot together, under a section of its own —
+*Quick soups that go with dinner*. Every one of them fries or boils and finishes in a single vessel
+in 15 to 45 minutes, which is that shelf's whole promise, and `congee` was already there.
+
+---
+
+## What would have to be true for this to work
+
+This is the part the old page never said, and it is worth more than the list of eighteen soups it
+replaces. Three things would have to change before anybody tries this shelf again. None of them is
+about the soups.
+
+**1. An aisle that can name a dried-goods shop.** The shopping list has to be able to answer
+*where do I buy 霸王花* with a real place rather than `World foods`. That means an aisle in
+`src/data/aisles.json` that stands for a Chinese herbalist or a dried-goods shop, and it means
+accepting what such an aisle says about a recipe: that this one needs a trip to a shop the reader
+may not have. A shelf can be honest about that. It cannot be silent about it.
+
+**2. A substitution model that works across a tradition, not inside a recipe.** The rule this page
+wrote — *the answer is not another flower, it is a different soup* — is true about the cuisine and
+fatal for a shelf, because it means one missing item closes the whole file. What is needed is
+somewhere to say what a pot becomes when a dried thing is missing: a per-ingredient answer, held
+once and read by every recipe that uses it. Nothing in the collection can hold that today, and
+writing it per-file is how twenty tables end up disagreeing.
+
+**3. A counter definition that admits a home practice.** *"Where you would get this if you were not
+making it at home"* is a storefront test, and 老火湯 has no storefront anywhere in the world. Either
+the definition widens to cover a practice as well as a shop — and then it has to say which practices
+qualify, and why this one and not the next twenty — or this food does not get a shelf here, and the
+recipes belong on a shelf named for the pot rather than for the cuisine.
+
+Until all three are true, a shelf like this one will fail the same way: closed to most readers,
+disclaiming itself, and carrying one recipe sixteen times.
+
+---
+
+## Preserved research: what each thing is for
+
+**Everything from here down is kept because it is good and it is still true. None of it is a work
+list, and no recipe here is waiting to be written.** It is what a reader with the ingredients in
+front of them would want to know, and it is the part that would have been expensive to lose.
 
 The glossary. This is the part a writer cannot derive from a dish name, and it is what makes twenty
 tables agree with each other instead of each re-explaining the same handful of dried goods.
@@ -143,213 +202,10 @@ and the result is the clearest of the three.
 
 ---
 
-## What it is missing
+## What a table could not hold
 
-### What is left, and it is a short list
-
-The instruction here was to write the first twelve 老火湯 and the first five 滾湯 and then keep
-going down the 老火湯 block. That is what happened, and then some: **sixteen of the eighteen
-old-fire ranks are written and all five of the named quick soups.** The two 老火湯 still out are
-**17** (`五指毛桃土茯苓豬骨湯`, five-finger fig root) and **18** (`蟲草花響螺瘦肉湯`, cordyceps
-flower and conch) — both flagged in their own entries as the hardest to source, which is why they
-were ranked last and why they are still here.
-
-The 滾湯 block still holds **ranks 6 to 10**, and the congee block holds all four. Those nine are
-the whole of what this shelf is now missing.
-
-The ranks are kept below with their reasoning intact. **Written entries are marked ✅ with their
-slug**; the argument for each is what a writer needs when they come back for the next one, not
-the fact that it exists.
-
-Each entry gives the three spellings that go in `aka`: **characters**, a **romanisation**, and
-the **plain-keyboard spelling** an English speaker would actually type. The romanisation is
-Cantonese, written without tone marks. **Confirm each one before writing it**; they are given
-here to save a lookup, not to be trusted blind.
-
-### Old-fire soups (老火湯) — 16 of 18 written
-
-1. **Written** as `green-radish-carrot-pork-bone-soup`. **青紅蘿蔔豬骨湯** · *cing hung lo baak zyu gwat tong* · `green radish and carrot pork bone soup`.
-   Green radish, carrot, pork neck bone, honey dates, apricot kernels, often corn and a dried duck
-   gizzard. **The default household pot** — the one made when nobody has decided what to make. The
-   two radishes are the argument: the green one is held to be cooling and the carrot to be neutral,
-   so the pair is why it can be made in any season.
-
-2. **Written** as `winter-melon-jobs-tears-soup`. **冬瓜薏米排骨湯** · *dung gwaa ji mai paai gwat tong* · `winter melon and job's tears soup`.
-   Winter melon with the skin left on, raw and toasted job's tears, pork ribs, often dried scallop.
-   **The summer pot.** The melon and the job's tears are both there for 祛濕 and the skin is left on
-   because the tradition holds that is where that property sits.
-
-3. **Written** as `lotus-root-dried-octopus-soup`. **蓮藕章魚豬骨湯** · *lin ngau zoeng jyu zyu gwat tong* · `lotus root and dried octopus soup`.
-   Lotus root, one small dried octopus, pork bones, peanuts and black-eyed peas. Autumn into winter.
-   **The octopus is the whole reason it tastes of more than lotus root** — it is the savour, not a
-   garnish, and a version without it is a different soup.
-
-4. **Written** as `watercress-honey-date-soup`. **西洋菜蜜棗豬骨湯** · *sai joeng coi mat zou zyu gwat tong* · `watercress and honey date soup`.
-   A whole large bunch of watercress cooked down to nothing, honey dates, apricot kernels, pork
-   bones. **The autumn pot, and the one made when someone has been coughing.** The watercress goes
-   in twice in some households — half at the start to give the broth, half near the end for colour.
-
-5. **Written** as `peanut-black-eyed-pea-chicken-feet-soup`. **花生眉豆雞腳湯** · *faa sang mei dau gai goek tong* · `peanut, black-eyed pea and chicken feet
-   soup`. Raw peanuts, black-eyed peas, chicken feet and a piece of pork shin. **The spring pot**,
-   made in the damp months, and the clearest example on this list of a soup organised entirely by
-   what its parts are for. `chicken-feet` already exists as a dim sum dish; the feet here are the
-   body, not the dish.
-
-6. **Written** as `overlord-flower-soup`. **霸王花南北杏豬骨湯** · *baa wong faa naam bak hang zyu gwat tong* · `overlord flower soup`.
-   Dried night-blooming cactus flower, sweet and bitter apricot kernels, pork bones, honey dates.
-   Autumn. The flower is unmistakable dried and almost tasteless cooked; it is in the pot for
-   phlegm and for the faint sweetness it leaves.
-
-7. **Written** as `corn-carrot-pork-bone-soup`. **粟米紅蘿蔔豬骨湯** · *suk mai hung lo baak zyu gwat tong* · `corn and carrot pork bone soup`.
-   Corn on the cob cut in rounds, carrot, pork bones, sometimes a fig. **The child's pot** — sweet,
-   mild, nothing dried in it that anybody has to explain, and made all year.
-
-8. **Written** as `chinese-yam-goji-black-chicken-soup`. **淮山杞子紅棗烏雞湯** · *waai saan gei zi hung zou wu gai tong* · `Chinese yam, goji and black
-   chicken soup`. Black-skinned chicken, dried Chinese yam, goji, pitted red dates. **The winter
-   tonic**, and the pot made for someone recovering or after a birth. This is where the 補 register
-   is strongest and where the "tradition's reasoning, not a health claim" rule matters most.
-
-9. **Written** as `ching-bo-leung-soup`. **清補涼湯** · *cing bou loeng tong* · `ching bo leung soup`. The mixed packet: Chinese yam,
-   Solomon's seal, lotus seed, lily bulb, fox nut, adenophora and job's tears, with lean pork or
-   pork ribs. **Summer**, and the name says what it does — clearing and supplementing without being
-   heating. This is the one soup that is *about* the dried goods, and it is the natural home for
-   the glossary above if a writer wants one recipe to carry it.
-
-10. **Written** as `sha-shen-yu-zhu-soup`. **沙參玉竹瘦肉湯** · *saa sam juk zuk sau juk tong* · `sha shen and yu zhu lean pork soup`.
-    Adenophora, Solomon's seal, honey dates, lean pork. Four things. **Autumn dryness**, and the
-    standard demonstration that a 老火湯 does not need to be big.
-
-11. **Written** as `hairy-gourd-dried-scallop-soup`. **節瓜瑤柱瘦肉湯** · *zit gwaa jiu cyu sau juk tong* · `hairy gourd and dried scallop soup`.
-    Hairy gourd, three or four conpoy, lean pork, a few slices of ginger. Light, quick for the
-    genre, and the pot that shows what dried scallop is for.
-
-12. **Written** as `dried-bok-choy-pork-lung-soup`. **菜乾蜜棗豬肺湯** · *coi gon mat zou zyu fai tong* · `dried bok choy and pork lung soup`.
-    Sun-dried cabbage, honey dates, apricot kernels, pork lung. Autumn. **Ranked twelfth rather than
-    higher only because the lung is nearly an hour of washing** — a real barrier, and the recipe has
-    to say so honestly rather than pretending it is a five-minute prep.
-
-13. **Written** as `lotus-seed-lily-bulb-soup`. **蓮子百合紅棗瘦肉湯** · *lin zi baak hap hung zou sau juk tong* · `lotus seed and lily bulb
-    soup`. The 安神 pot — made in a house where somebody is not sleeping.
-
-14. **Written** as `old-cucumber-rice-bean-soup`. **老黃瓜赤小豆豬骨湯** · *lou wong gwaa cek siu dau zyu gwat tong* · `old cucumber and rice bean
-    soup`. Overgrown yellow cucumber, rice beans, dried scallop, pork bones. Deep summer, 祛濕.
-
-15. **Written** as `green-papaya-peanut-trotter-soup`. **木瓜花生豬腳湯** · *muk gwaa faa sang zyu goek tong* · `green papaya and peanut trotter soup`.
-    Green papaya, raw peanuts, pork trotter. Rich; the pot made for a new mother, and worth saying
-    that plainly since that is what it is for.
-
-16. **Written** as `apple-pear-pork-bone-soup`. **蘋果雪梨南北杏豬骨湯** · *ping gwo syut lei naam bak hang zyu gwat tong* · `apple and pear pork
-    bone soup`. Fruit in a savoury pot, which is the thing about this genre most likely to surprise
-    an English-speaking reader. Autumn, 潤燥.
-
-17. **五指毛桃土茯苓豬骨湯** · *ng zi mou tou tou fuk ling zyu gwat tong* · `five-finger fig root
-    soup`. The roots smell strongly of coconut and the pot does not taste of it. Summer damp;
-    strongly regional, and worth a line saying so.
-
-18. **蟲草花響螺瘦肉湯** · *cung cou faa hoeng lo sau juk tong* · `cordyceps flower and conch soup`.
-    Cordyceps flower — the cultivated orange one, not the wild caterpillar fungus, and the file must
-    say which. Dried conch if it can be got, chicken if it cannot.
-
-### Quick daily soups (滾湯) — 5 of 10 written
-
-A different bargain and the shelf should say so out loud: **water boiled first, quick things cooked
-in it, fifteen to forty-five minutes, made nightly rather than on a Sunday.** These are what a
-household actually drinks most evenings; the old-fire pot is the weekend one.
-
-1. **Written** as `tomato-potato-beef-soup`. **番茄薯仔牛肉湯** · *faan ke syu zai ngau juk tong* · `tomato, potato and beef soup`. The most
-   common quick soup there is, and the tomatoes are cooked down in oil first — that step is the
-   recipe.
-2. **Written** as `seaweed-egg-drop-soup`. **紫菜蛋花湯** · *zi coi daan faa tong* · `seaweed and egg drop soup`. Laver, egg, sesame oil,
-   five minutes. Sits beside the existing `egg-drop-soup` and is not the same soup.
-3. **Written** as `mustard-greens-tofu-soup`. **芥菜豆腐瘦肉湯** · *gaai coi dau fu sau juk tong* · `mustard greens and tofu soup`. Bitter
-   greens with ginger; the bitterness is the point and the ginger is why it is bearable.
-4. **Written** as `crucian-carp-tofu-soup`. **鯽魚豆腐湯** · *zik jyu dau fu tong* · `crucian carp and tofu soup`. The fish is fried in the
-   pot first and then boiled hard — **the only place in this whole shelf where a hard boil is
-   correct**, because that is what turns it milky white.
-5. **Written** as `century-egg-amaranth-soup`. **皮蛋莧菜湯** · *pei daan jin coi tong* · `century egg and amaranth soup`. Ten minutes, and it
-   is bright pink.
-6. **勝瓜草菇雞片湯** · *sing gwaa cou gu gai pin tong* · `silk gourd and straw mushroom soup`.
-7. **豬膶菠菜湯** · *zyu jeon bo coi tong* · `pork liver and spinach soup`. The liver is sliced thin
-   and goes in at the very end, which is the difference between this and a bad version of it.
-8. **冬瓜蝦米粉絲湯** · *dung gwaa haa mai fan si tong* · `winter melon, dried shrimp and glass
-   noodle soup`.
-9. **節瓜瑤柱粉絲湯** · *zit gwaa jiu cyu fan si tong* · `hairy gourd and conpoy glass noodle soup`.
-10. **番茄蛋花湯** · *faan ke daan faa tong* · `tomato and egg drop soup`. Two ingredients, and the
-    one everybody learns first.
-
-### Congee and rice soups — 0 of 4 written
-
-`congee` and `congee-instant-pot` are shelved here; these four are the versions a board would
-print beside them, and none has been written.
-
-1. **皮蛋瘦肉粥** · *pei daan sau juk zuk* · `century egg and pork congee`. The one people order.
-2. **魚片粥** · *jyu pin zuk* · `sliced fish congee`. The fish goes into the bowl raw and the congee
-   is poured over it.
-3. **及第粥** · *kap dai zuk* · `kap dai congee`. Pork offal three ways; the name is a scholar's
-   examination joke and the file should tell it.
-4. **艇仔粥** · *teng zai zuk* · `sampan congee`. Everything at once, and it is named after the
-   boat it was sold from.
-
----
-
-## What reading the whole collection found
-
-T-003-07 read the 658 files as one collection. Four things about this shelf that no writer ticket
-could see on its own:
-
-**The clock claim held exactly.** The sixteen 老火湯 run **2 hr to 3 hr 30 elapsed against 8 to 12
-minutes of hands-on**, every one of them. The 滾湯 run 6 to 31 minutes. That is the shelf's whole
-argument, measured off the files rather than asserted, and the front page's Soup Pot card is the
-one place on the site where the bargain is visible without opening anything.
-
-**Every recipe on the shelf now declares its slack.** Twenty-two arrived with it; `congee` and
-`egg-drop-soup` were older files that came here by shelving and did not, and T-003-07 wrote both.
-The distribution is **13 `forgiving`, 8 `narrow`, 3 `unforgiving`** — and the forgiving ones are
-the point: *nothing in this pot minds an extra half hour* is the sentence the shelf exists to be
-able to say, and thirteen files now say it.
-
-**The three `unforgiving` ones are worth knowing about**, because they are not what a reader would
-guess from a shelf sold on patience. `dried-bok-choy-pork-lung-soup`, where the lung is washed
-white or the pot is not worth drinking. `crucian-carp-tofu-soup`, which is the one place on this
-shelf where a hard boil is correct. And `congee-instant-pot`, where opening the valve throws
-scalding porridge out of the top — a burn, not a texture note.
-
-**Nothing on the shelf duplicates anything else.** Sixteen files share the alias *lo fo tong* and
-five share *gwan tong*, which reads alarming in a duplicate report and is exactly right: those are
-the genre names, not dish names, and they are how a person who does not know the soup's name
-finds it.
-
-**What is left open** is the nine ranks above, and one thing this page cannot fix: the rule that
-these soups start from water and not stock is stated here and in every file, but nothing in the
-build enforces it. A future 老火湯 that starts from `chicken-broth` would pass every check.
-
----
-
-## Components it would need
-
-- **The blanch (汆水) as one shared operation.** Every 老火湯 begins with it and it is exactly the
-  same three steps every time. Written once and referenced, it costs each table one row; re-derived
-  twenty times, it will end up described twenty slightly different ways.
-- **A note that the liquid is water.** Not stock. `chicken-broth`, `ham-hock-stock` and the rest are
-  the Deli's and the Ramen Shop's, and a 老火湯 that starts from a broth has already answered the
-  question the soup exists to answer. This is worth saying in the shelf's own voice because every
-  Western soup instinct says otherwise.
-- **A pot-size and water-ratio note.** Rule 2 above — filled once, not topped up — only works if
-  somebody has said how much water goes in for how many bowls and how much three hours takes away.
-  That is one shared number and every writer needs it.
-- **A dried-goods soaking note.** Some things are rinsed, some soaked, some go in dry, and getting
-  it wrong is the difference between a clear pot and a gritty one.
-- **`~simmer` reading as unattended in the clock.** The three-hour hold is the shelf's entire claim.
-  T-003-03 should check that its longest timer renders as time the cook is not there for before
-  writing twenty files against it.
-- **An aisle problem handed to T-003-06.** None of the dried goods above exists in
-  `src/data/aisles.json`. Most are bought by the handful from a herbalist or a dried-goods shop,
-  which may not honestly be any existing aisle — T-003-06's own ticket warns that a new aisle is
-  allowed but a wrong one is not.
-
----
-
-## What it could not stock
+Kept for the same reason: these are findings about the limits of the format, and they did not stop
+being findings when the shelf came down.
 
 - **The reason it is made today.** A household's pot is chosen from the weather, who is in the
   house and what somebody is recovering from. That decision is upstream of every recipe here and no
@@ -396,9 +252,3 @@ build enforces it. A future 老火湯 that starts from `chicken-broth` would pas
   gives the 15–45 minute range, and [Cosmopolitan HK, 8 款家常滾湯](https://www.cosmopolitan.com.hk/cosmobody/boiling-soup).
 - **The home version of the old-fire pot in English** — [Made With Lau, *My Dad's Super Simple Old
   Fire Soup*](https://newsletter.madewithlau.com/p/my-dads-super-simple-old-fire-soup).
-
-**Two cautions for T-003-03.** The romanisations above are Cantonese without tone marks and were
-written to save a lookup, not to be trusted blind — confirm each. And where a pairing could not be
-established from more than one source it is marked as regional or unusual in its own entry rather
-than stated flatly; **write a different soup rather than filling a rank with something plausible**,
-which the ticket already permits and this list is long enough to allow.

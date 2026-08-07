@@ -5,6 +5,9 @@ there grouped into the sections that counter's menu actually prints, what a plac
 and we do not have yet, which sub-recipes those dishes wait on, and which of its items a single table
 genuinely cannot hold.
 
+One file here is no longer a counter page: [soup-pot.md](soup-pot.md) is the record of a shelf that came
+down. See [Retired counters](#retired-counters) below.
+
 The vocabulary throughout comes from `docs/knowledge/counters.md`. Dish names are the names on real
 boards, because that is the way in.
 
@@ -15,11 +18,29 @@ titles free of an em-dash aside — the parser cuts a title at ` — `.
 
 ## Build state
 
-`npm run verify` passes end to end: **658 files draw a table, 658 recipes parse, 825 tests green in 8
-files, 682 pages build.** 658 recipes, 27 categories, 888 counter assignments, 760 pairings made mutual,
-timers in 635 files, 0 orphans, 0 counters inferred from category, 0 parser warnings, 0 duplicate slugs.
+`npm run verify` passes end to end: **642 files draw a table, 642 recipes parse, 817 tests green in 9
+files, 665 pages build.** 642 recipes, 27 categories, 882 counter assignments, 760 pairings made mutual,
+timers in 619 files, 0 orphans, 0 counters inferred from category, 0 parser warnings, 0 duplicate slugs.
 45 files declare a `kit:` — 25 `Instant Pot`, 20 `Slow Cooker` — and every one resolves to exactly one
 plain sibling.
+
+**Measured after T-007-02 and no later.** T-007-03 and T-007-04 are writing the cha chaan teng's recipes
+while this is being read, so every count above will be higher by the time they land. T-007-05 restates
+them once the whole story is in. The previous line read 658 files, 825 tests in 8 files and 682 pages;
+that was already stale on the test count before this ticket touched anything.
+
+### Retired counters
+
+**The Soup Pot came down on 7 August 2026** under S-007, and is the first counter this collection has
+removed. Sixteen 老火湯 were deleted, eight soups moved to other shelves — five of them to One Pot, under
+a new section there — and the counter's entry was taken out of `src/data/counters.json`, so
+`/menu/soup-pot` no longer builds. The board is 21 counters, 20 of them with something on them; Cha Chaan
+Teng is the empty one and T-007-05 fills it.
+
+[soup-pot.md](soup-pot.md) was kept rather than deleted, and rewritten as a record: why the shelf failed,
+what happened to each of the twenty-four recipes, and what would have to be true for anyone to try it
+again. Its dried-goods glossary and its four rules of the pot are intact. It has no `## What it has`
+block, because there is no counter for `menu-sections.mjs` to match it to.
 
 **The tally below, and the three sections after it, still describe the fifteen-counter shelf.** S-002
 added The Bowl Shop, Instant Pot and One Pot; S-003 is adding three more. Rewriting eighteen rows twice
