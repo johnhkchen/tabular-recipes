@@ -373,7 +373,7 @@ describe('what the cards say', () => {
   it('says which half a dropped recipe failed', () => {
     const clock = plain({ handsOnMinutes: 8, longestHandsOnMinutes: 8, evidence: 'stated' });
     expect(dropped(clock, set({ standing: 30 }), when({ people: 6, days: 3 }))).toMatch(
-      /^Fine for four\. At 18 you're standing there/,
+      /^Fine for four\. At eighteen you're standing there/,
     );
     const stale = plain({ keepsText: '1 day', keepsCharacter: 'still fine, a little softer' });
     expect(dropped(stale, OFF, when({ days: 3 }))).toBe(

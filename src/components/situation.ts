@@ -489,13 +489,14 @@ export function dropped(
   if (!cost) return "Fine as written. This one doesn't say how much it makes.";
 
   const written = `Fine for ${count(item.writtenServings ?? 0)}.`;
+  const at = count(cost.servings);
   if (settings.standing !== null && cost.standing > settings.standing) {
-    return `${written} At ${cost.servings} you're standing there ${formatDuration(cost.standing)}.`;
+    return `${written} At ${at} you're standing there ${formatDuration(cost.standing)}.`;
   }
   if (settings.by !== null && cost.elapsed > settings.by) {
-    return `${written} At ${cost.servings} it's ${formatDuration(cost.elapsed)} before you eat.`;
+    return `${written} At ${at} it's ${formatDuration(cost.elapsed)} before you eat.`;
   }
-  return `${written} It doesn't stretch to ${cost.servings}.`;
+  return `${written} It doesn't stretch to ${at}.`;
 }
 
 /**
