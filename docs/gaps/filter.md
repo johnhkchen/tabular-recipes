@@ -249,7 +249,7 @@ one of them.
 
 ### Twenty timer names the vocabulary does not know
 
-`src/lib/time.ts` holds two sets of words — 47 that mean a wait, 24 that mean your hands — and a
+`src/lib/time.ts` holds two sets of words — 53 that mean a wait, 24 that mean your hands — and a
 third of three that mean the wait only when an author *names* a timer with them. Its header
 records that every word in that third set *"was caught lying"*, one at a time. **The collection
 writes 70 distinct timer names. Twenty are in neither of the first two sets.**
@@ -314,8 +314,9 @@ sentence, and its only catch is `french-vanilla-ice-cream` — *"Churn the cold 
 built to be left. That is the same shape as `dry`, `press` and `boil` and belongs in the same
 argument.
 
-Two of `HANDS_ON`'s 24 words and nineteen of `UNATTENDED`'s 47 are likewise never written as a
-name. They act only in a sentence, which is worth knowing before anyone weighs a word by how many
+Eight of `HANDS_ON`'s 24 words and nineteen of `UNATTENDED`'s 53 are likewise never written as a
+name — `mix`, `roll`, `shape`, `deepfry`, `temper`, `flip`, `baste` and `churn` on one side;
+`infuse`, `overnight`, `blindbake`, `autolyse`, `retard`, `thaw` and thirteen more on the other. They act only in a sentence, which is worth knowing before anyone weighs a word by how many
 files it appears in.
 
 ### Two recipes where an interval is read as a duration
