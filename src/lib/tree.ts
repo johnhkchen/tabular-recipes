@@ -32,7 +32,7 @@ export interface RawStep {
   index: number;
   /** The step text with its ingredients removed — see cleanLabel(). */
   rawLabel: string;
-  /** A `>> step.N: …` line in the recipe wins over the derived label. */
+  /** A `>> step:` line on the line above the step wins over the derived label. */
   labelOverride: string | null;
   ingredients: RawIngredient[];
   refs: number[];

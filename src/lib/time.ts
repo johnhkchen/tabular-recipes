@@ -148,8 +148,8 @@ function readWords(text: string): Reading | null {
  * each timer gets the words from the end of the previous timer up to the end of its own:
  * "knead 8 min", then ", then rise 2 hours".
  *
- * The timers have to be found, in order, or nothing is narrowed — a label rewritten by a
- * `>> step.N:` line may not contain them at all, and a wrong slice is worse than no slice.
+ * The timers have to be found, in order, or nothing is narrowed — a label written on a
+ * `>> step:` line may not contain them at all, and a wrong slice is worse than no slice.
  */
 function regionsOf(label: string, timers: readonly { text: string }[]): string[] {
   const regions: string[] = [];

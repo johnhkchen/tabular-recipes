@@ -43,7 +43,7 @@ const CAPS = {
   // 3077 cells, mean 24, p95 46, max 70. The one surface that already works, so this is a
   // ratchet at the current ceiling rather than a cut: nothing is over it today.
   'operation cell': 70,
-  // 2782 steps carry a >> step.N: line, and the words they wrote instead are rendered
+  // 2782 steps carry a >> step: label, and the words they wrote instead are rendered
   // nowhere. Half of those bodies are still one sentence at 125-149 chars; only a quarter
   // still are at 150-174. 150 is the crossing.
   'step body': 150,
@@ -93,7 +93,7 @@ function measure(rel, recipe, tree) {
       check('operation cell', label.length, at, label);
     }
 
-    // A >> step.N: line replaces the step's own words wherever the step lands — in a cell
+    // A >> step: label replaces the step's own words wherever the step lands — in a cell
     // or in a full-width row — and what it replaces is rendered nowhere at all.
     if (step.labelOverride) {
       const body = cleanLabel(step.rawLabel);

@@ -128,7 +128,7 @@ describe('readTimers', () => {
   });
 
   it('narrows nothing when the timers are not in the label to be found', () => {
-    // A `>> step.N:` line can rewrite a step in words of its own; half a slice is worse than
+    // A `>> step:` line can rewrite a step in words of its own; half a slice is worse than
     // none, so the whole step answers for every timer in it.
     expect(texts('rest overnight', '8 hr')).toEqual([
       { attention: 'unattended', source: 'label' },
