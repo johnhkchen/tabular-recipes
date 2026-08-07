@@ -32,6 +32,32 @@ promised: 658 at the start, minus the sixteen 老火湯 T-007-02 deleted, plus t
 the fourteen from T-007-04. The test and page counts move under other stories working the same branch
 and are the ones read at the time of writing; the recipe, counter and pairing counts are this story's.
 
+### Retired counters
+
+**The Soup Pot came down on 7 August 2026** under S-007, and is the first counter this collection has
+removed. Sixteen 老火湯 were deleted, eight soups moved to other shelves — five of them to One Pot, under
+a new section there — and the counter's entry was taken out of `src/data/counters.json`, so
+`/menu/soup-pot` no longer builds. The board is 21 counters, 20 of them with something on them; Cha Chaan
+Teng is the empty one and T-007-05 fills it.
+
+[soup-pot.md](soup-pot.md) was kept rather than deleted, and rewritten as a record: why the shelf failed,
+what happened to each of the twenty-four recipes, and what would have to be true for anyone to try it
+again. Its dried-goods glossary and its four rules of the pot are intact. It has no `## What it has`
+block, because there is no counter for `menu-sections.mjs` to match it to.
+
+**The board is 21 counters and every one of them now has something on it.** Cha Chaan Teng was the
+empty one; T-007-03 and T-007-04 wrote 22 recipes for it and T-007-05 shelved them into five sections.
+The front page prints 21 cards, `/menu/soup-pot` no longer builds, and the grid needed no change to
+absorb either — `.counters` is `repeat(auto-fill, minmax(16.5rem, 1fr))` and has no fixed column count.
+
+At 514 recipes, three things needed repairing, and none of them was visible from inside one folder:
+
+- **`ginger-garlic-paste` wrote its shelf life as a timer** (`~chill{3%weeks}` on a fifteen-minute paste),
+  which put a 21-day edge on the critical path and made it the third-longest recipe on the site.
+- **`lime-pickle` claimed 15 days** against two seven-day waits.
+- **`schedule.test.ts` named three slugs** that had been wrong since the third ticket of this story. It now
+  asserts the property those names stood for.
+
 ## What the three dials can answer for
 
 The front page's filter is only as good as what has been annotated, and its three dials have very
@@ -66,32 +92,6 @@ the shopping, how tired the reader is, whether the result is even dinner, how ma
 twenty timer names `src/lib/time.ts` does not know. It ends with the five things that would close them,
 ranked. Like [soup-pot.md](soup-pot.md) it is a file in this directory that is not a counter page, so
 `node scripts/menu-sections.mjs` has no counter to match it to and it carries no `## What it has` block.
-
-### Retired counters
-
-**The Soup Pot came down on 7 August 2026** under S-007, and is the first counter this collection has
-removed. Sixteen 老火湯 were deleted, eight soups moved to other shelves — five of them to One Pot, under
-a new section there — and the counter's entry was taken out of `src/data/counters.json`, so
-`/menu/soup-pot` no longer builds. The board is 21 counters, 20 of them with something on them; Cha Chaan
-Teng is the empty one and T-007-05 fills it.
-
-[soup-pot.md](soup-pot.md) was kept rather than deleted, and rewritten as a record: why the shelf failed,
-what happened to each of the twenty-four recipes, and what would have to be true for anyone to try it
-again. Its dried-goods glossary and its four rules of the pot are intact. It has no `## What it has`
-block, because there is no counter for `menu-sections.mjs` to match it to.
-
-**The board is 21 counters and every one of them now has something on it.** Cha Chaan Teng was the
-empty one; T-007-03 and T-007-04 wrote 22 recipes for it and T-007-05 shelved them into five sections.
-The front page prints 21 cards, `/menu/soup-pot` no longer builds, and the grid needed no change to
-absorb either — `.counters` is `repeat(auto-fill, minmax(16.5rem, 1fr))` and has no fixed column count.
-
-At 514 recipes, three things needed repairing, and none of them was visible from inside one folder:
-
-- **`ginger-garlic-paste` wrote its shelf life as a timer** (`~chill{3%weeks}` on a fifteen-minute paste),
-  which put a 21-day edge on the critical path and made it the third-longest recipe on the site.
-- **`lime-pickle` claimed 15 days** against two seven-day waits.
-- **`schedule.test.ts` named three slugs** that had been wrong since the third ticket of this story. It now
-  asserts the property those names stood for.
 
 ## The tally
 
