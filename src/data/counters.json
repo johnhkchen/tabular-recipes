@@ -2024,6 +2024,42 @@
           ]
         }
       ]
+    },
+    {
+      "name": "Cha Chaan Teng",
+      "slug": "cha-chaan-teng",
+      "blurb": "Pick a set by the time of day; the milk tea comes with it.",
+      "categories": [],
+      "sections": [
+        {
+          "title": "The set meals (常餐 · 早餐 · 下午茶餐)",
+          "items": []
+        },
+        {
+          "title": "The drinks counter",
+          "items": []
+        },
+        {
+          "title": "Toast and the bun case",
+          "items": []
+        },
+        {
+          "title": "Macaroni, noodles and things in soup",
+          "items": []
+        },
+        {
+          "title": "Rice plates",
+          "items": []
+        },
+        {
+          "title": "Sandwiches and buns",
+          "items": []
+        },
+        {
+          "title": "Also here",
+          "items": []
+        }
+      ]
     }
   ]
 }
