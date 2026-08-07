@@ -4,7 +4,9 @@ import { layout } from './layout.ts';
 import {
   attentionIsOurs,
   authorMinutesOf,
+  BREAK_MINUTES,
   buildSchedule,
+  handsOnEvidence,
   type Schedule,
   type Task,
 } from './schedule.ts';
@@ -64,6 +66,7 @@ function fixture(slug: string, steps: StepSpec[], metadata: Record<string, strin
     dish: slug,
     kit: null,
     slack: null,
+    washingUp: null,
     aka: [],
     pairsWith: [],
     variants: [],
@@ -270,6 +273,198 @@ describe('a timer that times nothing', () => {
   });
 });
 
+/* --- the longest stretch you cannot sit down in --- */
+
+/**
+ * A timer the author named as work you have to be there for. Named rather than left to the
+ * label, so these fixtures pin the run's arithmetic and not time.ts's vocabulary.
+ */
+const handsOn = (minutes: number, name = 'stir') => ({
+  ...timer(minutes, 'hands-on', 'name'),
+  name,
+});
+
+describe('a recipe that is one long hands-on job', () => {
+  const schedule = buildSchedule(
+    fixture('one-long-job', [{ label: 'stir 30 min', timers: [handsOn(30)] }]),
+  );
+
+  it('is half an hour you spend standing there, all of it in one go', () => {
+    expect(schedule.handsOnMinutes).toBe(30);
+    expect(schedule.longestHandsOnMinutes).toBe(30);
+  });
+});
+
+describe('a recipe with the same half hour split up by waits', () => {
+  // Ten minutes of work, forty of rising, twice over. The same sum, a different evening.
+  const schedule = buildSchedule(
+    fixture('split-up', [
+      { label: 'knead 10 min', timers: [handsOn(10)] },
+      { label: 'rise 40 min', refs: [0], timers: [timer(40)] },
+      { label: 'shape 10 min', refs: [1], timers: [handsOn(10)] },
+      { label: 'prove 40 min', refs: [2], timers: [timer(40)] },
+      { label: 'fill 10 min', refs: [3], timers: [handsOn(10)] },
+    ]),
+  );
+
+  it('adds up to the same half hour', () => {
+    expect(schedule.handsOnMinutes).toBe(30);
+  });
+
+  it('and says so: the longest you stand there is ten minutes', () => {
+    expect(schedule.longestHandsOnMinutes).toBe(10);
+  });
+
+  it('does not carry a run across a break — it starts again', () => {
+    // 10 + 10 + 10 would be 30, which is the number this whole figure exists to refuse.
+    expect(schedule.longestHandsOnMinutes).toBeLessThan(schedule.handsOnMinutes);
+  });
+});
+
+describe('a wait too short to count as a break', () => {
+  const twoJobsAround = (wait: number) =>
+    buildSchedule(
+      fixture(`wait-${wait}`, [
+        { label: 'sear 10 min', timers: [handsOn(10)] },
+        { label: `rest ${wait} min`, refs: [0], timers: [timer(wait)] },
+        { label: 'sear again 10 min', refs: [1], timers: [handsOn(10)] },
+      ]),
+    );
+
+  it('is not a break: three minutes at the pan is still twenty minutes at the pan', () => {
+    expect(twoJobsAround(3).longestHandsOnMinutes).toBe(20);
+  });
+
+  /* Both sides of the constant, so moving it has to move a test rather than a recipe. */
+  it('holds right up to the threshold', () => {
+    expect(twoJobsAround(BREAK_MINUTES - 1).longestHandsOnMinutes).toBe(20);
+  });
+
+  it('and breaks at it', () => {
+    expect(twoJobsAround(BREAK_MINUTES).longestHandsOnMinutes).toBe(10);
+    expect(twoJobsAround(BREAK_MINUTES + 1).longestHandsOnMinutes).toBe(10);
+  });
+});
+
+describe('a recipe with parallel branches', () => {
+  // The mujaddara shape: the rice simmers while the onions fry and the lentils fry.
+  const schedule = buildSchedule(
+    fixture('two-pans', [
+      { label: 'fry the onions 25 min', timers: [handsOn(25)] },
+      { label: 'fry the lentils 25 min', timers: [handsOn(25)] },
+      { label: 'simmer 15 min', timers: [timer(15)] },
+      { label: 'toast 2 min', refs: [0, 1, 2], timers: [handsOn(2)] },
+    ]),
+  );
+
+  it('still runs the branches at once, because that is what the clock says', () => {
+    expect(schedule.totalMinutes).toBe(27);
+    expect(task(schedule, 's0').start).toBe(0);
+    expect(task(schedule, 's1').start).toBe(0);
+  });
+
+  it('but gives the cook both pans, one after the other', () => {
+    // 25 + 25 + 2, with nothing in between a person could sit down for.
+    expect(schedule.handsOnMinutes).toBe(52);
+    expect(schedule.longestHandsOnMinutes).toBe(52);
+  });
+
+  it('does not measure along the critical path, which would call this restful', () => {
+    const onPath = schedule.tasks
+      .filter((t) => schedule.criticalPath.includes(t.id) && t.attention === 'hands-on')
+      .reduce((total, t) => total + t.minutes, 0);
+    expect(onPath).toBe(27);
+    expect(schedule.longestHandsOnMinutes).toBeGreaterThan(onPath);
+  });
+});
+
+describe('a step that is hands-on work and then a wait', () => {
+  /*
+   * "knead 8 min, then rise 2 hours" is one step, and attentionOfTask calls the whole thing
+   * hands-on on purpose. Read at that granularity it is two hours at the bench.
+   */
+  const schedule = buildSchedule(
+    fixture('knead-then-rise', [
+      {
+        label: 'knead 8 min, then rise 2 hr',
+        timers: [handsOn(8, 'knead'), { ...timer(120, 'unattended', 'name'), name: 'rise' }],
+      },
+    ]),
+  );
+
+  it('is one hands-on step of 128 minutes', () => {
+    expect(task(schedule, 's0').attention).toBe('hands-on');
+    expect(task(schedule, 's0').minutes).toBe(128);
+  });
+
+  it('and eight minutes of standing there, because the timer is the unit', () => {
+    expect(schedule.handsOnMinutes).toBe(8);
+    expect(schedule.longestHandsOnMinutes).toBe(8);
+  });
+});
+
+/* --- whose the hands-on figure is --- */
+
+describe('what the hands-on figure rests on', () => {
+  const evidenceOf = (slug: string, steps: Parameters<typeof fixture>[1]) =>
+    handsOnEvidence(buildSchedule(fixture(slug, steps)));
+
+  it('is the recipe’s own word when every timer is named', () => {
+    expect(
+      evidenceOf('all-named', [
+        { label: 'chill', timers: [{ ...timer(60), name: 'chill', source: 'name' }] },
+        { label: 'sear 4 min', refs: [0], timers: [handsOn(4)] },
+      ]),
+    ).toBe('stated');
+  });
+
+  it('is ours when we read it off the step', () => {
+    expect(
+      evidenceOf('all-read', [
+        { label: 'braise 2 hr', timers: [timer(120, 'unattended', 'label')] },
+        { label: 'stir 6 min', refs: [0], timers: [timer(6, 'hands-on', 'label')] },
+      ]),
+    ).toBe('inferred');
+  });
+
+  it('is still ours when a step gives no time at all — the figure is a floor', () => {
+    expect(
+      evidenceOf('one-untimed', [
+        { label: 'whisk' },
+        { label: 'rest 30 min', refs: [0], timers: [timer(30)] },
+        { label: 'sear 5 min', refs: [1], timers: [handsOn(5)] },
+      ]),
+    ).toBe('inferred');
+  });
+
+  it('is nobody’s the moment one standing minute is one we assumed', () => {
+    expect(
+      evidenceOf('one-assumed', [
+        { label: 'braise 2 hr', timers: [timer(120, 'unattended', 'label')] },
+        { label: 'warm through 6 min', refs: [0], timers: [timer(6, 'hands-on', 'default')] },
+      ]),
+    ).toBe('unknown');
+  });
+
+  it('is nobody’s when the recipe times nothing at all', () => {
+    expect(evidenceOf('times-nothing', [{ label: 'whisk' }, { label: 'fold in', refs: [0] }])).toBe(
+      'unknown',
+    );
+  });
+
+  it('is nobody’s when it claims no standing time across steps nobody timed', () => {
+    // The blondies shape, and the trap the whole field exists for: four steps with no timer
+    // and one bake reads as an evening you never stand up for.
+    expect(
+      evidenceOf('bake-only', [
+        { label: 'melt' },
+        { label: 'beat', refs: [0] },
+        { label: 'bake 25 min', refs: [1], timers: [timer(25)] },
+      ]),
+    ).toBe('unknown');
+  });
+});
+
 describe('authorMinutesOf', () => {
   it('reads the way a recipe writes its time', () => {
     expect(authorMinutesOf('45 min')).toBe(45);
@@ -418,6 +613,41 @@ describe('every recipe', () => {
     expect(wrong).toEqual([]);
   });
 
+  it('never claims a longer stretch than there are hands-on minutes to make one from', () => {
+    // The stretches ARE the hands-on minutes, laid on one cook's clock. If this ever fails,
+    // the unit has slipped back from the timer to the task.
+    const wrong: string[] = [];
+    for (const { recipe, schedule } of schedules) {
+      if (schedule.longestHandsOnMinutes < 0) wrong.push(`${recipe.slug}: negative`);
+      if (schedule.longestHandsOnMinutes > schedule.handsOnMinutes) {
+        wrong.push(
+          `${recipe.slug}: ${schedule.longestHandsOnMinutes} unbroken out of ` +
+            `${schedule.handsOnMinutes} hands-on`,
+        );
+      }
+      if (schedule.longestHandsOnMinutes > 0 !== schedule.handsOnMinutes > 0) {
+        wrong.push(`${recipe.slug}: one of the two figures is zero and the other is not`);
+      }
+    }
+    expect(wrong).toEqual([]);
+  });
+
+  it('says whose the hands-on figure is, in one of three words', () => {
+    const tally = { stated: 0, inferred: 0, unknown: 0 };
+    for (const { schedule } of schedules) tally[handsOnEvidence(schedule)]++;
+
+    /*
+     * All three are real answers about this collection, and none of them may swallow it. A
+     * rule that puts nearly everything in one bucket sorts nothing — which is what taking the
+     * weakest task confidence outright does, at 615 of 664 unknown.
+     */
+    expect(Object.values(tally).reduce((a, b) => a + b, 0)).toBe(all.length);
+    for (const [state, count] of Object.entries(tally)) {
+      expect(count, `${state} is empty`).toBeGreaterThan(0);
+      expect(count / all.length, `${state} has swallowed the collection`).toBeLessThan(0.9);
+    }
+  });
+
   it('gives every task the id and column of its cell in the table', () => {
     const wrong: string[] = [];
     for (const { recipe, schedule } of schedules) {
@@ -512,5 +742,80 @@ describe('a real recipe with concurrent branches', () => {
     const sum = schedule.tasks.reduce((total, t) => total + t.minutes, 0);
     expect(sum).toBe(97);
     expect(schedule.totalMinutes).toBe(57);
+  });
+
+  it('is fifty-two unbroken minutes at the hob, because one cook fries both pans', () => {
+    expect(schedule.handsOnMinutes).toBe(52);
+    expect(schedule.longestHandsOnMinutes).toBe(52);
+  });
+});
+
+/*
+ * The recipes the work artifact argues from, and the ones T-010-02 designs its dials against.
+ * Named on purpose, unlike the ranking test above: these assert a figure worked out from one
+ * recipe's own timers, which does not move when the collection grows.
+ */
+describe('the same half hour, two different evenings', () => {
+  it('stands a patty melt at the griddle for the whole of it', () => {
+    const schedule = of('patty-melt');
+    expect(schedule.handsOnMinutes).toBe(45);
+    expect(schedule.longestHandsOnMinutes).toBe(45);
+    // 45 minutes of work inside 41 elapsed: the onions and the patties share the griddle.
+    expect(schedule.totalMinutes).toBe(41);
+  });
+
+  it('lets a slow-cooker chile verde put its half hour down for eight hours', () => {
+    const schedule = of('chile-verde-slow-cooker');
+    expect(schedule.handsOnMinutes).toBe(42);
+    // Twelve minutes charring plus ten browning, then an 8 hr braise, then 20 to reduce.
+    expect(schedule.longestHandsOnMinutes).toBe(22);
+  });
+
+  it('gives a tortilla española a ten-minute sit-down in the middle', () => {
+    const schedule = of('tortilla-espanola');
+    expect(schedule.handsOnMinutes).toBe(32);
+    expect(schedule.longestHandsOnMinutes).toBe(20);
+    expect(handsOnEvidence(schedule)).toBe('stated');
+  });
+
+  it('cannot stand behind cheese grits at all, though the two figures look alike', () => {
+    const schedule = of('cheese-grits');
+    expect(schedule.handsOnMinutes).toBe(35);
+    expect(schedule.longestHandsOnMinutes).toBe(35);
+    // Every one of those 35 minutes is ours: "cook covered 35 min" named nobody's attention.
+    expect(schedule.assumedHandsOnMinutes).toBe(35);
+    expect(handsOnEvidence(schedule)).toBe('unknown');
+  });
+});
+
+describe('the figures nobody claimed', () => {
+  it('will not stand behind an hour of reducing that no timer called hands-on', () => {
+    const schedule = of('beef-rendang');
+    expect(schedule.handsOnMinutes).toBe(60);
+    expect(schedule.assumedHandsOnMinutes).toBe(60);
+    expect(handsOnEvidence(schedule)).toBe('unknown');
+  });
+
+  it('will not stand behind doro wat either', () => {
+    const schedule = of('doro-wat');
+    expect(schedule.assumedHandsOnMinutes).toBe(40);
+    expect(handsOnEvidence(schedule)).toBe('unknown');
+  });
+
+  it('will not stand behind french onion soup, where 50 of 53 minutes are our say-so', () => {
+    const schedule = of('french-onion-soup');
+    expect(schedule.handsOnMinutes).toBe(53);
+    expect(schedule.assumedHandsOnMinutes).toBe(50);
+    expect(handsOnEvidence(schedule)).toBe('unknown');
+  });
+
+  it('will not let blondies read as an evening you never stand up for', () => {
+    // Four of five steps untimed and the only timer a bake: hands-on comes to nothing, and
+    // nothing is exactly what that figure rests on.
+    const schedule = of('blondies');
+    expect(schedule.handsOnMinutes).toBe(0);
+    expect(schedule.longestHandsOnMinutes).toBe(0);
+    expect(schedule.untimedCount).toBe(4);
+    expect(handsOnEvidence(schedule)).toBe('unknown');
   });
 });
