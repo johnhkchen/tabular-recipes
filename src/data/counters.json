@@ -1933,32 +1933,56 @@
       "categories": [],
       "sections": [
         {
-          "title": "The set meals (常餐 · 早餐 · 下午茶餐)",
-          "items": []
-        },
-        {
           "title": "The drinks counter",
-          "items": []
+          "items": [
+            "hong-kong-milk-tea",
+            "yuenyeung",
+            "iced-lemon-tea",
+            "lemon-coke-with-ginger",
+            "horlicks",
+            "red-bean-ice"
+          ]
         },
         {
           "title": "Toast and the bun case",
-          "items": []
+          "items": [
+            "thick-toast",
+            "hong-kong-french-toast",
+            "pineapple-bun",
+            "egg-custard-tart"
+          ]
         },
         {
           "title": "Macaroni, noodles and things in soup",
-          "items": []
+          "items": [
+            "ham-macaroni-soup",
+            "luncheon-meat-and-egg-noodles",
+            "hong-kong-borscht",
+            "satay-beef-noodles",
+            "soy-sauce-pan-fried-noodles",
+            "beef-chow-fun",
+            "char-siu"
+          ]
         },
         {
           "title": "Rice plates",
-          "items": []
+          "items": [
+            "baked-pork-chop-rice",
+            "pork-chop-in-tomato-sauce",
+            "minced-beef-rice",
+            "shrimp-and-egg-rice",
+            "curry-beef-brisket",
+            "swiss-wings"
+          ]
         },
         {
           "title": "Sandwiches and buns",
-          "items": []
-        },
-        {
-          "title": "Also here",
-          "items": []
+          "items": [
+            "luncheon-meat-and-egg-sandwich",
+            "hong-kong-egg-sandwich",
+            "pork-chop-bun",
+            "club-sandwich"
+          ]
         }
       ]
     }
