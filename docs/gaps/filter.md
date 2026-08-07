@@ -379,13 +379,20 @@ It is not failing. It is waiting for the annotation that would let it speak — 
 one is `handsOnMinutes: 0` with two to four untimed operations, which is the `blondies` trap rule
 firing exactly as designed.
 
-And every one of them is genuinely zero standing. The untimed operation is *toss the cubes in oil
-and salt* — thirty seconds, untimed because nobody would time it. The trap rule cannot tell that
-from `blondies`, where four untimed steps are a batter.
+**The trap rule is right, and that is the point.** Read one file at a time, the untimed operations
+are of two kinds. `air-fryer-chips` shakes the basket twice and tosses the finished chips with
+salt and vinegar — seconds, untimed because nobody would time seconds. And it opens
+*"cut @russet potatoes{1 1/4%lb} in 3/8-in batons, rinse the starch off, dry them hard in a towel
+and toss with oil"*, which is five minutes of a cook's hands and carries no timer at all.
 
-**This is the honest cost of the trap rule, not a bug in it**, and it lands on the twenty-one
-recipes best suited to the evening the whole filter was built for. Twenty-one `~toss{1%min}`
-annotations close it.
+So the air fryer is not a false *cannot say*. **It is the floor case again**, on the shelf where
+it costs the most: the box genuinely needs nobody, the prep genuinely does, and the file says
+neither. Reading `handsOnMinutes: 0` as *no standing about* would be exactly the lie the trap rule
+exists to refuse.
+
+**The cost is real all the same**, and it lands on the twenty-one recipes best suited to the
+evening the whole filter was built for. Closing it is one timer on each prep step and a `~toss` on
+each shake — twenty-one files, and the numbers that come out are small and true.
 
 ---
 
@@ -393,9 +400,10 @@ annotations close it.
 
 Ranked by how much of the shelf each one unlocks, not by how much anyone wants to do it.
 
-1. **Annotate the 21 air-fryer toss steps.** One `~toss{1%min}` each. Twenty-one recipes move from
-   *we can't say* to a real, and correct, zero minutes of standing — and they are the exact food
-   this filter exists to find.
+1. **Time the 21 air-fryer prep steps.** One timer on each cut-and-toss and a `~toss` on each
+   shake of the basket. Twenty-one recipes move from *we can't say* to a small, true standing
+   figure — and they are the exact food this filter exists to find. Cheapest of the five, and it
+   is annotation rather than code.
 2. **Add `reduce` and `thicken` to `UNATTENDED`, and the eleven no-cost words to `HANDS_ON`.**
    Measured: 16 recipes leave the unanswered shelf on the first two alone, 18 more pass, none newly
    fails. Its own ticket, because `time.ts` is argued line by line — and it should land with a test
