@@ -67,8 +67,21 @@ describe('findingOf', () => {
     // The wok sears two portions at a time, and searing was going to triple anyway.
     const { cost, finding, words } = at('beef-with-broccoli', 3);
     expect(cost.batches.binds).toBe(true);
-    expect(finding).toEqual({ kind: 'lots-only', loads: 6 });
-    expect(words?.said).toBe('It goes in six lots, and that is the only difference.');
+    expect(cost.batches.costMinutes).toBe(0);
+    expect(finding).toEqual({ kind: 'lots-and-work', loads: 6 });
+    expect(words?.said).toBe(
+      'It goes in six lots, and three times as much is three times the chopping.',
+    );
+  });
+
+  it('never says a load count is the only difference when the clock moves', () => {
+    // beef-bourguignon-instant-pot's vessel costs nothing and the recipe still gains ninety
+    // minutes of browning at three times. "The only difference" there would be this ticket's
+    // own defect, one branch over.
+    const { cost, finding } = at('beef-bourguignon-instant-pot', 3);
+    expect(cost.batches.costMinutes).toBe(0);
+    expect(Math.round(cost.elapsed.at - cost.elapsed.written)).toBe(90);
+    expect(finding.kind).toBe('lots-and-work');
   });
 
   it('reads a vessel that stops binding when less is wanted', () => {
@@ -134,6 +147,30 @@ describe('the whole collection', () => {
     for (const [said, qualifier] of table.says) {
       expect(said, said).not.toMatch(notation);
       expect(qualifier, qualifier).not.toMatch(notation);
+    }
+  });
+
+  it('never tells anyone the clock stood still when it did not', () => {
+    /*
+     * The one invariant that would have caught the mistake this file made first time round:
+     * a sentence promising nothing changes, on a recipe that gains an hour and a half. Checked
+     * against the elapsed figure rather than against the vessel's share of it, because the
+     * elapsed figure is what a cook experiences.
+     */
+    const promises = /the only difference|costs you nothing extra|still takes the same/;
+    for (const recipe of all) {
+      const written = servingsOf(recipe);
+      if (written === null) continue;
+      const schedule = buildSchedule(recipe);
+      for (const multiplier of MULTIPLIERS) {
+        const cost = costOf(recipe, written * multiplier, schedule);
+        if (!cost) continue;
+        const words = wordsFor(findingOf(cost), multiplier, cost.untimedCount);
+        if (!words || !promises.test(words.said)) continue;
+        expect(cost.elapsed.at, `${recipe.slug} at ${multiplier}: ${words.said}`).toBe(
+          cost.elapsed.written,
+        );
+      }
     }
   });
 

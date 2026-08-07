@@ -61,8 +61,10 @@ export type Finding =
   | { kind: 'fits' }
   /** A vessel is declared and at this size it stops binding. */
   | { kind: 'unbinds' }
-  /** The vessel binds, and it costs nothing but the reloading. */
+  /** The vessel binds, it costs nothing, and nothing else on the clock moves either. */
   | { kind: 'lots-only'; loads: number }
+  /** The vessel binds and costs nothing, but the work still grows with the food. */
+  | { kind: 'lots-and-work'; loads: number }
   /** The vessel binds on a wait, so the loads reach the clock. */
   | { kind: 'lots-cost'; loads: number; minutes: number }
   /** No vessel declared, and the hands-on figure is ours rather than the author's. */
@@ -99,10 +101,18 @@ export function findingOf(cost: Cost): Finding {
      * A vessel that binds a WAIT is expensive and a vessel that binds WORK is free — the work
      * was going to grow anyway. `costMinutes` is scaling.md §2's A_batch·(r−1) + H_batch·(r−m),
      * which is the whole of what the vessel adds over the same recipe with no capacity at all.
+     *
+     * THE CLOCK IS ASKED FIRST, and it has to be. "That is the only difference" is a claim about
+     * the whole evening, not about the vessel's share of it, and a reader has no counterfactual
+     * recipe-without-a-capacity to measure it against. beef-bourguignon-instant-pot's vessel
+     * costs nothing and the recipe still gains ninety minutes at three times, all of it browning
+     * — printing "the only difference" there is this ticket's own defect, one branch over. In
+     * this collection that is EVERY recipe whose vessel is free: all 24 of them gain time.
      */
+    if (cost.elapsed.flat) return { kind: 'lots-only', loads: at };
     return costMinutes > 0
       ? { kind: 'lots-cost', loads: at, minutes: costMinutes }
-      : { kind: 'lots-only', loads: at };
+      : { kind: 'lots-and-work', loads: at };
   }
 
   /*
@@ -216,6 +226,22 @@ export function wordsFor(
         said: `It goes in ${counted(finding.loads)} lots, and that is the only difference.`,
         qualifier,
       };
+
+    /*
+     * Two §6 rows in one sentence, because two things are true at once: the vessel costs nothing
+     * and the work still triples. "The pot doesn't care" is dropped from the second — here the
+     * pot demonstrably does — and "that is the only difference" cannot be borrowed from the
+     * first, because it would be false. See findingOf() for why this branch exists at all.
+     */
+    case 'lots-and-work':
+      return times
+        ? {
+            said:
+              `It goes in ${counted(finding.loads)} lots, and ${times} as much is ` +
+              `${times} the chopping.`,
+            qualifier,
+          }
+        : null;
 
     case 'lots-cost':
       return {
