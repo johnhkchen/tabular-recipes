@@ -6,21 +6,30 @@
  *   node scripts/inline-step-labels.mjs --dump           # every label and its clock, to stdout
  *   node scripts/inline-step-labels.mjs recipes/soups/*.cook   # a subset, in any mode
  *
- * The numbered form addresses a step by counting to it, and the count is written somewhere the
+ * The numbered form addressed a step by counting to it, and the count was written somewhere the
  * step is not: insert an operation and every override below it labels the wrong row, silently.
- * `>> step:` on the line above its step has no number to get wrong. src/lib/step-labels.ts is
- * the reader; docs/active/stories/S-009 is the argument.
+ * `>> step:` on the line above its step has no number to get wrong. T-009-03 removed the
+ * numbered form outright, so a file that still writes one now FAILS the check, and the check
+ * names this script. src/lib/step-labels.ts is the reader; docs/active/stories/S-009 is why.
  *
- * The one rule this script exists to keep: NO LABEL CHANGES THE STEP IT NAMES. `step.N` counts
- * 1-based over every step block including prose ones — undocumented, recorded in
- * docs/gaps/README.md — and a label the build hands to the wrong step is moved to that same
- * wrong step, not to the step it reads like it wanted. Correcting one is a separate job done by
- * a person one file at a time.
+ * The one rule this script exists to keep: NO LABEL CHANGES THE STEP IT NAMES. `step.N` counted
+ * 1-based over every step block including prose ones — undocumented, and the reason the form is
+ * gone — and a label that named the wrong step is moved to that same wrong step, not to the step
+ * it reads like it wanted. Correcting one is a separate job done by a person, one file at a time.
  *
- * So the script never counts. normalise() says which step wears which label, readStepLabels()
- * says where the moved label binds, and a file is written only when those two agree. Guess the
- * position, verify the binding: a bug in the scan below becomes a file left alone with a printed
- * reason, never a page whose words moved.
+ * What holds that up, honestly stated, because it is weaker than it was:
+ *
+ *  - The number is resolved against readStepLabels().stepLines — the BUILD's scan of where step
+ *    blocks start, not a copy of it. This script used to own a copy; it does not any more.
+ *  - That scan is held to the parser's own step count, here and again in normalise(). A scan
+ *    that misreads a cooklang construct finds the wrong NUMBER of steps and the file is refused.
+ *  - Every write is verified by reading the result back through readStepLabels() and checking
+ *    that each label bound to the step it was aimed at, and that nothing else in the file moved.
+ *
+ * Until T-009-03 the resolving was done by normalise() and the verifying by readStepLabels(),
+ * which were two different code paths; now one scan does both, and the parser's count is what
+ * stops that being circular. A scan wrong by a compensating error would get through. Nothing in
+ * the collection can reach that, and it is written down rather than papered over.
  *
  * Idempotent: a migrated file has no `>> step.N:` line left, so a second run has nothing to do.
  */
@@ -33,9 +42,6 @@ import { cleanLabel } from '../src/lib/label.ts';
 
 const ROOT = path.resolve(import.meta.dirname, '..');
 
-/** `>> step.7: simmer 15 min`. Deliberately the shape src/lib/step-labels.ts:55 matches. */
-const NUMBERED = /^>>[ \t]*step\.(\d+)[ \t]*:(.*)$/i;
-
 /*
  * Any step line at all, either form, looser than either. Used only to take both forms out of
  * the before and after text so the rest can be compared byte for byte — so it errs wide on
@@ -43,55 +49,27 @@ const NUMBERED = /^>>[ \t]*step\.(\d+)[ \t]*:(.*)$/i;
  */
 const ANY_STEP_LINE = /^>>[ \t]*step[.: \t]/i;
 
-/* ---- the local scan, which is a proposal and not an answer ----------------- */
-
-/*
- * The line each step block starts on. This mirrors scanSteps() in src/lib/step-labels.ts:82 —
- * blank lines, metadata, section headers and text blocks close a block, a comment is
- * transparent, anything else opens one — and the two have to agree, but only one of them is the
- * build's. So nothing here is trusted: verify() below hands the result back to the build's own
- * reader and refuses the file if it lands anywhere else.
- */
-function stepStarts(lines) {
-  const starts = [];
-  let open = false;
-  for (const [i, line] of lines.entries()) {
-    if (/^\s*--/.test(line)) continue;
-    if (!line.trim() || /^>>/.test(line) || /^\s*=/.test(line) || /^\s*>(?!>)/.test(line)) {
-      open = false;
-      continue;
-    }
-    if (!open) {
-      starts.push(i);
-      open = true;
-    }
-  }
-  return starts;
-}
+/** The line this script writes, and the one it counts to check it wrote them. */
+const INLINE_LINE = /^>>[ \t]*step[ \t]*:/i;
 
 /* ---- what would change, and why not --------------------------------------- */
 
 /**
- * @param {string} source
+ * @param {ReturnType<typeof readStepLabels>} reading
  * @param {ReturnType<typeof normalise>} recipe
  * @returns {{ moves: {n: number, text: string, from: number, to: number}[], refusal: string|null }}
  */
-function plan(source, recipe) {
-  const lines = source.split('\n');
+function plan(reading, recipe) {
   const no = (refusal) => ({ moves: [], refusal });
 
-  const hits = [];
-  for (const [i, line] of lines.entries()) {
-    const match = line.match(NUMBERED);
-    if (match) hits.push({ line: i, n: Number(match[1]), text: match[2].trim() });
-  }
+  const hits = reading.numbered;
   if (!hits.length) return { moves: [], refusal: null };
 
-  const starts = stepStarts(lines);
+  const starts = reading.stepLines;
   if (starts.length !== recipe.steps.length) {
     return no(
-      `this script found ${starts.length} step block(s) and the parser found ` +
-        `${recipe.steps.length} — that is a bug in stepStarts(), not in this file`,
+      `readStepLabels() found ${starts.length} step block(s) and the parser found ` +
+        `${recipe.steps.length} — that is a bug in the scan, not in this file`,
     );
   }
 
@@ -123,22 +101,17 @@ function plan(source, recipe) {
           `without changing the step it is inside`,
       );
     }
-    moves.push({ n: hit.n, text: hit.text, from: hit.line, to: starts[hit.n - 1] });
-  }
-
-  /*
-   * The label normalise() gives step N is the one that has to end up above step N. They can
-   * differ from what is written on the line: a file writing both forms already resolves through
-   * readStepLabels(), and that file is T-009-01's business to fail, not this script's to migrate.
-   */
-  for (const move of moves) {
-    const written = recipe.steps[move.n - 1]?.labelOverride;
-    if (written !== move.text) {
+    /*
+     * A step that already carries a label on the line above it cannot take a second one, and
+     * the two disagreeing is a question for a person: which of them did you mean?
+     */
+    if (reading.labels.has(hit.n - 1)) {
       return no(
-        `>> step.${move.n}: reads "${move.text}" and the build gives step ${move.n} ` +
-          `"${written ?? '(no label)'}" — something else in this file is deciding the label`,
+        `${at}: >> step.${hit.n}: names step ${hit.n}, which already has ">> step: ` +
+          `${reading.labels.get(hit.n - 1)}" above it — say which label you meant`,
       );
     }
+    moves.push({ n: hit.n, text: hit.text, from: hit.line, to: starts[hit.n - 1] });
   }
 
   return { moves, refusal: null };
@@ -166,11 +139,14 @@ function apply(lines, moves) {
 /* ---- the three gates, before anything is written --------------------------- */
 
 /** The reason to refuse this file, or null. */
-function verify(source, migrated, recipe, moves) {
-  // 1. The build's own reader has to put every label back on the step it came off.
-  const wanted = new Map(
-    recipe.steps.filter((s) => s.labelOverride !== null).map((s) => [s.index, s.labelOverride]),
-  );
+function verify(source, migrated, reading, moves) {
+  /*
+   * 1. Every label this run moved has to come back bound to the step it was aimed at, and every
+   *    label the file already had on the line above a step has to still be on that same step.
+   *    This is the gate: it is what turns a wrong line number into a refused file rather than a
+   *    page whose words moved.
+   */
+  const wanted = new Map([...reading.labels, ...moves.map((m) => [m.n - 1, m.text])]);
   const { labels: landed, problems } = readStepLabels(migrated);
   if (problems.length) {
     return `the migrated file would not read back: ${problems[0]}`;
@@ -195,11 +171,12 @@ function verify(source, migrated, recipe, moves) {
     return 'something other than a >> step line changed';
   }
 
-  // 3. As many lines out as in.
+  // 3. As many lines out as in. A delta rather than a total, because a file that mixed the two
+  //    forms already had inline lines of its own and those are carried through, not rewritten.
   const count = (text, re) => text.split('\n').filter((line) => re.test(line)).length;
-  const out = count(migrated, /^>>[ \t]*step[ \t]*:/i);
-  if (out !== moves.length) return `${moves.length} label(s) to move and ${out} written`;
-  if (count(migrated, NUMBERED) !== 0) return 'a >> step.N: line was left behind';
+  const added = count(migrated, INLINE_LINE) - count(source, INLINE_LINE);
+  if (added !== moves.length) return `${moves.length} label(s) to move and ${added} written`;
+  if (readStepLabels(migrated).numbered.length) return 'a >> step.N: line was left behind';
 
   return null;
 }
@@ -277,12 +254,18 @@ for (const target of targets) {
     continue;
   }
 
-  if (recipe.stepLabelProblems.length) {
-    skipped.push({ rel, reason: recipe.stepLabelProblems[0] });
+  /*
+   * readStepLabels() emits exactly one problem for each numbered line, and those are the ones
+   * this script is here to clear. Anything beyond that count is an inline label that does not
+   * bind — a file with a second thing wrong with it, which a person should look at first.
+   */
+  const reading = readStepLabels(source);
+  if (reading.problems.length > reading.numbered.length) {
+    skipped.push({ rel, reason: reading.problems.join('; ') });
     continue;
   }
 
-  const { moves, refusal } = plan(source, recipe);
+  const { moves, refusal } = plan(reading, recipe);
   if (refusal) {
     skipped.push({ rel, reason: refusal });
     continue;
@@ -294,7 +277,7 @@ for (const target of targets) {
   }
 
   const migrated = apply(source.split('\n'), moves);
-  const wrong = verify(source, migrated, recipe, moves);
+  const wrong = verify(source, migrated, reading, moves);
   if (wrong) {
     skipped.push({ rel, reason: wrong });
     continue;
