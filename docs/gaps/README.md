@@ -229,6 +229,27 @@ than a first-five gap: **sweet tea** for the Smokehouse and Meat and Three, **Th
 olla**, and **hot tea** for the Dim Sum Counter. One table each, and `hong-kong-milk-tea` is the shape
 they can copy.
 
+### And a sixth gap, which is not a dish and is bigger than any of the five
+
+[**What the shelf offers the three cooks**](what-the-shelf-offers.md) is the fourth whole-shelf
+reading, and the first taken from outside the collection looking in: 685 files held against the three
+people in `docs/knowledge/cooks.md`. It ranks the four capabilities the board does not have, and its
+answer for two of them is **write food before writing features** — which is why it belongs on this
+list and not in a story.
+
+Counted from ingredient lists rather than folder names, the collection uses **130 distinct plants**
+and only **23 of them ever carry a dish**. There are **16 non-starch vegetable sides** and **47
+savoury dishes built on a non-starch plant**, against **101 sweets**; **14 pulse dishes** a person
+would call dinner; and **2 recipes** — a malted milk drink and an egg sandwich — that one person can
+cook for one or two with no trip to the shop. The forty-eight plants the shopping lists buy and no
+recipe is ever about are the work, and each one is one table.
+
+The reading also finds that **only 34 of 685 recipes have a job a second cook could take** (the raw
+lane count says 200), and that a week of dinners for four can run **eleven nights** before a protein
+repeats — so the two features the shelf *can* feed today are handing work to a helper and a rotation.
+Nothing on the board was edited; where a running story pulls against one of the three cooks, it is a
+recommendation in that file, named with the ticket it concerns.
+
 Immediately after, in order: **the Vietnamese baguette** (the one component under a counter that reached
 rank 12 and stopped), **wor tip** (the Dim Sum Counter's own pan-fried dumpling — `gyoza` is Japanese and
 stays at the Ramen Shop), **cebolla y cilantro** (one row, one operation, on every taquería counter in
