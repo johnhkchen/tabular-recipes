@@ -94,6 +94,13 @@ Run at the story's own scenario — *under twenty minutes standing there*, set a
 dial has — the collection splits **227 pass · 42 fail · 416 we can't say**, and reading all 227 as a
 tired cook found 72 right for the evening, 12 borderline and 143 wrong.
 
+**[what-the-season-left.md](what-the-season-left.md) is the whole of S-007 to S-013 read as one
+thing** — every finding those twenty-nine tickets recorded and did not act on, each with its source
+ticket, banded by whether the fix is in dispute rather than by how much it matters. It is the fifth
+whole-shelf reading and, like the two below, it is a file in this directory that is not a counter
+page and carries no `## What it has` block. Its first section is the one finding that would not sit
+in a band: **143 of the 227 recipes the filter recommends for a tired evening are wrong for it.**
+
 **[filter.md](filter.md) is the record of what the filter cannot say**, in the shape of these pages'
 *what it could not stock* sections: the equipment it cannot see, the marinade that started yesterday,
 the shopping, how tired the reader is, whether the result is even dinner, how many it feeds, and the
@@ -288,11 +295,20 @@ What reading all 514 files found instead is not about what is on the shelf but a
 
 ## The five gaps to fill first
 
-**Gap 5 is closed, and this list is re-ranked rather than ticked.** *A drink that is brewed* was fifth,
-on the evidence that three drinks existed and all three were poured cold. There are nine drinks now and
-three of them brew: `hong-kong-milk-tea`, `yuenyeung` and `iced-lemon-tea`. What that gap was really
-asking for — a brewed hot drink anyone can make from a supermarket — exists, so it comes off the list
-and its runner-up moves up.
+**Gap 5 was closed by S-007, and this list was re-ranked rather than ticked.** *A drink that is brewed*
+was fifth, on the evidence that three drinks existed and all three were poured cold. There are nine
+drinks now and three of them brew: `hong-kong-milk-tea`, `yuenyeung` and `iced-lemon-tea`. What that gap
+was really asking for — a brewed hot drink anyone can make from a supermarket — exists, so it came off
+the list and its runner-up moved up.
+
+**Re-checked at the end of S-013, after seven stories and 48 new recipes: nothing moved, and that is
+the finding.** All five were checked against the shelf rather than remembered —
+`buttercream`, `cream-cheese-frosting`, a shared chile purée, a dark roux and a trinity base are still
+unwritten; the thirteen pickle and slaw files are still in two folders with `salads/` sitting empty of
+them; `cha-lua` is still in `stews-and-braises/` and `nixtamalised-masa` still in `pastry-and-doughs/`.
+The season wrote a counter, a shelf, four properties and a filter, and **none of it was a component the
+five are waiting on.** Gap 2 is the one that changed, and it changed by getting bigger — see below.
+The whole read is in [what-the-season-left.md](what-the-season-left.md).
 
 Ranked the same way as before: by how many counters each one unblocks, not by how much anyone wants to
 eat it.
@@ -300,9 +316,15 @@ eat it.
 1. **Move the pickles into one folder, and the slaws into `salads/`.** Not a recipe: an afternoon of
    `git mv` and one `>> category:` line each. Thirteen files, no URL changes, and it is the difference
    between a shelf and a pile.
-2. **A tag checker.** One file under `src/lib/`, one test. It has to know the difference between a
-   spelling variant and two real concepts, which is why it is worth writing once rather than re-reading
-   527 tags every pass.
+2. **A tag checker**, and it is a bigger job than when it was ranked. One file under `src/lib/`, one
+   test. It has to know the difference between a spelling variant and two real concepts, which is why
+   it is worth writing once rather than re-reading the tag list every pass. **Re-run at 685 recipes the
+   vocabulary is 615 distinct tags, against 503 when T-001-18 last folded it at 514** — and all three
+   collisions T-001-18's own verifier drove to zero are back (`no-cook`/`no cook`,
+   `make-ahead`/`make ahead`, `one-pot`/`one pot`), alongside ten singular/plural splits and three
+   verb/participle pairs. **Sixteen split concepts across 243 files**, and `chiles` is used 43 times
+   against `chile` once, so a searcher who types the singular gets one recipe. Nothing enforces it,
+   exactly as T-001-18 said would happen.
 3. **A shared toasted dried-chile purée** — `birria-de-res`, `red-enchilada-sauce`, `mole-poblano` and
    `adobo-para-al-pastor` all begin toast, soak, blend, strain. Recorded by T-001-10 and still true. It
    only pays off if those four are rewritten to consume it, which is the work.
@@ -402,11 +424,82 @@ an edit to a metadata line, which is why none of it happened here.
   (T-001-03 §5).
 - **`naan` does not declare which one it is** — a tandoor naan or a home-oven one (T-001-09 §6).
 
+### What the season left, S-007 to S-013
+
+Read in full by T-014-01 and written up in
+[what-the-season-left.md](what-the-season-left.md), which carries the evidence for every line
+below. **The mechanical band is not here** — it is T-014-02's whole scope and lives on that page
+with a verifying command per finding. What follows is everything that needs a decision or needs
+food, so a reader can pick one up cold without opening the work directories.
+
+**Above all of it, and not in any band: 143 of the 227 recipes the filter recommends for a tired
+evening are wrong for it** (T-010-03), and 112 of the 143 fail on one thing the index cannot say —
+whether the recipe is dinner.
+
+**Needs an argument.** Each is real, understood, and waiting on somebody's decision.
+
+| finding | source | why it was not done |
+| --- | --- | --- |
+| The record cites evidence that was never published — 15 of 29 work directories name files that exist nowhere, including `T-008-03/findings.md`, `T-009-04/naming-steps-proposal.md`, `T-011-06/six-over-three.md` and five screenshots under an empty `shots/` | T-008-05 §6.5 and eight others | It is a workflow decision — does Lisa publish the attempt directory, or must a criterion's evidence be inlined? |
+| The chopping board is excluded from `washing-up`, so S-008's own illustration of two-or-fewer scores 1 rather than 2 | T-008-01 §4.2, T-008-03 §5.1 | Every washing-up number in the collection was produced under this boundary; a ruling moves them all |
+| Bar 1 of the air fryer gate has never excluded a recipe on its own and is unreadable on 508 of 685 files | T-008-05 §4.1 | Three options are costed on that page and all three are counter decisions |
+| Does One Pot promise one pan or one sink? Eight of 73 wash three or more | T-008-03 §4.1 | Re-shelving is a counter decision; nothing was moved |
+| Five counters still have no `docs/knowledge/counters.md` entry | T-008-02 §5 | Every one is an appliance-and-format shelf, and what a vocabulary table says about a bargain is unsettled |
+| `birista` declares `1 1/2 cups` and scales into the #2 dumpling-party dish; `lime-pickle` has the same shape | T-013-03 §2 | It changes a declared number |
+| `lengua`'s `slack` reason carries a keeping fact, and 28 files' slack reasons name a fridge or a reheat while carrying no `keeps` | T-011-04 §2 | It changes a declared slack line |
+| `batata-harra`'s `capacity` says *the pan* and its `washing-up` says *the frying pot* — the one cross-property contradiction found | T-014-01 | Which word is right is an argument about the recipe |
+| 98 files are area-bounded and unmeasured; five pan-bound dishes have no capacity so `/list/` says the pan doesn't care; the hand-work on the holiday plate is untimed, so seven dishes report 13.75 minutes for an afternoon | T-011-03 §4, T-011-06, T-013-02 §4 | About sixty more capacities and a timer pass. Not covered by *write food first* — nothing has to be written, only measured |
+| Eleven files say *in batches* without a count while their siblings say *two* | T-011-03 §5 | One word per file, and the word is a claim about cooking |
+| There are two phrasebooks — `scaling-words.ts` and `situation.ts` say the same nine findings from two shapes | T-011-06 §1 | Neither ticket could own both; it wants a merge ticket |
+| No variant roll-up: 24 dish groups declare `keeps` on one half and are silent on the other, 19 do it for `capacity`, `washing-up` does it zero times | T-011-04 §5 | One value beside a silent sibling reads as a claim about the silent one |
+| Twenty timer names are in neither word list, carrying 1,386 minutes; `reduce` + `thicken` alone would move 31 recipes and make none newly fail | T-010-03 finding 2 | Each proposal carries counter-evidence; adding a name changes a reading |
+| `~preheat` never reaches `elapsedMinutes` — 7 recipes, 215 minutes, `margherita` reading as a seven-minute dish | T-010-03 finding 3 | Whether a preheat is elapsed time is a decision |
+| `shake` has no icon; seven permanent `unaccountedCookware` advisories want a `NEVER_WASHED` utensil entry | T-008-04 §6.2, T-008-03 §3 | Each enables something rather than fixing something |
+| A full-width prose row cannot contain a comma and this is documented nowhere | T-007-04 §2 | Change `cleanLabel()` or document the rule — two different tickets |
+| The preheat convention exists as 21 copies of one sentence and belongs in `docs/knowledge/` | T-008-04 §6.3 | Nobody has owned that file since |
+| `scaling.md` §2's `r ≥ m` is false in a corner — `carnitas` reports −2 minutes of vessel cost | T-011-02 §2, T-011-03 §3 | It is a sentence inside an argument |
+| Two `scaling.md` §6 phrasebook rows cannot be used as written | T-011-05 §4.2 | Same |
+| `occasions.md` §3.5 ranks four recipes its own gates reject, and §3.6's rule constrains `standing` but not `longest` | T-013-03 §9.2 | Same, in a file T-013-03 did not own |
+| The party profile is confounded with written servings; how much of ρ = −0.591 survives a per-serving rate is unknown | T-013-03 §1 | Fixing it changes `occasions.md`'s declared rates |
+| `scaling.md` §7's air fryer pole is still a hypothetical, and 21 real files exist | T-011-01 §1, T-011-03 §7 | Its own §9 asks for the rewrite; a rewrite is not a correction |
+| `fermented red bean curd` lands in Dairy on `curd`; `Hong Kong milk tea` lands in Dairy on `milk`; `evaporated milk` sits in the cold case on a tie-break | T-007-05 §3–5, §8 | Three aisle findings with three different right answers |
+| The front door lost the fold at 375px — the first counter card moved from ≈695 to 820 | T-011-06, T-010-02 §1 | The remedy needs S-010's always-visible-dials argument revisited |
+| `/list/` still prints `×1/2 ×1 ×2 ×3` and `serves 4 → 12` | T-011-05 §4.1 | A reading of S-011's notation ban, flagged rather than guessed at |
+
+**Needs food.** The collection has to grow before these can be acted on. **T-012-02 is the
+authority and its verdict covers the first two**; it explicitly did not reach *write food before
+writing features* for hand-off or rotation, which are feedable today.
+
+| finding | source |
+| --- | --- |
+| **Balance.** 130 distinct plants and 23 that ever carry a dish; 16 non-starch sides and 47 savoury plant-built dishes against 101 sweets; 14 pulse dinners. The 48 plants the shopping lists buy and no recipe is about are the work | T-012-02 |
+| **The fridge, for one person.** 2 recipes one person can cook for one or two with no trip to the shop, and the answer does not move under four sensitivity runs | T-012-02 |
+| **The Air Fryer & the Pot is 21, four short of 25** — six ranked pressure dishes unwritten, and seekh kabab writable now the drawer is settled. **None of them needs a bar to move** | T-008-05 §4.1 |
+| **The holiday occasion opens after five recipes**; the dumpling party should not open, and its blocker is annotation rather than food. There is still no mooncake recipe | T-013-03 §7, T-013-01 |
+
 ## Recorded and closed
 
-Two entries S-009 finished with. They are here rather than above because the list above is where the next
-pass looks for work, and an item that is done but still listed costs somebody an afternoon finding out.
-One of these was fixed; the other was looked at and deliberately left, which is also an answer.
+Two entries S-009 finished with, and three more the whole-season read found already closed. They are
+here rather than above because the list above is where the next pass looks for work, and an item that
+is done but still listed costs somebody an afternoon finding out. Of the first two, one was fixed; the
+other was looked at and deliberately left, which is also an answer.
+
+### Three closed during S-007 and S-008, with the ticket that closed each
+
+Named here because each was recorded as open by the ticket that found it, and each was shut by a
+later one on the same branch. Evidence in [what-the-season-left.md](what-the-season-left.md).
+
+- **A `counters.json` section could list a slug the recipe does not shelve, and the page dropped it
+  silently.** Found by T-007-05 §2, which measured the counter listing 27 and printing 22.
+  **Closed by T-007-06**: `menuFor()` throws with the slug named, `scripts/check-menus.mjs` reads the
+  built pages back, and `npm run verify` ends with `22 counter(s): 930 slug(s) listed, 930 printed.`
+- **One Pot listed four fried slugs it does not shelve** — `general-tsos-chicken`, `orange-chicken`,
+  `sesame-chicken`, `sweet-and-sour-pork` — since `88ca990`, invisible to every gate.
+  **Closed by T-007-06**, which removed them; One Pot renders 73 before and after.
+- **Is the air fryer's drawer a second thing to wash?** T-008-04 §5 ranked seekh kabab out on a
+  distinction the other twenty items were not held to, and said so rather than quietly applying it.
+  **Closed by T-008-05 §4.5**: the basket, drawer and crisper plate are one thing, because they are
+  washed in one action. It changes nothing on the shelf today and makes one unwritten dish writable.
 
 ### `>> step.N:` counts prose steps as well as operations — closed by removal
 
