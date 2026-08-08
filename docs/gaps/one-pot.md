@@ -54,6 +54,9 @@ butter-beans · congee
 **Soups that are the whole meal.** gumbo · sancocho · minestrone · harira · split-pea-soup ·
 new-england-clam-chowder · borscht · black-bean-soup · wonton-soup
 
+**Quick soups that go with dinner.** tomato-potato-beef-soup · seaweed-egg-drop-soup ·
+mustard-greens-tofu-soup · crucian-carp-tofu-soup · century-egg-amaranth-soup
+
 ---
 
 ## What it is missing
