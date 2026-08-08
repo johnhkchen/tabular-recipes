@@ -131,11 +131,18 @@ commissioned to migrate 33 references and found none of them worth migrating.
 
 ## Mechanical
 
-**This band is T-014-02's entire scope.** Thirteen findings. Each is one edit two reasonable people
+**This band was T-014-02's entire scope.** Twelve findings. Each is one edit two reasonable people
 would make the same way, each carries the command that verifies it, and none moves a recipe
 between shelves, changes a declared number, or rewrites an argument.
 
 Findings that look like this band and are not are in the next one, with the test they failed.
+
+> **T-014-02 has worked this band: twelve applied, one pushed back.** The band opened at thirteen.
+> The `## Build state` finding failed the first test — two reasonable people do not make the same
+> edit to a dated measurement — and is now in *needs an argument* below, with the reason. Three of
+> the twelve carried an error in their own text (the file named, or the arithmetic in the verify
+> command); each is corrected in place below and accounted for in
+> `docs/active/work/T-014-02/`, which holds the command and its output for every one of the twelve.
 
 ### Stale prose in a page, contradicted by the built site
 
@@ -172,23 +179,18 @@ Findings that look like this band and are not are in the next one, with the test
   T-011-01 §1.
   *Verify:* `grep -c 'no air fryer recipe' docs/knowledge/scaling.md` → `0`, and
   `node -e "const R=require('./src/generated/recipes.json');console.log(R.filter(r=>r.kit==='Air Fryer').length)"` → `13` files declaring the kit across a 21-recipe shelf.
+  **T-014-02 correction:** that grep reaches **two** sites, not one — §9's sentence and the same
+  claim inside §7 at line 403. Repairing §9 alone leaves the identical false clause forty lines
+  above it and returns `1`. Both clauses were corrected; §7's illustration — its figures, its pole
+  and its arithmetic — was not touched, because rewriting it is the *needs an argument* row below.
 
 ### A number a document states and the build contradicts
 
-- **`README.md`'s `## Build state` block is S-007's and is out by a season.** It says 664 recipes,
-  894 tests in 11 files, 688 pages, 904 counter assignments, timers in 640, washing-up in 11, and
-  45 `kit:` files. The build says **685 · 1,229 in 21 · 710 · 930 · 661 · 177 · 58** (25 Instant
-  Pot, 20 Slow Cooker, 13 Air Fryer). It is a dated measurement and says so, which is why nobody
-  has been wrong to leave it — but S-014 is the pass that publishes, and a stale front-door number
-  is the first thing a reader meets. *Source:* T-010-03 §3, which left it stale deliberately and
-  said so.
-  *Verify:* `npm run verify` and
-  `node -e "const R=require('./src/generated/recipes.json');console.log(R.length, R.reduce((a,r)=>a+r.counters.length,0), R.filter(r=>r.kit).length, R.filter(r=>r.washingUp).length)"`
-  → every number in the block equals its output.
-
-- **`README.md` says the coverage report prints `3 of 1074`; it prints `4/1086`.** The extra name
-  is `leftover pizza`, which T-008-05 left in the `other` aisle on purpose because no shop sells
-  it. *Source:* T-007-05 §4, T-008-05 §6.5.
+- **`docs/gaps/README.md` says the coverage report prints `3 of 1074`; it prints `4/1086`.** The
+  extra name is `leftover pizza`, which T-008-05 left in the `other` aisle on purpose because no
+  shop sells it — so the bullet's *"they are now the only three"* is still true of the three names
+  that are not food, and only the figure moved. *Source:* T-007-05 §4, T-008-05 §6.5.
+  **T-014-02 correction:** this said `README.md`; the sentence is in `docs/gaps/README.md:395`.
   *Verify:* `npx vitest run src/lib/shopping.test.ts --reporter=verbose 2>&1 | grep 'have no aisle'`
   → `4/1086 ingredients have no aisle`.
 
@@ -221,6 +223,13 @@ Findings that look like this band and are not are in the next one, with the test
   *Verify:* `grep -l '^## What it could not stock' docs/gaps/*.md | wc -l` → `22`, and the derived
   bullet count moves from **155 across 21 pages** to **163 across 22** against the README's stated
   158.
+  **T-014-02 correction:** that count was **already 22** before the rename and is **23** after it.
+  The 22 were 21 counter pages plus `filter.md`, which borrows the heading deliberately and is not
+  a counter; `soup-pot.md` is retired and uses a third wording. The rename was applied and the
+  eight entries are now reachable by the derivation for the first time. **The README's 158 was not
+  changed** — that file says in as many words that the figure is carried forward rather than
+  re-derived, so replacing it with a derivation asserts that the derivation is the right way to
+  count, which is a claim and not a correction.
 
 ### A one-line ratchet the ticket that found it could not reach
 
@@ -251,6 +260,25 @@ Findings that look like this band and are not are in the next one, with the test
 
 Real, understood, and each waiting on a decision somebody would want to make deliberately.
 Grouped by the kind of decision, because that is what makes the list usable.
+
+### Pushed back out of *mechanical* by T-014-02
+
+- **`docs/gaps/README.md`'s `## Build state` block is S-007's and is out by a season.** It says
+  664 recipes, 894 tests in 11 files, 688 pages, 904 counter assignments, timers in 640,
+  washing-up in 11, and 45 `kit:` files. The build says **685 · 1,229 in 21 · 710 · 930 · 661 ·
+  177 · 58** (25 Instant Pot, 20 Slow Cooker, 13 Air Fryer). *Source:* T-010-03 §3, which left it
+  stale deliberately and said so; banded mechanical by T-014-01.
+  **Why it moved:** it fails the first test — two reasonable people do not make the same edit.
+  The block says twice that it is S-007's (its own line 37, and again at line 76); the current
+  figures already sit forty lines below it under *What the three dials can answer for*, correctly
+  dated; and its closing paragraph is not figures at all but S-007's arithmetic — *658 at the
+  start, minus the sixteen 老火湯, plus the eight and the fourteen* — which is true of S-007 and
+  which a refresh deletes. So one reader refreshes the block, another keeps the record. **The
+  decision is general**: it settles what happens to every dated block on the board, including
+  `voice.md` §5, `scaling.md`'s 664-recipe figures, and this page's own dated fractions.
+  **Also corrected:** the finding said `README.md`. The root `README.md` carries no build figures
+  at all, so the *stale front-door number* argument it was banded on does not apply to the file it
+  is actually in.
 
 ### The record itself
 

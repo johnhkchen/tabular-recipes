@@ -460,24 +460,25 @@ whether the recipe is dinner.
 | A full-width prose row cannot contain a comma and this is documented nowhere | T-007-04 §2 | Change `cleanLabel()` or document the rule — two different tickets |
 | The preheat convention exists as 21 copies of one sentence and belongs in `docs/knowledge/` | T-008-04 §6.3 | Nobody has owned that file since |
 | `scaling.md` §2's `r ≥ m` is false in a corner — `carnitas` reports −2 minutes of vessel cost | T-011-02 §2, T-011-03 §3 | It is a sentence inside an argument |
-| Two `scaling.md` §6 phrasebook rows cannot be used as written | T-011-05 §4.2 | Same |
+| Two `scaling.md` §6 phrasebook rows cannot be used as written | T-011-05 §4.2 | Same — a sentence inside an argument, and the argument is what would have to move |
 | `occasions.md` §3.5 ranks four recipes its own gates reject, and §3.6's rule constrains `standing` but not `longest` | T-013-03 §9.2 | Same, in a file T-013-03 did not own |
 | The party profile is confounded with written servings; how much of ρ = −0.591 survives a per-serving rate is unknown | T-013-03 §1 | Fixing it changes `occasions.md`'s declared rates |
 | `scaling.md` §7's air fryer pole is still a hypothetical, and 21 real files exist | T-011-01 §1, T-011-03 §7 | Its own §9 asks for the rewrite; a rewrite is not a correction |
 | `fermented red bean curd` lands in Dairy on `curd`; `Hong Kong milk tea` lands in Dairy on `milk`; `evaporated milk` sits in the cold case on a tie-break | T-007-05 §3–5, §8 | Three aisle findings with three different right answers |
 | The front door lost the fold at 375px — the first counter card moved from ≈695 to 820 | T-011-06, T-010-02 §1 | The remedy needs S-010's always-visible-dials argument revisited |
 | `/list/` still prints `×1/2 ×1 ×2 ×3` and `serves 4 → 12` | T-011-05 §4.1 | A reading of S-011's notation ban, flagged rather than guessed at |
+| The `## Build state` block above is S-007's: 664 recipes, 894 tests in 11 files, 688 pages, 904 counter assignments, timers in 640, washing-up in 11, 45 `kit:` — against today's **685 · 1,229 in 21 · 710 · 930 · 661 · 177 · 58** | T-014-01 banded this mechanical; **T-014-02 pushed it back** | Whether a superseded dated measurement is refreshed in place or left standing as the record it is. The block says twice that it is S-007's, the current figures already sit forty lines below it, and its lines 37-40 are S-007's arithmetic rather than figures — so refreshing it deletes a record. The answer applies to every dated block on the board, so it is worth settling once |
 
 **Needs food.** The collection has to grow before these can be acted on. **T-012-02 is the
 authority and its verdict covers the first two**; it explicitly did not reach *write food before
 writing features* for hand-off or rotation, which are feedable today.
 
-| finding | source |
-| --- | --- |
-| **Balance.** 130 distinct plants and 23 that ever carry a dish; 16 non-starch sides and 47 savoury plant-built dishes against 101 sweets; 14 pulse dinners. The 48 plants the shopping lists buy and no recipe is about are the work | T-012-02 |
-| **The fridge, for one person.** 2 recipes one person can cook for one or two with no trip to the shop, and the answer does not move under four sensitivity runs | T-012-02 |
-| **The Air Fryer & the Pot is 21, four short of 25** — six ranked pressure dishes unwritten, and seekh kabab writable now the drawer is settled. **None of them needs a bar to move** | T-008-05 §4.1 |
-| **The holiday occasion opens after five recipes**; the dumpling party should not open, and its blocker is annotation rather than food. There is still no mooncake recipe | T-013-03 §7, T-013-01 |
+| finding | source | why it was not done |
+| --- | --- | --- |
+| **Balance.** 130 distinct plants and 23 that ever carry a dish; 16 non-starch sides and 47 savoury plant-built dishes against 101 sweets; 14 pulse dinners. The 48 plants the shopping lists buy and no recipe is about are the work | T-012-02 | Forty-eight tables, one per plant. T-012-02's own verdict covers it: *write food before writing features* |
+| **The fridge, for one person.** 2 recipes one person can cook for one or two with no trip to the shop, and the answer does not move under four sensitivity runs | T-012-02 | Same verdict, and the four sensitivity runs mean no definition of *no trip to the shop* rescues it. Only recipes will |
+| **The Air Fryer & the Pot is 21, four short of 25** — six ranked pressure dishes unwritten, and seekh kabab writable now the drawer is settled. **None of them needs a bar to move** | T-008-05 §4.1 | Four recipes, and the gate is not the obstacle — moving a bar to reach 25 would be counting differently rather than stocking the shelf |
+| **The holiday occasion opens after five recipes**; the dumpling party should not open, and its blocker is annotation rather than food. There is still no mooncake recipe | T-013-03 §7, T-013-01 | Five named dishes have to exist first. The dumpling party is in the band above instead, because annotation is a decision and not a shopping list |
 
 ## Recorded and closed
 
