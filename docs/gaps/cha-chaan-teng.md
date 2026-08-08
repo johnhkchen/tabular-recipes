@@ -40,8 +40,8 @@ Five of the slugs below are borrowed — shelved at other counters, listed here 
 this one is sold them, and named one by one in
 [what this board borrows](#what-this-board-borrows-and-what-it-must-not). Read the caution there
 before adding a sixth: `menuFor()` builds its lookup from the recipes whose own `>> counters:` line
-names this counter, so a borrowed slug is recorded in this file and dropped from the page. The
-counter prints 22.
+names this counter, so a slug listed here reaches the page only once that file names the counter
+back. All five now do. The counter prints 27.
 
 **The drinks counter.** hong-kong-milk-tea · yuenyeung · iced-lemon-tea · lemon-coke-with-ginger ·
 horlicks · red-bean-ice
@@ -154,21 +154,23 @@ Seven files were already in the collection and the story assumed all seven belon
 needs a new file beside it, and one shares nothing but an English name. Every verdict below was
 applied as written; the **What happened** column is what T-007-05 did with it.
 
-**A borrowed slug does not reach the page.** `menuFor()` in `src/lib/counters.ts` looks each slug
-up among the recipes whose own `>> counters:` line names this counter, and drops anything it does
-not find — silently, with nothing failing. So the five *shelve as is* rows are listed in
-[what it has](#what-it-has) and in `src/data/counters.json`, and the counter prints 22 rather than
-27. Making them appear needs `Cha Chaan Teng` added to five `>> counters:` lines, which is a
-one-line edit per file and belongs to whoever owns those files. `scripts/menu-sections.mjs` reports
-the five as *listed but not shelved here* every run, and that line is the reminder, not a fault.
+**A borrowed slug reaches the page only when the recipe names the counter back.** `menuFor()` in
+`src/lib/counters.ts` looks each slug up among the recipes whose own `>> counters:` line names this
+counter. When T-007-05 wrote this section the five *shelve as is* rows were listed in
+[what it has](#what-it-has) and in `src/data/counters.json` and nowhere else, so the counter printed
+22 rather than 27, and the drop was silent. **Both halves of that are now settled.** T-007-06 added
+`Cha Chaan Teng` to the five `>> counters:` lines and the counter prints 27; and since T-011-05 a
+slug a counter lists but cannot place makes `menuFor()` **throw with the slug named** rather than
+disappear, so this shape of drift can no longer hide. `node scripts/menu-sections.mjs` reports
+`Cha Chaan Teng: 5 sections, 27/27 placed`.
 
 | Slug | Verdict | What happened | Why |
 | --- | --- | --- | --- |
-| `club-sandwich` | **shelve as is** | listed, not rendering | 公司三文治 is printed under that exact English on the Brooklyn board. Same three slices, same quartering on picks. The Hong Kong version usually swaps a fried egg in for one of the fillings; that is an `aka` and a note, not a rewrite. |
-| `beef-chow-fun` | **shelve as is** | listed, not rendering | Already carries 乾炒牛河 in its own `aka` and is already dry-fried flank over ho fun. Same dish on the dim sum board and on this one. Add the counter and stop. |
-| `pineapple-bun` | **shelve as is** | listed, not rendering | Same bun, already shelved at two counters. 菠蘿油 — the same bun split around cold butter — is rank 21 and is a short assembly file, not a second bun. |
-| `egg-custard-tart` | **shelve as is** | listed, not rendering | Already made with evaporated milk, already at Bakery and Dim Sum Counter. A genuine three-board dish and the collection already models it that way. |
-| `char-siu` | **shelve as is** | listed, not rendering | Not on the story's list of seven but it belongs here anyway: 叉燒湯意粉 is a breakfast-set item on a Hong Kong board and 叉燒 is already written. Noted so T-007-05 does not miss it. |
+| `club-sandwich` | **shelve as is** | shelved by T-007-06, rendering | 公司三文治 is printed under that exact English on the Brooklyn board. Same three slices, same quartering on picks. The Hong Kong version usually swaps a fried egg in for one of the fillings; that is an `aka` and a note, not a rewrite. |
+| `beef-chow-fun` | **shelve as is** | shelved by T-007-06, rendering | Already carries 乾炒牛河 in its own `aka` and is already dry-fried flank over ho fun. Same dish on the dim sum board and on this one. Add the counter and stop. |
+| `pineapple-bun` | **shelve as is** | shelved by T-007-06, rendering | Same bun, already shelved at two counters. 菠蘿油 — the same bun split around cold butter — is rank 21 and is a short assembly file, not a second bun. |
+| `egg-custard-tart` | **shelve as is** | shelved by T-007-06, rendering | Already made with evaporated milk, already at Bakery and Dim Sum Counter. A genuine three-board dish and the collection already models it that way. |
+| `char-siu` | **shelve as is** | shelved by T-007-06, rendering | Not on the story's list of seven but it belongs here anyway: 叉燒湯意粉 is a breakfast-set item on a Hong Kong board and 叉燒 is already written. Noted so T-007-05 does not miss it. |
 | `french-toast` | **write a new file** | `hong-kong-french-toast` written | The existing file is day-old challah soaked in an egg-milk-vanilla-cinnamon custard, **griddled in butter**, and finished with maple syrup. 西多士 is two slices sandwiched around **peanut butter**, egg-dipped, **deep-fried** in oil, and finished with a slab of butter and golden syrup. Different fat, different method, and there is a filling. **The new file must say in it that it is not `french-toast`**, and pair to it. |
 | `borscht` | **write a new file** | `hong-kong-borscht` written | The existing file is 1½ lb of grated **beetroot** with short ribs, dill and sour cream — Ukrainian, 2 hr 15 min. 羅宋湯 is a tomato-and-cabbage soup with celery, onion and potato and **no beetroot at all**; the name travelled through Shanghai from "Russian" and stuck to a different soup. **The new file must say in it that it is not `borscht`.** |
 | `lo-mein` | **do not shelve, and probably do not replace** | not shelved | The existing file is the Chinese-American 撈麵 — soft boiled wheat noodles tossed with char siu and oyster sauce. It shares an English name with this board and nothing else. A cha chaan teng's 撈丁 is instant noodles served drained (rank 22) and its 雲吞撈麵 is thin wonton noodles under a separate bowl of soup. **Shelving `lo-mein` here would be the exact mistake this section exists to prevent.** |
