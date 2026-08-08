@@ -124,8 +124,11 @@ Three decisions, and the honest position on each is a range with its source atta
   Pekoe, 粗茶) for aroma, **BOPF** (Broken Orange Pekoe Fannings, 中粗茶) for colour and body, and
   **DUST** (幼茶), which extracts fastest and carries most of the flavour. Shop practice is three
   grades or more; some houses use seven or eight. Lan Fong Yuen is reported as a secret blend of
-  **five** teas in one account and **six** in another. **No source states a ratio.** A file that
-  invents one is inventing the recipe.
+  **five** teas in one account and **six** in another. **Exactly one source states a ratio** —
+  自由時報, which gives 幼茶 65 % · 粗茶 25 % · 中茶 10 %, and which is where this file's brew
+  temperature and leaf-to-water figures also come from. That is one shop's blend written down, not a
+  standard, and `hong-kong-milk-tea` prints it as that source's, merged to the two grades a reader
+  can buy. A file that invents its own is still inventing the recipe.
 
 - **The pull.** The named sequence is 一沖、二焗、三撞、四回溫 — brew, steep covered, pull, bring back
   to temperature — and the heritage listing gives the steps as 調配茶葉 → 煲茶 → 撞茶 → 焗茶 → 撞奶.
