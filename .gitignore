@@ -10,3 +10,6 @@ src/generated/
 .lisa/
 .lisa-layout.kdl
 .DS_Store
+# Obsidian's own vault settings for reading docs/ — pane layout, theme, which plugins are on.
+# One machine's editor, not the project's.
+docs/.obsidian/
