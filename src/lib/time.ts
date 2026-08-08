@@ -56,6 +56,14 @@ export function formatDuration(minutes: number): string {
  * stocks and their pressure siblings, and the rice-water parboil in buri-daikon. Nobody stands
  * over a pot of water waiting for it; that is what parboiling is, and it was reading as twenty
  * minutes of a cook's attention.
+ *
+ * `airfry` is here ahead of any timer that uses it, the way the pressure words were added before
+ * a pressure recipe existed. `normalise()` strips spaces and hyphens, so it catches `~air fry{}`,
+ * `~air-fry{}` and `~airfry{}`. Today all 21 basket recipes read as unattended only because every
+ * basket cell happens to open with `roast`, which readWords reaches first — reorder one so the
+ * clock comes before that word and the recipe silently becomes twenty minutes of standing at a
+ * machine you can walk away from. Adding the name changes no figure in the collection as it
+ * stands: dumped over all 685 recipes with and without this line, the diff is empty.
  */
 const UNATTENDED = new Set([
   'rise', 'prove', 'proof', 'ferment', 'rest', 'chill', 'cool', 'freeze', 'set',
@@ -65,6 +73,7 @@ const UNATTENDED = new Set([
   'thaw', 'defrost', 'macerate', 'wilt', 'drain', 'press', 'smoke', 'stew', 'poach',
   'pressure', 'pressurecook', 'pressurecooking', 'pressurerelease', 'naturalrelease',
   'naturalpressurerelease', 'quickrelease', 'cometopressure', 'keepwarm',
+  'airfry',
 ]);
 
 /* Time you have to be there for, so an author can say so outright rather than by omission. */
@@ -148,8 +157,8 @@ function readWords(text: string): Reading | null {
  * each timer gets the words from the end of the previous timer up to the end of its own:
  * "knead 8 min", then ", then rise 2 hours".
  *
- * The timers have to be found, in order, or nothing is narrowed — a label rewritten by a
- * `>> step.N:` line may not contain them at all, and a wrong slice is worse than no slice.
+ * The timers have to be found, in order, or nothing is narrowed — a label written on a
+ * `>> step:` line may not contain them at all, and a wrong slice is worse than no slice.
  */
 function regionsOf(label: string, timers: readonly { text: string }[]): string[] {
   const regions: string[] = [];

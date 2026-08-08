@@ -6,7 +6,10 @@
  * parser resolves to step indices — so the tree is written in the .cook file, not guessed.
  */
 import { cleanLabel } from './label.ts';
+import type { Keeps } from './keeps.ts';
+import type { Capacity } from './scaling.ts';
 import type { Slack } from './slack.ts';
+import type { WashingUp } from './washing-up.ts';
 
 
 export interface RawIngredient {
@@ -31,7 +34,7 @@ export interface RawStep {
   index: number;
   /** The step text with its ingredients removed — see cleanLabel(). */
   rawLabel: string;
-  /** A `>> step.N: …` line in the recipe wins over the derived label. */
+  /** A `>> step:` line on the line above the step wins over the derived label. */
   labelOverride: string | null;
   ingredients: RawIngredient[];
   refs: number[];
@@ -61,11 +64,46 @@ export interface RawRecipe {
   slack: Slack | null;
   /** What is wrong with a `>> slack:` line that is there but not whole. A diagnostic, not a fact. */
   slackProblem?: string | null;
+  /**
+   * What is in the sink when the food is on the table. Authored, never derived — `cookware`
+   * below counts what a recipe NAMES, and a quart of frying oil names one wok. `null` is a
+   * recipe that never declared one, which is most of them; `{ items: [], count: 0 }` is a
+   * recipe that genuinely washes nothing. The two are different answers, so they are
+   * different values.
+   */
+  washingUp: WashingUp | null;
+  /** What is wrong with a `>> washing-up:` line that is there but not whole. A diagnostic. */
+  washingUpProblem?: string | null;
+  /**
+   * How long it stays good and what it is like when you come back to it — the half of
+   * *six people, over three days* that scaling cannot answer. Authored, never derived:
+   * nothing about a dish's second morning can be read off its steps. `null` is a recipe
+   * nobody has looked at, which is most of them, and `minutes: 0` is one that says outright
+   * it does not keep. The two are different answers, so they are different values.
+   */
+  keeps: Keeps | null;
+  /** What is wrong with a `>> keeps:` line that is there but not whole. A diagnostic. */
+  keepsProblem?: string | null;
+  /**
+   * How many servings the limiting vessel holds, which vessel, and the operations it bounds
+   * — the one fact the cost of cooking more of a thing cannot be worked out without.
+   * Authored, never derived: it is a fact about a kitchen, and the same file is a different
+   * number of batches in a different one. `null` is a recipe that is not vessel-bound, which
+   * is nearly all of them and is the correct answer. See src/lib/scaling.ts.
+   */
+  capacity?: Capacity | null;
+  /** What is wrong with a `>> capacity:` line that is there but not whole. A diagnostic. */
+  capacityProblem?: string | null;
   /** What people call it when they order it. */
   aka: string[];
   /** Slugs of recipes that go with this one. Made mutual at build time. */
   pairsWith: string[];
-  variants: { slug: string; title: string; kit: string | null }[];
+  /**
+   * The other files that cook this dish, and — when every one of them has declared it — how
+   * many things each leaves in the sink. Null on a variant that never declared: one number
+   * beside a silent sibling reads as a claim that the silent one washes nothing.
+   */
+  variants: { slug: string; title: string; kit: string | null; washingUpCount: number | null }[];
   /** Lowercased ingredient names, for searching. */
   ingredientNames: string[];
   /** Every #pan{} and #stand mixer{} the recipe asks for. */

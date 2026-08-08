@@ -297,47 +297,125 @@ main {
   outline-offset: 1px;
 }
 
-.filters {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
+/* ---- the three dials -----------------------------------------------------
+ *
+ * This block replaces a `.filters` / `.filter` pair that had been in this file since the first
+ * commit and that nothing ever used — a filter-chip vocabulary written before there was a
+ * filter. Two chip vocabularies in one stylesheet, one of them dead, is worse than either.
+ *
+ * The drawing is the one the site already has for "pick one of these": list.astro's multiplier
+ * dial. A recessed track holding transparent buttons, the pressed one raised and on the primary.
+ * That page scopes its copy to .list-page, so this is the same shape rather than the same rules;
+ * if a later ticket owns both files they are one block.
+ *
+ * `auto-fit` with a `minmax` floor rather than a media query: at 375px there is about 322px
+ * inside the finder, so the three dials stack; at the page's 54rem cap they sit in one row. A
+ * width that decides its own layout does not need a breakpoint spent on it.
+ */
+.dials {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
   margin: 0.9rem 0 0;
 }
 
-/* A shelf label you can press. Pressed means "showing only this". */
-.filter {
-  display: inline-flex;
-  align-items: baseline;
-  gap: 0.4rem;
-  padding: 0.4rem 0.8rem;
-  font: inherit;
-  font-size: 0.85rem;
-  color: var(--clay-ink);
-  background: var(--clay-surface-raised);
-  border: none;
+/*
+ * How many people, over how many days — one row, above the dials.
+ *
+ * ONE row and not two, which is the whole of what keeps this page a front door. The three dials
+ * already stack at 375px; two more stacked sets would put five control rows between the masthead
+ * and the counter shelf and push the shelf off the first screen entirely. Both sets are narrow
+ * enough to sit side by side on a phone (four stops of one or two characters, and three of
+ * five), so `flex` with a small floor rather than `.dials`' 14rem grid: the sets are shorter than
+ * a dial and should not be given a dial's width.
+ *
+ * It borrows .dial-set, .dial-name and .dial wholesale — the same recessed track, the same
+ * pressed stop, the same 44px thumb rule below. A second vocabulary for a second row of the same
+ * control is how a stylesheet ends up with two of everything.
+ */
+.situation {
+  display: grid;
+  gap: 0.5rem 1.2rem;
+  grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr));
+  margin: 0.9rem 0 0;
+}
+
+/*
+ * The name sits BESIDE its stops here rather than above them, which is the one place this row
+ * departs from .dial-set. Two more names on their own lines is 40px of a phone screen spent on
+ * two short phrases, and the counter shelf is what pays for it. Read across, it is a sentence
+ * with two blanks in it — how many people, over how many days — which is what the row is.
+ */
+.situation .dial-set {
+  flex-direction: row;
+  align-items: center;
+  gap: 0.6rem;
+}
+.situation .dial-name {
+  flex: 0 0 auto;
+}
+.situation .dial {
+  flex: 1 1 auto;
+}
+
+.dial-set {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+/*
+ * A <span>, not a <label>. check-touch.mjs measures a label as the union of its own box and the
+ * box of the control it speaks for; a label speaking for a group of buttons speaks for none of
+ * them and gets measured alone, so naming the dial correctly would fail the thumb check.
+ */
+.dial-name {
+  color: var(--clay-ink-soft);
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.dial {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  padding: 0.25rem;
+  background: var(--clay-well);
   border-radius: var(--clay-radius-pill);
-  box-shadow: var(--clay-shadow-raised);
+  box-shadow: var(--clay-shadow-well);
+}
+.dial button {
+  padding: 0.35em 0.75em;
+  font-family: var(--clay-font-body);
+  font-size: 0.82rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--clay-ink-soft);
+  background: transparent;
+  border: 0;
+  border-radius: var(--clay-radius-pill);
   cursor: pointer;
   transition: var(--clay-press);
 }
-.filter:hover { transform: translateY(-1px); }
-.filter[aria-pressed='true'] {
+.dial button:hover {
+  color: var(--clay-ink);
+  background: color-mix(in srgb, var(--clay-surface-raised) 70%, transparent);
+}
+.dial button[aria-pressed='true'] {
   color: var(--clay-on-primary);
   background: var(--clay-primary);
-  box-shadow: var(--clay-shadow-pressed);
-  transform: translateY(1px);
+  box-shadow: var(--clay-shadow-raised);
+  font-weight: 600;
 }
-.filter:focus-visible {
+.dial button:focus-visible {
   outline: 3px solid color-mix(in srgb, var(--clay-primary) 45%, transparent);
   outline-offset: 2px;
 }
-.filter .n {
-  font-size: 0.78em;
-  color: var(--clay-ink-soft);
-  font-variant-numeric: tabular-nums;
+
+@media (prefers-reduced-motion: reduce) {
+  .dial button {
+    transition: none;
+  }
 }
-.filter[aria-pressed='true'] .n { color: color-mix(in srgb, var(--clay-on-primary) 78%, transparent); }
-.filter--clear { color: var(--clay-primary); font-weight: 600; }
 
 .tally {
   margin: 0.9rem 0 0;
@@ -349,6 +427,20 @@ main {
   padding: 2rem 0;
   color: var(--clay-ink-soft);
   text-align: center;
+}
+
+/*
+ * narrow — a phone, which is the whole scenario. Somebody who has just got home is not at a
+ * desk, so the dial's stops are the first control on this site drawn for a thumb from the start
+ * rather than raised to 44px afterwards. Same shape .site-bar a and .skip:focus already use.
+ */
+@media (max-width: 34rem) {
+  .dial button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+  }
 }
 
 /* ---- the counters, on the front door ------------------------------------- */
@@ -401,6 +493,52 @@ main {
   color: var(--clay-ink-soft);
   font-size: 0.85rem;
   text-align: center;
+}
+
+/*
+ * The shelf for recipes the dials cannot answer for.
+ *
+ * It borrows .shelf-group wholesale for its heading, its count and its sentence, because it is
+ * a titled shelf and the site already draws one. What it does NOT do is dim its cards or badge
+ * them: opacity is a legibility cost paid by the reader least able to afford it, and a chip
+ * reading "unknown" is a legend by another name. The marking is the heading, the position below
+ * the passes, and one line on each card saying what nobody wrote down — none of it colour.
+ */
+.cannot-say {
+  margin-top: 2.25rem;
+}
+
+/*
+ * The shelf for recipes the size dropped, between the matches and the unanswered.
+ *
+ * Same heading treatment, same reason for it, and the same refusal to dim or badge: these are
+ * still recipes you can pick up, and the one that is wrong for six people is often exactly the
+ * one somebody wants on a Tuesday. The marking is the heading and the sentence on each card.
+ */
+.wont-scale {
+  margin-top: 2.25rem;
+}
+
+/* Why the card is on the list it is on. The finding, above the figures it was read from. */
+.results .reason {
+  margin: 0 0 0.15rem;
+  font-size: 0.92rem;
+}
+
+/* The figures the reader asked about, on a card that passed. */
+.results .figures {
+  margin: 0;
+  color: var(--clay-ink-soft);
+  font-size: 0.92rem;
+  font-variant-numeric: tabular-nums;
+}
+
+/* What nobody wrote down, on a card we cannot answer for. */
+.results .unsaid {
+  margin: 0;
+  color: var(--clay-ink-soft);
+  font-size: 0.92rem;
+  font-style: italic;
 }
 
 kbd {

@@ -35,7 +35,9 @@
 import { formatDuration } from '../lib/time.ts';
 import { iconForOperation, iconSvg, type IconName } from '../lib/icons.ts';
 import { attentionIsOurs, buildSchedule, type Schedule, type Task } from '../lib/schedule.ts';
+import { keepsWord } from '../lib/keeps.ts';
 import { slackWord } from '../lib/slack.ts';
+import { washingUpWord } from '../lib/washing-up.ts';
 import { buildTree, type RawRecipe, type RecipeTree } from '../lib/tree.ts';
 
 interface Props {
@@ -268,6 +270,30 @@ const legend = {
  */
 const slack = recipe.slack;
 
+/*
+ * The fourth, and the one the three less-work counters make a promise about: what is in the
+ * sink when the food is on the table. Authored like the slack above it and null for almost all
+ * of the collection, which draws nothing rather than an empty slot.
+ *
+ * The count is printed and the author's own list is printed beside it, because neither can be
+ * checked without the other — and because "Five things" next to "One thing" is the comparison
+ * One Pot exists to offer. The number is never written in a file; it is items.length, taken in
+ * src/lib/washing-up.ts and nowhere else, so the two can never tell different stories.
+ */
+const washingUp = recipe.washingUp;
+
+/*
+ * The fifth, and the one *six people, over three days* turns on: whether the dish is still
+ * worth eating on Thursday, and — the half that decides the evening — what it is like when you
+ * get there. Authored like the two above it and null for almost all of the collection.
+ *
+ * It is a cook's judgement of a dish and never a safety window, which is why the duration
+ * cannot be written without the sentence that qualifies it: a number alone would be read as a
+ * promise about a fridge, and this site is not in a position to make one. The panel therefore
+ * has no shape a bare number could take.
+ */
+const keeps = recipe.keeps;
+
 const headingId = `clock-${recipe.slug}`;
 ---
 
@@ -303,6 +329,29 @@ const headingId = `clock-${recipe.slug}`;
         <dt>If you get it wrong</dt>
         <dd>
           <b>{slackWord(slack.level)}</b> — {slack.reason}
+        </dd>
+      </dl>
+    )
+  }
+
+  {
+    washingUp && (
+      <dl class="washing-up">
+        <dt>What you'll wash</dt>
+        <dd>
+          <b>{washingUpWord(washingUp.count)}</b>
+          {washingUp.count > 0 && <> — {washingUp.items.join(', ')}</>}
+        </dd>
+      </dl>
+    )
+  }
+
+  {
+    keeps && (
+      <dl class="keeps">
+        <dt>Does it keep</dt>
+        <dd>
+          <b>{keepsWord(keeps)}</b> — {keeps.character}
         </dd>
       </dl>
     )
@@ -483,13 +532,19 @@ const headingId = `clock-${recipe.slug}`;
     line-height: 1.5;
   }
 
-  /* --- what happens if you get it wrong -------------------------------- */
+  /* --- what happens if you get it wrong, what you are left holding, and Thursday -- */
 
   /* The same well as the two numbers, so it reads as one family of facts — but full width,
      because the value is the sentence and a sentence needs a line. No colour keyed to the
      level: this panel's rule is that colour is the fourth signal, never the first, and a
-     traffic light over someone's dinner would be alarm rather than information. */
-  .slack {
+     traffic light over someone's dinner would be alarm rather than information.
+
+     One selector list rather than three blocks: these are three facts of the same kind,
+     written to the same grammar, and if they were allowed to drift apart the page would say
+     they are different kinds of thing. */
+  .slack,
+  .washing-up,
+  .keeps {
     margin: 0.55rem 0 0;
     padding: 0.6rem 0.75rem 0.7rem;
     background: var(--clay-well);
@@ -497,19 +552,25 @@ const headingId = `clock-${recipe.slug}`;
     box-shadow: var(--clay-shadow-well);
   }
 
-  .slack dt {
+  .slack dt,
+  .washing-up dt,
+  .keeps dt {
     font-size: 0.78rem;
     letter-spacing: 0.01em;
     color: color-mix(in srgb, var(--clay-ink-soft) 78%, var(--clay-ink));
   }
 
-  .slack dd {
+  .slack dd,
+  .washing-up dd,
+  .keeps dd {
     margin: 0.1rem 0 0;
     font-size: 0.88rem;
     line-height: 1.45;
   }
 
-  .slack b {
+  .slack b,
+  .washing-up b,
+  .keeps b {
     font-family: var(--clay-font-display);
     font-weight: 600;
   }
@@ -832,6 +893,8 @@ const headingId = `clock-${recipe.slug}`;
     .stat,
     .verdict,
     .slack,
+    .washing-up,
+    .keeps,
     .dur {
       box-shadow: none;
       border: 1px solid #ddd;

@@ -56,6 +56,8 @@ Then the optional lines, which are what the site is organised by:
 >> dish: beef-stew                  # what this and its equipment variants have in common
 >> kit: instant pot                 # the equipment that makes this variant different
 >> slack: forgiving — an extra half hour in the oven only softens the beef further
+>> washing-up: the Dutch oven, a plate for the browned beef
+>> keeps: 4 days — better on the second, once the chile has settled into the fat
 ```
 
 - **`counters`** is a list, because a recipe can sit at more than one — noodles are not only
@@ -92,6 +94,109 @@ Then the optional lines, which are what the site is organised by:
   filler. It is authored, never worked out from the timers: a five-minute custard is less
   forgiving than a six-hour braise.
 
+- **`washing-up`** is what is in the sink when the food is on the table, and it renders beside
+  the clock under `slack`. One line, listing the things, in the words you would use out loud:
+
+  ```cooklang
+  >> washing-up: the wok, a bowl to velvet in, a dish to dredge in, a rack to drain on
+  >> washing-up: nothing
+  ```
+
+  **The number is worked out from the list; you never write it.** *"Two"* followed by three
+  things is a recipe telling two different stories, so there is nowhere to write a number and
+  a line that states one is a build error. **One entry is one thing to wash** — that is the
+  whole contract between the list and the count, so *"two mixing bowls"* is two entries, not
+  one, and the checker says so.
+
+  **Count what holds food:** the pans, the pots, the bowls, the sieves, the racks, the machine
+  parts. **Do not count the plate you eat off**, the knife and board you prepped on, or the
+  spoon you stirred with. The test is the same for all four: *if every recipe on the site would
+  list it, it does not go in the line.* A number that is inflated by the same constant
+  everywhere has stopped comparing anything, and comparing is the entire job of this field.
+
+  **`nothing` is a real answer, and it is not the same as leaving the line off.** A dry rub
+  shaken together in the jar it is kept in genuinely washes nothing, and it says so. A recipe
+  that has not been looked at leaves the line off and the page prints nothing at all.
+
+  **It is authored, never derived, and this is the field where that matters most.** `cookware`
+  counts what a file *names*: `general-tsos-chicken` declares one `#wok{}` and is five things
+  to wash, and `docs/gaps/one-pot.md` threw 61 recipes off a shelf by hand after learning that.
+  `npm run check` **warns** — it does not fail — when a file names cookware its washing-up line
+  never mentions, because a foil-lined tray is a real answer and a warning you can overrule is
+  the honest strength for a guess. The failure that matters runs the other way: the bowls a
+  recipe uses and never names, which no check can see. That is why a person writes this line.
+
+- **`capacity`** is how many servings the limiting vessel holds, which vessel, and what it
+  bounds — the one fact that decides whether cooking three times as much takes three times as
+  long. One line: a number of **servings**, then the vessel, then the operations it bounds.
+
+  ```cooklang
+  >> capacity: 2 — the wok, sear
+  >> capacity: 4 — the air fryer basket, roast
+  ```
+
+  **Leave it off, which is the common and correct answer.** Most recipes are not vessel-bound:
+  a pot does not care how much is in it, and a capacity on every file would mean somebody
+  guessed. A wrong one is worse than none — absent leaves the page saying what it says today,
+  and wrong makes it confidently wrong in a new way.
+
+  **It is what the vessel HOLDS, not what the recipe makes.** A recipe that simply serves four
+  has no capacity to declare. And it is never a count of batches: how many loads you need is
+  worked out from this number and `>> servings:`, so a line that states one is a build error —
+  the same rule that stops `washing-up` stating its own count.
+
+  **Say what it bounds, not just how much.** *"2 — the wok"* on a stir-fry charges the wok's
+  batches to the thirty-minute rest in the fridge, which turns a 42-minute answer into 102.
+  Naming the operation — `sear` — is what keeps the batches where they happen, so a line with
+  no operation is a build error too. Name it in the word your step uses.
+
+  **A capacity below `>> servings:` is a build error unless the recipe says where it batches.**
+  A file that serves 8 and holds 4 already goes in two loads; that is fine, and
+  `beef-with-broccoli` says so in the step itself — *"sear in two batches"*. Saying nothing is
+  the fault, and the message quotes both lines so you can see which one is wrong.
+
+  It is authored, never derived, and it is a fact about **your** kitchen: the same file is a
+  different number of batches in a different one, which is why the vessel is named out loud.
+  `docs/knowledge/scaling.md` is the whole model, worked by hand on five dishes.
+
+- **`keeps`** is how long the dish stays good and what it is like when you come back to it. It
+  renders under `washing-up`, beside the clock. One line: a span, then the character.
+
+  ```cooklang
+  >> keeps: 3 days — better on the second
+  >> keeps: 3 days — the crust is gone by morning; back in the oven, never the microwave
+  >> keeps: not at all — the wave is gone in twenty minutes and no stock brings it back
+  ```
+
+  **This is not a food-safety field, and it must not be read as one.** It is one cook's
+  judgement of whether a dish is still worth eating — not a claim that it is safe to eat, and
+  not a shelf life. Nothing on this site is a shelf life. If you are unsure whether something
+  is safe, this line cannot help you and was never trying to. **Where you are not sure, leave
+  it off**, which is the instruction that actually matters: a confident wrong number here is
+  the one thing on this site that could make somebody ill.
+
+  **The character is why the field is allowed to exist.** *"3 days"* and *"3 days — the crust
+  is gone by the next morning"* are the same number and two different dinners, and a number on
+  its own is exactly the shelf life above. So a span with nothing after it is a build error,
+  the same way a `slack` level with no reason is. Say what you would actually be eating: the
+  thing that goes soft, the thing that improves, the part to eat first.
+
+  **`not at all` is a real answer and often the more useful one.** A fried thing is not a fried
+  thing an hour later, and a cook planning three days of dinners needs to know that as much as
+  they need to know what improves. It still takes a character, because *does not keep* on its
+  own says nothing about whether the oven is the fix or whether there is no fix.
+
+  **Freezing is a different question and is deliberately not in this line.** Chili keeps four
+  days cold and three months frozen; bread is stale by Tuesday and perfect from the freezer.
+  There is no ordering between those two answers, so a line carrying both would sometimes carry
+  a contradiction — and one line that means two things has stopped comparing anything. `keeps`
+  is **the fridge, covered, as it is**. `npm run check` warns when a line wanders into the
+  freezer. What can be made now and eaten in March is a real question and a future `freezes:`,
+  not a corner of this one.
+
+  **Absent is the common answer.** Most of the collection has never been read for this, and
+  silence is honest rather than a gap: an undeclared recipe prints nothing at all.
+
 **Name your timers.** `~rise{90%min}`, `~chill{4%hr}`, `~bake{30%min}` — the name is what
 separates time you spend from time you merely wait out, which is the most useful thing a
 recipe page can tell a cook. An unnamed timer is read from the operation it sits in
@@ -116,8 +221,20 @@ Then the rules, which are short:
    as `0.25 tsp`.
 5. **Cell labels are derived, and overridable.** The label is the step with its
    ingredients stripped out: `Fold in @flour{}, @cocoa{} to @&(~1)batter{}` → `fold in`.
-   Temperatures, times and cookware stay. To set one by hand, add
-   `>> step.7: bake 350°F (170°C) 30 to 40 min` (N is 1-based over the steps as written).
+   Temperatures, times and cookware stay. To set one by hand, put it on the line directly
+   above the step it names:
+
+   ```cooklang
+   >> step: bake 350°F (170°C) 30 to 40 min
+   Bake @&(~1)batter{} at 350°F for ~{30%min}.
+   ```
+
+   The line binds to the step on the very next line, with no blank line between. If it has
+   no step under it — a blank line, another `>> step:` line, or the end of the file — the
+   check fails and names the line, rather than dropping the label you wrote. A prep step is
+   a step, so a full-width row can carry one too. There was an older form, `>> step.7:`, which
+   named a step by counting to it from the top of the file; it is gone, the check refuses it,
+   and `node scripts/inline-step-labels.mjs --write` moves any you still have.
 
 Row order is not the order you wrote the ingredients: children sort deepest-first, which
 is what makes the staircase descend to the right and puts the long chain of operations
@@ -132,6 +249,10 @@ Things a table cannot show, and which the build will refuse rather than draw wro
 
 - **Splitting** a preparation into two later steps (it is a tree, not a graph).
 - **Two endings** — every branch must flow into one final step.
+- **A reference to a step that is not there** — `@&(~3)` when only two steps came before, or
+  `@&(9)` in a six-step file. Cooklang does not object: it reads the reference as an ingredient, so
+  the table grows a row that is not an ingredient and draws perfectly well. The check names the line
+  instead.
 
 To find out what is wrong with a file without building the site:
 
@@ -164,6 +285,9 @@ $ node scripts/check-recipes.mjs --labels recipes/soups/new-england-clam-chowder
 | `src/data/counters.json` | The counters, their blurbs, the sections each menu prints, and the category fallback that keeps every recipe on at least one. |
 | `src/lib/time.ts` | Timer durations in minutes, and whether a wait is hands-on or unattended. |
 | `src/lib/slack.ts` | The three slack levels, and the one reader that turns a `>> slack:` line into a level and a reason. |
+| `src/lib/washing-up.ts` | The one reader that turns a `>> washing-up:` line into a list and the count derived from it, plus the advisory cross-check against `cookware`. |
+| `src/lib/keeps.ts` | The one reader that turns a `>> keeps:` line into a span and the character that has to come with it. Refuses a bare number. |
+| `src/lib/scaling.ts` | The one reader that turns a `>> capacity:` line into a vessel, and the cost of cooking any number of servings of a recipe. Returns figures, never sentences. |
 | `src/lib/collection.test.ts` | The invariants no single file can be checked for: unique slugs, mutual pairings, one plain way per dish. |
 | `scripts/normalise.mjs` | The only place the WASM parser is touched. |
 | `scripts/parse-recipes.mjs` | Walks `recipes/`, emits `src/generated/recipes.json`. |

@@ -1,0 +1,7 @@
+{
+  "disposition": "note",
+  "reason": null,
+  "criterion_quote": "It shelves at least **20** recipes, including at least four written before this story, and the work artifact names which were borrowed and from where.",
+  "evidence_citation": "docs/active/work/T-007-05/review.md",
+  "summary": "The counter lists 27 recipes including five written before this story and names each borrow, but the site prints only the 22 that name the counter in their own file, because menuFor() drops a listed slug the recipe does not claim and this ticket may not edit a .cook file."
+}

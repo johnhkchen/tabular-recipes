@@ -1,5 +1,5 @@
 {
-  "//": "A counter is where you would get this if you were not making it at home — the kind of place a person recognises from their own street. A recipe can sit at several, because noodles are not only sold by the sushi-and-ramen place, so `counters` on a recipe is a list. `categories` here is a fallback only: a recipe that names no counter lands at whichever counters claim its category, so nothing is ever orphaned. The fallbacks are deliberately coarse — they exist so the build never drops a recipe, not because every brownie belongs at the same shelf — and they are meant to be replaced recipe by recipe with a `>> counters:` line. Counters with no fallback are filled in by hand; a counter with nothing on it simply does not render. The archetypes and the menu vocabulary behind them are recorded in docs/knowledge/counters.md. A section may also carry `notes`, which is shelf talk: a sentence comparing the things on this shelf, which is the one comparison a recipe page cannot make because it can only show you one of them. An entry with `of` is about that dish and prints beside it; one without is about the section and prints under its heading. Both are optional, both are one sentence, and scripts/parse-recipes.mjs will not let a note point at a slug this section does not shelve. They are the only thing in this file written by hand rather than derived, so scripts/menu-sections.mjs --write — which rebuilds `sections` from docs/gaps/*.md — will drop every one of them.",
+  "//": "A counter is where you would get this if you were not making it at home — the kind of place a person recognises from their own street. A recipe can sit at several, because noodles are not only sold by the sushi-and-ramen place, so `counters` on a recipe is a list. `categories` here is a fallback only: a recipe that names no counter lands at whichever counters claim its category, so nothing is ever orphaned. The fallbacks are deliberately coarse — they exist so the build never drops a recipe, not because every brownie belongs at the same shelf — and they are meant to be replaced recipe by recipe with a `>> counters:` line. Counters with no fallback are filled in by hand; a counter with nothing on it simply does not render. The archetypes and the menu vocabulary behind them are recorded in docs/knowledge/counters.md. `sections` is the headings this counter's menu prints, in print order, and it orders what the shelf already holds rather than putting anything on it: every slug in a section must name that counter on its own `>> counters:` line, or `menuFor` throws with the slug and the heading named and the build stops. It used to be dropped in silence instead, page and count agreeing with each other while nine listed slugs printed nowhere for two stories; `node scripts/check-menus.mjs` reads the built pages back after every `npm run verify` so that cannot happen again. A section may also carry `notes`, which is shelf talk: a sentence comparing the things on this shelf, which is the one comparison a recipe page cannot make because it can only show you one of them. An entry with `of` is about that dish and prints beside it; one without is about the section and prints under its heading. Both are optional, both are one sentence, and scripts/parse-recipes.mjs will not let a note point at a slug this section does not shelve. They are the only thing in this file written by hand rather than derived, so scripts/menu-sections.mjs --write — which rebuilds `sections` from docs/gaps/*.md — will drop every one of them.",
   "counters": [
     {
       "name": "Bakery",
@@ -1703,11 +1703,7 @@
             "tinga-de-pollo",
             "xiu-mai",
             "western-omelette",
-            "egg-foo-young",
-            "general-tsos-chicken",
-            "orange-chicken",
-            "sesame-chicken",
-            "sweet-and-sour-pork"
+            "egg-foo-young"
           ]
         },
         {
@@ -1739,114 +1735,15 @@
             "black-bean-soup",
             "wonton-soup"
           ]
-        }
-      ]
-    },
-    {
-      "name": "The Soup Pot",
-      "slug": "soup-pot",
-      "blurb": "Put it on, leave it alone for three hours, and it gets better.",
-      "categories": [],
-      "sections": [
-        {
-          "title": "Old-fire soups (老火湯)",
-          "items": [
-            "green-radish-carrot-pork-bone-soup",
-            "winter-melon-jobs-tears-soup",
-            "lotus-root-dried-octopus-soup",
-            "watercress-honey-date-soup",
-            "peanut-black-eyed-pea-chicken-feet-soup",
-            "overlord-flower-soup",
-            "corn-carrot-pork-bone-soup",
-            "chinese-yam-goji-black-chicken-soup",
-            "ching-bo-leung-soup",
-            "sha-shen-yu-zhu-soup",
-            "hairy-gourd-dried-scallop-soup",
-            "dried-bok-choy-pork-lung-soup",
-            "lotus-seed-lily-bulb-soup",
-            "old-cucumber-rice-bean-soup",
-            "green-papaya-peanut-trotter-soup",
-            "apple-pear-pork-bone-soup"
-          ],
-          "notes": [
-            {
-              "note": "The broth is the dish here. The solids — 湯渣 — are spent by the end and go out on a side plate with soy sauce, or not."
-            },
-            {
-              "note": "Each dried thing goes in for a word — 潤 to moisten, 祛濕 to clear damp, 健脾 for the stomach, 潤燥 for a dry autumn."
-            },
-            {
-              "of": "ching-bo-leung-soup",
-              "note": "The one here built on dried goods rather than a vegetable, so every item in the packet carries its own reason."
-            },
-            {
-              "of": "corn-carrot-pork-bone-soup",
-              "note": "The one here that needs no explaining at the table: sweet, mild, and made all year round."
-            },
-            {
-              "of": "dried-bok-choy-pork-lung-soup",
-              "note": "The one that asks the most of you, and all of it is at the sink: washing the lung white can take an hour."
-            },
-            {
-              "of": "green-papaya-peanut-trotter-soup",
-              "note": "The rich one, and the pot made for a new mother."
-            },
-            {
-              "of": "green-radish-carrot-pork-bone-soup",
-              "note": "The one a house makes when nobody has decided: green radish cooling, carrot neutral, so it suits any season."
-            },
-            {
-              "of": "hairy-gourd-dried-scallop-soup",
-              "note": "The light one, and quick for the shelf: an hour and a half rather than three."
-            },
-            {
-              "of": "peanut-black-eyed-pea-chicken-feet-soup",
-              "note": "The clearest case here of a pot organised entirely by what its parts are for."
-            },
-            {
-              "of": "sha-shen-yu-zhu-soup",
-              "note": "Proof that a 老火湯 does not have to be big. Four things in the pot and that is all."
-            }
-          ]
         },
         {
-          "title": "Quick daily soups (滾湯)",
+          "title": "Quick soups that go with dinner",
           "items": [
             "tomato-potato-beef-soup",
             "seaweed-egg-drop-soup",
             "mustard-greens-tofu-soup",
             "crucian-carp-tofu-soup",
-            "century-egg-amaranth-soup",
-            "egg-drop-soup"
-          ],
-          "notes": [
-            {
-              "of": "century-egg-amaranth-soup",
-              "note": "The weeknight one, and the colour is why: ten minutes and the amaranth turns the whole pot pink."
-            },
-            {
-              "of": "crucian-carp-tofu-soup",
-              "note": "The one pot here where a hard boil is correct: on the old-fire side it is the failure every time."
-            },
-            {
-              "of": "seaweed-egg-drop-soup",
-              "note": "Not the thickened egg drop off a takeout menu: no cornstarch, and laver rather than stock for the body."
-            },
-            {
-              "of": "tomato-potato-beef-soup",
-              "note": "What a household actually drinks most evenings — the three-hour pot up the page is the Sunday one."
-            }
-          ]
-        },
-        {
-          "title": "What each thing is for",
-          "items": []
-        },
-        {
-          "title": "Congee and rice soups",
-          "items": [
-            "congee",
-            "congee-instant-pot"
+            "century-egg-amaranth-soup"
           ]
         }
       ]
@@ -2021,6 +1918,120 @@
               "of": "soy-sauce-chicken-slow-cooker",
               "note": "The shortest cook here, four hours, and the only one where longer is actively worse."
             }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Cha Chaan Teng",
+      "slug": "cha-chaan-teng",
+      "blurb": "Pick a set by the time of day; the milk tea comes with it.",
+      "categories": [],
+      "sections": [
+        {
+          "title": "The drinks counter",
+          "items": [
+            "hong-kong-milk-tea",
+            "yuenyeung",
+            "iced-lemon-tea",
+            "lemon-coke-with-ginger",
+            "horlicks",
+            "red-bean-ice"
+          ]
+        },
+        {
+          "title": "Toast and the bun case",
+          "items": [
+            "thick-toast",
+            "hong-kong-french-toast",
+            "pineapple-bun",
+            "egg-custard-tart"
+          ]
+        },
+        {
+          "title": "Macaroni, noodles and things in soup",
+          "items": [
+            "ham-macaroni-soup",
+            "luncheon-meat-and-egg-noodles",
+            "hong-kong-borscht",
+            "satay-beef-noodles",
+            "soy-sauce-pan-fried-noodles",
+            "beef-chow-fun",
+            "char-siu"
+          ]
+        },
+        {
+          "title": "Rice plates",
+          "items": [
+            "baked-pork-chop-rice",
+            "pork-chop-in-tomato-sauce",
+            "minced-beef-rice",
+            "shrimp-and-egg-rice",
+            "curry-beef-brisket",
+            "swiss-wings"
+          ]
+        },
+        {
+          "title": "Sandwiches and buns",
+          "items": [
+            "luncheon-meat-and-egg-sandwich",
+            "hong-kong-egg-sandwich",
+            "pork-chop-bun",
+            "club-sandwich"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "The Air Fryer & the Pot",
+      "slug": "air-fryer-and-pot",
+      "blurb": "Plug one in, eat, and wash two things.",
+      "categories": [],
+      "sections": [
+        {
+          "title": "Straight out of the basket",
+          "items": [
+            "air-fryer-chicken-wings",
+            "air-fryer-chicken-thighs",
+            "air-fryer-salmon",
+            "air-fryer-saba-shioyaki",
+            "air-fryer-halloumi",
+            "air-fryer-tofu",
+            "air-fryer-chicken-tikka",
+            "air-fryer-shish-tawook"
+          ],
+          "notes": [
+            {
+              "note": "Everything here washes two things or fewer, cooks in one plug-in machine, and is on the table in 45 minutes."
+            }
+          ]
+        },
+        {
+          "title": "Vegetables that go crisp",
+          "items": [
+            "air-fryer-brussels-sprouts",
+            "air-fryer-broccoli",
+            "air-fryer-cauliflower",
+            "air-fryer-sweet-potatoes",
+            "air-fryer-chips",
+            "air-fryer-batata-harra",
+            "air-fryer-chickpeas",
+            "air-fryer-corn-ribs",
+            "air-fryer-padron-peppers"
+          ]
+        },
+        {
+          "title": "Frozen things, done properly",
+          "items": [
+            "air-fryer-frozen-chips",
+            "air-fryer-frozen-spring-rolls",
+            "air-fryer-frozen-prawns"
+          ]
+        },
+        {
+          "title": "Reheats that beat the microwave",
+          "items": [
+            "air-fryer-reheated-pizza"
           ]
         }
       ]

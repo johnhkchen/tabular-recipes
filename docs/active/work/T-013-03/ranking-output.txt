@@ -1,0 +1,1208 @@
+transcription check: chili-con-carne = −95.0 under the family profile — reproduced
+transcription check: the party's unforgiving term never fires — the gate holds
+
+
+==============================================================================
+A big family holiday meal, cooked alone  —  docs/knowledge/occasions.md §3.3
+==============================================================================
+rates: standing 1 · longest 1 · wash 5 · keeps -20/day capped at 4 · forgiving -20 · unforgiving 0 · lower is better
+
+three answers over 685 files
+  ranked       592  86.4%
+  rejected      93  13.6%  (slack: unforgiving)
+  cannot say     0  0.0%
+
+separation
+  distinct scores       136 over 592 ranked
+  largest tie group     161 recipes all scoring 0
+  ranked on a tie       456 recipes share a score with somebody
+
+how much of this ranking is absence
+  ranked with no >> slack:        269  45.4%
+  ranked with no >> keeps:        472  79.7%
+  ranked with no >> washing-up:   443  74.8%
+  standing minutes that are a fallback rather than a claim: 2284 of 9044  25.3%
+
+admissible against genuinely good
+  ranked (admissible)   592
+  >= 2 fields declared  241  40.7%   <- genuinely good
+  all 4 declared        35
+
+top 20
+     1       -95  braised-short-ribs                 standing 0.0 · longest 0.0 · wash 1 · keeps 4d · slack forgiving · unknown
+     1       -95  cachete                            standing 0.0 · longest 0.0 · wash 1 · keeps 4d · slack forgiving · unknown
+     1       -95  chili-con-carne                    standing 0.0 · longest 0.0 · wash 1 · keeps 4d · slack forgiving · unknown
+     1       -95  pot-roast                          standing 0.0 · longest 0.0 · wash 1 · keeps 4d · slack forgiving · unknown
+     5       -90  lamb-tagine                        standing 0.0 · longest 0.0 · wash 2 · keeps 4d · slack forgiving · unknown
+     6       -85  beef-bourguignon                   standing 0.0 · longest 0.0 · wash 3 · keeps 4d · slack forgiving · unknown
+     6       -85  chicken-broth-instant-pot          standing 0.0 · longest 0.0 · wash 3 · keeps 4d · slack forgiving · unknown
+     6       -85  corned-beef-instant-pot            standing 0.0 · longest 0.0 · wash 3 · keeps 4d · slack forgiving · unknown
+     6       -85  ham-hock-stock-instant-pot         standing 0.0 · longest 0.0 · wash 3 · keeps 4d · slack forgiving · unknown
+    10       -75  japanese-beef-curry                standing 0.0 · longest 0.0 · wash 1 · keeps 3d · slack forgiving · unknown
+    11       -70  beef-stew                          standing 0.0 · longest 0.0 · wash 2 · keeps 3d · slack forgiving · unknown
+    11       -70  coq-au-vin                         standing 0.0 · longest 0.0 · wash 2 · keeps 4d · slack — · unknown
+    13       -68  birria-de-res-instant-pot          standing 6.0 · longest 6.0 · wash 4 · keeps 4d · slack forgiving · inferred
+    14       -65  corned-beef-slow-cooker            standing 0.0 · longest 0.0 · wash 3 · keeps 4d · slack narrow · unknown
+    15       -60  birria-de-res-slow-cooker          standing 7.5 · longest 7.5 · wash 5 · keeps 4d · slack forgiving · inferred
+    16       -55  cachete-instant-pot                standing 20.0 · longest 20.0 · wash 1 · keeps 4d · slack forgiving · inferred
+    16       -55  hungarian-goulash                  standing 0.0 · longest 0.0 · wash 1 · keeps 3d · slack narrow · unknown
+    16       -55  irish-stew                         standing 0.0 · longest 0.0 · wash 1 · keeps 2d · slack forgiving · unknown
+    16       -55  irish-stew-slow-cooker             standing 0.0 · longest 0.0 · wash 1 · keeps 2d · slack forgiving · unknown
+    16       -55  new-england-boiled-dinner          standing 0.0 · longest 0.0 · wash 1 · keeps 3d · slack narrow · stated
+
+bottom 20
+   573       108  miso-ramen                         standing 54.0 · longest 54.0 · wash — · keeps — · slack — · inferred
+   574       110  onion-tomato-masala                standing 55.0 · longest 55.0 · wash — · keeps — · slack — · stated
+   575       111  tortilla-espanola                  standing 96.0 · longest 60.0 · wash 3 · keeps 3d · slack narrow · stated
+   576       112  onion-gravy                        standing 56.0 · longest 56.0 · wash — · keeps — · slack — · stated
+   577       114  cream-of-mushroom-soup             standing 57.0 · (15.0 assumed) · longest 57.0 · wash — · keeps — · slack — · unknown
+   578       130  western-omelette                   standing 60.0 · longest 60.0 · wash 2 · keeps 0d · slack — · inferred
+   579       132  club-sandwich                      standing 66.0 · longest 66.0 · wash — · keeps — · slack — · inferred
+   580       134  bhuna                              standing 94.5 · longest 94.5 · wash 1 · keeps 3d · slack — · inferred
+   581       140  cheese-grits                       standing 70.0 · (70.0 assumed) · longest 70.0 · wash — · keeps — · slack — · unknown
+   582       144  blt                                standing 72.0 · longest 72.0 · wash — · keeps — · slack — · inferred
+   583       165  polenta                            standing 80.0 · longest 80.0 · wash 1 · keeps — · slack narrow · inferred
+   584       166  risotto-alla-milanese              standing 78.0 · (18.0 assumed) · longest 78.0 · wash 2 · keeps 0d · slack narrow · unknown
+   585       168  luncheon-meat-and-egg-noodles      standing 84.0 · longest 84.0 · wash — · keeps — · slack narrow · inferred
+   586       192  luncheon-meat-and-egg-sandwich     standing 96.0 · longest 96.0 · wash — · keeps — · slack — · inferred
+   587       204  mushroom-risotto                   standing 102.0 · (12.0 assumed) · longest 102.0 · wash — · keeps — · slack narrow · unknown
+   588       206  french-onion-soup                  standing 106.0 · (100.0 assumed) · longest 100.0 · wash — · keeps — · slack — · unknown
+   589       223  mujaddara                          standing 104.0 · longest 104.0 · wash 3 · keeps — · slack — · inferred
+   590       240  beef-rendang                       standing 120.0 · (120.0 assumed) · longest 120.0 · wash — · keeps — · slack narrow · unknown
+   591       480  birista                            standing 240.0 · longest 240.0 · wash — · keeps — · slack — · stated
+   592       540  patty-melt                         standing 270.0 · longest 270.0 · wash — · keeps — · slack — · inferred
+
+==============================================================================
+A dumpling party for friends  —  docs/knowledge/occasions.md §3.4
+==============================================================================
+rates: standing 1 · longest 0.5 · wash -2 · keeps 0/day capped at 4 · forgiving 20 · unforgiving -40 · higher is better · claimed minutes only (§3.6)
+
+three answers over 685 files
+  ranked       234  34.2%
+  rejected      93  13.6%  (slack: unforgiving)
+  cannot say   358  52.3%
+       358  hands-on evidence is unknown, and this profile pays for hands-on minutes
+
+separation
+  distinct scores       108 over 234 ranked
+  largest tie group     11 recipes all scoring 36
+  ranked on a tie       126 recipes share a score with somebody
+
+how much of this ranking is absence
+  ranked with no >> slack:        91  38.9%
+  ranked with no >> keeps:        182  77.8%
+  ranked with no >> washing-up:   170  72.6%
+  standing minutes that are a fallback rather than a claim: 0 of 5742  0.0%
+
+admissible against genuinely good
+  ranked (admissible)   234
+  >= 2 fields declared  163  69.7%   <- genuinely good
+  all 4 declared        35
+
+top 20
+     1       405  patty-melt                         standing 270.0 · longest 270.0 · wash — · keeps — · slack — · inferred
+     2       360  birista                            standing 240.0 · longest 240.0 · wash — · keeps — · slack — · stated
+     3       150  mujaddara                          standing 104.0 · longest 104.0 · wash 3 · keeps — · slack — · inferred
+     4       144  luncheon-meat-and-egg-sandwich     standing 96.0 · longest 96.0 · wash — · keeps — · slack — · inferred
+     5    139.75  bhuna                              standing 94.5 · longest 94.5 · wash 1 · keeps 3d · slack — · inferred
+     6       126  luncheon-meat-and-egg-noodles      standing 84.0 · longest 84.0 · wash — · keeps — · slack narrow · inferred
+     7       120  tortilla-espanola                  standing 96.0 · longest 60.0 · wash 3 · keeps 3d · slack narrow · stated
+     8     119.5  braised-short-ribs-instant-pot     standing 81.0 · longest 45.0 · wash 2 · keeps 4d · slack forgiving · inferred
+     9       118  polenta                            standing 80.0 · longest 80.0 · wash 1 · keeps — · slack narrow · inferred
+    10       108  blt                                standing 72.0 · longest 72.0 · wash — · keeps — · slack — · inferred
+    11        99  club-sandwich                      standing 66.0 · longest 66.0 · wash — · keeps — · slack — · inferred
+    12        98  oxtails-slow-cooker                standing 64.0 · longest 40.0 · wash 3 · keeps 4d · slack forgiving · inferred
+    13        95  sausage-and-peppers                standing 66.0 · longest 66.0 · wash 2 · keeps 3d · slack — · stated
+    14        92  pollo-asado                        standing 48.0 · longest 48.0 · wash — · keeps — · slack forgiving · inferred
+    15        86  western-omelette                   standing 60.0 · longest 60.0 · wash 2 · keeps 0d · slack — · inferred
+    16        84  onion-gravy                        standing 56.0 · longest 56.0 · wash — · keeps — · slack — · stated
+    17      83.5  ratatouille                        standing 57.0 · longest 57.0 · wash 1 · keeps 4d · slack — · stated
+    18      82.5  onion-tomato-masala                standing 55.0 · longest 55.0 · wash — · keeps — · slack — · stated
+    19        81  miso-ramen                         standing 54.0 · longest 54.0 · wash — · keeps — · slack — · inferred
+    20        79  chicken-cacciatore                 standing 54.0 · longest 54.0 · wash 1 · keeps 3d · slack — · stated
+
+bottom 20
+   208       4.5  zaatar                             standing 3.0 · longest 3.0 · wash — · keeps — · slack narrow · inferred
+   216       3.6  berbere                            standing 2.4 · longest 2.4 · wash — · keeps — · slack narrow · inferred
+   217      3.38  chili-powder                       standing 2.3 · longest 2.3 · wash — · keeps — · slack narrow · inferred
+   217      3.38  chinese-five-spice-powder          standing 2.3 · longest 2.3 · wash — · keeps — · slack narrow · inferred
+   217      3.38  shawarma-spice                     standing 2.3 · longest 2.3 · wash — · keeps — · slack narrow · inferred
+   217      3.38  shichimi-togarashi                 standing 2.3 · longest 2.3 · wash — · keeps — · slack narrow · inferred
+   221         3  garam-masala                       standing 2.0 · longest 2.0 · wash — · keeps — · slack narrow · inferred
+   221         3  harissa                            standing 2.0 · longest 2.0 · wash — · keeps — · slack narrow · inferred
+   221         3  madras-curry-powder                standing 2.0 · longest 2.0 · wash — · keeps — · slack narrow · inferred
+   224      2.25  chapati                            standing 1.5 · longest 1.5 · wash — · keeps — · slack — · inferred
+   224      2.25  ras-el-hanout                      standing 1.5 · longest 1.5 · wash — · keeps — · slack narrow · inferred
+   226       1.5  maamoul                            standing 1.0 · longest 1.0 · wash — · keeps — · slack narrow · inferred
+   227      1.13  adobo-para-al-pastor               standing 0.8 · longest 0.8 · wash — · keeps — · slack narrow · inferred
+   227      1.13  flour-tortillas                    standing 0.8 · longest 0.8 · wash — · keeps — · slack — · inferred
+   229       0.5  seaweed-egg-drop-soup              standing 3.0 · longest 3.0 · wash 2 · keeps 0d · slack narrow · inferred
+   230         0  char-siu-bao                       standing 0.0 · longest 0.0 · wash — · keeps — · slack narrow · stated
+   231        -2  new-england-boiled-dinner          standing 0.0 · longest 0.0 · wash 1 · keeps 3d · slack narrow · stated
+   231        -2  new-england-boiled-dinner-slow-cooker standing 0.0 · longest 0.0 · wash 1 · keeps 3d · slack narrow · stated
+   233        -6  soy-sauce-chicken                  standing 0.0 · longest 0.0 · wash 3 · keeps 3d · slack narrow · stated
+   234       -12  chintan-broth-instant-pot          standing 0.0 · longest 0.0 · wash 6 · keeps — · slack narrow · stated
+
+==============================================================================
+Do the two lists differ
+==============================================================================
+
+A. top ten, as a reader would see it (first ten rows of each list)
+   family: braised-short-ribs, cachete, chili-con-carne, pot-roast, lamb-tagine, beef-bourguignon, chicken-broth-instant-pot, corned-beef-instant-pot, ham-hock-stock-instant-pot, japanese-beef-curry
+   party : patty-melt, birista, mujaddara, luncheon-meat-and-egg-sandwich, bhuna, luncheon-meat-and-egg-noodles, tortilla-espanola, braised-short-ribs-instant-pot, polenta, blt
+   shared: 0 of 10  (none)
+
+   by competition rank <= 10, ties included: family 10, party 10
+   shared: 0  (none)
+
+B. Jaccard over the two RANKED SETS (a coverage fact, not a ranking fact)
+   ranked by both 234 · ranked by either 592 · Jaccard 0.395
+
+C. Spearman rho over the 234 recipes BOTH profiles rank
+   rho = -0.591
+   +1 would mean the two profiles are one profile (the "easy is good" collapse the ticket names).
+   −1 would mean a clean inversion. Near 0 means they are reading different fields.
+
+==============================================================================
+The inversion test
+==============================================================================
+
+1. The literal test — the dish the holiday list ranks worst
+   family's last ranked: patty-melt (rank 592, score 540)
+   in the party's list: YES — rank 1 of 234, score 405
+
+   everything sharing the family's worst score (540):
+     patty-melt                         party: rank 1
+
+2. The bottom ten against the top ten
+   family's worst ten: polenta, risotto-alla-milanese, luncheon-meat-and-egg-noodles, luncheon-meat-and-egg-sandwich, mushroom-risotto, french-onion-soup, mujaddara, beef-rendang, birista, patty-melt
+   of those, in the party's top ten: 6  polenta, luncheon-meat-and-egg-noodles, luncheon-meat-and-egg-sandwich, mujaddara, birista, patty-melt
+   where each lands in the party's list:
+     polenta                            rank 9 of 234
+     risotto-alla-milanese              hands-on evidence is unknown, and this profile pays for hands-on minutes
+     luncheon-meat-and-egg-noodles      rank 6 of 234
+     luncheon-meat-and-egg-sandwich     rank 4 of 234
+     mushroom-risotto                   hands-on evidence is unknown, and this profile pays for hands-on minutes
+     french-onion-soup                  hands-on evidence is unknown, and this profile pays for hands-on minutes
+     mujaddara                          rank 3 of 234
+     beef-rendang                       hands-on evidence is unknown, and this profile pays for hands-on minutes
+     birista                            rank 2 of 234
+     patty-melt                         rank 1 of 234
+
+3. The named case — gyoza, occasions.md §3.5's headline claim (#17 family, #1 party)
+   gyoza            family rank 539/592 (72)  |  party rank 38/234 (60)
+   green-beans      family rank 468/592 (39)  |  party hands-on evidence is unknown, and this profile pays for hands-on minutes
+   samosa           family rank 446/592 (32)  |  party rank 134/234 (24.5)
+   egg-rolls        family rank 427/592 (28.5)  |  party rank 139/234 (23.25)
+
+==============================================================================
+occasions.md §3.5's seventeen, reproduced at 685 files
+==============================================================================
+
+  slug                            family (of 685)              party (of 685)
+  chili-con-carne                #1 (-95)                     cannot-say
+  smoked-turkey-breast           rejected                     rejected
+  turkey-brine                   rejected                     rejected
+  cranberry-sauce                #105 (0)                     cannot-say
+  mashed-potatoes                #105 (0)                     cannot-say
+  baked-turkey-wings             #296 (5)                     cannot-say
+  turkey-pan-gravy               #321 (9)                     cannot-say
+  green-beans                    #468 (39)                    cannot-say
+  gyoza                          #539 (72)                    #38 (60)
+  samosa                         #446 (32)                    #134 (24.5)
+  egg-rolls                      #427 (28.5)                  #139 (23.25)
+  ham-sui-gok                    #349 (12.75)                 #189 (10.5)
+  har-gow                        #105 (0)                     cannot-say
+  char-siu-bao                   #105 (0)                     #230 (0)
+  wonton-soup                    #357 (15)                    cannot-say
+  siu-mai                        rejected                     rejected
+  xiao-long-bao                  rejected                     rejected
+
+==============================================================================
+The same seventeen ranked only against each other — §3.5's own experiment, re-run
+==============================================================================
+
+  A big family holiday meal, cooked alone
+    # 1       -95  chili-con-carne
+    # 2         0  char-siu-bao
+    # 3         0  cranberry-sauce
+    # 4         0  har-gow
+    # 5         0  mashed-potatoes
+    # 6         5  baked-turkey-wings
+    # 7         9  turkey-pan-gravy
+    # 8     12.75  ham-sui-gok
+    # 9        15  wonton-soup
+    #10      28.5  egg-rolls
+    #11        32  samosa
+    #12        39  green-beans
+    #13        72  gyoza
+     --    rejected  smoked-turkey-breast  (gate: slack is unforgiving)
+     --    rejected  turkey-brine  (gate: slack is unforgiving)
+     --    rejected  siu-mai  (gate: slack is unforgiving)
+     --    rejected  xiao-long-bao  (gate: slack is unforgiving)
+
+  A dumpling party for friends
+    # 1        60  gyoza
+    # 2      24.5  samosa
+    # 3     23.25  egg-rolls
+    # 4      10.5  ham-sui-gok
+    # 5         0  char-siu-bao
+     --  cannot-say  chili-con-carne  (hands-on evidence is unknown, and this profile pays for hands-on minutes)
+     --    rejected  smoked-turkey-breast  (gate: slack is unforgiving)
+     --    rejected  turkey-brine  (gate: slack is unforgiving)
+     --  cannot-say  cranberry-sauce  (hands-on evidence is unknown, and this profile pays for hands-on minutes)
+     --  cannot-say  mashed-potatoes  (hands-on evidence is unknown, and this profile pays for hands-on minutes)
+     --  cannot-say  baked-turkey-wings  (hands-on evidence is unknown, and this profile pays for hands-on minutes)
+     --  cannot-say  turkey-pan-gravy  (hands-on evidence is unknown, and this profile pays for hands-on minutes)
+     --  cannot-say  green-beans  (hands-on evidence is unknown, and this profile pays for hands-on minutes)
+     --  cannot-say  har-gow  (hands-on evidence is unknown, and this profile pays for hands-on minutes)
+     --  cannot-say  wonton-soup  (hands-on evidence is unknown, and this profile pays for hands-on minutes)
+     --    rejected  siu-mai  (gate: slack is unforgiving)
+     --    rejected  xiao-long-bao  (gate: slack is unforgiving)
+
+==============================================================================
+Can the shelf feed either
+==============================================================================
+
+the dumpling folder: 16 files
+  air-fryer-frozen-spring-rolls, char-siu-bao, cheung-fun, crab-rangoon, egg-rolls, fatayer, gyoza, ham-sui-gok, har-gow, potato-knish, sambousek, samosa, sesame-balls, siu-mai, wu-gok, xiao-long-bao
+
+where each lands in the party's list:
+  air-fryer-frozen-spring-rolls    cannot-say: hands-on evidence is unknown, and this profile pays for hands-on minutes   standing 0.0 · longest 0.0 · wash 2 · keeps 0d · slack narrow · unknown
+  char-siu-bao                     rank 230 of 234, score 0   standing 0.0 · longest 0.0 · wash — · keeps — · slack narrow · stated
+  cheung-fun                       cannot-say: hands-on evidence is unknown, and this profile pays for hands-on minutes   standing 0.0 · longest 0.0 · wash — · keeps — · slack — · unknown
+  crab-rangoon                     rank 193 of 234, score 9   standing 6.0 · longest 6.0 · wash — · keeps — · slack narrow · inferred
+  egg-rolls                        rank 139 of 234, score 23.25   standing 18.0 · longest 10.5 · wash — · keeps — · slack narrow · inferred
+  fatayer                          rank 158 of 234, score 18   standing 12.0 · longest 12.0 · wash — · keeps — · slack narrow · inferred
+  gyoza                            rank 38 of 234, score 60   standing 48.0 · longest 24.0 · wash — · keeps — · slack narrow · inferred
+  ham-sui-gok                      rank 189 of 234, score 10.5   standing 8.3 · longest 4.5 · wash — · keeps — · slack narrow · inferred
+  har-gow                          cannot-say: hands-on evidence is unknown, and this profile pays for hands-on minutes   standing 0.0 · longest 0.0 · wash — · keeps — · slack narrow · unknown
+  potato-knish                     rank 32 of 234, score 65   standing 30.0 · longest 30.0 · wash — · keeps — · slack forgiving · inferred
+  sambousek                        rank 135 of 234, score 24   standing 18.0 · longest 12.0 · wash — · keeps — · slack narrow · inferred
+  samosa                           rank 134 of 234, score 24.5   standing 17.0 · longest 15.0 · wash — · keeps — · slack narrow · inferred
+  sesame-balls                     rejected: gate: slack is unforgiving   standing 12.0 · longest 12.0 · wash — · keeps — · slack unforgiving · inferred
+  siu-mai                          rejected: gate: slack is unforgiving   standing 0.0 · longest 0.0 · wash — · keeps — · slack unforgiving · unknown
+  wu-gok                           rejected: gate: slack is unforgiving   standing 9.0 · longest 5.0 · wash — · keeps — · slack unforgiving · inferred
+  xiao-long-bao                    rejected: gate: slack is unforgiving   standing 0.0 · longest 0.0 · wash — · keeps — · slack unforgiving · unknown
+
+what the plate's vocabulary asks for, searched over slug + title + aka + tags:
+  whole roast turkey     club-sandwich, cranberry-sauce, turkey-pan-gravy, smoked-turkey-breast, ham-hock-stock-instant-pot, ham-hock-stock
+  stuffing               cornbread-dressing
+  pumpkin pie            pecan-pie-bars, rice-krispie-treats, apple-pie, sweet-potato-pie, fatayer, sambousek
+  green bean casserole   tuna-noodle-casserole
+  gratin                 french-onion-soup
+  goose                  — NOTHING
+  prime rib              schmaltz, rib-tips, smoked-bologna, smoked-pork-ribs, memphis-dry-rub, braised-short-ribs-instant-pot
+  jiaozi                 — NOTHING
+  potsticker             gyoza
+  pierogi                — NOTHING
+  ravioli                — NOTHING
+  manti                  — NOTHING
+  momo                   — NOTHING
+  khinkali               — NOTHING
+  dumpling wrapper       — NOTHING
+  dumpling dough         pizza-dough, sicilian-pan-dough, sourdough-boule, flour-tortillas, ramen-noodles, all-butter-pie-crust
+
+holiday-shaped files by slug, title, aka or tag (91):
+  pecan-pie-bars                   rank 105 of 592, score 0
+  rice-krispie-treats              rank 105 of 592, score 0
+  dinner-rolls                     rank 96 of 592, score -4
+  apple-pie                        rank 105 of 592, score 0
+  sweet-potato-pie                 rank 105 of 592, score 0
+  blue-cheese-dressing             rank 105 of 592, score 0
+  caesar-dressing                  rejected: gate: slack is unforgiving
+  goma-dare                        rank 46 of 592, score -20
+  green-goddess-dressing           rank 105 of 592, score 0
+  honey-mustard-dressing           rank 105 of 592, score 0
+  miso-ginger-dressing             rank 105 of 592, score 0
+  nuoc-cham                        rank 105 of 592, score 0
+  ranch-dressing                   rank 105 of 592, score 0
+  russian-dressing                 rank 105 of 592, score 0
+  tahini-sauce                     rank 105 of 592, score 0
+  fatayer                          rank 402 of 592, score 24
+  sambousek                        rank 429 of 592, score 30
+  hush-puppies                     rank 367 of 592, score 16
+  lahm-bi-ajeen                    rank 402 of 592, score 24
+  country-fried-steak              rank 509 of 592, score 56
+  crispy-chickpeas                 rank 357 of 592, score 15
+  fried-chicken                    rejected: gate: slack is unforgiving
+  karaage                          rank 337 of 592, score 12
+  lo-mein                          rank 458 of 592, score 36
+  macaroni-and-cheese              rank 105 of 592, score 0
+  soy-sauce-pan-fried-noodles      rank 539 of 592, score 72
+  tuna-noodle-casserole            rank 387 of 592, score 20
+  all-butter-pie-crust             rank 105 of 592, score 0
+  grandma-pie                      rank 105 of 592, score 0
+  margherita                       rank 105 of 592, score 0
+  sicilian-pizza                   rank 105 of 592, score 0
+  white-pizza                      rank 105 of 592, score 0
+  bbq-tofu-bowl                    rank 375 of 592, score 18
+  crispy-chickpea-bowl             rank 375 of 592, score 18
+  dirty-rice                       rank 484 of 592, score 45
+  harvest-bowl                     rank 46 of 592, score -20
+  egg-salad                        rank 105 of 592, score 0
+  macaroni-salad                   rank 46 of 592, score -20
+  roasted-beet-salad               rank 367 of 592, score 16
+  salade-nicoise                   rank 279 of 592, score 4
+  shaved-brussels-salad            rank 424 of 592, score 28
+  spinach-salad                    rejected: gate: slack is unforgiving
+  club-sandwich                    rank 579 of 592, score 132
+  smash-burger                     rank 492 of 592, score 48
+  cranberry-sauce                  rank 105 of 592, score 0
+  cream-gravy                      rank 337 of 592, score 12
+  creamed-chipped-beef             rank 429 of 592, score 30
+  house-brown-sauce                rank 105 of 592, score 0
+  makhani-gravy                    rank 314 of 592, score 8
+  onion-gravy                      rank 576 of 592, score 112
+  onion-tomato-masala              rank 574 of 592, score 110
+  sausage-gravy                    rank 470 of 592, score 40
+  turkey-pan-gravy                 rank 321 of 592, score 9
+  pulled-roast-chicken             rank 105 of 592, score 0
+  smoked-turkey-breast             rejected: gate: slack is unforgiving
+  french-onion-soup                rank 588 of 592, score 206
+  ham-hock-stock-instant-pot       rank 6 of 592, score -85
+  ham-hock-stock                   rank 93 of 592, score -5
+  tom-yum-goong                    rank 375 of 592, score 18
+  turkey-brine                     rejected: gate: slack is unforgiving
+  baked-turkey-wings-slow-cooker   rank 512 of 592, score 60
+  baked-turkey-wings               rank 296 of 592, score 5
+  carnitas-instant-pot             rank 102 of 592, score -1
+  carnitas-slow-cooker             rank 279 of 592, score 4
+  carnitas                         rank 43 of 592, score -25
+  char-siu                         rank 105 of 592, score 0
+  oxtails-instant-pot              rank 46 of 592, score -20
+  oxtails-slow-cooker              rank 385 of 592, score 19
+  oxtails                          rank 34 of 592, score -42
+  pot-roast-instant-pot            rank 102 of 592, score -1
+  pot-roast-slow-cooker            rank 402 of 592, score 24
+  pot-roast                        rank 1 of 592, score -95
+  siu-yuk                          rejected: gate: slack is unforgiving
+  smothered-pork-chops             rank 375 of 592, score 18
+  egg-foo-young                    rank 424 of 592, score 28
+  air-fryer-broccoli               rank 325 of 592, score 10
+  air-fryer-brussels-sprouts       rank 84 of 592, score -10
+  air-fryer-cauliflower            rank 84 of 592, score -10
+  air-fryer-sweet-potatoes         rank 23 of 592, score -50
+  candied-yams                     rank 105 of 592, score 0
+  charred-broccoli                 rank 357 of 592, score 15
+  cornbread-dressing               rank 402 of 592, score 24
+  creamed-corn                     rank 446 of 592, score 32
+  crispy-roast-potatoes            rank 357 of 592, score 15
+  goma-ae                          rank 429 of 592, score 30
+  green-beans                      rank 468 of 592, score 39
+  mashed-potatoes                  rank 105 of 592, score 0
+  roasted-beets                    rank 105 of 592, score 0
+  roasted-brussels-sprouts         rank 357 of 592, score 15
+  roasted-cauliflower              rank 325 of 592, score 10
+  roasted-sweet-potatoes           rank 357 of 592, score 15
+
+==============================================================================
+The holiday meal, diagnosed
+==============================================================================
+
+### Plate A — assembled from the family ranking
+  centrepiece  pot-roast                  family #1 of 592   family #1 of 592, and the ranking's own pick
+  starch       mashed-potatoes            family #105 of 592   family #105 — the four-way-tied middle at 0
+  vegetable    roasted-brussels-sprouts   family #357 of 592   family #357 — best-ranked green side
+  vegetable    green-beans                family #468 of 592   family #468 — the ranking says avoid it; a household cooks it anyway
+  sauce        cranberry-sauce            family #105 of 592   family #105
+  dessert      apple-pie                  family #105 of 592   family #105
+
+--- diagnose(), 1 cook, 4 burners, ovenShelves null ---
+{
+  "findings": [
+    {
+      "kind": "oven-clash",
+      "dishes": [
+        "pot-roast",
+        "roasted-brussels-sprouts"
+      ],
+      "window": {
+        "from": -22,
+        "to": 0
+      },
+      "confidence": "inferred",
+      "celsius": [
+        149,
+        218
+      ],
+      "wanted": 2,
+      "have": 0,
+      "overrunMinutes": 0
+    }
+  ],
+  "dishes": [
+    {
+      "slug": "pot-roast",
+      "servings": {
+        "written": 6,
+        "at": 12
+      },
+      "standingMinutes": 0,
+      "elapsedMinutes": 240,
+      "batches": {
+        "written": 1,
+        "at": 1,
+        "binds": false,
+        "costMinutes": 0
+      },
+      "evidence": "unknown",
+      "assumedStandingMinutes": 0,
+      "untimedCount": 3,
+      "madeAhead": false,
+      "startsAt": -240
+    },
+    {
+      "slug": "mashed-potatoes",
+      "servings": {
+        "written": 6,
+        "at": 12
+      },
+      "standingMinutes": 0,
+      "elapsedMinutes": 22,
+      "batches": {
+        "written": 1,
+        "at": 1,
+        "binds": false,
+        "costMinutes": 0
+      },
+      "evidence": "unknown",
+      "assumedStandingMinutes": 0,
+      "untimedCount": 2,
+      "madeAhead": false,
+      "startsAt": -22
+    },
+    {
+      "slug": "roasted-brussels-sprouts",
+      "servings": {
+        "written": 4,
+        "at": 12
+      },
+      "standingMinutes": 0,
+      "elapsedMinutes": 22,
+      "batches": {
+        "written": 1,
+        "at": 1,
+        "binds": false,
+        "costMinutes": 0
+      },
+      "evidence": "unknown",
+      "assumedStandingMinutes": 0,
+      "untimedCount": 3,
+      "madeAhead": false,
+      "startsAt": -22
+    },
+    {
+      "slug": "green-beans",
+      "servings": {
+        "written": 8,
+        "at": 12
+      },
+      "standingMinutes": 19.5,
+      "elapsedMinutes": 74.5,
+      "batches": {
+        "written": 1,
+        "at": 1,
+        "binds": false,
+        "costMinutes": 0
+      },
+      "evidence": "unknown",
+      "assumedStandingMinutes": 19.5,
+      "untimedCount": 2,
+      "madeAhead": false,
+      "startsAt": -68
+    },
+    {
+      "slug": "cranberry-sauce",
+      "servings": {
+        "written": 8,
+        "at": 12
+      },
+      "standingMinutes": 0,
+      "elapsedMinutes": 17,
+      "batches": {
+        "written": 1,
+        "at": 1,
+        "binds": false,
+        "costMinutes": 0
+      },
+      "evidence": "unknown",
+      "assumedStandingMinutes": 0,
+      "untimedCount": 2,
+      "madeAhead": false,
+      "startsAt": -17
+    },
+    {
+      "slug": "apple-pie",
+      "servings": {
+        "written": 8,
+        "at": 12
+      },
+      "standingMinutes": 0,
+      "elapsedMinutes": 355,
+      "batches": {
+        "written": 1,
+        "at": 1,
+        "binds": false,
+        "costMinutes": 0
+      },
+      "evidence": "unknown",
+      "assumedStandingMinutes": 0,
+      "untimedCount": 1,
+      "madeAhead": false,
+      "startsAt": -355
+    }
+  ],
+  "standingMinutes": 19.5,
+  "startsAt": -355,
+  "evidence": "unknown",
+  "unscalable": [],
+  "cooks": 1,
+  "burners": 4,
+  "ovenShelves": null
+}
+
+--- diagnose(), 2 cooks, 4 burners, ovenShelves null ---
+{
+  "findings": [
+    {
+      "kind": "oven-clash",
+      "dishes": [
+        "pot-roast",
+        "roasted-brussels-sprouts"
+      ],
+      "window": {
+        "from": -22,
+        "to": 0
+      },
+      "confidence": "inferred",
+      "celsius": [
+        149,
+        218
+      ],
+      "wanted": 2,
+      "have": 0,
+      "overrunMinutes": 0
+    }
+  ],
+  "dishes": [
+    {
+      "slug": "pot-roast",
+      "servings": {
+        "written": 6,
+        "at": 12
+      },
+      "standingMinutes": 0,
+      "elapsedMinutes": 240,
+      "batches": {
+        "written": 1,
+        "at": 1,
+        "binds": false,
+        "costMinutes": 0
+      },
+      "evidence": "unknown",
+      "assumedStandingMinutes": 0,
+      "untimedCount": 3,
+      "madeAhead": false,
+      "startsAt": -240
+    },
+    {
+      "slug": "mashed-potatoes",
+      "servings": {
+        "written": 6,
+        "at": 12
+      },
+      "standingMinutes": 0,
+      "elapsedMinutes": 22,
+      "batches": {
+        "written": 1,
+        "at": 1,
+        "binds": false,
+        "costMinutes": 0
+      },
+      "evidence": "unknown",
+      "assumedStandingMinutes": 0,
+      "untimedCount": 2,
+      "madeAhead": false,
+      "startsAt": -22
+    },
+    {
+      "slug": "roasted-brussels-sprouts",
+      "servings": {
+        "written": 4,
+        "at": 12
+      },
+      "standingMinutes": 0,
+      "elapsedMinutes": 22,
+      "batches": {
+        "written": 1,
+        "at": 1,
+        "binds": false,
+        "costMinutes": 0
+      },
+      "evidence": "unknown",
+      "assumedStandingMinutes": 0,
+      "untimedCount": 3,
+      "madeAhead": false,
+      "startsAt": -22
+    },
+    {
+      "slug": "green-beans",
+      "servings": {
+        "written": 8,
+        "at": 12
+      },
+      "standingMinutes": 19.5,
+      "elapsedMinutes": 74.5,
+      "batches": {
+        "written": 1,
+        "at": 1,
+        "binds": false,
+        "costMinutes": 0
+      },
+      "evidence": "unknown",
+      "assumedStandingMinutes": 19.5,
+      "untimedCount": 2,
+      "madeAhead": false,
+      "startsAt": -68
+    },
+    {
+      "slug": "cranberry-sauce",
+      "servings": {
+        "written": 8,
+        "at": 12
+      },
+      "standingMinutes": 0,
+      "elapsedMinutes": 17,
+      "batches": {
+        "written": 1,
+        "at": 1,
+        "binds": false,
+        "costMinutes": 0
+      },
+      "evidence": "unknown",
+      "assumedStandingMinutes": 0,
+      "untimedCount": 2,
+      "madeAhead": false,
+      "startsAt": -17
+    },
+    {
+      "slug": "apple-pie",
+      "servings": {
+        "written": 8,
+        "at": 12
+      },
+      "standingMinutes": 0,
+      "elapsedMinutes": 355,
+      "batches": {
+        "written": 1,
+        "at": 1,
+        "binds": false,
+        "costMinutes": 0
+      },
+      "evidence": "unknown",
+      "assumedStandingMinutes": 0,
+      "untimedCount": 1,
+      "madeAhead": false,
+      "startsAt": -355
+    }
+  ],
+  "standingMinutes": 19.5,
+  "startsAt": -355,
+  "evidence": "unknown",
+  "unscalable": [],
+  "cooks": 2,
+  "burners": 4,
+  "ovenShelves": null
+}
+
+### Plate B — the same plate with the gated centrepiece §3.3 says the profile is right to reject
+  centrepiece  smoked-turkey-breast       family rejected       REJECTED by the gate: slack unforgiving
+  starch       mashed-potatoes            family #105 of 592   family #105 — the four-way-tied middle at 0
+  vegetable    roasted-brussels-sprouts   family #357 of 592   family #357 — best-ranked green side
+  vegetable    green-beans                family #468 of 592   family #468 — the ranking says avoid it; a household cooks it anyway
+  sauce        cranberry-sauce            family #105 of 592   family #105
+  dessert      apple-pie                  family #105 of 592   family #105
+
+--- diagnose(), 1 cook, 4 burners, ovenShelves null ---
+{
+  "findings": [],
+  "dishes": [
+    {
+      "slug": "smoked-turkey-breast",
+      "servings": {
+        "written": 8,
+        "at": 12
+      },
+      "standingMinutes": 0,
+      "elapsedMinutes": 920,
+      "batches": {
+        "written": 1,
+        "at": 1,
+        "binds": false,
+        "costMinutes": 0
+      },
+      "evidence": "unknown",
+      "assumedStandingMinutes": 0,
+      "untimedCount": 1,
+      "madeAhead": false,
+      "startsAt": -920
+    },
+    {
+      "slug": "mashed-potatoes",
+      "servings": {
+        "written": 6,
+        "at": 12
+      },
+      "standingMinutes": 0,
+      "elapsedMinutes": 22,
+      "batches": {
+        "written": 1,
+        "at": 1,
+        "binds": false,
+        "costMinutes": 0
+      },
+      "evidence": "unknown",
+      "assumedStandingMinutes": 0,
+      "untimedCount": 2,
+      "madeAhead": false,
+      "startsAt": -22
+    },
+    {
+      "slug": "roasted-brussels-sprouts",
+      "servings": {
+        "written": 4,
+        "at": 12
+      },
+      "standingMinutes": 0,
+      "elapsedMinutes": 22,
+      "batches": {
+        "written": 1,
+        "at": 1,
+        "binds": false,
+        "costMinutes": 0
+      },
+      "evidence": "unknown",
+      "assumedStandingMinutes": 0,
+      "untimedCount": 3,
+      "madeAhead": false,
+      "startsAt": -22
+    },
+    {
+      "slug": "green-beans",
+      "servings": {
+        "written": 8,
+        "at": 12
+      },
+      "standingMinutes": 19.5,
+      "elapsedMinutes": 74.5,
+      "batches": {
+        "written": 1,
+        "at": 1,
+        "binds": false,
+        "costMinutes": 0
+      },
+      "evidence": "unknown",
+      "assumedStandingMinutes": 19.5,
+      "untimedCount": 2,
+      "madeAhead": false,
+      "startsAt": -68
+    },
+    {
+      "slug": "cranberry-sauce",
+      "servings": {
+        "written": 8,
+        "at": 12
+      },
+      "standingMinutes": 0,
+      "elapsedMinutes": 17,
+      "batches": {
+        "written": 1,
+        "at": 1,
+        "binds": false,
+        "costMinutes": 0
+      },
+      "evidence": "unknown",
+      "assumedStandingMinutes": 0,
+      "untimedCount": 2,
+      "madeAhead": false,
+      "startsAt": -17
+    },
+    {
+      "slug": "apple-pie",
+      "servings": {
+        "written": 8,
+        "at": 12
+      },
+      "standingMinutes": 0,
+      "elapsedMinutes": 355,
+      "batches": {
+        "written": 1,
+        "at": 1,
+        "binds": false,
+        "costMinutes": 0
+      },
+      "evidence": "unknown",
+      "assumedStandingMinutes": 0,
+      "untimedCount": 1,
+      "madeAhead": false,
+      "startsAt": -355
+    }
+  ],
+  "standingMinutes": 19.5,
+  "startsAt": -920,
+  "evidence": "unknown",
+  "unscalable": [],
+  "cooks": 1,
+  "burners": 4,
+  "ovenShelves": null
+}
+
+==============================================================================
+Plate C — the upper bound: the six most hands-on dishes in the collection
+==============================================================================
+
+  the six, by standing minutes at 12 servings:
+    patty-melt                         270.0 min  (0.0 assumed)
+    birista                            240.0 min  (0.0 assumed)
+    beef-rendang                       120.0 min  (120.0 assumed)
+    french-onion-soup                  106.0 min  (100.0 assumed)
+    mujaddara                          104.0 min  (0.0 assumed)
+    mushroom-risotto                   102.0 min  (12.0 assumed)
+
+### Plate C — an upper bound, not a meal
+  bound        patty-melt                 family #592 of 592   standing 270.0
+  bound        birista                    family #591 of 592   standing 240.0
+  bound        beef-rendang               family #590 of 592   standing 120.0
+  bound        french-onion-soup          family #588 of 592   standing 106.0
+  bound        mujaddara                  family #589 of 592   standing 104.0
+  bound        mushroom-risotto           family #587 of 592   standing 102.0
+
+--- diagnose(), 1 cook, 4 burners, ovenShelves null ---
+{
+  "findings": [
+    {
+      "kind": "hob-crowded",
+      "dishes": [
+        "beef-rendang",
+        "french-onion-soup",
+        "mujaddara"
+      ],
+      "window": {
+        "from": -57,
+        "to": -42
+      },
+      "confidence": "unknown",
+      "celsius": [],
+      "wanted": 5,
+      "have": 4,
+      "overrunMinutes": 0
+    },
+    {
+      "kind": "hob-crowded",
+      "dishes": [
+        "beef-rendang",
+        "french-onion-soup",
+        "mujaddara",
+        "patty-melt"
+      ],
+      "window": {
+        "from": -41,
+        "to": -37
+      },
+      "confidence": "unknown",
+      "celsius": [],
+      "wanted": 6,
+      "have": 4,
+      "overrunMinutes": 0
+    },
+    {
+      "kind": "hob-crowded",
+      "dishes": [
+        "beef-rendang",
+        "french-onion-soup",
+        "mujaddara",
+        "patty-melt"
+      ],
+      "window": {
+        "from": -37,
+        "to": -33
+      },
+      "confidence": "unknown",
+      "celsius": [],
+      "wanted": 5,
+      "have": 4,
+      "overrunMinutes": 0
+    },
+    {
+      "kind": "hob-crowded",
+      "dishes": [
+        "beef-rendang",
+        "french-onion-soup",
+        "mujaddara",
+        "patty-melt"
+      ],
+      "window": {
+        "from": -33,
+        "to": -32
+      },
+      "confidence": "unknown",
+      "celsius": [],
+      "wanted": 5,
+      "have": 4,
+      "overrunMinutes": 0
+    },
+    {
+      "kind": "hob-crowded",
+      "dishes": [
+        "beef-rendang",
+        "birista",
+        "french-onion-soup",
+        "mujaddara",
+        "patty-melt"
+      ],
+      "window": {
+        "from": -25,
+        "to": -24
+      },
+      "confidence": "unknown",
+      "celsius": [],
+      "wanted": 5,
+      "have": 4,
+      "overrunMinutes": 0
+    },
+    {
+      "kind": "hob-crowded",
+      "dishes": [
+        "beef-rendang",
+        "birista",
+        "french-onion-soup",
+        "mujaddara",
+        "mushroom-risotto",
+        "patty-melt"
+      ],
+      "window": {
+        "from": -24,
+        "to": -20
+      },
+      "confidence": "unknown",
+      "celsius": [],
+      "wanted": 7,
+      "have": 4,
+      "overrunMinutes": 0
+    },
+    {
+      "kind": "hob-crowded",
+      "dishes": [
+        "beef-rendang",
+        "birista",
+        "french-onion-soup",
+        "mujaddara",
+        "mushroom-risotto",
+        "patty-melt"
+      ],
+      "window": {
+        "from": -20,
+        "to": -18
+      },
+      "confidence": "unknown",
+      "celsius": [],
+      "wanted": 7,
+      "have": 4,
+      "overrunMinutes": 0
+    },
+    {
+      "kind": "hob-crowded",
+      "dishes": [
+        "beef-rendang",
+        "birista",
+        "french-onion-soup",
+        "mujaddara",
+        "mushroom-risotto",
+        "patty-melt"
+      ],
+      "window": {
+        "from": -18,
+        "to": -14
+      },
+      "confidence": "unknown",
+      "celsius": [],
+      "wanted": 6,
+      "have": 4,
+      "overrunMinutes": 0
+    },
+    {
+      "kind": "hob-crowded",
+      "dishes": [
+        "beef-rendang",
+        "birista",
+        "french-onion-soup",
+        "mujaddara",
+        "patty-melt"
+      ],
+      "window": {
+        "from": -14,
+        "to": -10
+      },
+      "confidence": "unknown",
+      "celsius": [],
+      "wanted": 5,
+      "have": 4,
+      "overrunMinutes": 0
+    },
+    {
+      "kind": "hands-pile-up",
+      "dishes": [
+        "beef-rendang",
+        "birista",
+        "french-onion-soup",
+        "mujaddara",
+        "mushroom-risotto",
+        "patty-melt"
+      ],
+      "window": {
+        "from": -83,
+        "to": 0
+      },
+      "confidence": "unknown",
+      "celsius": [],
+      "wanted": 942,
+      "have": 83,
+      "overrunMinutes": 859
+    }
+  ],
+  "dishes": [
+    {
+      "slug": "patty-melt",
+      "servings": {
+        "written": 2,
+        "at": 12
+      },
+      "standingMinutes": 270,
+      "elapsedMinutes": 270,
+      "batches": {
+        "written": 1,
+        "at": 1,
+        "binds": false,
+        "costMinutes": 0
+      },
+      "evidence": "inferred",
+      "assumedStandingMinutes": 0,
+      "untimedCount": 1,
+      "madeAhead": false,
+      "startsAt": -41
+    },
+    {
+      "slug": "birista",
+      "servings": {
+        "written": 1,
+        "at": 12
+      },
+      "standingMinutes": 240,
+      "elapsedMinutes": 265,
+      "batches": {
+        "written": 1,
+        "at": 1,
+        "binds": false,
+        "costMinutes": 0
+      },
+      "evidence": "stated",
+      "assumedStandingMinutes": 0,
+      "untimedCount": 0,
+      "madeAhead": false,
+      "startsAt": -45
+    },
+    {
+      "slug": "beef-rendang",
+      "servings": {
+        "written": 6,
+        "at": 12
+      },
+      "standingMinutes": 120,
+      "elapsedMinutes": 240,
+      "batches": {
+        "written": 1,
+        "at": 1,
+        "binds": false,
+        "costMinutes": 0
+      },
+      "evidence": "unknown",
+      "assumedStandingMinutes": 120,
+      "untimedCount": 4,
+      "madeAhead": false,
+      "startsAt": -180
+    },
+    {
+      "slug": "french-onion-soup",
+      "servings": {
+        "written": 6,
+        "at": 12
+      },
+      "standingMinutes": 106,
+      "elapsedMinutes": 136,
+      "batches": {
+        "written": 1,
+        "at": 1,
+        "binds": false,
+        "costMinutes": 0
+      },
+      "evidence": "unknown",
+      "assumedStandingMinutes": 100,
+      "untimedCount": 2,
+      "madeAhead": false,
+      "startsAt": -83
+    },
+    {
+      "slug": "mujaddara",
+      "servings": {
+        "written": 6,
+        "at": 12
+      },
+      "standingMinutes": 104,
+      "elapsedMinutes": 134,
+      "batches": {
+        "written": 1,
+        "at": 1,
+        "binds": false,
+        "costMinutes": 0
+      },
+      "evidence": "inferred",
+      "assumedStandingMinutes": 0,
+      "untimedCount": 0,
+      "madeAhead": false,
+      "startsAt": -57
+    },
+    {
+      "slug": "mushroom-risotto",
+      "servings": {
+        "written": 4,
+        "at": 12
+      },
+      "standingMinutes": 102,
+      "elapsedMinutes": 102,
+      "batches": {
+        "written": 1,
+        "at": 1,
+        "binds": false,
+        "costMinutes": 0
+      },
+      "evidence": "unknown",
+      "assumedStandingMinutes": 12,
+      "untimedCount": 1,
+      "madeAhead": false,
+      "startsAt": -24
+    }
+  ],
+  "standingMinutes": 942,
+  "startsAt": -180,
+  "evidence": "unknown",
+  "unscalable": [],
+  "cooks": 1,
+  "burners": 4,
+  "ovenShelves": null
+}
+
+standing minutes at 12 servings, over 685 scalable files
+  median 5.0 · 75th 22.5 · 90th 40.0 · 99th 96.0 · max 270.0
+  files at zero: 288  (42.0%)
+  files with >= 30 CLAIMED standing minutes at 12 and a non-unknown reading: 83

@@ -15,9 +15,12 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { normalise } from './normalise.mjs';
 import { findRecipes } from './find-recipes.mjs';
+import { mentionsFreezer } from '../src/lib/keeps.ts';
 import { cleanLabel } from '../src/lib/label.ts';
+import { boundSteps, saysItBatches, servingsOf } from '../src/lib/scaling.ts';
 import { buildTree } from '../src/lib/tree.ts';
 import { findTilingErrors, layout } from '../src/lib/layout.ts';
+import { pluralEntries, unaccountedCookware } from '../src/lib/washing-up.ts';
 
 const ROOT = path.resolve(import.meta.dirname, '..');
 const REQUIRED_META = ['title', 'category', 'tags', 'servings'];
@@ -42,7 +45,7 @@ const CAPS = {
   // 3077 cells, mean 24, p95 46, max 70. The one surface that already works, so this is a
   // ratchet at the current ceiling rather than a cut: nothing is over it today.
   'operation cell': 70,
-  // 2782 steps carry a >> step.N: line, and the words they wrote instead are rendered
+  // 2782 steps carry a >> step: label, and the words they wrote instead are rendered
   // nowhere. Half of those bodies are still one sentence at 125-149 chars; only a quarter
   // still are at 150-174. 150 is the crossing.
   'step body': 150,
@@ -55,6 +58,12 @@ const CAPS = {
   'slack reason': 200,
   // It shares a table cell with an amount and a name. p99 is 63; past 80 it is a paragraph.
   'ingredient note': 80,
+  // The half of a keeps line that says what you are actually eating. 138 lines written by
+  // T-011-04, mean 86, p95 94, max 101 — no legacy to ratchet onto, because the field and
+  // every line under it arrived together. So it takes voice.md's one-breath number rather
+  // than slack's 200, which 304 pre-existing reasons forced. Nothing is near it today, and
+  // that is the point: it is where a keeps line stops being one sentence.
+  'keeps character': 120,
 };
 
 /*
@@ -92,7 +101,7 @@ function measure(rel, recipe, tree) {
       check('operation cell', label.length, at, label);
     }
 
-    // A >> step.N: line replaces the step's own words wherever the step lands — in a cell
+    // A >> step: label replaces the step's own words wherever the step lands — in a cell
     // or in a full-width row — and what it replaces is rendered nowhere at all.
     if (step.labelOverride) {
       const body = cleanLabel(step.rawLabel);
@@ -109,7 +118,80 @@ function measure(rel, recipe, tree) {
 
   if (recipe.slack) check('slack reason', recipe.slack.reason.length, 'slack:', recipe.slack.reason);
 
+  if (recipe.keeps) {
+    check('keeps character', recipe.keeps.character.length, 'keeps:', recipe.keeps.character);
+  }
+
   return over;
+}
+
+/**
+ * The two ways a whole `>> capacity:` line can still be wrong about the recipe it sits in.
+ *
+ * 1. IT BINDS NOTHING. The operation the author named is not in this file, so the vessel
+ *    bounds no work and the cost function would price the recipe as though it had no
+ *    capacity at all — silently. The message prints the labels it tried, because the fix is
+ *    always a word the author can see in that list.
+ *
+ * 2. IT HOLDS LESS THAN THE RECIPE MAKES. `>> servings: 8` with a pan that holds 4 says the
+ *    recipe as written already needs two loads. That is either a wrong number or, in S-011's
+ *    words, a recipe that already batches and did not say — and a recipe that DID say is
+ *    neither, which is beef-with-broccoli's `sear in two batches 3 min` and the whole reason
+ *    docs/knowledge/scaling.md's ratio is b(n)/b(s) rather than b(n). So the fault is
+ *    batching in silence, and the message quotes BOTH LINES as the author wrote them.
+ *
+ * Takes the source as well as the parsed recipe so the two lines can be quoted verbatim: a
+ * message that paraphrases the lines it is complaining about makes the reader go and look.
+ */
+function checkCapacity(source, recipe) {
+  const problems = [];
+  const notes = [];
+  const capacity = recipe.capacity;
+  if (!capacity) return { problems, notes };
+
+  const lineOf = (key) =>
+    source.match(new RegExp(`^>>\\s*${key}\\s*:.*$`, 'mi'))?.[0].trim() ?? `>> ${key}: ?`;
+
+  const bound = boundSteps(recipe, capacity);
+  if (bound.length === 0) {
+    const labels = recipe.steps
+      .map((step) => `           step ${step.index + 1}: ${step.labelOverride ?? cleanLabel(step.rawLabel)}`)
+      .join('\n');
+    problems.push(
+      `capacity names ${capacity.operations.map((op) => `"${op}"`).join(', ')}, which is not an ` +
+        `operation in this recipe — the vessel would bound no work at all. The steps are:\n${labels}`,
+    );
+  }
+
+  /*
+   * The comparison below is servings against servings, so it needs a plain count on both
+   * sides. Six files in the collection yield a volume — `>> servings: 2 cups` — and comparing
+   * a pan's portions to a jar's cups compares nothing. Warned rather than failed: the fault
+   * is in what those files can say, not in the capacity line.
+   */
+  const servings = servingsOf(recipe);
+  const written = (recipe.metadata?.servings ?? '').trim();
+  if (servings === null || !/^\d+(?:\.\d+)?$/.test(written)) {
+    notes.push(
+      `capacity: >> servings: ${written || '?'} is not a plain count of servings, so nothing ` +
+        `can say whether the vessel holds more or less than this recipe makes`,
+    );
+    return { problems, notes };
+  }
+
+  if (capacity.servings < servings && !saysItBatches(recipe, capacity)) {
+    problems.push(
+      `capacity and servings disagree — one of these two lines is wrong:\n` +
+        `           ${lineOf('capacity')}\n` +
+        `           ${lineOf('servings')}\n` +
+        `         the vessel holds ${capacity.servings} and the recipe makes ${servings}, so it ` +
+        `already goes in more than one load. Either the number is wrong, or the recipe batches ` +
+        `and does not say so — say it where it happens ("in two batches"), the way ` +
+        `beef-with-broccoli does`,
+    );
+  }
+
+  return { problems, notes };
 }
 
 // --labels prints the operation cell each step came out as, which is the only way to see
@@ -153,6 +235,76 @@ for (const target of targets) {
     // values, because the whole point of the field is that it can be read by a stranger.
     if (recipe.slackProblem) problems.push(recipe.slackProblem);
 
+    // A washing-up line that is there but not whole. Same treatment for the same reason.
+    if (recipe.washingUpProblem) problems.push(recipe.washingUpProblem);
+
+    // A keeps line that is a duration and nothing else, which is the one thing that field is
+    // not allowed to be: a number on its own is a shelf life, and a shelf life is a
+    // food-safety claim this site does not make. Fails, so it can never reach a page.
+    if (recipe.keepsProblem) problems.push(recipe.keepsProblem);
+
+    // A capacity line that is there but not whole: no number, no vessel, no operation, or a
+    // count of batches where a count of servings belongs.
+    if (recipe.capacityProblem) problems.push(recipe.capacityProblem);
+
+    // And the two ways a whole line can still be wrong: it binds an operation the recipe
+    // does not have, or it disagrees with `>> servings:`. See checkCapacity().
+    const vessel = checkCapacity(source, recipe);
+    problems.push(...vessel.problems);
+    notes.push(...vessel.notes);
+
+    // A `>> step:` line with no step under it. The label the author wrote would otherwise go
+    // nowhere at all, which is the one thing the older numbered form could never tell them.
+    problems.push(...recipe.stepLabelProblems);
+
+    // A reference that points at no step. cooklang does not refuse one — it reads it as an
+    // ingredient, so the table grows a row that is not an ingredient and draws perfectly
+    // well. tree.ts already refuses a reference to a step that MAKES nothing; this is the
+    // other half, the reference that names no step at all.
+    problems.push(...recipe.stepRefProblems);
+
+    /*
+     * The cross-check, and it WARNS. Every #thing{} a file names either goes in the sink or is
+     * something that is not washed, so a #Dutch oven{} missing from the line is worth saying —
+     * but a foil-lined tray is a real answer, so it is not automatically wrong. The interesting
+     * failure runs the other way and no check can catch it: the bowls a recipe uses and never
+     * names. That asymmetry is the whole reason this field is authored, and a checker that
+     * failed the build on the cheap half would have no credibility left for the expensive one.
+     */
+    const unaccounted = unaccountedCookware(recipe.cookware, recipe.washingUp);
+    if (unaccounted.length) {
+      notes.push(
+        `washing-up: names ${unaccounted.map((name) => `#${name}{}`).join(', ')} but the line ` +
+          `does not mention ${unaccounted.length === 1 ? 'it' : 'them'} — add ` +
+          `${unaccounted.length === 1 ? 'it' : 'them'}, or ${unaccounted.length === 1 ? 'it is' : 'they are'} ` +
+          `something that is not washed`,
+      );
+    }
+
+    /*
+     * A keeps line that has wandered into the freezer, and it WARNS. `keeps` is the fridge:
+     * chili keeps four days cold and three months frozen, bread is stale by Tuesday and
+     * perfect from frozen, and there is no ordering between those two answers — so a line
+     * carrying both would sometimes carry a contradiction. But "unlike the frozen version,
+     * this one…" is a legitimate sentence, and a checker that failed the build on a guess
+     * about what an author meant would only teach people to write around it.
+     */
+    if (mentionsFreezer(recipe.keeps)) {
+      notes.push(
+        'keeps: mentions freezing, which is a different question with a different answer — ' +
+          'this line is the fridge, covered, as it is. Say what it is like tomorrow, and ' +
+          'leave the freezer out of it',
+      );
+    }
+
+    // One entry is one thing, which is the rule the derived count rests on.
+    for (const entry of pluralEntries(recipe.washingUp)) {
+      notes.push(
+        `washing-up: "${entry}" counts as one thing — write it as one entry each, or the ` +
+          `count under-reports`,
+      );
+    }
+
     const tree = buildTree(recipe);
     const grid = layout(tree);
     problems.push(...findTilingErrors(grid));
@@ -168,7 +320,7 @@ for (const target of targets) {
     if (unlabelled.length) {
       problems.push(
         `${unlabelled.length} operation cell(s) came out with no label — reword the step, ` +
-          `or set it with a >> step.N: line`,
+          `or name it with a >> step: line directly above it`,
       );
     }
 

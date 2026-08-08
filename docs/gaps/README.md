@@ -5,28 +5,58 @@ there grouped into the sections that counter's menu actually prints, what a plac
 and we do not have yet, which sub-recipes those dishes wait on, and which of its items a single table
 genuinely cannot hold.
 
+One file here is no longer a counter page: [soup-pot.md](soup-pot.md) is the record of a shelf that came
+down. See [Retired counters](#retired-counters) below.
+
 The vocabulary throughout comes from `docs/knowledge/counters.md`. Dish names are the names on real
 boards, because that is the way in.
 
 The `## What it has` block of each file is machine-read: `node scripts/menu-sections.mjs` parses it back
-into `src/data/counters.json`, and as of this pass it **reproduces that file byte for byte** rather than
-replacing it. Keep the `**Section title.** slug · slug` shape when you edit one, and keep the section
-titles free of an em-dash aside — the parser cuts a title at ` — `.
+into `src/data/counters.json` and reports what it found. Keep the `**Section title.** slug · slug` shape
+when you edit one, and keep the section titles free of an em-dash aside — the parser cuts a title at
+` — `. **Twenty-one of the twenty-two counters round-trip exactly**; One Pot does not, and the dry run
+says so every time it is run. Two things `--write` will do that a reader should know about before using
+it: it rewrites **every** counter, not the one being edited, and it drops the hand-written `notes` blocks
+on **twelve** sections, which are the only thing in `counters.json` not derived from these pages. Run it
+against a copy and diff, rather than against the file.
+
+**Also worth knowing before you title a section: a section with no items cannot round-trip.** The parser
+only emits a section it found at least one slug for, so a title written ahead of its contents is deleted
+on the next `--write` and reported as nothing at all in the dry run. The Air Fryer & the Pot opened with
+five empty titles for exactly that reason and closed with four full ones; the fifth is discussed on
+[its page](air-fryer-and-pot.md) in prose, which is where an absence belongs.
 
 ## Build state
 
-`npm run verify` passes end to end: **658 files draw a table, 658 recipes parse, 825 tests green in 8
-files, 682 pages build.** 658 recipes, 27 categories, 888 counter assignments, 760 pairings made mutual,
-timers in 635 files, 0 orphans, 0 counters inferred from category, 0 parser warnings, 0 duplicate slugs.
-45 files declare a `kit:` — 25 `Instant Pot`, 20 `Slow Cooker` — and every one resolves to exactly one
-plain sibling.
+`npm run verify` passes end to end: **664 files draw a table, 664 recipes parse, 894 tests green in 11
+files, 688 pages build.** 664 recipes, 27 categories, 904 counter assignments, 770 pairings made mutual,
+timers in 640 files, washing-up declared in 11, 0 orphans, 0 counters inferred from category, 0 parser
+warnings, 0 duplicate slugs. 45 files declare a `kit:` — 25 `Instant Pot`, 20 `Slow Cooker` — and every
+one resolves to exactly one plain sibling.
 
-**The tally below, and the three sections after it, still describe the fifteen-counter shelf.** S-002
-added The Bowl Shop, Instant Pot and One Pot; S-003 is adding three more. Rewriting eighteen rows twice
-would waste the second pass, so the whole board is left for T-003-07, which reads it all after the S-003
-shelves land. Until then the three new counters are described only in their own pages —
-[bowl-shop.md](bowl-shop.md), [instant-pot.md](instant-pot.md), [one-pot.md](one-pot.md) — each of which
-is current.
+**Measured after T-007-05, with the whole of S-007 in.** The recipe count is the arithmetic the story
+promised: 658 at the start, minus the sixteen 老火湯 T-007-02 deleted, plus the eight T-007-03 wrote and
+the fourteen from T-007-04. The test and page counts move under other stories working the same branch
+and are the ones read at the time of writing; the recipe, counter and pairing counts are this story's.
+
+### Retired counters
+
+**The Soup Pot came down on 7 August 2026** under S-007, and is the first counter this collection has
+removed. Sixteen 老火湯 were deleted, eight soups moved to other shelves — five of them to One Pot, under
+a new section there — and the counter's entry was taken out of `src/data/counters.json`, so
+`/menu/soup-pot` no longer builds. The board is 21 counters, 20 of them with something on them; Cha Chaan
+Teng is the empty one and T-007-05 fills it.
+
+[soup-pot.md](soup-pot.md) was kept rather than deleted, and rewritten as a record: why the shelf failed,
+what happened to each of the twenty-four recipes, and what would have to be true for anyone to try it
+again. Its dried-goods glossary and its four rules of the pot are intact. It has no `## What it has`
+block, because there is no counter for `menu-sections.mjs` to match it to.
+
+**The board is 22 counters and every one of them has something on it.** It was 21 when S-007 closed —
+Cha Chaan Teng was the empty one and T-007-03, T-007-04 and T-007-06 wrote 27 recipes for it. **S-008
+opened the twenty-second, The Air Fryer & the Pot**, and filled it with 21. The front page prints 22
+cards, `/menu/soup-pot` no longer builds, and the grid has needed no change to absorb any of it —
+`.counters` is `repeat(auto-fill, minmax(16.5rem, 1fr))` and has no fixed column count.
 
 At 514 recipes, three things needed repairing, and none of them was visible from inside one folder:
 
@@ -36,41 +66,190 @@ At 514 recipes, three things needed repairing, and none of them was visible from
 - **`schedule.test.ts` named three slugs** that had been wrong since the third ticket of this story. It now
   asserts the property those names stood for.
 
+## What the three dials can answer for
+
+The front page's filter is only as good as what has been annotated, and its three dials have very
+different coverage. Each carries its own rule about whether the data can speak for a recipe at all, and
+a recipe it cannot speak for comes back *we can't say* rather than passing quietly.
+
+**Measured on 7 August 2026, against 685 recipes** — S-008 and S-011 have both been annotating on this
+branch, so the `Build state` figures above, which are S-007's, are stale by a good deal.
+
+| dial | what it measures | the rule | can answer for | share of 685 |
+| --- | --- | --- | --: | --: |
+| Time you're standing there | `handsOnMinutes` | `evidence !== 'unknown'` | 269 | **39.3%** |
+| On the table by | `elapsedMinutes` | `elapsedMinutes > 0` | 661 | **96.5%** |
+| Things to wash | `washingUpCount` | `washingUpCount !== null` | 177 | **25.8%** |
+
+Supporting annotation: timers in 661 files, `slack` in 416, `washing-up` in 177. The three confidence
+states behind the standing dial are **stated 46 · inferred 223 · unknown 416**.
+
+**What the filter looks like at that coverage.** A reader who turns the sink dial is putting
+three-quarters of the shelf into *we can't say* and choosing among the quarter S-008 has reached — they
+are mostly filtering by who got annotated. A reader who turns the standing dial is choosing among two
+fifths. Only the clock speaks for nearly everything, and it speaks for the axis S-010 argues is the
+wrong one. That is acceptable for now and it is not acceptable unsaid, which is why it is here.
+
+Run at the story's own scenario — *under twenty minutes standing there*, set at the nearest stop the
+dial has — the collection splits **227 pass · 42 fail · 416 we can't say**, and reading all 227 as a
+tired cook found 72 right for the evening, 12 borderline and 143 wrong.
+
+**[what-the-season-left.md](what-the-season-left.md) is the whole of S-007 to S-013 read as one
+thing** — every finding those twenty-nine tickets recorded and did not act on, each with its source
+ticket, banded by whether the fix is in dispute rather than by how much it matters. It is the fifth
+whole-shelf reading and, like the two below, it is a file in this directory that is not a counter
+page and carries no `## What it has` block. Its first section is the one finding that would not sit
+in a band: **143 of the 227 recipes the filter recommends for a tired evening are wrong for it.**
+
+**[filter.md](filter.md) is the record of what the filter cannot say**, in the shape of these pages'
+*what it could not stock* sections: the equipment it cannot see, the marinade that started yesterday,
+the shopping, how tired the reader is, whether the result is even dinner, how many it feeds, and the
+twenty timer names `src/lib/time.ts` does not know. It ends with the five things that would close them,
+ranked. Like [soup-pot.md](soup-pot.md) it is a file in this directory that is not a counter page, so
+`node scripts/menu-sections.mjs` has no counter to match it to and it carries no `## What it has` block.
+
 ## The tally
 
 Counts of *assignments*, so a recipe at two counters is counted twice. "Only here" is how many of a
 counter's recipes are not also shelved somewhere else — the number that says whether a counter has a
-menu of its own or is borrowing one. The **was** columns are the state this story started from.
+menu of its own or is borrowing one.
 
-| Counter | Recipes | was | Only here | Missing dishes | was | Missing components | was |
-| --- | --: | --: | --: | --: | --: | --: | --: |
-| [Bakery](bakery.md) | 107 | 91 | 63 | 18 | 22 | 11 | 15 |
-| [Diner](diner.md) | 77 | 43 | 35 | 4 | 20 | 5 | 10 |
-| [Deli](deli.md) | 62 | 38 | 24 | 13 | 25 | 10 | 14 |
-| [Meat and Three](meat-and-three.md) | 53 | 23 | 27 | 7 | 20 | 6 | 13 |
-| [Curry House](curry-house.md) | 47 | 15 | 47 | 10 | 20 | 8 | 14 |
-| [Shawarma Counter](shawarma-counter.md) | 44 | 21 | 36 | 9 | 22 | 10 | 16 |
-| [Taquería](taqueria.md) | 34 | 17 | 25 | 14 | 22 | 7 | 12 |
-| [Pizzeria](pizzeria.md) | 32 | 22 | 26 | 13 | 21 | 13 | 14 |
-| [Panadería](panaderia.md) | 30 | 8 | 17 | 8 | 22 | 6 | 10 |
-| [Dim Sum Counter](dim-sum-counter.md) | 30 | 7 | 20 | 9 | 21 | 11 | 13 |
-| [Ramen Shop](ramen-shop.md) | 27 | 10 | 26 | 9 | 18 | 10 | 13 |
-| [Thai Kitchen](thai-kitchen.md) | 21 | 5 | 21 | 13 | 21 | 10 | 13 |
-| [Smokehouse](smokehouse.md) | 21 | 5 | 14 | 4 | 18 | 8 | 9 |
-| [Takeout Counter](takeout-counter.md) | 20 | 5 | 15 | 9 | 20 | 9 | 12 |
-| [Phở & Bánh Mì](pho-and-banh-mi.md) | 18 | 1 | 16 | 10 | 23 | 9 | 13 |
-| **Total** | **623** | **311** | **412** | **150** | **315** | **133** | **191** |
+**All twenty-two counters, including The Air Fryer & the Pot**, which S-008 opened and filled. The
+version before this one had twenty-one rows and the one before that fifteen.
 
-Also recorded: **107 items across the fifteen counters that a single table cannot express**, and the
-reason in each case. That number has not moved, and it should not — nothing about what a table can hold
-changed.
+**Two of the four columns are fresh and two are carried forward, and the table says which**, because a
+table that silently mixes a re-derived number with a remembered one is worse than one that admits it:
 
-The two numbers the old tally called the story on their own are both closed. **Panadería had no recipe of
-its own**; it now has seventeen. **Phở & Bánh Mì had one recipe**; it has eighteen, sixteen of them only
-there.
+- **Recipes** and **Only here** are re-derived for every row from `src/generated/recipes.json` at 685
+  recipes, by the twenty-line script printed in `docs/active/work/T-008-05/progress.md`. Run it and the
+  two columns come back.
+- **Missing dishes** and **Missing components** are **carried forward** from the previous version for
+  the twenty-one rows that had one, and derived for the new row the same way it was derived for them:
+  the length of each page's ranked `## What it is missing` list, and the count of its
+  `## Components it would need` bullets. Nobody re-read twenty-one work lists for this pass and it
+  would be dishonest to print numbers as though somebody had.
 
-Every counter is now **fully sectioned**: all 623 assignments print under a heading its board would use,
-and no section names a dish that is not shelved there.
+**One thing that derivation gets wrong, said here rather than left for the next reader to trip over:**
+*Missing dishes* is the **length of the printed rank list**, not the count still unwritten, and two
+pages number every rank whether or not it has been written. **Instant Pot's 31 includes 24 that are
+written; The Air Fryer & the Pot's 26 includes 17.** One Pot renumbers as it writes, so its 6 is a true
+still-out count. Read those two rows as *the size of the work list*, and read the page for the rest.
+
+**The `was` columns changed meaning with this version and it is worth one line.** They used to hold the
+tree at `096b1d4`, the state S-007 started from. That baseline has been overtaken twice and is no longer
+the useful comparison, so **`was` is now the previous version of this table** — the board as S-007 left
+it. The two `was` columns for *Missing dishes* and *Missing components* are dropped rather than carried,
+because neither moved.
+
+| Counter | Recipes | was | Only here | was | Missing dishes | Missing components |
+| --- | --: | --: | --: | --: | --: | --: |
+| [Bakery](bakery.md) | 107 | 107 | 63 | 63 | 18 | 11 |
+| [The Bowl Shop](bowl-shop.md) | 103 | 103 | 36 | 36 | 7 | 8 |
+| [Diner](diner.md) | 77 | 77 | 29 | 29 | 4 | 5 |
+| [One Pot](one-pot.md) | 73 | 73 | 19 | 19 | 6 | 7 |
+| [Deli](deli.md) | 62 | 62 | 17 | 17 | 13 | 10 |
+| [Meat and Three](meat-and-three.md) | 53 | 53 | 16 | 16 | 7 | 6 |
+| [Curry House](curry-house.md) | 47 | 47 | 31 | 31 | 10 | 8 |
+| [Shawarma Counter](shawarma-counter.md) | 44 | 44 | 17 | 17 | 9 | 10 |
+| [Japanese Home Cooking](japanese-home.md) | 38 | 38 | 28 | 28 | 41 | 6 |
+| [Taquería](taqueria.md) | 34 | 34 | 18 | 18 | 14 | 7 |
+| [Pizzeria](pizzeria.md) | 32 | 32 | 23 | 23 | 13 | 13 |
+| [Dim Sum Counter](dim-sum-counter.md) | 30 | 30 | **16** | 17 | 9 | 11 |
+| [Panadería](panaderia.md) | 30 | 30 | 17 | 17 | 8 | 6 |
+| [Cha Chaan Teng](cha-chaan-teng.md) | **27** | 22 | **22** | 22 | 5 | 2 |
+| [Ramen Shop](ramen-shop.md) | 27 | 27 | 13 | 13 | 9 | 10 |
+| [Instant Pot](instant-pot.md) | 25 | 25 | 25 | 25 | 31 | 5 |
+| [Smokehouse](smokehouse.md) | 21 | 21 | 12 | 12 | 4 | 8 |
+| [Thai Kitchen](thai-kitchen.md) | 21 | 21 | 15 | 15 | 13 | 10 |
+| [**The Air Fryer & the Pot**](air-fryer-and-pot.md) | **21** | — | **21** | — | **26** | **5** |
+| [Takeout Counter](takeout-counter.md) | 20 | 20 | 13 | 13 | 9 | 9 |
+| [The Slow Cooker](slow-cooker.md) | 20 | 20 | 20 | 20 | 18 | 6 |
+| [Phở & Bánh Mì](pho-and-banh-mi.md) | 18 | 18 | 12 | 12 | 10 | 9 |
+| **Total** | **930** | **904** | **483** | **463** | **284** | **172** |
+
+**Three rows moved and each has a reason.**
+
+- **The Air Fryer & the Pot arrived with 21**, all of them only there, and it is the first counter on
+  the board whose membership is a *rule* rather than a kind of food. Every item passes a three-bar
+  gate; [air-fryer-and-pot.md](air-fryer-and-pot.md) is the measurement and the number came in under
+  the twenty-five S-008 asked for, which that page reports rather than fixes.
+- **Cha Chaan Teng finished at 27, not 22.** T-007-06 landed five more after the previous version of
+  this table was written.
+- **Dim Sum Counter's *only here* is 16, not 17.** One of its recipes gained a second counter; the old
+  value was carried forward from before that happened and is corrected by the re-derivation.
+
+**The Soup Pot is not in either column now.** It came down under S-007 and was already absent from the
+previous table, so under the new `was` definition its 24 recipes are gone from both sides and the two
+totals reconcile without a footnote: **904 → 930 is exactly the 5 Cha Chaan Teng gained plus the 21 this
+counter arrived with.** What happened to each of its twenty-four files is in
+[soup-pot.md](soup-pot.md).
+
+**The Air Fryer & the Pot has no was-value** because it did not exist when the previous table was
+written — S-008 opened it in T-008-02, with five section titles and nothing under them, and T-008-05
+filled four of the five. **The fifth, *Start to finish in the pot*, was removed rather than left
+empty**: no Instant Pot recipe on the site clears the gate's 45-minute bar and none of the six ranked
+pressure dishes has been written, so the title had nothing to hold. A section title with nothing under
+it is a claim about a menu that the menu does not keep.
+
+Also recorded: **158 items across the twenty-two counters that a single table cannot express** — 150 of
+them counted at the previous pass, plus the eight on the new counter's page, which are the sharpest set
+on the board because a basket is a machine and most of what goes wrong with it is a fact about the
+reader's kitchen: how much fits in one layer, whether it needs two batches, how loud it is. Each carries
+the reason it cannot be a cell. The figure before that was 107 across fifteen; nothing about what a table
+can hold has changed, the counters missing from the tally were simply never counted.
+
+Every counter is **fully sectioned**: all 930 assignments print under a heading its board would use, and
+**no menu on the site renders an *Also here* section.** That is a live check rather than a habit —
+`menuFor()` appends one automatically for anything a counter shelves that its section list forgets, so an
+empty *Also* means every slug is placed on purpose. `node scripts/check-menus.mjs` says
+`22 counter(s): 930 slug(s) listed, 930 printed.`
+
+**One drift is left on the whole board, and it is the reverse of the old one.**
+[one-pot.md](one-pot.md)'s `## What it has` block does not list the five soups S-007 moved there, so
+`node scripts/menu-sections.mjs` reports `One Pot: 68/73 placed` every run. They print correctly on the
+menu, because `src/data/counters.json` has them under *Quick soups that go with dinner* — which is the
+wrong way round, since these pages are supposed to be the source the JSON is folded from. Adding five
+slugs to that block closes the last one. The older drifts are gone: Cha Chaan Teng's five borrows were
+settled by T-007-06, and One Pot's four inert fried slugs came out under T-003-07. Since T-011-05,
+`menuFor()` **throws with the slug named** rather than dropping a slug it cannot place, so a drift of
+that shape can no longer hide.
+
+### What the kit axis says about the sink
+
+**Recorded here because this is where the next pass looks, and because it is not what the `kit:` badge
+was sold on.** S-008 annotated `>> washing-up:` across 145 files and could then compare, for the first
+time, every `dish` that has both a plain file and an appliance one — 45 pairs, measured by T-008-03.
+
+| kit | pairs | washes **more** than plain | the same | **fewer** |
+| --- | --: | --: | --: | --: |
+| The Slow Cooker | 20 | **16** | 4 | **0** |
+| Instant Pot | 25 | 5 | **16** | 4 |
+| Air Fryer | 13 | 0 | 3 | **10** |
+
+- **The slow cooker is the most expensive machine in the kitchen and never the cheapest.** Sixteen of
+  twenty wash more than the plain version and **not one washes fewer**. The reason is structural: the
+  crock browns nothing, so a skillet joins it. `pot-roast` goes 1 → 4, `braised-short-ribs` 1 → 4,
+  `baked-turkey-wings` 1 → 4. The four that break even are the four that brown nothing at all.
+- **The Instant Pot is a dead heat, sixteen times out of twenty-five.** Sauté means it browns in the
+  pot, so it lands exactly level with a Dutch oven. **For the largest kit family on the site, the sink
+  is usually identical**, and the *fewer things to wash* claim is not one that shelf can make. It still
+  says something true about time and attention — that is what `>> time:` and the standing dial are for.
+- **Where the pot does win it wins big, always for one reason**: dried pulses cooked from dry, with no
+  soak bowl and no parboiling pan. `boston-baked-beans` 4 → **1**, `ful-medames` 3 → **1**,
+  `cuban-black-beans` 2 → **1**.
+- **The basket is the only kit that reliably removes a vessel** — ten of thirteen — because what it
+  replaces is a pan of frying oil or a parboiling pot. `batata-harra` 5 → 2 is the largest single drop
+  on the site.
+
+**What a later pass should do with this:** nothing on any page currently promises that a `kit:` variant
+washes less, so nothing is wrong today. What is missing is the opposite — the one page where a
+deep-fried original sits beside its basket version with **five things against two** is the clearest
+argument S-008 can make and nothing renders it. `scripts/parse-recipes.mjs` already carries
+`washingUpCount` onto each variant, so it needs no new data, only a place to show it.
+
+**Coverage, so the table above is read at its true weight:** 177 of 685 recipes declare a
+`>> washing-up:` line — 11 before S-008 and 177 after. The 508 that do not are most of the collection,
+and every number on this page about the sink is a statement about the quarter that has been asked.
 
 ## What no single classifier could see
 
@@ -79,8 +258,9 @@ techniques absent from all 241 files. **All seven are now present** — pickles 
 `sour-dill-pickles`, `sauerkraut`, `kabis`, `lime-pickle`), deep frying (`falafel`, `karaage`,
 `hush-puppies`, `onion-rings`, `fried-chicken`, `cha-gio`), smoking and curing (`pastrami`, `belly-lox`,
 `smoked-brisket`, `chopped-pork`, `char-siu`), pastry shells (`all-butter-pie-crust`, `sweet-tart-shell`,
-`hojaldre`, `croissant-dough`), dumplings and noodles (fifteen and thirteen), sandwiches (eleven), and
-drinks (three).
+`hojaldre`, `croissant-dough`), dumplings and noodles (fifteen and seventeen), sandwiches (fourteen), and
+drinks — **nine now, not three**, and the three S-007 added that brew are the ones the old list said were
+missing entirely.
 
 What reading all 514 files found instead is not about what is on the shelf but about how it is arranged.
 
@@ -103,33 +283,88 @@ What reading all 514 files found instead is not about what is on the shelf but a
 - **No two files are the same dish.** Checked by ingredient overlap, by title-and-`aka` overlap, and by
   `dish:` key. The closest pairs — `salsa-verde`/`salsa-verde-cruda`, `general-tsos-chicken`/
   `sesame-chicken`, `tzatziki`/`white-sauce` — are all deliberate and argued in their own tickets.
+- **Re-run after S-007, all three passes, and it moved by two.** Alias collisions went 149 → 148:
+  *lo fo tong* and *老火湯* left with the sixteen 老火湯 files, and *french toast* arrived, now shared by
+  `french-toast` and `hong-kong-french-toast`. That one is **honest and deliberate** — a searcher who
+  types it should be shown both, and the Hong Kong file says in a full-width row that it is not the
+  diner's, so the table itself disambiguates. Multi-file `dish:` keys are unchanged at 32, all declared
+  kit families. Ingredient overlap ≥ 0.60 went 97 → 98: `baked-pork-chop-rice` ~ `pork-chop-in-tomato-sauce`
+  at 0.61, which is the pan version and the baked one sharing a sauce on purpose, each pairing to the
+  other. **No collision was wrong, so nothing was fixed.** The block of Cantonese `aka` lines that arrived
+  with the cha chaan teng added no collision at all: 22 new files, 0 new shared names besides that one.
 
 ## The five gaps to fill first
 
-All five of the old list are written: the pastry shell, both pickles, the cornbread, the char siu and the
-pâté. Ranked the same way — by how many counters each one unblocks, not by how much anyone wants to eat it.
+**Gap 5 was closed by S-007, and this list was re-ranked rather than ticked.** *A drink that is brewed*
+was fifth, on the evidence that three drinks existed and all three were poured cold. There are nine
+drinks now and three of them brew: `hong-kong-milk-tea`, `yuenyeung` and `iced-lemon-tea`. What that gap
+was really asking for — a brewed hot drink anyone can make from a supermarket — exists, so it came off
+the list and its runner-up moved up.
+
+**Re-checked at the end of S-013, after seven stories and 48 new recipes: nothing moved, and that is
+the finding.** All five were checked against the shelf rather than remembered —
+`buttercream`, `cream-cheese-frosting`, a shared chile purée, a dark roux and a trinity base are still
+unwritten; the thirteen pickle and slaw files are still in two folders with `salads/` sitting empty of
+them; `cha-lua` is still in `stews-and-braises/` and `nixtamalised-masa` still in `pastry-and-doughs/`.
+The season wrote a counter, a shelf, four properties and a filter, and **none of it was a component the
+five are waiting on.** Gap 2 is the one that changed, and it changed by getting bigger — see below.
+The whole read is in [what-the-season-left.md](what-the-season-left.md).
+
+Ranked the same way as before: by how many counters each one unblocks, not by how much anyone wants to
+eat it.
 
 1. **Move the pickles into one folder, and the slaws into `salads/`.** Not a recipe: an afternoon of
    `git mv` and one `>> category:` line each. Thirteen files, no URL changes, and it is the difference
    between a shelf and a pile.
-2. **A tag checker.** One file under `src/lib/`, one test. It has to know the difference between a
-   spelling variant and two real concepts, which is why it is worth writing once rather than re-reading
-   527 tags every pass.
+2. **A tag checker**, and it is a bigger job than when it was ranked. One file under `src/lib/`, one
+   test. It has to know the difference between a spelling variant and two real concepts, which is why
+   it is worth writing once rather than re-reading the tag list every pass. **Re-run at 685 recipes the
+   vocabulary is 615 distinct tags, against 503 when T-001-18 last folded it at 514** — and all three
+   collisions T-001-18's own verifier drove to zero are back (`no-cook`/`no cook`,
+   `make-ahead`/`make ahead`, `one-pot`/`one pot`), alongside ten singular/plural splits and three
+   verb/participle pairs. **Sixteen split concepts across 243 files**, and `chiles` is used 43 times
+   against `chile` once, so a searcher who types the singular gets one recipe. Nothing enforces it,
+   exactly as T-001-18 said would happen.
 3. **A shared toasted dried-chile purée** — `birria-de-res`, `red-enchilada-sauce`, `mole-poblano` and
    `adobo-para-al-pastor` all begin toast, soak, blend, strain. Recorded by T-001-10 and still true. It
    only pays off if those four are rewritten to consume it, which is the work.
 4. **Buttercream and a cream cheese frosting.** Twenty-one cakes are written and not one of them is
    finished. Two tables turn the whole Bakery cake section into case items, and they unlock the éclair,
    the fruit tart and the doughnut alongside `pastry-cream`, which is already here.
-5. **A drink that is brewed.** Three drinks exist and all three are poured cold. Sweet tea is asked for by
-   the Smokehouse and Meat and Three, Thai iced tea and café de olla by two more, and hot tea by the Dim
-   Sum Counter. One table each.
+5. **A dark roux and a trinity base.** Promoted from the runners-up now that the brewed drink is done.
+   Five Louisiana lines at Meat and Three rest on them, and both are a pan and twenty minutes.
 
-Immediately after, in order: **a dark roux and a trinity base** (five Louisiana lines at Meat and Three
-rest on them), **the Vietnamese baguette** (the one component under a counter that reached rank 12 and
-stopped), **wor tip** (the Dim Sum Counter's own pan-fried dumpling — `gyoza` is Japanese and stays at the
-Ramen Shop), **cebolla y cilantro** (one row, one operation, on every taquería counter in the world), and
-**youtiao**, which two gap notes point at from different rooms.
+The rest of the drinks the old gap 5 asked for are still unwritten and are now ordinary requests rather
+than a first-five gap: **sweet tea** for the Smokehouse and Meat and Three, **Thai iced tea**, **café de
+olla**, and **hot tea** for the Dim Sum Counter. One table each, and `hong-kong-milk-tea` is the shape
+they can copy.
+
+### And a sixth gap, which is not a dish and is bigger than any of the five
+
+[**What the shelf offers the three cooks**](what-the-shelf-offers.md) is the fourth whole-shelf
+reading, and the first taken from outside the collection looking in: 685 files held against the three
+people in `docs/knowledge/cooks.md`. It ranks the four capabilities the board does not have, and its
+answer for two of them is **write food before writing features** — which is why it belongs on this
+list and not in a story.
+
+Counted from ingredient lists rather than folder names, the collection uses **130 distinct plants**
+and only **23 of them ever carry a dish**. There are **16 non-starch vegetable sides** and **47
+savoury dishes built on a non-starch plant**, against **101 sweets**; **14 pulse dishes** a person
+would call dinner; and **2 recipes** — a malted milk drink and an egg sandwich — that one person can
+cook for one or two with no trip to the shop. The forty-eight plants the shopping lists buy and no
+recipe is ever about are the work, and each one is one table.
+
+The reading also finds that **only 34 of 685 recipes have a job a second cook could take** (the raw
+lane count says 200), and that a week of dinners for four can run **eleven nights** before a protein
+repeats — so the two features the shelf *can* feed today are handing work to a helper and a rotation.
+Nothing on the board was edited; where a running story pulls against one of the three cooks, it is a
+recommendation in that file, named with the ticket it concerns.
+
+Immediately after, in order: **the Vietnamese baguette** (the one component under a counter that reached
+rank 12 and stopped), **wor tip** (the Dim Sum Counter's own pan-fried dumpling — `gyoza` is Japanese and
+stays at the Ramen Shop), **cebolla y cilantro** (one row, one operation, on every taquería counter in
+the world), **youtiao**, which two gap notes point at from different rooms, and **咖喱汁**, the Hong Kong
+curry sauce three cha chaan teng dishes derive inline.
 
 ## Shelving notes for the maintainer
 
@@ -156,6 +391,23 @@ Three more, added by this pass:
   folder is named for doughs, but if that shelf is meant to be pastry-only this is the file to move.
 - **Three ingredient names are not food** — `flat skewers`, `metal skewers` and `oak or hickory wood` read
   like cookware written into an ingredient list, and they sit in the shopping list's "Anything else".
+  They are still the only three of that kind: T-007-05 gave `tinned luncheon meat` and `satay sauce`
+  aisles. The coverage report in `src/lib/shopping.test.ts` prints **`4/1086 ingredients have no
+  aisle`**, and the fourth name is not one of these — it is `leftover pizza`, which is food and which
+  T-008-05 left in `other` on purpose, because no shop sells it.
+
+Two more, both found by reading the aisles rather than the recipes:
+
+- **`evaporated milk` is in the cold case by a coin toss.** `dairy` and `baking` carry the identical
+  two-word pattern, so `aisleFor()` scores them the same and the tie breaks on which aisle comes first
+  in `src/data/aisles.json`. Nothing is wrong today. Re-order that file and a tin quietly moves from the
+  baking aisle to the chiller, or back, with no test failing. `condensed milk` is not exposed to this —
+  `dairy.except` takes it out, so only `baking` can claim it.
+- **A made-at-home component written as an ingredient lands wherever its words point.**
+  `Hong Kong milk tea` is an ingredient line in `yuenyeung` and resolves to *Dairy & eggs* on the pattern
+  `milk`. The collection's answer elsewhere is a pattern per component — `char siu` → butcher,
+  `pizza dough` → bakery — but the honest fix here is probably in the recipe rather than the aisle list,
+  so it is recorded and not touched.
 
 ## Recorded and not done
 
@@ -173,5 +425,127 @@ an edit to a metadata line, which is why none of it happened here.
   `thai-green-curry`. Every newer file carries the other spelling in `aka`, so search works either way
   (T-001-03 §5).
 - **`naan` does not declare which one it is** — a tandoor naan or a home-oven one (T-001-09 §6).
-- **`>> step.N:` counts prose steps as well as operations**, which is undocumented, silently mislabels a
-  file rather than failing it, and cost three files a round trip (T-001-08 §5).
+
+### What the season left, S-007 to S-013
+
+Read in full by T-014-01 and written up in
+[what-the-season-left.md](what-the-season-left.md), which carries the evidence for every line
+below. **The mechanical band is not here** — it is T-014-02's whole scope and lives on that page
+with a verifying command per finding. What follows is everything that needs a decision or needs
+food, so a reader can pick one up cold without opening the work directories.
+
+**Above all of it, and not in any band: 143 of the 227 recipes the filter recommends for a tired
+evening are wrong for it** (T-010-03), and 112 of the 143 fail on one thing the index cannot say —
+whether the recipe is dinner.
+
+**Needs an argument.** Each is real, understood, and waiting on somebody's decision.
+
+| finding | source | why it was not done |
+| --- | --- | --- |
+| The record cites evidence that was never published — 15 of 29 work directories name files that exist nowhere, including `T-008-03/findings.md`, `T-009-04/naming-steps-proposal.md`, `T-011-06/six-over-three.md` and five screenshots under an empty `shots/` | T-008-05 §6.5 and eight others | It is a workflow decision — does Lisa publish the attempt directory, or must a criterion's evidence be inlined? |
+| The chopping board is excluded from `washing-up`, so S-008's own illustration of two-or-fewer scores 1 rather than 2 | T-008-01 §4.2, T-008-03 §5.1 | Every washing-up number in the collection was produced under this boundary; a ruling moves them all |
+| Bar 1 of the air fryer gate has never excluded a recipe on its own and is unreadable on 508 of 685 files | T-008-05 §4.1 | Three options are costed on that page and all three are counter decisions |
+| Does One Pot promise one pan or one sink? Eight of 73 wash three or more | T-008-03 §4.1 | Re-shelving is a counter decision; nothing was moved |
+| Five counters still have no `docs/knowledge/counters.md` entry | T-008-02 §5 | Every one is an appliance-and-format shelf, and what a vocabulary table says about a bargain is unsettled |
+| `birista` declares `1 1/2 cups` and scales into the #2 dumpling-party dish; `lime-pickle` has the same shape | T-013-03 §2 | It changes a declared number |
+| `lengua`'s `slack` reason carries a keeping fact, and 28 files' slack reasons name a fridge or a reheat while carrying no `keeps` | T-011-04 §2 | It changes a declared slack line |
+| `batata-harra`'s `capacity` says *the pan* and its `washing-up` says *the frying pot* — the one cross-property contradiction found | T-014-01 | Which word is right is an argument about the recipe |
+| 98 files are area-bounded and unmeasured; five pan-bound dishes have no capacity so `/list/` says the pan doesn't care; the hand-work on the holiday plate is untimed, so seven dishes report 13.75 minutes for an afternoon | T-011-03 §4, T-011-06, T-013-02 §4 | About sixty more capacities and a timer pass. Not covered by *write food first* — nothing has to be written, only measured |
+| Eleven files say *in batches* without a count while their siblings say *two* | T-011-03 §5 | One word per file, and the word is a claim about cooking |
+| There are two phrasebooks — `scaling-words.ts` and `situation.ts` say the same nine findings from two shapes | T-011-06 §1 | Neither ticket could own both; it wants a merge ticket |
+| No variant roll-up: 24 dish groups declare `keeps` on one half and are silent on the other, 19 do it for `capacity`, `washing-up` does it zero times | T-011-04 §5 | One value beside a silent sibling reads as a claim about the silent one |
+| Twenty timer names are in neither word list, carrying 1,386 minutes; `reduce` + `thicken` alone would move 31 recipes and make none newly fail | T-010-03 finding 2 | Each proposal carries counter-evidence; adding a name changes a reading |
+| `~preheat` never reaches `elapsedMinutes` — 7 recipes, 215 minutes, `margherita` reading as a seven-minute dish | T-010-03 finding 3 | Whether a preheat is elapsed time is a decision |
+| `shake` has no icon; seven permanent `unaccountedCookware` advisories want a `NEVER_WASHED` utensil entry | T-008-04 §6.2, T-008-03 §3 | Each enables something rather than fixing something |
+| A full-width prose row cannot contain a comma and this is documented nowhere | T-007-04 §2 | Change `cleanLabel()` or document the rule — two different tickets |
+| The preheat convention exists as 21 copies of one sentence and belongs in `docs/knowledge/` | T-008-04 §6.3 | Nobody has owned that file since |
+| `scaling.md` §2's `r ≥ m` is false in a corner — `carnitas` reports −2 minutes of vessel cost | T-011-02 §2, T-011-03 §3 | It is a sentence inside an argument |
+| Two `scaling.md` §6 phrasebook rows cannot be used as written | T-011-05 §4.2 | Same — a sentence inside an argument, and the argument is what would have to move |
+| `occasions.md` §3.5 ranks four recipes its own gates reject, and §3.6's rule constrains `standing` but not `longest` | T-013-03 §9.2 | Same, in a file T-013-03 did not own |
+| The party profile is confounded with written servings; how much of ρ = −0.591 survives a per-serving rate is unknown | T-013-03 §1 | Fixing it changes `occasions.md`'s declared rates |
+| `scaling.md` §7's air fryer pole is still a hypothetical, and 21 real files exist | T-011-01 §1, T-011-03 §7 | Its own §9 asks for the rewrite; a rewrite is not a correction |
+| `fermented red bean curd` lands in Dairy on `curd`; `Hong Kong milk tea` lands in Dairy on `milk`; `evaporated milk` sits in the cold case on a tie-break | T-007-05 §3–5, §8 | Three aisle findings with three different right answers |
+| The front door lost the fold at 375px — the first counter card moved from ≈695 to 820 | T-011-06, T-010-02 §1 | The remedy needs S-010's always-visible-dials argument revisited |
+| `/list/` still prints `×1/2 ×1 ×2 ×3` and `serves 4 → 12` | T-011-05 §4.1 | A reading of S-011's notation ban, flagged rather than guessed at |
+| The `## Build state` block above is S-007's: 664 recipes, 894 tests in 11 files, 688 pages, 904 counter assignments, timers in 640, washing-up in 11, 45 `kit:` — against today's **685 · 1,229 in 21 · 710 · 930 · 661 · 177 · 58** | T-014-01 banded this mechanical; **T-014-02 pushed it back** | Whether a superseded dated measurement is refreshed in place or left standing as the record it is. The block says twice that it is S-007's, the current figures already sit forty lines below it, and its lines 37-40 are S-007's arithmetic rather than figures — so refreshing it deletes a record. The answer applies to every dated block on the board, so it is worth settling once |
+
+**Needs food.** The collection has to grow before these can be acted on. **T-012-02 is the
+authority and its verdict covers the first two**; it explicitly did not reach *write food before
+writing features* for hand-off or rotation, which are feedable today.
+
+| finding | source | why it was not done |
+| --- | --- | --- |
+| **Balance.** 130 distinct plants and 23 that ever carry a dish; 16 non-starch sides and 47 savoury plant-built dishes against 101 sweets; 14 pulse dinners. The 48 plants the shopping lists buy and no recipe is about are the work | T-012-02 | Forty-eight tables, one per plant. T-012-02's own verdict covers it: *write food before writing features* |
+| **The fridge, for one person.** 2 recipes one person can cook for one or two with no trip to the shop, and the answer does not move under four sensitivity runs | T-012-02 | Same verdict, and the four sensitivity runs mean no definition of *no trip to the shop* rescues it. Only recipes will |
+| **The Air Fryer & the Pot is 21, four short of 25** — six ranked pressure dishes unwritten, and seekh kabab writable now the drawer is settled. **None of them needs a bar to move** | T-008-05 §4.1 | Four recipes, and the gate is not the obstacle — moving a bar to reach 25 would be counting differently rather than stocking the shelf |
+| **The holiday occasion opens after five recipes**; the dumpling party should not open, and its blocker is annotation rather than food. There is still no mooncake recipe | T-013-03 §7, T-013-01 | Five named dishes have to exist first. The dumpling party is in the band above instead, because annotation is a decision and not a shopping list |
+
+## Recorded and closed
+
+Two entries S-009 finished with, and three more the whole-season read found already closed. They are
+here rather than above because the list above is where the next pass looks for work, and an item that
+is done but still listed costs somebody an afternoon finding out. Of the first two, one was fixed; the
+other was looked at and deliberately left, which is also an answer.
+
+### Three closed during S-007 and S-008, with the ticket that closed each
+
+Named here because each was recorded as open by the ticket that found it, and each was shut by a
+later one on the same branch. Evidence in [what-the-season-left.md](what-the-season-left.md).
+
+- **A `counters.json` section could list a slug the recipe does not shelve, and the page dropped it
+  silently.** Found by T-007-05 §2, which measured the counter listing 27 and printing 22.
+  **Closed by T-007-06**: `menuFor()` throws with the slug named, `scripts/check-menus.mjs` reads the
+  built pages back, and `npm run verify` ends with `22 counter(s): 930 slug(s) listed, 930 printed.`
+- **One Pot listed four fried slugs it does not shelve** — `general-tsos-chicken`, `orange-chicken`,
+  `sesame-chicken`, `sweet-and-sour-pork` — since `88ca990`, invisible to every gate.
+  **Closed by T-007-06**, which removed them; One Pot renders 73 before and after.
+- **Is the air fryer's drawer a second thing to wash?** T-008-04 §5 ranked seekh kabab out on a
+  distinction the other twenty items were not held to, and said so rather than quietly applying it.
+  **Closed by T-008-05 §4.5**: the basket, drawer and crisper plate are one thing, because they are
+  washed in one action. It changes nothing on the shelf today and makes one unwritten dish writable.
+
+### `>> step.N:` counts prose steps as well as operations — closed by removal
+
+Carried under *Recorded and not done* from T-001-08 §5, as:
+
+> **`>> step.N:` counts prose steps as well as operations**, which is undocumented, silently mislabels a
+> file rather than failing it, and cost three files a round trip.
+
+**Fixed by removing the form, not by repairing the count** (S-009: T-009-01 taught the build the inline
+`>> step:` label, T-009-02 moved all 2,771 of them across 643 files, T-009-03 took the numbered form
+away). There is nothing left to count from: the label sits on the line directly above the step it names,
+so what it counts is no longer a question anybody can get wrong. A file that still writes `>> step.N:`
+now fails `npm run check` with a message showing the same label written inline, and
+`node scripts/inline-step-labels.mjs --write` moves it.
+
+Repairing the count instead — making N skip prose steps — was possible and was not done. It would have
+renumbered every one of the 2,771 existing labels against a rule nobody had written down, to keep a form
+whose real defect was that the number is written somewhere the step is not.
+
+**Retiring the behaviour cost nothing, and that was measured rather than assumed.** 264 files contained
+both a prose step and a numbered label; each label was scored against the step the build gave it and
+against the step an operations-only numbering would give it. Files that fitted the operations-only
+numbering better: **0** (T-009-02 §"Screen A", `docs/active/work/T-009-02/review.md`). So although the
+behaviour cost three files a round trip historically, it had left no shifted file behind.
+
+### `@&(~N)`, the relative back-reference, is left as it is
+
+Not a defect being carried; a decision, recorded so the next person does not have to reach it again.
+
+| | Uses | Of those |
+| --- | --: | --- |
+| `@&(~N)` relative back-reference | **2,401** | **373** are `~2` or deeper |
+| `@&(N)` absolute back-reference | 33 | all of them S-009's business — see T-009-04 |
+
+S-009 was about references that are **wrong and silent**. `~1` means *the step before this one*, which is
+what the author actually means and stays true when a step is appended. It breaks only when something is
+inserted **between** a step and its target — and when that happens the tree usually stops merging, which
+is a build error and not a wrong page. Relative references fail loudly; positional ones failed quietly,
+and the quiet ones are what the story took.
+
+The 373 uses at `~2` or deeper are the ones worth a look one day: the further back a relative reference
+reaches, the more it behaves like a positional one. That is a reason to look, not a reason to have
+rewritten 2,401 lines alongside a migration that had to prove itself byte for byte.
+
+Counted with `grep -roh '@&(~[0-9]*)' recipes --include='*.cook' | wc -l` and its `~[2-9][0-9]*` variant,
+re-run at T-009-03: 2,401 and 373, unchanged from the numbers S-009 was written with.

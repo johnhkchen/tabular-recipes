@@ -4,8 +4,13 @@
  * shared by the build (parse-recipes.mjs) and the checker (check-recipes.mjs).
  */
 import { Parser } from '@cooklang/cooklang';
+import { readKeeps } from '../src/lib/keeps.ts';
 import { splitList } from '../src/lib/meta.ts';
+import { readCapacity } from '../src/lib/scaling.ts';
 import { readSlack } from '../src/lib/slack.ts';
+import { readStepLabels } from '../src/lib/step-labels.ts';
+import { readStepRefs, refProblems } from '../src/lib/step-refs.ts';
+import { readWashingUp } from '../src/lib/washing-up.ts';
 import { minutesOf, readTimers } from '../src/lib/time.ts';
 
 /* ---- quantity formatting -------------------------------------------------- */
@@ -99,8 +104,17 @@ const titleCase = (slug) =>
  * @param {{slug: string, path: string, folder?: string}} where
  */
 export function normalise(source, { slug, path: relPath, folder }) {
+  /*
+   * A step's label can sit on the line directly above it (`>> step: rest it cold`), and where
+   * that line SAT is the one thing the parser throws away — it hoists any `>> key: value` into
+   * raw_metadata.map, where two of them collide. So the positions are read off the source
+   * first, and the parser is handed a copy with those lines blanked to comments. The same pass
+   * refuses the numbered form this replaced: see src/lib/step-labels.ts.
+   */
+  const { source: cleaned, labels, stepLines, problems } = readStepLabels(source);
+
   const parser = new Parser();
-  const result = parser.parse_full(source, true);
+  const result = parser.parse_full(cleaned, true);
   const payload = typeof result === 'string' ? result : (result.value ?? result);
   const recipe = typeof payload === 'string' ? JSON.parse(payload) : payload;
 
@@ -129,7 +143,10 @@ export function normalise(source, { slug, path: relPath, folder }) {
        * each timer may only answer for its own half. See readTimers().
        */
       const rawLabel = stripIngredients(items, recipe);
-      const labelOverride = metadata[`step.${index + 1}`] ?? null;
+      // One way in: the `>> step:` line directly above this step. The numbered form that used to
+      // be read out of the metadata map here is refused by readStepLabels() before it gets a
+      // chance to name a step, so there is nothing left to prefer one over the other.
+      const labelOverride = labels.get(index) ?? null;
       const operationLabel = labelOverride ?? rawLabel;
 
       for (const item of items) {
@@ -191,6 +208,32 @@ export function normalise(source, { slug, path: relPath, folder }) {
     }
   }
 
+  /*
+   * The pre-pass has to decide where the step blocks are without the parser's help, so it is
+   * held to the parser's own answer. This can only fire on a cooklang construct the scan does
+   * not understand, and when it does it is a bug in the scan rather than in the file — which
+   * is what the message says. A file with no inline label never reaches it.
+   */
+  const stepLabelProblems = [...problems];
+  if (labels.size && stepLines.length !== steps.length) {
+    stepLabelProblems.push(
+      `the inline label pre-pass counted ${stepLines.length} step(s) and the parser found ` +
+        `${steps.length} — that is a bug in readStepLabels(), not in this file`,
+    );
+  }
+
+  /*
+   * The references the file WROTE, against the ones the parser resolved. A reference that
+   * points at no step is not refused by cooklang — it comes back as a plain ingredient, so
+   * the table draws a row that is not an ingredient and nothing says a word. That can only
+   * be seen against the source, which is why it is read here and not off `steps`. The
+   * blanked copy, because that is the one the parser was handed.
+   */
+  const stepRefProblems = refProblems(
+    readStepRefs(cleaned),
+    steps.map((step) => step.refs),
+  );
+
   const title = metadata.title ?? titleCase(slug);
   const category = metadata.category ?? (folder ? titleCase(folder) : 'Other');
   const tags = splitList(metadata.tags).map((t) => t.toLowerCase());
@@ -211,12 +254,44 @@ export function normalise(source, { slug, path: relPath, folder }) {
    */
   const { slack, problem: slackProblem } = readSlack(metadata.slack);
 
+  /*
+   * What goes in the sink at the end. Authored, never worked out from the cookware below it —
+   * that list counts what a file NAMES, and general-tsos-chicken names one wok and is five
+   * things to wash. Read before PROMOTED deletes the key, and the raw value is passed through
+   * undefined-or-not, because a line that is absent and a line that is there and empty are
+   * two different answers. See src/lib/washing-up.ts.
+   */
+  const { washingUp, problem: washingUpProblem } = readWashingUp(metadata['washing-up']);
+
+  /*
+   * Whether the dish is still worth eating tomorrow, and what it is like then. Authored, never
+   * derived — no timer, step or ingredient knows what a fridge does overnight, and a six-hour
+   * braise and a six-hour custard come out of the same fridge as two different mornings. Read
+   * before PROMOTED deletes the key. A duration with no character reads as no keeps at all and
+   * hands back why, because a bare number is a shelf life and this site does not make those.
+   */
+  const { keeps, problem: keepsProblem } = readKeeps(metadata.keeps);
+
+  /*
+   * How many servings the limiting vessel holds, which vessel, and what it bounds. Authored,
+   * never derived: no timer knows how big your pan is, and the same file is a different
+   * number of batches in a different kitchen. Read before PROMOTED deletes the key. The line
+   * has to name an operation as well as a number — a bare capacity charges its batches onto
+   * every wait in the recipe, including the thirty minutes in the fridge, which is
+   * docs/knowledge/scaling.md §3 turning 42 minutes into 102.
+   *
+   * `>> servings:` is deliberately NOT promoted, here or before this ticket: the cost
+   * function reads it off `metadata`, which is where every page already reads it.
+   */
+  const { capacity, problem: capacityProblem } = readCapacity(metadata.capacity);
+
   // Authoring directives and anything promoted to its own field are not recipe facts.
   const PROMOTED = new Set([
     'title', 'category', 'tags', 'counters', 'dish', 'kit', 'aka', 'pairs-with', 'slack',
+    'washing-up', 'keeps', 'capacity',
   ]);
   for (const key of Object.keys(metadata)) {
-    if (/^step\.\d+$/.test(key) || PROMOTED.has(key)) delete metadata[key];
+    if (PROMOTED.has(key)) delete metadata[key];
   }
 
   return {
@@ -232,6 +307,19 @@ export function normalise(source, { slug, path: relPath, folder }) {
     /** `>> slack: forgiving — an extra hour in the pot changes little`, or null. */
     slack,
     slackProblem,
+    /** `>> washing-up: the wok, a rack to drain on`, `>> washing-up: nothing`, or null. */
+    washingUp,
+    washingUpProblem,
+    /** `>> keeps: 3 days — better on the second`, `>> keeps: not at all — …`, or null. */
+    keeps,
+    keepsProblem,
+    /** `>> capacity: 2 — the wok, sear`, or null — which is nearly every file. */
+    capacity,
+    capacityProblem,
+    /** Labels written above a step that have no step to name. Empty for every other file. */
+    stepLabelProblems,
+    /** `@&(…)` references that point at no step, and so were read as ingredients instead. */
+    stepRefProblems,
     /*
      * What people call it when they order it. A cook looking for the pâté in their bánh mì
      * does not know to search for "pork liver pâté", so the menu vocabulary has to be

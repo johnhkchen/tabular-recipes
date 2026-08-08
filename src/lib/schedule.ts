@@ -76,6 +76,17 @@ export interface Schedule {
    * with the part of it we are guessing at.
    */
   assumedHandsOnMinutes: number;
+  /**
+   * The longest run of hands-on work with no break in it — the difference between thirty
+   * minutes at the hob and three ten-minute jobs around two waits, which `handsOnMinutes`
+   * alone cannot tell apart because a sum has no shape.
+   *
+   * Measured on ONE COOK, across every branch: see longestUnbroken() below. Never more than
+   * `handsOnMinutes`, because it is made of the same minutes. It can be more than
+   * `totalMinutes`, for the same reason `handsOnMinutes` already can — two branches running
+   * at once are more work than there is clock.
+   */
+  longestHandsOnMinutes: number;
   /** Operations that never said how long they take. */
   untimedCount: number;
   /** Parsed from `>> time:`. The author's claim about the whole dish, not ours. */
@@ -84,6 +95,21 @@ export interface Schedule {
 
 /** Minutes are floats once seconds are involved; keep the arithmetic from drifting. */
 const round = (minutes: number) => Math.round(minutes * 100) / 100;
+
+/**
+ * Idle time long enough to be a break — long enough to leave the pan and sit down.
+ *
+ * An unattended step between two hands-on ones is plainly a break; two minutes of it is not,
+ * because nobody sits down for two minutes. Five is the smallest gap you could plausibly
+ * leave the kitchen for.
+ *
+ * It is also a number doing no secret work. The smallest gap between hands-on stretches
+ * anywhere in the collection is three minutes, exactly one gap is under four, and thresholds
+ * of four and five give the SAME answer on every recipe. The value that would decide things
+ * is zero — every gap a break — and that is the reading this constant exists to refuse: it
+ * calls a recipe restful for putting its half-hour down for ninety seconds.
+ */
+export const BREAK_MINUTES = 5;
 
 /** tree.ts's RawTimer predates the `source` the parser now writes for every timer. */
 type SourcedTimer = RawTimer & { source?: AttentionSource };
@@ -102,6 +128,7 @@ export function buildSchedule(recipe: RawRecipe, tree: RecipeTree = buildTree(re
   const steps = new Map(recipe.steps.map((step) => [step.index, step]));
   const tasks: Task[] = [];
   const byId = new Map<string, Task>();
+  const handsOnSpans: HandsOnSpan[] = [];
 
   let unattendedMinutes = 0;
   let handsOnMinutes = 0;
@@ -137,6 +164,28 @@ export function buildSchedule(recipe: RawRecipe, tree: RecipeTree = buildTree(re
       .map((child) => idOf(child));
     const start = dependsOn.reduce((latest, id) => Math.max(latest, byId.get(id)?.end ?? 0), 0);
 
+    /*
+     * Where each hands-on timer sits, so a run of work can be measured across steps.
+     *
+     * The TIMER is the unit, never the task. attentionOfTask() below calls a whole step
+     * hands-on when any timer in it is — the cautious reading, and the right one for a label
+     * — but baguette's one such step is 128 minutes of which 8 are your hands and 120 are a
+     * prove. Read at task granularity this collection's longest stretch at the bench is two
+     * hours of standing at a bowl of dough that is doing nothing.
+     *
+     * The timers of a step run in order from its start, which is the same order readTimers()
+     * slices its label in, so a running offset gives each one its place. The test for
+     * hands-on is the one the minute split above uses, so a timer earns a stretch exactly
+     * when it earns a minute — which is what keeps the total below handsOnMinutes.
+     */
+    let at = start;
+    for (const timer of timers) {
+      if (timer.attention !== 'unattended' && timer.minutes > 0) {
+        handsOnSpans.push({ start: round(at), minutes: timer.minutes, id: idOf(op), column: op.col });
+      }
+      at += timer.minutes;
+    }
+
     const task: Task = {
       id: idOf(op),
       label: op.label,
@@ -164,6 +213,7 @@ export function buildSchedule(recipe: RawRecipe, tree: RecipeTree = buildTree(re
     unattendedMinutes: round(unattendedMinutes),
     handsOnMinutes: round(handsOnMinutes),
     assumedHandsOnMinutes: round(assumedHandsOnMinutes),
+    longestHandsOnMinutes: longestUnbroken(handsOnSpans),
     untimedCount: tasks.filter((task) => !task.timed).length,
     authorMinutes: authorMinutesOf(recipe.metadata?.time),
   };
@@ -242,6 +292,84 @@ function criticalPathTo(task: Task, byId: Map<string, Task>): string[] {
   }
 
   return path.reverse();
+}
+
+/** One hands-on timer, at its place on the clock. Not a task: see the loop that fills these. */
+interface HandsOnSpan {
+  start: number;
+  minutes: number;
+  /** Its task's id and column, so two stretches starting together always sort the same way. */
+  id: string;
+  column: number;
+}
+
+/**
+ * The longest run of hands-on work a cook does without a break, ACROSS EVERY BRANCH.
+ *
+ * The schedule above assumes as many hands as the tree has branches — it never delays one
+ * hands-on task for another — which is right for a timeline and wrong for this number. A
+ * person with two hands-on jobs running at once is doing both, one after the other. So the
+ * stretches are laid on one cook's clock here: each is taken no earlier than the recipe
+ * allows and no earlier than the last one finished.
+ *
+ * Measuring along criticalPath instead would disagree on 80 recipes and always downward, six
+ * of them to ZERO — potato-knish, mole-poblano, chicken-pesto-bowl and three more stand at
+ * the hob for twelve to twenty unbroken minutes on branches the critical path never touches.
+ * Calling those restful is exactly the failure this number exists to prevent.
+ *
+ * Serialising can only push work later, so it can only shrink the gaps it measures: where it
+ * errs it errs towards a busier evening, which warns a tired cook rather than reassuring one.
+ * Nothing here touches a task's own start or end — the schedule is read, never rewritten.
+ */
+function longestUnbroken(spans: HandsOnSpan[]): number {
+  // Same tie-break as packLanes(), so no two parts of this module order a recipe differently.
+  const ordered = [...spans].sort(
+    (a, b) => a.start - b.start || a.column - b.column || a.id.localeCompare(b.id),
+  );
+
+  let cursor = 0;
+  let run = 0;
+  let longest = 0;
+
+  for (const span of ordered) {
+    const at = Math.max(cursor, span.start);
+    // Idle time for the COOK, not a hole in the recipe: two jobs the recipe runs at once
+    // leave no gap at all, and join into one stretch.
+    if (at - cursor >= BREAK_MINUTES) run = 0;
+    run += span.minutes;
+    cursor = at + span.minutes;
+    if (run > longest) longest = run;
+  }
+
+  return round(longest);
+}
+
+/**
+ * Whose the hands-on figure is: the author's, ours, or nobody's.
+ *
+ * A filter on "time you're standing there" is only honest if it can say "cannot say", and
+ * hands-on is what the clock falls back to when a step says nothing — so an under-annotated
+ * recipe collects minutes nobody ever claimed, and a recipe with no timers at all reads as no
+ * time at all. Asked here, once, for the same reason attentionIsOurs() is: a browser deriving
+ * this for itself is a second answer to one question, and the wrong answer would be the quiet
+ * one — 327 recipes sail through "under fifteen minutes standing" on no evidence whatever.
+ *
+ * Weakest reading wins, as it does within a task — with one distinction a single task never
+ * had to make. An UNTIMED operation adds no minutes, so it leaves the figure a floor: we read
+ * what was there and there is more. An ASSUMED minute is different in kind — a number nobody
+ * claimed, sitting inside the figure as though somebody had — so it is what drops a recipe to
+ * "nobody said". Taking untimed steps the same way would put 615 of 664 recipes in that one
+ * bucket and leave the dial sorting nothing.
+ */
+export function handsOnEvidence(schedule: Schedule): Confidence {
+  // Times nothing at all: the figure is not low, it is absent.
+  if (schedule.totalMinutes === 0) return 'unknown';
+  // Claims you never stand there, across steps nobody put a number on. That is the trap.
+  if (schedule.handsOnMinutes === 0 && schedule.untimedCount > 0) return 'unknown';
+  if (schedule.assumedHandsOnMinutes > 0) return 'unknown';
+  // An untimed task is already 'unknown', so this covers untimedCount === 0 without saying so.
+  if (schedule.tasks.every((task) => task.confidence === 'stated')) return 'stated';
+  return 'inferred';
 }
 
 /**

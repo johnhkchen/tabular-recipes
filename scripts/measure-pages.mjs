@@ -3,7 +3,7 @@
  *
  *   npm run build
  *   node scripts/measure-pages.mjs                        # mean, median, max, wordiest ten
- *   node scripts/measure-pages.mjs --slug ching-bo-leung-soup   # one page
+ *   node scripts/measure-pages.mjs --slug biryani              # one page
  *   node scripts/measure-pages.mjs --count "so both numbers are floors"  # pages carrying it
  *   node scripts/measure-pages.mjs --all                  # slug<TAB>count, one per line
  *   node scripts/measure-pages.mjs --root <dir>           # a build other than dist/

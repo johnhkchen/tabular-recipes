@@ -188,6 +188,17 @@ reader — the sentence is in the right room and the room is loud.
 
 ## 5. 172,003 characters nobody reads, and the overrides that made them
 
+> **Dated note, 7 August 2026 — the form this section is about no longer exists.** S-009 removed
+> `>> step.N:` outright: T-009-01 taught the build the inline `>> step:` label that sits on the line
+> directly above the step it names, T-009-02 moved all of them across, and T-009-03 took the
+> numbered form away. `grep -rn '^>> *step\.' recipes --include='*.cook'` returns nothing,
+> `npm run check` refuses the form by name and quotes the same label back written inline, and
+> `node scripts/inline-step-labels.mjs --write` moves any that turn up. **Everything below is S-005's
+> measurement and is kept exactly as it was measured** — it is the record of what the numbered form
+> cost while it existed, and it is why the form went. What it does *not* record is that the deeper
+> question it raises — whether a step should be written so its own first sentence is the label — is
+> still open, because moving a label is not rewriting one.
+
 **What happens.** A `>> step.N:` line replaces a step's own words in the operation cell, and the
 words it replaces are rendered nowhere at all — except inside the source disclosure of finding 3,
 as raw cooklang. This is the mechanism S-005 was written to explain: the files were written as
