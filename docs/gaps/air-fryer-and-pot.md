@@ -853,7 +853,7 @@ cannot be trusted:
 
 ---
 
-## What a table cannot hold
+## What it could not stock
 
 **This section is what stops the shelf becoming an advertisement.** Everything below is a thing the
 machine is bad at or a fact about it that no cell can carry.
