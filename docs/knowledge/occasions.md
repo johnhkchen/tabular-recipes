@@ -210,12 +210,12 @@ Every one exists today. The coverage column is what stops a profile pretending.
 | `slack` | `src/lib/slack.ts` — a level **and** a reason | **416** |
 | `washingUp.count` | `src/lib/washing-up.ts` — derived from an authored list | **177** |
 | `keeps` | `src/lib/keeps.ts` — a span **and** what it is like when you get there | **138** |
-| `capacity`, and `costOf()`'s `standing`, `elapsed`, `longest`, `batches` | `src/lib/scaling.ts` | **0 capacities declared** |
+| `capacity`, and `costOf()`'s `standing`, `elapsed`, `longest`, `batches` | `src/lib/scaling.ts` | **46 capacities declared** |
 | the branch structure — `lanes`, `criticalPath` | `src/lib/schedule.ts` | all |
 
-**Two of those rows are the whole difficulty.** `capacity` is built and unannotated — the reader,
-the cost function and the batch arithmetic all landed, and no file declares one yet, so every
-scaling answer in this collection today is the no-vessel branch. And **43 files of 685 carry
+**Two of those rows are the whole difficulty.** `capacity` is built and barely annotated — the
+reader, the cost function and the batch arithmetic all landed, and **46 files of 685 declare one**,
+so the other 639 still answer down the no-vessel branch. And **43 files of 685 carry
 `keeps`, `washing-up`, `slack` and a hands-on figure that is not a guess.** That is the population a
 four-field profile can rank without a hole in it.
 
@@ -390,7 +390,7 @@ Named, with what each would take. Nothing beyond naming them.
 | **What can be handed to somebody else** | The family meal's real question. `cooks.md` §3 names it as missing and says the schedule's many-hands assumption is a bug for one reader and a feature for another | Deciding how many cooks a page is talking about, then marking a task as hand-off-able. The DAG is already there; the decision about the reader is not |
 | **Is it in the oven in the last hour** | The gate the family meal most needs, and cannot express | Per-step cookware. `scaling.md` §9 records that `src/generated/recipes.json` gives each step its ingredients and timers and **no vessel** — the `#oven{}` mark is flattened to one recipe-level list |
 | **Can this be made the day before** | Different from `keeps`. A dish that keeps three days may still have to be assembled at five o'clock | A marker on a step rather than on a recipe. `cooks.md` records that nothing marks a step *do this the day before*, and that the existing split is attention, not calendar |
-| **`capacity`, annotated** | Whether twelve servings is one pot or four loads — the difference between an afternoon and an evening | Nothing new. The machinery landed with T-011-02; the annotation pass has not run, so all 685 files answer as though nothing binds |
+| **`capacity`, annotated** | Whether twelve servings is one pot or four loads — the difference between an afternoon and an evening | Nothing new. The machinery landed with T-011-02; the annotation pass has barely started, so 639 of 685 files still answer as though nothing binds |
 
 ---
 
@@ -536,7 +536,7 @@ middle of both tables. **What does not change with the rates is the inversion**,
 the signs, and the silence, which comes from the collection.
 
 **Every count here is from 7 August 2026 at 685 files and will drift.** `keeps` was 138, `slack`
-416, `washing-up` 177, `capacity` 0, and the hands-on figure could speak for 269. Three of those are
+416, `washing-up` 177, `capacity` 46, and the hands-on figure could speak for 269. Three of those are
 being annotated on this branch by other work as this is written.
 
 **Not looked at, so do not trust it if it appears anywhere:** whether meal trains for illness have
