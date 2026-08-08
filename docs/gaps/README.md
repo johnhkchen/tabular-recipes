@@ -391,8 +391,10 @@ Three more, added by this pass:
   folder is named for doughs, but if that shelf is meant to be pastry-only this is the file to move.
 - **Three ingredient names are not food** — `flat skewers`, `metal skewers` and `oak or hickory wood` read
   like cookware written into an ingredient list, and they sit in the shopping list's "Anything else".
-  They are now the **only** three: T-007-05 gave `tinned luncheon meat` and `satay sauce` aisles, so the
-  coverage report in `src/lib/shopping.test.ts` prints 3 of 1074 rather than 5.
+  They are still the only three of that kind: T-007-05 gave `tinned luncheon meat` and `satay sauce`
+  aisles. The coverage report in `src/lib/shopping.test.ts` prints **`4/1086 ingredients have no
+  aisle`**, and the fourth name is not one of these — it is `leftover pizza`, which is food and which
+  T-008-05 left in `other` on purpose, because no shop sells it.
 
 Two more, both found by reading the aisles rather than the recipes:
 
