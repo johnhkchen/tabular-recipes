@@ -399,11 +399,12 @@ the forty minutes of `A` is a thirty-minute marinade and two five-minute rests o
 which is in the oil. So `A_batch = 0` and `H_batch = 2.5`, and twelve portions comes out at
 **47.5 minutes** whether the pot holds four servings at a time or one.
 
-**The air fryer pole, which has no file yet.** S-008 wants the basket as the opposite of the pot,
-and **no air fryer recipe exists in this collection** — no `.cook` file declares `kit: Air Fryer`,
-and T-008-04 is the ticket that writes them. So this is an illustration from the measured figures in
-`docs/gaps/air-fryer-and-pot.md`, not a recipe: wings at 200°C for 18–24 minutes, in a basket ATK
-found holds about four cutlets.
+**The air fryer pole, written before any file existed.** S-008 wants the basket as the opposite of
+the pot, and when this was written no `.cook` file declared `kit: Air Fryer`. **T-008-04 has since
+landed: 13 files declare the kit, on a 21-recipe shelf** (7 August 2026). This block has not been
+rewritten from one of them, so what follows is still an illustration from the measured figures in
+`docs/gaps/air-fryer-and-pot.md` rather than a worked recipe: wings at 200°C for 18–24 minutes, in a
+basket ATK found holds about four cutlets. §9 records what redoing it from a real file would take.
 
 ```
 a basket load ≈ 20 min unattended, c ≈ 4, H ≈ 2      at n = 12:  r = 3,  elapsed = 66 min
@@ -505,9 +506,12 @@ Two flags on this answer, both of which the model cannot resolve on its own:
 
 ## 9. What this file could not settle
 
-- **There is no air fryer recipe**, so the second pole in §7 is an illustration from
-  `docs/gaps/air-fryer-and-pot.md` rather than a worked file. When T-008-04 lands, §7's air fryer
-  block should be rewritten from a real `.cook` file and the numbers checked, not adjusted.
+- **The second pole in §7 is still an illustration** from `docs/gaps/air-fryer-and-pot.md` rather
+  than a worked file. This entry was written when the collection had nothing in a basket; **T-008-04
+  has since landed and 13 files declare `kit: Air Fryer` on a 21-recipe shelf** (7 August 2026). So
+  what this asked for is now possible and still owed — §7's air fryer block rewritten from a real
+  `.cook` file, `air-fryer-chicken-wings` being the one it was guessing at, with the numbers
+  **checked, not adjusted**. A rewrite is not a correction, so it is not done here.
 - **Capacity is a fact about a kitchen** and the file records one vessel (§4.2). No amount of
   annotation fixes this. What a page can do is name the vessel so a reader can correct it.
 - **Per-step cookware is not in the generated data.** `src/generated/recipes.json` gives each step
