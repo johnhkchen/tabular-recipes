@@ -54,6 +54,7 @@ for (const recipe of recipes) {
     recipe.slackProblem,
     recipe.washingUpProblem,
     recipe.keepsProblem,
+    recipe.capacityProblem,
     ...recipe.stepLabelProblems,
     ...recipe.stepRefProblems,
   ]) {
