@@ -249,6 +249,10 @@ Things a table cannot show, and which the build will refuse rather than draw wro
 
 - **Splitting** a preparation into two later steps (it is a tree, not a graph).
 - **Two endings** — every branch must flow into one final step.
+- **A reference to a step that is not there** — `@&(~3)` when only two steps came before, or
+  `@&(9)` in a six-step file. Cooklang does not object: it reads the reference as an ingredient, so
+  the table grows a row that is not an ingredient and draws perfectly well. The check names the line
+  instead.
 
 To find out what is wrong with a file without building the site:
 
